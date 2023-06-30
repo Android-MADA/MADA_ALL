@@ -3,7 +3,10 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.myapplication.Fragment.FragCalendar
+import com.example.myapplication.Fragment.FragCustom
+import com.example.myapplication.Fragment.FragDaily
 import com.example.myapplication.Fragment.FragHome
+import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +36,24 @@ class MainActivity : AppCompatActivity() {
                 R.id.calendar -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fl_con, FragCalendar())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.my -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_con, FragMy())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.custom -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_con, FragCustom())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.daily -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_con, FragDaily())
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
