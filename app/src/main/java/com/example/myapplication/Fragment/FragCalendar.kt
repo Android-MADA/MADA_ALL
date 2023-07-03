@@ -11,16 +11,20 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Adpater.CalendarAdapter
-import com.example.myapplication.Listener.OnItemListener
+import com.example.myapplication.CalenderFuntion.CalendarUtil
+import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 
 class FragCalendar : Fragment(), OnItemListener {
 
     lateinit var binding: FragCalendarBinding
-    lateinit var selectedDate: LocalDate
+    private lateinit var calendar: Calendar
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,42 +34,44 @@ class FragCalendar : Fragment(), OnItemListener {
     ): View? {
         binding = FragCalendarBinding.inflate(inflater, container, false)
 
-        selectedDate = LocalDate.now()
+        CalendarUtil.selectedDate = LocalDate.now()
+        calendar = Calendar.getInstance()
+
         setMonthView()
         binding.preBtn.setOnClickListener {
-            selectedDate = selectedDate.minusMonths(1)
+            CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
+            calendar.add(Calendar.MONTH, -1)
             setMonthView()
         }
         binding.nextBtn.setOnClickListener {
-            selectedDate = selectedDate.plusMonths(1)
+            CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
+            calendar.add(Calendar.MONTH, 1)
             setMonthView()
         }
         return binding.root
     }
     private fun setMonthView() {
         var formatter = DateTimeFormatter.ofPattern("M월")
-        binding.textMonth.text = selectedDate.format(formatter)
+        binding.textMonth.text = CalendarUtil.selectedDate.format(formatter)
         formatter = DateTimeFormatter.ofPattern("yyyy년")
-        binding.textYear.text = selectedDate.format(formatter)
+        binding.textYear.text = CalendarUtil.selectedDate.format(formatter)
 
-        val dayList = dayInMonthArray(selectedDate)
-        val adapter = CalendarAdapter(dayList,this)
+        val dayList = dayInMonthArray()
+        val adapter = CalendarAdapter(dayList)
         var manager: RecyclerView.LayoutManager = GridLayoutManager(context,7)
         binding.calendar.layoutManager = manager
         binding.calendar.adapter = adapter
     }
-    private fun dayInMonthArray(date: LocalDate) : ArrayList<String> {
-        var dayList = ArrayList<String>()
-        var yearMonth = YearMonth.from(date)
-        var lastDay = yearMonth.lengthOfMonth()
-        var firstDay = selectedDate.withDayOfMonth(1)
-        var dayOfWeek = firstDay.dayOfWeek.value
-        for(i in 1..41) {
-            if(i<=dayOfWeek || i> lastDay+dayOfWeek) {
-                dayList.add("")
-            } else {
-                dayList.add((i-dayOfWeek).toString())
-            }
+    private fun dayInMonthArray() : ArrayList<Date> {
+        var dayList = ArrayList<Date>()
+        var monthCalendar = calendar.clone() as Calendar
+        monthCalendar[Calendar.DAY_OF_MONTH] = 1
+        var firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK]-1
+
+        monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
+        while(dayList.size<42) {
+            dayList.add(monthCalendar.time)
+            monthCalendar.add(Calendar.DAY_OF_MONTH,1)
         }
         return dayList
     }
@@ -74,7 +80,7 @@ class FragCalendar : Fragment(), OnItemListener {
         return date.format(formatter)
     }
     override fun onItemClick(dayText: String) {
-        var yearMonthDay = yearMonthFromDate(selectedDate) + " " + dayText + "일"
+        var yearMonthDay = yearMonthFromDate(CalendarUtil.selectedDate) + " " + dayText + "일"
         Toast.makeText(context, yearMonthDay, Toast.LENGTH_SHORT).show()
     }
 
