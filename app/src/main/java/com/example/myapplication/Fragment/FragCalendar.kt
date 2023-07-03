@@ -6,16 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Adpater.CalendarAdapter
+import com.example.myapplication.Listener.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-class FragCalendar : Fragment() {
+class FragCalendar : Fragment(), OnItemListener {
 
     lateinit var binding: FragCalendarBinding
     lateinit var selectedDate: LocalDate
@@ -47,7 +49,7 @@ class FragCalendar : Fragment() {
         binding.textYear.text = selectedDate.format(formatter)
 
         val dayList = dayInMonthArray(selectedDate)
-        val adapter = CalendarAdapter(dayList)
+        val adapter = CalendarAdapter(dayList,this)
         var manager: RecyclerView.LayoutManager = GridLayoutManager(context,7)
         binding.calendar.layoutManager = manager
         binding.calendar.adapter = adapter
@@ -67,4 +69,13 @@ class FragCalendar : Fragment() {
         }
         return dayList
     }
+    private fun yearMonthFromDate(date : LocalDate) :String{
+        var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
+        return date.format(formatter)
+    }
+    override fun onItemClick(dayText: String) {
+        var yearMonthDay = yearMonthFromDate(selectedDate) + " " + dayText + "일"
+        Toast.makeText(context, yearMonthDay, Toast.LENGTH_SHORT).show()
+    }
+
 }
