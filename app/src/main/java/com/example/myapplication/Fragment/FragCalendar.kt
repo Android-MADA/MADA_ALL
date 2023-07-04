@@ -15,7 +15,6 @@ import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
-import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
@@ -65,7 +64,7 @@ class FragCalendar : Fragment(), OnItemListener {
     private fun dayInMonthArray() : ArrayList<Date> {
         var dayList = ArrayList<Date>()
         var monthCalendar = calendar.clone() as Calendar
-        monthCalendar[Calendar.DAY_OF_MONTH] = 1
+        monthCalendar[Calendar.DAY_OF_MONTH] = 1        //달의 첫 번째 날짜
         var firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK]-1
 
         monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
