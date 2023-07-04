@@ -1,5 +1,7 @@
 package com.example.myapplication.Adpater
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +49,12 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
 
         holder.itemView.setOnClickListener {
             var yearMonDay = "$iYear 년 $iMonth 월 $iDay 일"
+            var mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_popup,null)
+            var mBuilder = AlertDialog.Builder(holder.itemView.context)
+                .setView(mDialogView)
+            val alertDialog = mBuilder.show()
+
+
             Toast.makeText(holder.itemView.context, yearMonDay,Toast.LENGTH_SHORT).show()
         }
 
