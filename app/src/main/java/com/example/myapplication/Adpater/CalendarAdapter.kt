@@ -1,13 +1,13 @@
 package com.example.myapplication.Adpater
 
 import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.R
@@ -20,7 +20,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth
-
+    val weekdays = arrayOf("월", "화", "수", "목", "금", "토", "일")
+    data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
     }
@@ -52,10 +53,20 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
             var mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_popup,null)
             var mBuilder = AlertDialog.Builder(holder.itemView.context)
                 .setView(mDialogView)
+
+            mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
+            mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7-1] + "요일"
             val alertDialog = mBuilder.show()
 
-
-            Toast.makeText(holder.itemView.context, yearMonDay,Toast.LENGTH_SHORT).show()
+            //임시 데이터
+            val MADAList = listOf(
+                MADA("기말 강의 평가 기간", "7월 2일", "7월 6일", "#FF0000"),
+                MADA("데이터 분석 기초 기말고사", "7월 4일", "7월 4일", "#FF0000")
+            )
+            val adapter = CalendarScheduleAdapter(iDay,position,MADAList)
+            var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
+            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
+            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
         }
 
     }
