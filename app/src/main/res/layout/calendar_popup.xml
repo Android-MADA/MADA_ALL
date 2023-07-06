@@ -73,7 +73,7 @@
             android:background="@drawable/calendar_1" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/addBtn"
             android:layout_width="69dp"
             android:layout_height="77dp"
             android:layout_gravity="center"
