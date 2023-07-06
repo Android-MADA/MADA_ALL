@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cell_background"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:orientation="vertical"
     android:padding="8dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textDay"
-        android:text="1"
-        android:layout_gravity="center"
-        android:textSize="25sp"
-        android:textStyle="bold"/>
 
-</LinearLayout>
+    <View
+        android:id="@+id/calenadar_point"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/calendar_point"
+        app:layout_constraintTop_toBottomOf="@id/textDay"
+        app:layout_constraintRight_toRightOf="@id/textDay"
+        app:layout_constraintLeft_toLeftOf="@id/textDay"
+        />
+
+    <TextView
+        android:id="@+id/textDay"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

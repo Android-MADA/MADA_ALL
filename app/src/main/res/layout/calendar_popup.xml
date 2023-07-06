@@ -60,12 +60,17 @@
         android:layout_marginLeft="15dp"
         android:orientation="horizontal">
 
-        <ImageView
+
+        <EditText
             android:id="@+id/imageView2"
             android:layout_width="260dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/calendar_1" />
+            android:hint="추가하기"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:textSize="18dp"
+            android:background="@drawable/calendar_1" />
 
         <ImageButton
             android:id="@+id/imageButton"

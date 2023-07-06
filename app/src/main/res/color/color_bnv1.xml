@@ -3,4 +3,5 @@
     <item android:color="@color/design_default_color_primary" android:state_checked="true" />
     <!-- @color/colorTab1 = #006064 //define this in your res/values/color.xml or change the color directly here -->
     <item android:color="@android:color/darker_gray" android:state_checked="false" />
+
 </selector>
