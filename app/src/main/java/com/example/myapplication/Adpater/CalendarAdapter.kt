@@ -1,14 +1,20 @@
 package com.example.myapplication.Adpater
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalendarAdd
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.R
 import java.time.LocalDate
@@ -24,6 +30,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
+        val point : ImageView = itemView.findViewById(R.id.calenadar_point)
     }
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -46,6 +53,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
         if(iYear == y && iMonth == m && iDay == d) {
             holder.itemView.setBackgroundResource(R.drawable.calender_today)
             holder.textDay.setTextColor(Color.WHITE)
+            holder.point.setBackgroundResource(R.drawable.calendar_point)     //일단 임시로 일정 있는 거 표시
         }
 
         holder.itemView.setOnClickListener {
@@ -53,10 +61,15 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
             var mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_popup,null)
             var mBuilder = AlertDialog.Builder(holder.itemView.context)
                 .setView(mDialogView)
-
+            val alertDialog = mBuilder.show()
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7-1] + "요일"
-            val alertDialog = mBuilder.show()
+            mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
+                val intent = Intent(holder.itemView.context, CalendarAdd::class.java)
+                holder.itemView.context.startActivity(intent)
+                alertDialog.dismiss()
+            })
+
 
             //임시 데이터
             val MADAList = listOf(
