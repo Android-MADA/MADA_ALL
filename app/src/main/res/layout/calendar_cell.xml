@@ -8,13 +8,13 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <View
+    <ImageView
         android:id="@+id/calenadar_point"
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/calendar_point"
+        android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/textDay"
         app:layout_constraintRight_toRightOf="@id/textDay"
         app:layout_constraintLeft_toLeftOf="@id/textDay"
