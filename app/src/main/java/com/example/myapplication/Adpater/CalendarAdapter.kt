@@ -26,7 +26,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth
-    val weekdays = arrayOf("월", "화", "수", "목", "금", "토", "일")
+    val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
@@ -63,9 +63,12 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
                 .setView(mDialogView)
             val alertDialog = mBuilder.show()
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
-            mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7-1] + "요일"
+            mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val intent = Intent(holder.itemView.context, CalendarAdd::class.java)
+                intent.putExtra("Month",iMonth)
+                intent.putExtra("Day",iDay)
+                intent.putExtra("Yoil",position%7)
                 holder.itemView.context.startActivity(intent)
                 alertDialog.dismiss()
             })
