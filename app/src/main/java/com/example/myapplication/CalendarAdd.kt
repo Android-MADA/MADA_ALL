@@ -68,6 +68,14 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
             nextList[3]=1
             binding.cal.visibility= View.VISIBLE
         }
+        binding.preScheldule2.setOnClickListener {
+            binding.preScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
+            binding.nextScheldule2.setBackgroundColor(Color.TRANSPARENT)
+        }
+        binding.nextScheldule2.setOnClickListener {
+            binding.nextScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
+            binding.preScheldule2.setBackgroundColor(Color.TRANSPARENT)
+        }
     }
     private fun setMonthView() {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
