@@ -76,6 +76,7 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
             binding.nextScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.preScheldule2.setBackgroundColor(Color.TRANSPARENT)
         }
+        binding.timePicker.setInitialSelectedTime("36:36")
     }
     private fun setMonthView() {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
