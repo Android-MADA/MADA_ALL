@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/etc_home"
         android:enabled="true"
         android:title="" />
     <item
         android:id="@+id/daily"
-        android:icon="@drawable/daily"
+        android:icon="@drawable/etc_daily"
         android:enabled="true"
         android:title="" />
     <item
@@ -17,12 +17,12 @@
         android:title="" />
     <item
         android:id="@+id/custom"
-        android:icon="@drawable/custom"
+        android:icon="@drawable/etc_custom"
         android:enabled="true"
         android:title="" />
     <item
         android:id="@+id/my"
-        android:icon="@drawable/my"
+        android:icon="@drawable/etc_my"
         android:enabled="true"
         android:title="" />
 </menu>

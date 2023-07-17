@@ -1,4 +1,4 @@
-package com.example.myapplication.Adpater
+package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -6,16 +6,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalendarAdd
-import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.util.Calendar
@@ -51,7 +46,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
             holder.textDay.setTextColor(Color.LTGRAY)
         }
         if(iYear == y && iMonth == m && iDay == d) {
-            holder.itemView.setBackgroundResource(R.drawable.calender_today)
+            holder.itemView.setBackgroundResource(R.drawable.etc_calender_today)
             holder.textDay.setTextColor(Color.WHITE)
             holder.point.setBackgroundResource(R.drawable.calendar_point)     //일단 임시로 일정 있는 거 표시
         }

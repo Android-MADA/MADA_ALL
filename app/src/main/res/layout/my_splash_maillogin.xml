@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="295dp"
+        android:layout_height="187dp"
+        app:srcCompat="@drawable/my_mada_character"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="83dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="299dp"
+        android:layout_height="124dp"
+        android:text="@string/splash_maillogin"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="303dp" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="297dp"
+        android:layout_height="56dp"
+        android:background="@drawable/my_button_round_grey4"
+        android:ems="10"
+        android:hint="전화번호"
+        android:inputType="text"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey1"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="439dp" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="496dp">
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="294dp"
+            android:layout_height="57dp"
+            android:layout_gravity="center"
+            android:background="@drawable/my_button_round_grey4"
+            android:ems="10"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp"
+            android:textColorHint="@color/grey1"
+            tools:layout_editor_absoluteX="62dp"
+            tools:layout_editor_absoluteY="509dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="301dp"
+        android:layout_height="59dp"
+        android:text="로그인"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/my_button_sub4"
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="603dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="263dp"
+        android:layout_height="23dp"
+        android:gravity="center"
+        android:text="비밀번호를 잊으셨나요?"
+        android:textColor="@color/grey1"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="665dp"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>
