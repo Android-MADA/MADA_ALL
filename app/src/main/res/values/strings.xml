@@ -1,4 +1,5 @@
 <resources>
+    //My
     <string name="app_name">MADA</string>
     <string name="app_explanation">매일마다 작성하는 일정관리 서비스</string>
 
@@ -22,4 +23,8 @@
     <string name="alreadtEr">이미 가입 된 전화번호입니다</string>
     <string name="pwEr">비밀번호가 틀렸습니다</string>
     <string name="numEr">인증번호가 틀렸습니다</string>
+
+    //Home
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="achievement">오늘의 달성도</string>
 </resources>
