@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         app:itemBackground="@android:color/white"
         app:itemIconSize="50dp"
-        app:itemIconTint="@drawable/menu_selector_color"
+        app:itemIconTint="@drawable/etc_menu_selector_color"
         app:itemActiveIndicatorStyle="@null"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"

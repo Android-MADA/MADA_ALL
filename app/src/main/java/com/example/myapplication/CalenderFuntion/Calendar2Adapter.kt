@@ -1,23 +1,14 @@
-package com.example.myapplication.Adpater
+package com.example.myapplication.CalenderFuntion
 
-import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalendarAdd
-import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.R
 import java.time.LocalDate
-import java.time.Month
 import java.util.Calendar
 import java.util.Date
 
@@ -35,11 +26,11 @@ class Calendar2Adapter(private val dayList: ArrayList<Date>, private val preList
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Calendar2Adapter.ItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.calendar2_cell,parent,false)
-        return Calendar2Adapter.ItemViewHolder(view)
+        return ItemViewHolder(view)
     }
-    override fun onBindViewHolder(holder: Calendar2Adapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var monthDate = dayList[holder.adapterPosition]
         var dateCalendar = Calendar.getInstance()
         dateCalendar.time = monthDate
