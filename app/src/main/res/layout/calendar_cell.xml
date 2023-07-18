@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:orientation="vertical"
-    android:padding="8dp">
+    >
 
     <ImageView
         android:id="@+id/calenadar_point"
@@ -19,7 +19,30 @@
         app:layout_constraintRight_toRightOf="@id/textDay"
         app:layout_constraintLeft_toLeftOf="@id/textDay"
         />
-
+    <ImageView
+        android:layout_marginTop="3dp"
+        android:id="@+id/calenadar_line"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/calendar_line_left"
+        app:layout_constraintTop_toBottomOf="@id/calenadar_point"
+        app:layout_constraintRight_toRightOf="@id/textDay"
+        app:layout_constraintLeft_toLeftOf="@id/textDay"
+        />
+    <ImageView
+        android:layout_marginTop="3dp"
+        android:id="@+id/calenadar_line2"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/calendar_point"
+        app:layout_constraintTop_toBottomOf="@id/calenadar_line"
+        app:layout_constraintRight_toRightOf="@id/textDay"
+        app:layout_constraintLeft_toLeftOf="@id/textDay"
+        />
     <TextView
         android:id="@+id/textDay"
         android:gravity="center"

@@ -6,11 +6,6 @@
         android:enabled="true"
         android:title="" />
     <item
-        android:id="@+id/daily"
-        android:icon="@drawable/etc_daily"
-        android:enabled="true"
-        android:title="" />
-    <item
         android:id="@+id/calendar"
         android:icon="@drawable/calendar"
         android:enabled="true"
