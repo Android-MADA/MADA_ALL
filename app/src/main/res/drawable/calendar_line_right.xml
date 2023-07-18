@@ -3,8 +3,9 @@
     <item android:state_focused="false" android:state_pressed="false">
         <shape>
             <solid android:color="#89A9D9"/>
-                android:width="1dp"/>
-            <corners android:radius="10dp" />
+            android:width="1dp"/>
+            <corners android:topLeftRadius="0dp" android:topRightRadius="500dp"
+                android:bottomLeftRadius="0dp" android:bottomRightRadius="500dp" />
         </shape>
     </item>
 

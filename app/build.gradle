@@ -55,10 +55,13 @@ dependencies {
 
     //Time Picker
     implementation project(path: ':Ticker')
+    //BottomSheet
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
 
     //viewPager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     //indicator
     implementation 'me.relex:circleindicator:2.1.6'
+
 
 }

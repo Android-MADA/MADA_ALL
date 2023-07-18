@@ -17,6 +17,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        android:background="#F0F0F0" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

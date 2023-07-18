@@ -3,6 +3,7 @@ package com.example.myapplication.CalenderFuntion
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.util.Calendar
@@ -23,6 +25,11 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     var d = LocalDate.now().dayOfMonth
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
+    //임시 데이터
+    val tmpDATA = listOf(
+        MADA("기말 강의 평가 기간", "7월 2일", "7월 6일", "#2AA1B7"),
+        MADA("데이터 분석 기초 기말고사", "7월 4일", "7월 4일", "#F8D141")
+    )
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
         val point : ImageView = itemView.findViewById(R.id.calenadar_point)
@@ -30,6 +37,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.calendar_cell,parent,false)
+
         return ItemViewHolder(view)
     }
     //데이터 설정
@@ -70,11 +78,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
 
 
             //임시 데이터
-            val MADAList = listOf(
-                MADA("기말 강의 평가 기간", "7월 2일", "7월 6일", "#FF0000"),
-                MADA("데이터 분석 기초 기말고사", "7월 4일", "7월 4일", "#FF0000")
-            )
-            val adapter = CalendarScheduleAdapter(iDay,position,MADAList)
+
+            val adapter = CalendarScheduleAdapter(iDay,position,tmpDATA)
             var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
             mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
             mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
