@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -63,105 +64,80 @@ class TimeAddFragment : Fragment() {
         // 데이터 클래스 작성해서 옮기기
         var selectedColor = resources.getColor(R.color.sub2)
 
-        //리팩토링 -> 인터페이스 작성하기
-        binding.ivHomeTimeColor1.setOnClickListener {
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub5))
-            selectedColor = resources.getColor(R.color.sub5)
+        fun homeColorClick(color : Int){
+            ivColor.imageTintList = ColorStateList.valueOf(color)
+            selectedColor = color
             Log.d("color", selectedColor.toString())
             colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor1.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub5))
         }
 
         binding.ivHomeTimeColor2.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.main))
-            selectedColor = resources.getColor(R.color.main)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.main))
         }
 
         binding.ivHomeTimeColor3.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub4))
-            selectedColor = resources.getColor(R.color.sub4)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.sub4))
         }
 
         binding.ivHomeTimeColor4.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub6))
-            selectedColor = resources.getColor(R.color.sub6)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.sub6))
         }
 
         binding.ivHomeTimeColor5.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#FDA4B4"))
-            selectedColor = Color.parseColor("#FDA4B4")
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(Color.parseColor("#FDA4B4"))
         }
 
         binding.ivHomeTimeColor6.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub3))
-            selectedColor = resources.getColor(R.color.sub3)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.sub3))
         }
 
         binding.ivHomeTimeColor7.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#D4ECF1"))
-            selectedColor = Color.parseColor("#D4ECF1")
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(Color.parseColor("#D4ECF1"))
         }
 
         binding.ivHomeTimeColor8.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#7FC7D4"))
-            selectedColor = Color.parseColor("#7FC7D4")
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(Color.parseColor("#7FC7D4"))
         }
 
         binding.ivHomeTimeColor9.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.point_main))
-            selectedColor = resources.getColor(R.color.point_main)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.point_main))
         }
 
         binding.ivHomeTimeColor10.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#FDF3CF"))
-            selectedColor = Color.parseColor("#FDF3CF")
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(Color.parseColor("#FDF3CF"))
         }
 
         binding.ivHomeTimeColor11.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub1))
-            selectedColor = resources.getColor(R.color.sub1)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.sub1))
         }
 
         binding.ivHomeTimeColor12.setOnClickListener {
-
-            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub2))
-            selectedColor = resources.getColor(R.color.sub2)
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
+            homeColorClick(resources.getColor(R.color.sub2))
         }
 
 
 
-        //날짜 선택 창
+        //시간 선택
+        fun timeClick(hour : Int, minute : Int, view : TextView){
+            val AM_PM_start : String
+            AM_PM_start = if (hour < 12) {
+                "오전"
+            } else {
+                "오후"
+            }
+
+            val hourStart = if (hour <= 12) {
+                hour
+            } else {
+                hour - 12
+            }
+            view.text = "${AM_PM_start} ${hourStart}:${minute}"
+        }
+
         timeStart.setOnClickListener {
             if(timepickerStart.isVisible){
                 timepickerStart.isGone = true
@@ -183,38 +159,11 @@ class TimeAddFragment : Fragment() {
         }
 
         timepickerStart.setOnTimeChangedListener { view, hourOfDay, minute ->
-            val AM_PM_start : String
-            AM_PM_start = if (hourOfDay < 12) {
-                "오전"
-            } else {
-                "오후"
-            }
-
-            val hourStart = if (hourOfDay <= 12) {
-                hourOfDay
-            } else {
-                hourOfDay - 12
-            }
-
-            timeStart.text = "${AM_PM_start} ${hourStart}:${minute}"
+            timeClick(hourOfDay, minute, timeStart)
         }
 
         timepickerEnd.setOnTimeChangedListener { view, hourOfDay, minute ->
-            val AM_PM_end : String
-            AM_PM_end = if (hourOfDay < 12) {
-                "오전"
-            } else {
-                "오후"
-            }
-
-            val hourEnd = if (hourOfDay <= 12) {
-                hourOfDay
-            } else {
-                hourOfDay - 12
-            }
-
-
-            timeEnd.text = "${AM_PM_end} ${hourEnd}:${minute}"
+            timeClick(hourOfDay, minute, timeEnd)
         }
 
         //등록 btn
