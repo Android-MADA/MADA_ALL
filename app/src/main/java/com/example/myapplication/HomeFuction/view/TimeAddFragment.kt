@@ -1,6 +1,9 @@
 package com.example.myapplication.HomeFuction.view
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +60,108 @@ class TimeAddFragment : Fragment() {
             }
         }
 
+        // 데이터 클래스 작성해서 옮기기
+        var selectedColor = resources.getColor(R.color.sub2)
+
+        //리팩토링 -> 인터페이스 작성하기
+        binding.ivHomeTimeColor1.setOnClickListener {
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub5))
+            selectedColor = resources.getColor(R.color.sub5)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor2.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.main))
+            selectedColor = resources.getColor(R.color.main)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor3.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub4))
+            selectedColor = resources.getColor(R.color.sub4)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor4.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub6))
+            selectedColor = resources.getColor(R.color.sub6)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor5.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#FDA4B4"))
+            selectedColor = Color.parseColor("#FDA4B4")
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor6.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub3))
+            selectedColor = resources.getColor(R.color.sub3)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor7.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#D4ECF1"))
+            selectedColor = Color.parseColor("#D4ECF1")
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor8.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#7FC7D4"))
+            selectedColor = Color.parseColor("#7FC7D4")
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor9.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.point_main))
+            selectedColor = resources.getColor(R.color.point_main)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor10.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(Color.parseColor("#FDF3CF"))
+            selectedColor = Color.parseColor("#FDF3CF")
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor11.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub1))
+            selectedColor = resources.getColor(R.color.sub1)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor12.setOnClickListener {
+
+            ivColor.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.sub2))
+            selectedColor = resources.getColor(R.color.sub2)
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+
+
+        //날짜 선택 창
         timeStart.setOnClickListener {
             if(timepickerStart.isVisible){
                 timepickerStart.isGone = true
@@ -77,8 +182,6 @@ class TimeAddFragment : Fragment() {
             }
         }
 
-
-        //날짜 선택 창
         timepickerStart.setOnTimeChangedListener { view, hourOfDay, minute ->
             val AM_PM_start : String
             AM_PM_start = if (hourOfDay < 12) {
@@ -122,10 +225,7 @@ class TimeAddFragment : Fragment() {
             //2. 시간표 화면으로 이동
         }
 
-
         return binding.root
     }
-
-
 
 }
