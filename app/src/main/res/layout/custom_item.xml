@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            android:id="@+id/myPagetabLayout"
+            android:id="@+id/CustomPagetabLayout"
             />
+
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="10dp"
@@ -26,6 +28,9 @@
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/myPageviewPager"/>
+            android:id="@+id/CustomBottomSheetViewPager"/>
     </LinearLayout>
 </LinearLayout>
+
+
+

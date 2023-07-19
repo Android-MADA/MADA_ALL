@@ -18,6 +18,7 @@ import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -53,6 +54,8 @@ class FragCalendar : Fragment(), OnItemListener {
             calendar.add(Calendar.MONTH, 1)
             setMonthView()
         }
+
+        /*
         val bottomSheetLayout: ConstraintLayout = binding.bottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
         bottomSheetBehavior.apply {
@@ -60,7 +63,7 @@ class FragCalendar : Fragment(), OnItemListener {
             skipCollapsed = true
 
             state = BottomSheetBehavior.STATE_COLLAPSED
-        }
+        }*/
 
         return binding.root
     }
