@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,6 +32,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/btn_home_time_add_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -262,15 +264,17 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_home_time_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:text="오전 10:00"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@id/iv_home_schedule_time"
                     app:layout_constraintTop_toTopOf="parent"
-                    />
+                    android:layout_marginStart="10dp"/>
+
                 <TextView
                     android:id="@+id/tv_home_time_tilde"
                     android:layout_width="wrap_content"
@@ -358,6 +362,21 @@
                 android:background="#F0F0F0" />
 
         </LinearLayout>
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/btn_home_time_edit_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="삭제하기"
+            android:textSize="16sp"
+            android:backgroundTint="#F0768C"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="33dp"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
