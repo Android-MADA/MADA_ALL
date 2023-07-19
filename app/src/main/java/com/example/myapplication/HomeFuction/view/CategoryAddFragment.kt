@@ -1,15 +1,19 @@
 package com.example.myapplication.HomeFuction.view
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.ViewGroupUtils
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.HomeFuction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFuction.category.HomeCateIconAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
@@ -17,6 +21,7 @@ import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 class CategoryAddFragment : Fragment() {
 
     val cateIconArray = ArrayList<Drawable>()
+    val cateColorArray = ArrayList<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +35,18 @@ class CategoryAddFragment : Fragment() {
 
         val binding : HomeFragmentCategoryAddBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         val ivIcon = binding.ivHomeCateIcon
+        val ivColor = binding.ivHomeCateColor
         val iconAdapter = HomeCateIconAdapter(cateIconArray)
+        val colorAdapter = HomeCateColorAdapter(cateColorArray)
 
         initArrayList()
+        initColorArray()
 
         val rvIcon = binding.rvHomeCateIcon
-        var listManager = GridLayoutManager(this.activity, 6)
+        val rvColor = binding.rvHomeCateColor
+
+        var iconListManager = GridLayoutManager(this.activity, 6)
+        var colorListManager = GridLayoutManager(this.activity, 6)
         iconAdapter.setItemClickListener(object: HomeCateIconAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 ivIcon.setImageDrawable(cateIconArray[position])
@@ -43,11 +54,23 @@ class CategoryAddFragment : Fragment() {
             }
         })
 
-        var recyclerList = rvIcon.apply {
+        colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                ivColor.imageTintList = ColorStateList.valueOf(cateColorArray[position])
+                rvColor.isGone = true
+            }
+        })
+
+        var iconRecyclerList = rvIcon.apply {
             setHasFixedSize(true)
-            layoutManager = listManager
+            layoutManager = iconListManager
             adapter = iconAdapter
 
+        }
+        var colorRecyclerList = rvColor.apply{
+            setHasFixedSize(true)
+            layoutManager = colorListManager
+            adapter = colorAdapter
         }
 
         ivIcon.setOnClickListener {
@@ -59,8 +82,15 @@ class CategoryAddFragment : Fragment() {
             }
         }
 
+        ivColor.setOnClickListener{
+            if(rvColor.isVisible){
+                rvColor.isGone = true
+            }
+            else {
+                rvColor.isVisible = true
+            }
+        }
 
-        //binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
         return binding.root
     }
 
@@ -84,6 +114,24 @@ class CategoryAddFragment : Fragment() {
             cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_work))
             cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_mic))
             cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_sony))
+        }
+    }
+
+    private fun initColorArray(){
+        with(cateColorArray){
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
+            cateColorArray.add(Color.parseColor("#FDA4B4"))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
+            cateColorArray.add(Color.parseColor("#D4ECF1"))
+            cateColorArray.add(Color.parseColor("#7FC7D4"))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
+            cateColorArray.add(Color.parseColor("#FDF3CF"))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
+
         }
     }
 

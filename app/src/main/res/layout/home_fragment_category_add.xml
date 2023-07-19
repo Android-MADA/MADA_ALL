@@ -102,12 +102,21 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
                 <ImageButton
+                    android:id="@+id/iv_home_cate_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/home_baseline_circle_24"
                     android:background="#ffffff"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="gone"
+                    android:id="@+id/rv_home_cate_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/iv_home_cate_color"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
