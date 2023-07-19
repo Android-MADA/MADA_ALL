@@ -1,15 +1,16 @@
 package com.example.myapplication.Fragment
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,12 +18,11 @@ import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
+import com.example.myapplication.R
 
 
 class FragCalendar : Fragment(), OnItemListener {
@@ -54,16 +54,34 @@ class FragCalendar : Fragment(), OnItemListener {
             calendar.add(Calendar.MONTH, 1)
             setMonthView()
         }
+        binding.dday1.setOnClickListener {
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+        }
+        binding.dday2.setOnClickListener {
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+        }
+        binding.dday3.setOnClickListener {
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+        }
 
-        /*
-        val bottomSheetLayout: ConstraintLayout = binding.bottomSheet
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-        bottomSheetBehavior.apply {
-            peekHeight = 540
-            skipCollapsed = true
-
-            state = BottomSheetBehavior.STATE_COLLAPSED
-        }*/
 
         return binding.root
     }
