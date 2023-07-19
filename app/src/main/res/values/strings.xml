@@ -27,4 +27,10 @@
     //Home
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="achievement">오늘의 달성도</string>
+
+    //Custom
+    <string name="color_name">색깔</string>
+    <string name="cloth_name">의상</string>
+    <string name="item_name">소품</string>
+    <string name="background_name">배경</string>
 </resources>
