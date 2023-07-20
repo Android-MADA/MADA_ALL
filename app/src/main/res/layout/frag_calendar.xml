@@ -26,12 +26,12 @@
 
             <ImageButton
                 android:id="@+id/preBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="#E1E9F5"
-
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/calendar_arrow_left" />
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="2023년"
                     android:textAlignment="center"
-                    android:textSize="15dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textMonth"
@@ -55,17 +55,18 @@
                     android:text="6월"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="25dp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/nextBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="#E1E9F5"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/calendar_arrow_right" />
         </LinearLayout>
 
@@ -73,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal">
 
             <TextView
@@ -84,8 +85,7 @@
                 android:text="S"
                 android:textAlignment="center"
                 android:textColor="#D92437"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textMon"
@@ -95,8 +95,7 @@
                 android:text="M"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textTue"
@@ -106,8 +105,7 @@
                 android:text="T"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textWed"
@@ -117,8 +115,7 @@
                 android:text="W"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textThu"
@@ -128,8 +125,7 @@
                 android:text="T"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textFri"
@@ -139,8 +135,7 @@
                 android:text="F"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textSat"
@@ -150,8 +145,7 @@
                 android:text="S"
                 android:textAlignment="center"
                 android:textColor="#0041A3"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <View
@@ -186,8 +180,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:text="My D-Day"
-            android:textColor="#0041A3"
-            android:textSize="22dp"
+            android:textColor="@color/black"
+            android:textSize="20dp"
             android:textStyle="bold" />
         <View
             android:id="@+id/line1"
@@ -236,9 +230,9 @@
             app:layout_constraintLeft_toLeftOf="@id/dday1"
             app:layout_constraintBottom_toBottomOf="@id/dday1"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text="D-60"/>
         <TextView
             android:id="@+id/dday2_text"
@@ -247,9 +241,9 @@
             app:layout_constraintLeft_toLeftOf="@id/dday2"
             app:layout_constraintBottom_toBottomOf="@id/dday2"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text=""/>
         <TextView
             android:id="@+id/dday3_text"
@@ -258,22 +252,23 @@
             app:layout_constraintLeft_toLeftOf="@id/dday3"
             app:layout_constraintBottom_toBottomOf="@id/dday3"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text=""/>
         <TextView
             android:id="@+id/dday1_text_info"
-            android:layout_width="124dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintLeft_toLeftOf="@id/dday1"
             app:layout_constraintBottom_toBottomOf="@id/dday1"
-            android:layout_marginLeft="75dp"
-            android:layout_marginBottom="18dp"
-            android:textSize="18sp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
             android:text="UMC 데모데이sdgdsgsd"
+            android:textColor="@color/black"
             />
         <TextView
             android:id="@+id/dday2_text_info"
@@ -283,9 +278,10 @@
             android:ellipsize="end"
             app:layout_constraintLeft_toLeftOf="@id/dday2"
             app:layout_constraintBottom_toBottomOf="@id/dday2"
-            android:layout_marginLeft="75dp"
-            android:layout_marginBottom="18dp"
-            android:textSize="18sp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
             android:text=""
             />
         <TextView
@@ -296,9 +292,10 @@
             android:ellipsize="end"
             app:layout_constraintLeft_toLeftOf="@id/dday3"
             app:layout_constraintBottom_toBottomOf="@id/dday3"
-            android:layout_marginLeft="75dp"
-            android:layout_marginBottom="18dp"
-            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="85dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
             android:text=""
             />
         <ImageView

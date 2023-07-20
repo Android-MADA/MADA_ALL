@@ -1,14 +1,22 @@
 package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Display
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -48,8 +56,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
         var iYear = dateCalendar.get(Calendar.YEAR)
         var iMonth = dateCalendar.get(Calendar.MONTH) + 1
         var iDay = dateCalendar.get(Calendar.DAY_OF_MONTH)
+        val colorMain = ContextCompat.getColor(holder.itemView.context, R.color.main)
         if(CalendarUtil.selectedDate.monthValue != iMonth) {
-            holder.textDay.setTextColor(Color.LTGRAY)
+            holder.textDay.setTextColor(colorMain)
         }
         if(iYear == y && iMonth == m && iDay == d) {
             holder.itemView.setBackgroundResource(R.drawable.etc_calender_today)
@@ -62,7 +71,16 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
             var mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_popup,null)
             var mBuilder = AlertDialog.Builder(holder.itemView.context)
                 .setView(mDialogView)
+                .create()
+
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
             val alertDialog = mBuilder.show()
+            val display = (holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+            mBuilder?.window?.setLayout(display.width*9/10, 2000)
+            mBuilder?.window?.setGravity(Gravity.CENTER)
+
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
@@ -71,7 +89,6 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
                 intent.putExtra("Day",iDay)
                 intent.putExtra("Yoil",position%7)
                 holder.itemView.context.startActivity(intent)
-                alertDialog.dismiss()
             })
 
 
@@ -88,4 +105,5 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     override fun getItemCount(): Int {
         return dayList.size
     }
+
 }
