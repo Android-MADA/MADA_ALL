@@ -113,9 +113,9 @@
                     android:layout_height="wrap_content"
                     android:background="#ffffff"
                     android:src="@drawable/home_baseline_circle_24"
-                    android:tint="@color/sub2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/sub2" />
 
                 <LinearLayout
                     android:id="@+id/layout_color_selector"
@@ -127,118 +127,118 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
-                    <RadioGroup
-                        android:id="@+id/color_group1"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="15dp"
+                        >
+                        <ImageView
+                            android:id="@+id/iv_home_time_color1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_ic_color_selctor"
-                            android:backgroundTint="@color/sub5"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            app:tint="@color/sub5"
+                            android:layout_marginEnd="10dp"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/main"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            app:tint="@color/main"
+                            android:layout_marginHorizontal="10dp"/>
+                        <ImageView
+                            android:id="@+id/iv_home_time_color3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/sub4"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="@color/sub4"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/sub6"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="@color/sub6"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="#FDA4B4"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="#FDA4B4"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/sub3"
-                            android:button="@null" />
-                    </RadioGroup>
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginStart="10dp"
+                            app:tint="@color/sub3"
+                            />
+                    </LinearLayout>
 
-                    <RadioGroup
-                        android:id="@+id/color_group2"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <ImageView
+                            android:id="@+id/iv_home_time_color7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="#D4ECF1"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginEnd="10dp"
+                            app:tint="#D4ECF1"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="#7FC7D4"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="#7FC7D4"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/point_main"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="@color/point_main"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color10"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="#FDF3CF"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="#FDF3CF"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/sub1"
-                            android:button="@null" />
-
-                        <RadioButton
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginHorizontal="10dp"
+                            app:tint="@color/sub1"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_home_time_color12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/home_baseline_circle_24"
-                            android:backgroundTint="@color/sub2"
-                            android:button="@null" />
-                    </RadioGroup>
+                            android:src="@drawable/ic_home_color_selector_28"
+                            android:layout_marginStart="10dp"
+                            app:tint="@color/sub2"
+                            />
+                    </LinearLayout>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -326,7 +326,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp">
 
                 <ImageView
                     android:id="@+id/iv_home_schedule_memo"
