@@ -1,9 +1,13 @@
 package com.example.myapplication.HomeFuction.view
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -57,6 +61,83 @@ class TimeAddFragment : Fragment() {
             }
         }
 
+        // 데이터 클래스 작성해서 옮기기
+        var selectedColor = resources.getColor(R.color.sub2)
+
+        fun homeColorClick(color : Int){
+            ivColor.imageTintList = ColorStateList.valueOf(color)
+            selectedColor = color
+            Log.d("color", selectedColor.toString())
+            colorSelector.isGone = true
+        }
+
+        binding.ivHomeTimeColor1.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub5))
+        }
+
+        binding.ivHomeTimeColor2.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.main))
+        }
+
+        binding.ivHomeTimeColor3.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub4))
+        }
+
+        binding.ivHomeTimeColor4.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub6))
+        }
+
+        binding.ivHomeTimeColor5.setOnClickListener {
+            homeColorClick(Color.parseColor("#FDA4B4"))
+        }
+
+        binding.ivHomeTimeColor6.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub3))
+        }
+
+        binding.ivHomeTimeColor7.setOnClickListener {
+            homeColorClick(Color.parseColor("#D4ECF1"))
+        }
+
+        binding.ivHomeTimeColor8.setOnClickListener {
+            homeColorClick(Color.parseColor("#7FC7D4"))
+        }
+
+        binding.ivHomeTimeColor9.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.point_main))
+        }
+
+        binding.ivHomeTimeColor10.setOnClickListener {
+            homeColorClick(Color.parseColor("#FDF3CF"))
+        }
+
+        binding.ivHomeTimeColor11.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub1))
+        }
+
+        binding.ivHomeTimeColor12.setOnClickListener {
+            homeColorClick(resources.getColor(R.color.sub2))
+        }
+
+
+
+        //시간 선택
+        fun timeClick(hour : Int, minute : Int, view : TextView){
+            val AM_PM_start : String
+            AM_PM_start = if (hour < 12) {
+                "오전"
+            } else {
+                "오후"
+            }
+
+            val hourStart = if (hour <= 12) {
+                hour
+            } else {
+                hour - 12
+            }
+            view.text = "${AM_PM_start} ${hourStart}:${minute}"
+        }
+
         timeStart.setOnClickListener {
             if(timepickerStart.isVisible){
                 timepickerStart.isGone = true
@@ -77,41 +158,12 @@ class TimeAddFragment : Fragment() {
             }
         }
 
-
-        //날짜 선택 창
         timepickerStart.setOnTimeChangedListener { view, hourOfDay, minute ->
-            val AM_PM_start : String
-            AM_PM_start = if (hourOfDay < 12) {
-                "오전"
-            } else {
-                "오후"
-            }
-
-            val hourStart = if (hourOfDay <= 12) {
-                hourOfDay
-            } else {
-                hourOfDay - 12
-            }
-
-            timeStart.text = "${AM_PM_start} ${hourStart}:${minute}"
+            timeClick(hourOfDay, minute, timeStart)
         }
 
         timepickerEnd.setOnTimeChangedListener { view, hourOfDay, minute ->
-            val AM_PM_end : String
-            AM_PM_end = if (hourOfDay < 12) {
-                "오전"
-            } else {
-                "오후"
-            }
-
-            val hourEnd = if (hourOfDay <= 12) {
-                hourOfDay
-            } else {
-                hourOfDay - 12
-            }
-
-
-            timeEnd.text = "${AM_PM_end} ${hourEnd}:${minute}"
+            timeClick(hourOfDay, minute, timeEnd)
         }
 
         //등록 btn
@@ -122,10 +174,7 @@ class TimeAddFragment : Fragment() {
             //2. 시간표 화면으로 이동
         }
 
-
         return binding.root
     }
-
-
 
 }
