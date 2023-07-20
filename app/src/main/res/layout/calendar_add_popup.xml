@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/calendar_dday_popup_size"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_margin="30dp"
+        android:textColor="@color/black"
+        android:text="저장하지 않고 나가시겠습니가?" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tmp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageButton
+            app:layout_constraintTop_toTopOf="@id/tmp"
+            app:layout_constraintLeft_toLeftOf="@id/tmp"
+            android:id="@+id/nobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            app:tint="@color/grey3"
+            android:src="@drawable/calendar_button_size"
+            android:background="@android:color/transparent"/>
+
+        <ImageButton
+            app:layout_constraintTop_toTopOf="@id/tmp"
+            app:layout_constraintRight_toRightOf="@id/tmp"
+            android:id="@+id/yesbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예"
+            android:layout_marginRight="50dp"
+            app:tint="@color/sub4"
+            android:src="@drawable/calendar_button_size"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/tmp"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아니오"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/nobutton"
+            app:layout_constraintStart_toStartOf="@id/nobutton" />
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/tmp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/yesbutton"
+            app:layout_constraintEnd_toEndOf="@id/yesbutton"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="예"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="" />
+
+</LinearLayout>
