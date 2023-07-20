@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:id="@+id/layout_home_cate_list"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_cate_background"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="20dp"
+    android:layout_marginVertical="8dp"
+    >
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_home_add_category"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="카테고리"-->
-<!--        android:textSize="16sp"-->
-<!--        android:drawableLeft="@drawable/baseline_access_time_24"-->
-<!--        android:layout_margin="8dp"-->
-<!--        />-->
-    <LinearLayout
-        android:id="@+id/linearLayout_home_add_category"
+    <ImageView
+        android:id="@+id/iv_home_add_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#00BCD4"
-        >
-        <ImageView
-            android:id="@+id/iv_home_add_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/home_baseline_access_time_24"
-            />
-        <TextView
-            android:id="@+id/tv_home_add_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카테고리명"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            />
-    </LinearLayout>
-
+        android:layout_marginEnd="5dp"
+        />
+    <TextView
+        android:id="@+id/tv_home_add_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카테고리명"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        />
 
 </LinearLayout>

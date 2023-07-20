@@ -17,6 +17,7 @@ class HomeCategoryFragment : Fragment() {
 
     lateinit var binding : HomeFragmentHomeCategoryBinding
     val sampleCategoryArray = ArrayList<sampleCategoryData>()
+    val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,19 +33,34 @@ class HomeCategoryFragment : Fragment() {
 
         initArrayList()
 
+        //onclick listener
+        categoryAdapter.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                //페이지 이동 + 데이터 전달
+            }
+        })
+        binding.btnHomeCategory.setOnClickListener {
+            //페이지 이동
+        }
+        binding.ivHomeCategoryBack.setOnClickListener {
+            //페이지 이동
+        }
+
+        //rv 어댑터 연결
         val homeCategoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
         binding.rvHomeCategory.adapter = homeCategoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+
         return binding.root
     }
 
     private fun initArrayList(){
         with(sampleCategoryArray){
-            sampleCategoryArray.add(sampleCategoryData(223344, "공부", Color.parseColor("#405059")))
-            sampleCategoryArray.add(sampleCategoryData(223344, "약속", Color.parseColor("#F0768C")))
-            sampleCategoryArray.add(sampleCategoryData(223344, "잠", Color.parseColor("2AA1B7")))
-            sampleCategoryArray.add(sampleCategoryData(223344, "친구만나기", Color.parseColor("#F8D141")))
-            sampleCategoryArray.add(sampleCategoryData(223344, "휴대폰", Color.parseColor("#486DA3")))
+            sampleCategoryArray.add(sampleCategoryData( R.drawable.ic_home_cate_study, "공부", resources.getColor(R.color.sub5)))
+            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_plan, "약속", Color.parseColor("#F0768C")))
+            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "잠", resources.getColor(R.color.point_main)))
+            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "친구만나기", Color.parseColor("#F8D141")))
+            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "휴대폰", Color.parseColor("#486DA3")))
         }
     }
 
