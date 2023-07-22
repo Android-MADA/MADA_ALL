@@ -12,6 +12,7 @@ import androidx.coordinatorlayout.widget.ViewGroupUtils
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFuction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFuction.category.HomeCateIconAdapter
@@ -25,7 +26,8 @@ class CategoryAddFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initArrayList()
+        initColorArray()
     }
 
     override fun onCreateView(
@@ -36,23 +38,32 @@ class CategoryAddFragment : Fragment() {
         val binding : HomeFragmentCategoryAddBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         val ivIcon = binding.ivHomeCateIcon
         val ivColor = binding.ivHomeCateColor
+        val ivBack = binding.ivHomeCateAddBack
         val iconAdapter = HomeCateIconAdapter(cateIconArray)
         val colorAdapter = HomeCateColorAdapter(cateColorArray)
-
-        initArrayList()
-        initColorArray()
+        val btnSave = binding.btnHomeCateAddSave
 
         val rvIcon = binding.rvHomeCateIcon
         val rvColor = binding.rvHomeCateColor
 
         var iconListManager = GridLayoutManager(this.activity, 6)
         var colorListManager = GridLayoutManager(this.activity, 6)
+
+        //clicklistener
         iconAdapter.setItemClickListener(object: HomeCateIconAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 ivIcon.setImageDrawable(cateIconArray[position])
                 rvIcon.isGone = true
             }
         })
+
+        ivBack.setOnClickListener {
+            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
+        }
+
+        btnSave.setOnClickListener {
+            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
+        }
 
         colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {

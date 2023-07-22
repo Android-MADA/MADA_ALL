@@ -2,41 +2,47 @@ package com.example.myapplication.HomeFuction.view
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.HomeFuction.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFuction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFuction.time.SampleTimeData
 import com.example.myapplication.R
-import com.example.myapplication.databinding.HomeFragmentHomeTimeEditBinding
+import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 
 
-class HomeTimeEditFragment : Fragment() {
+class HomeTimetableFragment : Fragment() {
 
-    lateinit var binding : HomeFragmentHomeTimeEditBinding
+    lateinit var binding : HomeFragmentTimetableBinding
     val sampleTimeArray = ArrayList<SampleTimeData>()
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initArrayList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_home_time_edit, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
+
+        val btnBack = binding.ivHomeTimetableBack
+        val btnSave = binding.tvHomeTimetableSave
+        val btnAdd = binding.fabHomeTime
 
         //rv adpter 연결
-        initArrayList()
-
-        timeAdapter.setItemClickListener(object :HomeTimeAdapter.OnItemClickListener{
+        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                //페이지 이동
+                //페이지 이동 + 데이터 전달
+                findNavController().navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
             }
         })
 
@@ -44,6 +50,18 @@ class HomeTimeEditFragment : Fragment() {
         binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(this.activity)
 
         //setonclickevent
+
+        btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        }
+
+        btnSave.setOnClickListener {
+            findNavController().navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        }
+
+        btnAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+        }
 
         // pie chart
 

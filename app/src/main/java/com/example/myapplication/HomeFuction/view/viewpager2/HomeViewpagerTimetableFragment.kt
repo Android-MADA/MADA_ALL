@@ -35,7 +35,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.home_fragment_home_viewpager_timetable, container, false)
+        return inflater.inflate(R.layout.home_fragment_viewpager_timetable, container, false)
     }
 
     companion object {
