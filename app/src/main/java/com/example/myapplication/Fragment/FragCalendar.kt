@@ -1,6 +1,7 @@
 package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -11,10 +12,13 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
+import com.example.myapplication.CalenderFuntion.CalendarAdd
+import com.example.myapplication.CalenderFuntion.CalendarAddDday
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
@@ -62,6 +66,11 @@ class FragCalendar : Fragment(), OnItemListener {
             mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
             mBuilder.show()
+            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                val intent = Intent(requireContext(), CalendarAddDday::class.java)
+                requireContext().startActivity(intent)
+            })
+
         }
         binding.dday2.setOnClickListener {
             val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
