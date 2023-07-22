@@ -7,21 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.HomeFuction.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFuction.category.sampleCategoryData
-import com.example.myapplication.databinding.HomeFragmentHomeCategoryBinding
+import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 
 class HomeCategoryFragment : Fragment() {
 
-    lateinit var binding : HomeFragmentHomeCategoryBinding
+    lateinit var binding : HomeFragmentCategoryBinding
     val sampleCategoryArray = ArrayList<sampleCategoryData>()
     val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initArrayList()
 
     }
 
@@ -29,26 +30,28 @@ class HomeCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_home_category, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
 
-        initArrayList()
+
 
         //onclick listener
         categoryAdapter.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 //페이지 이동 + 데이터 전달
+                findNavController().navigate(R.id.action_homeCategoryFragment2_to_categoryAddFragment)
             }
         })
+
         binding.btnHomeCategory.setOnClickListener {
-            //페이지 이동
+            findNavController().navigate(R.id.action_homeCategoryFragment2_to_categoryAddFragment)
         }
+
         binding.ivHomeCategoryBack.setOnClickListener {
-            //페이지 이동
+            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
         }
 
         //rv 어댑터 연결
-        val homeCategoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
-        binding.rvHomeCategory.adapter = homeCategoryAdapter
+        binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
 
         return binding.root
