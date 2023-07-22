@@ -7,9 +7,11 @@
     android:padding="20dp"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <ImageButton
+        android:id="@+id/blank"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/calendar_dday_blank_plus" />
 </LinearLayout>
