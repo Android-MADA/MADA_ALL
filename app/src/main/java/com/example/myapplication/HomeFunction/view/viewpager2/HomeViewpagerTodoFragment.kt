@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view.viewpager2
+package com.example.myapplication.HomeFunction.view.viewpager2
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,4 +23,10 @@ class HomeViewpagerTodoFragment : Fragment() {
         return inflater.inflate(R.layout.home_fragment_viewpager_todo, container, false)
     }
 
+    companion object {
+
+        @JvmStatic
+        fun newInstance() =
+            HomeViewpagerTodoFragment()
+    }
 }

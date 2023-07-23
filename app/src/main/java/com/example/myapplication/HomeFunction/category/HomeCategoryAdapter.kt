@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.category
+package com.example.myapplication.HomeFunction.category
 
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater

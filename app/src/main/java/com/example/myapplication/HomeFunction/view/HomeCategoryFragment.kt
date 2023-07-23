@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.HomeFuction.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFuction.category.sampleCategoryData
+import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
+import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 
 class HomeCategoryFragment : Fragment() {
