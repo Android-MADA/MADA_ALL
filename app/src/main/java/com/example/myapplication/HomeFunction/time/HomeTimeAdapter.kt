@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.time
+package com.example.myapplication.HomeFunction.time
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater

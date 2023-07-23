@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeCategoryFragment2"
-        android:name="com.example.myapplication.HomeFuction.view.HomeCategoryFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
         android:label="home_fragment_category"
         tools:layout="@layout/home_fragment_category" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeRepeatTodoFragment"
-        android:name="com.example.myapplication.HomeFuction.view.HomeRepeatTodoFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
         android:label="home_fragment_repeat_todo"
         tools:layout="@layout/home_fragment_repeat_todo" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeTimetableFragment"
-        android:name="com.example.myapplication.HomeFuction.view.HomeTimetableFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeTimetableFragment"
         android:label="home_fragment_timetable"
         tools:layout="@layout/home_fragment_timetable" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
-        android:name="com.example.myapplication.HomeFuction.view.CategoryAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryAddFragment"
         android:label="home_fragment_category_add"
         tools:layout="@layout/home_fragment_category_add" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/timeAddFragment"
-        android:name="com.example.myapplication.HomeFuction.view.TimeAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.TimeAddFragment"
         android:label="home_fragment_time_add"
         tools:layout="@layout/home_fragment_time_add" >
         <action

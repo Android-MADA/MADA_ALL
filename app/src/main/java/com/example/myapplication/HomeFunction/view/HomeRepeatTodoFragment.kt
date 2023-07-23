@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

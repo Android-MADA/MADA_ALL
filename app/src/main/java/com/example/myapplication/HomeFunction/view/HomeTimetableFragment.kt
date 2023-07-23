@@ -1,8 +1,7 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFuction.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFuction.time.HomeTimeAdapter
-import com.example.myapplication.HomeFuction.time.SampleTimeData
+import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
+import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 

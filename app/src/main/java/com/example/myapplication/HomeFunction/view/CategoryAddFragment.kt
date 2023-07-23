@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,14 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.ViewGroupUtils
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myapplication.HomeFuction.category.HomeCateColorAdapter
-import com.example.myapplication.HomeFuction.category.HomeCateIconAdapter
+import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
+import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 

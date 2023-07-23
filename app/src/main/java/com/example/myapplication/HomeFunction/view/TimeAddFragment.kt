@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.content.res.ColorStateList
 import android.graphics.Color

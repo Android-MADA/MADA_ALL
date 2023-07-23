@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.time
+package com.example.myapplication.HomeFunction.time
 
 data class SampleTimeData(
     val name :String,

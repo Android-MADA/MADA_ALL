@@ -51,12 +51,6 @@ class MainActivity : AppCompatActivity() {
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
-                R.id.daily -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_con, FragDaily())
-                        .commitAllowingStateLoss()
-                    return@setOnItemSelectedListener true
-                }
                 else -> {
                     return@setOnItemSelectedListener true
                 }
