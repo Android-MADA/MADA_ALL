@@ -80,6 +80,10 @@ class FragCalendar : Fragment(), OnItemListener {
             mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
             mBuilder.show()
+            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                val intent = Intent(requireContext(), CalendarAddDday::class.java)
+                requireContext().startActivity(intent)
+            })
         }
         binding.dday3.setOnClickListener {
             val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
@@ -89,6 +93,10 @@ class FragCalendar : Fragment(), OnItemListener {
             mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
             mBuilder.show()
+            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                val intent = Intent(requireContext(), CalendarAddDday::class.java)
+                requireContext().startActivity(intent)
+            })
         }
 
 

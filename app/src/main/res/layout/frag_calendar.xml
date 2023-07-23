@@ -8,7 +8,6 @@
     android:background="#E1E9F5"
     android:gravity="bottom"
     app:umanoDragView="@+id/bottom_sheet"
-    app:umanoPanelHeight="150dp"
     app:umanoFadeColor="@android:color/transparent"
     app:umanoShadowHeight="0dp">
 
