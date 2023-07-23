@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/backButton"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
@@ -22,13 +22,15 @@
             android:background="@android:color/transparent"/>
 
 
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="18dp"
+            android:textSize="16sp"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="     일정" />
 
         <View
@@ -41,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="18dp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:background="@android:color/transparent"
             android:text="등록" />
@@ -58,6 +60,7 @@
             android:orientation="vertical" >
 
             <LinearLayout
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal">
@@ -69,23 +72,93 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
+                    android:textColor="@color/black"
                     android:background="@android:color/transparent"
                     android:ems="12"
                     android:hint="일정 이름"
                     android:inputType="text"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:importantForAutofill="no" />
-                <ImageButton
-                    android:id="@+id/imageButton2"
+                <ImageView
+                    android:id="@+id/calendar_color"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/white"
-                    android:padding="5dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/calendar_point" />
+                    app:tint="@color/main"
+                    android:src="@drawable/calendar_color_select" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_color_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
+                    <ImageButton
+                        android:id="@+id/calendar_color1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/calendar_color_select"
+                        app:tint="@color/sub5"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        />
+                    <ImageButton
+                        android:id="@+id/calendar_color2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/main"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@android:color/transparent"/>
+                    <ImageButton
+                        android:id="@+id/calendar_color3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        android:layout_marginHorizontal="10dp"
+                        app:tint="@color/point_main"
+                        android:background="@android:color/transparent"
+                        />
+                    <ImageButton
+                        android:id="@+id/calendar_color4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        android:layout_marginHorizontal="10dp"
+                        app:tint="@color/sub1"
+                        android:background="@android:color/transparent"
+                        />
+                    <ImageButton
+                        android:id="@+id/calendar_color5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        android:layout_marginHorizontal="10dp"
+                        app:tint="@color/sub6"
+                        android:background="@android:color/transparent"
+                        />
+                    <ImageButton
+                        android:id="@+id/calendar_color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        android:layout_marginStart="10dp"
+                        app:tint="@color/sub3"
+                        android:background="@android:color/transparent"
+                        />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <View
@@ -105,9 +178,10 @@
                     android:id="@+id/textVie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     android:layout_marginLeft="15dp"
                     android:layout_gravity="center"
+                    android:textColor="@color/black"
                     android:text="디데이 설정 여부"/>
 
                 <View
@@ -126,14 +200,14 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textDday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp"
+                android:layout_marginVertical="15dp"
                 android:gravity="center"
-                android:textSize="40dp"
+                android:textSize="32sp"
                 android:textStyle="bold"
-                android:textColor="#2AA1B7"
+                android:textColor="@color/point_main"
                 android:text="D - 7" />
 
             <View
@@ -149,21 +223,24 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    app:srcCompat="@drawable/calendar" />
 
-                <Button
-                    android:id="@+id/preScheldule"
+                    android:id="@+id/imageView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    app:srcCompat="@drawable/calendar_calendar_image" />
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/preScheldule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:background="@android:color/transparent"
-                    android:text="6월 9일 (금)"
-                    android:textSize="18dp"
+                    android:text="  6월 9일 (금)  "
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -171,18 +248,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="18dp"
-                    android:text="~" />
+                    android:textSize="16sp"
+                    android:text="    ~    " />
 
-                <Button
+                <TextView
                     android:id="@+id/nextScheldule"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:background="@android:color/transparent"
-                    android:text="6월 9일 (금)"
-
-                    android:textSize="18dp"
+                    android:text="  6월 9일 (금)  "
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -217,7 +294,7 @@
                         android:text="2023년 6월"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="25dp" />
+                        android:textSize="16sp" />
 
                     <ImageButton
                         android:id="@+id/nextBtn"
@@ -245,7 +322,7 @@
                         android:text="S"
                         android:textAlignment="center"
                         android:textColor="#D92437"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textMon"
@@ -255,7 +332,7 @@
                         android:text="M"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textTue"
@@ -265,7 +342,7 @@
                         android:text="T"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textWed"
@@ -275,7 +352,7 @@
                         android:text="W"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textThu"
@@ -285,7 +362,7 @@
                         android:text="T"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textFri"
@@ -295,7 +372,7 @@
                         android:text="F"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textSat"
@@ -305,13 +382,14 @@
                         android:text="S"
                         android:textAlignment="center"
                         android:textColor="#0041A3"
-                        android:textSize="20sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -329,6 +407,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -358,7 +438,7 @@
                         android:layout_weight="1" />
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/switch2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -366,54 +446,59 @@
 
                         />
                 </LinearLayout>
-
                 <LinearLayout
+                    android:id="@+id/colck"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal">
-                    <View
-                        android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        />
-                    <Button
-                        android:id="@+id/preScheldule2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:text="오전 10:00"
-                        android:textSize="18dp"
+                        android:orientation="horizontal">
 
-                        android:textColor="@color/black" />
+                        <View
+                            android:layout_width="45dp"
+                            android:layout_height="60dp" />
 
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="~" />
+                        <TextView
+                            android:id="@+id/preScheldule2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:text="  오전 10:00  "
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
-                    <Button
-                        android:id="@+id/nextScheldule2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="18dp"
-                        android:background="@android:color/transparent"
-                        android:text="오전 11:00"
-                        android:textColor="@color/black" />
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="    ~    " />
+
+                        <TextView
+                            android:id="@+id/nextScheldule2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:text=" 오전 11:00  "
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
+
+                    </LinearLayout>
+
+                    <com.example.ticker.core.ui.Ticker
+                        android:id="@+id/timePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginHorizontal="70dp"
+                        app:minutesInterval="5"
+                        app:shouldAmSelected="false"></com.example.ticker.core.ui.Ticker>
 
                 </LinearLayout>
-
-                <com.example.ticker.core.ui.Ticker
-                    android:id="@+id/timePicker"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginHorizontal="70dp"
-                    app:shouldAmSelected="false"
-                    app:minutesInterval="5">
-                </com.example.ticker.core.ui.Ticker>
-
 
             </LinearLayout>
             <View
@@ -503,6 +588,7 @@
                 android:layout_marginVertical="15dp"
                 android:layout_marginHorizontal="15dp"/>
             <LinearLayout
+                android:layout_marginBottom="300dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal">
