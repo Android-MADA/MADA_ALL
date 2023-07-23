@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/fragHome">
+    <fragment
+        android:id="@+id/fragHome"
+        android:name="com.example.myapplication.Fragment.FragHome"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_fragHome_to_homeCategoryFragment2"
+            app:destination="@id/homeCategoryFragment2" />
+        <action
+            android:id="@+id/action_fragHome_to_homeTimetableFragment"
+            app:destination="@id/homeTimetableFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
+            app:destination="@id/homeRepeatTodoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeCategoryFragment2"
+        android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
+        android:label="home_fragment_category"
+        tools:layout="@layout/home_fragment_category" >
+        <action
+            android:id="@+id/action_homeCategoryFragment2_to_categoryAddFragment"
+            app:destination="@id/categoryAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeRepeatTodoFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
+        android:label="home_fragment_repeat_todo"
+        tools:layout="@layout/home_fragment_repeat_todo" >
+        <action
+            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeTimetableFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeTimetableFragment"
+        android:label="home_fragment_timetable"
+        tools:layout="@layout/home_fragment_timetable" >
+        <action
+            android:id="@+id/action_homeTimetableFragment_to_timeAddFragment"
+            app:destination="@id/timeAddFragment" />
+        <action
+            android:id="@+id/action_homeTimetableFragment_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryAddFragment"
+        android:label="home_fragment_category_add"
+        tools:layout="@layout/home_fragment_category_add" >
+        <action
+            android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment2"
+            app:destination="@id/homeCategoryFragment2"
+            app:popUpTo="@id/categoryAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.TimeAddFragment"
+        android:label="home_fragment_time_add"
+        tools:layout="@layout/home_fragment_time_add" >
+        <action
+            android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
+            app:destination="@id/homeTimetableFragment" />
+    </fragment>
+</navigation>

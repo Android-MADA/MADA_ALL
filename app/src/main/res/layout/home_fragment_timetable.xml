@@ -4,12 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFunction.view.HomeTimetableFragment"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.HomeTimeEditFragment">
+        >
 
         <Toolbar
             android:id="@+id/toolbar_home_timetable"
@@ -22,6 +23,7 @@
 
             >
             <ImageView
+                android:id="@+id/iv_home_timetable_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/home_baseline_arrow_back_ios_24"/>
@@ -35,6 +37,7 @@
                 />
 
             <TextView
+                android:id="@+id/tv_home_timetable_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="저장"
