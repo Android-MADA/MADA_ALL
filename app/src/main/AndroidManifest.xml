@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CalenderFuntion.CalendarAdd"/>
+        <activity android:name=".CalenderFuntion.CalendarAddDday"/>
     </application>
 
 </manifest>

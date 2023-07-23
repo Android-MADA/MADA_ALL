@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:orientation="vertical"
-    android:padding="8dp">
+    >
 
     <ImageView
         android:id="@+id/calenadar_point"
@@ -19,14 +19,40 @@
         app:layout_constraintRight_toRightOf="@id/textDay"
         app:layout_constraintLeft_toLeftOf="@id/textDay"
         />
-
+    <ImageView
+        android:layout_marginTop="3dp"
+        android:id="@+id/calenadar_line"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/calendar_line_left"
+        app:layout_constraintTop_toBottomOf="@id/calenadar_point"
+        app:layout_constraintRight_toRightOf="@id/textDay"
+        app:layout_constraintLeft_toLeftOf="@id/textDay"
+        />
+    <ImageView
+        android:layout_marginTop="3dp"
+        android:id="@+id/calenadar_line2"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/calenadar_line"
+        app:layout_constraintRight_toRightOf="@id/textDay"
+        app:layout_constraintLeft_toLeftOf="@id/textDay"
+        />
     <TextView
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/textDay"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="9"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textSize="22sp"
+        android:textColor="@color/black"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
