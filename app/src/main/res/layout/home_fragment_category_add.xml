@@ -3,12 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFunction.view.CategoryAddFragment"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.CategoryAddFragment">
+       >
 
         <Toolbar
             android:id="@+id/toolbar_home_add_category"
@@ -20,6 +21,7 @@
             android:background="@color/main"
             >
             <ImageView
+                android:id="@+id/iv_home_cate_add_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/home_baseline_arrow_back_ios_24"/>
@@ -32,7 +34,7 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/btn_home_save_category"
+                android:id="@+id/btn_home_cate_add_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="등록"

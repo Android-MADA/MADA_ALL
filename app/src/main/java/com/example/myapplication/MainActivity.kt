@@ -7,10 +7,7 @@ import com.example.myapplication.Fragment.FragCustom
 import com.example.myapplication.Fragment.FragDaily
 import com.example.myapplication.Fragment.FragHome
 import com.example.myapplication.Fragment.FragMy
-import com.example.myapplication.HomeFuction.view.HomeCategoryFragment
-import com.example.myapplication.HomeFuction.view.HomeTimeEditFragment
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.databinding.HomeFragmentHomeCategoryBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -25,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNavigation() {
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_con, HomeTimeEditFragment() )
+            .replace(R.id.fl_con, FragHome())
             .commitAllowingStateLoss()
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->

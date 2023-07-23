@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view.viewpager2
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.myapplication.R
 
-class TimeClickFragment : Fragment() {
+
+class HomeViewpagerTodoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -18,7 +20,13 @@ class TimeClickFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.home_fragment_time_click, container, false)
+        return inflater.inflate(R.layout.home_fragment_viewpager_todo, container, false)
     }
 
+    companion object {
+
+        @JvmStatic
+        fun newInstance() =
+            HomeViewpagerTodoFragment()
+    }
 }

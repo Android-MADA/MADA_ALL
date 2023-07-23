@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFuction.view
+package com.example.myapplication.HomeFunction.view
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -12,6 +12,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 
@@ -37,6 +38,8 @@ class TimeAddFragment : Fragment() {
 
         val btnSubmit = binding.btnHomeTimeAddSubmit
         val btnDelete = binding.btnHomeTimeEditDelete
+
+        val btnBack = binding.ivHomeAddTimeBack
 
         //파라미터가 전달된다면(생성이 아니라 수정이라면)
 //        if(){
@@ -172,6 +175,11 @@ class TimeAddFragment : Fragment() {
             // 수정버튼을 누르면 시간표가 생성되는 게 아니라 수정됨
             // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
             //2. 시간표 화면으로 이동
+            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        }
+        //back btn
+        btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
 
         return binding.root
