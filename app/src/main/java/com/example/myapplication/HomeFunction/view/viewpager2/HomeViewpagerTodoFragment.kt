@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
@@ -18,9 +21,8 @@ import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
 class HomeViewpagerTodoFragment : Fragment() {
 
     lateinit var binding : HomeFragmentViewpagerTodoBinding
-    private var cateAdapter : HomeViewpager2CategoryAdapter? = null
-    private var cateList = ArrayList<SampleHomeCateData>()
-    private var todo1List = ArrayList<SampleHomeTodoData>()
+    val cateList = ArrayList<SampleHomeCateData>()
+    var todo1List = ArrayList<SampleHomeTodoData>()
     private var todo2List = ArrayList<SampleHomeTodoData>()
     private var todo3List = ArrayList<SampleHomeTodoData>()
 
@@ -38,7 +40,53 @@ class HomeViewpagerTodoFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_viewpager_todo, container, false)
 
         //rv 연결
-        cateAdapter = HomeViewpager2CategoryAdapter(cateList)
+        val cateAdapter = HomeViewpager2CategoryAdapter(cateList)
+        //cateAdapter = HomeViewpager2CategoryAdapter(cateList)
+//        cateAdapter!!.setFocusChangeListener(object : HomeViewpager2CategoryAdapter.OnFocusChangeListener{
+//            override fun onFocusChange(v: View, hasFocus: Boolean, cate: String, text : String, layout : LinearLayout) {
+//                if(hasFocus){
+//
+//                }else{
+//                    //for문으로 cateName 찾는 코드로 바꾸기
+//                    if(text != null){
+//                        when(cate){
+//                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData(text, false))}
+//                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData(text, false))}
+//                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData(text, false))}
+//                        else -> {}
+//                        }
+//                        cateAdapter!!.notifyDataSetChanged()
+//                        Log.d("edt", cateList[0].todoList.toString())
+//                    }
+//                    else{
+//                        layout.isGone = true
+//                    }
+//                }
+//
+//            }
+//        })
+        cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
+            override fun onClick(
+                v: View,
+                position: Int,
+                cate: String,
+                edt : EditText,
+                layout: LinearLayout
+            ) {
+                if(edt.text.toString() != null){
+                        when(cate){
+                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
+                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
+                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
+                        else -> {}
+                        }
+                        cateAdapter!!.notifyDataSetChanged()
+                        Log.d("edt", cateList[0].todoList.toString())
+                    }
+                edt.text.clear()
+                layout.isGone = true
+            }
+        })
         binding.rvHomeCategory.adapter = cateAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
 

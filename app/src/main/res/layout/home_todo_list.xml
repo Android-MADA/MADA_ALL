@@ -7,12 +7,13 @@
 
     <CheckBox
         android:id="@+id/cb_home_todo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/home_checkbox"
         android:button="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/tv_home_todo"

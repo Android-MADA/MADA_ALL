@@ -42,23 +42,29 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/ic_home_category"
         android:orientation="horizontal"
-        android:layout_marginEnd="41dp"
         android:layout_marginTop="10dp"
+        android:weightSum="1"
         android:visibility="gone"
         >
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/home_checkbox_symbol_unchecked"
             android:layout_gravity="center_vertical"
             />
         <EditText
             android:id="@+id/edt_home_viewpager2_todo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="추가하기"
-
+            android:hint="취소하려면 + 버튼을 다시 누르세요"
+            android:layout_weight="1"
             />
+        <ImageView
+            android:id="@+id/iv_home_viewpager_todo_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_24"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
 
