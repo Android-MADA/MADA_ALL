@@ -1,10 +1,20 @@
 package com.example.myapplication.CalenderFuntion
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -33,25 +43,80 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
         preList.add(0)
         nextList.add(0)
 
-        binding.preScheldule.text = preList[0].toString()+"월 " + preList[1].toString() +"일 ("+weekdays[preList[2]]+")"
-        binding.nextScheldule.text = nextList[0].toString()+"월 " + nextList[1].toString() +"일 ("+weekdays[nextList[2]]+")"
+        binding.preScheldule.text = "  "+preList[0].toString()+"월 " + preList[1].toString() +"일 ("+weekdays[preList[2]]+")  "
+        binding.nextScheldule.text = "  "+nextList[0].toString()+"월 " + nextList[1].toString() +"일 ("+weekdays[nextList[2]]+")  "
+
+        binding.textDday.visibility= View.GONE
+        binding.cal.visibility= View.GONE
+        binding.timePicker.visibility = View.GONE
 
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         setMonthView()
+        binding.backButton.setOnClickListener {
+            //뭐가 있다면
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.calendar_add_popup, null)
+            val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+                .create()
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+            val display = (this.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                mBuilder.dismiss()
+            })
+            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                onBackPressed()
+            })
+            //onBackPressed()
+        }
+        binding.calendarColor1.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor2.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor3.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor4.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor5.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor6.setOnClickListener {
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+        }
+        binding.calendarColor.setOnClickListener {
+            binding.layoutColorSelector.visibility = View.VISIBLE
+        }
+        binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked) {
+                binding.textDday.visibility= View.VISIBLE
+            } else {
+                binding.textDday.visibility= View.GONE
+            }
+
+        }
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
-
             setMonthView()
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
-
             setMonthView()
         }
-        binding.cal.visibility= View.GONE
+
         binding.preScheldule.setOnClickListener {
             binding.preScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
@@ -66,13 +131,23 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
             nextList[3]=1
             binding.cal.visibility= View.VISIBLE
         }
+        binding.switch2.setOnCheckedChangeListener { p0, isChecked ->
+            if(isChecked) {
+                binding.colck.visibility =View.GONE
+            } else {
+                binding.colck.visibility =View.VISIBLE
+            }
+
+        }
         binding.preScheldule2.setOnClickListener {
             binding.preScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.nextScheldule2.setBackgroundColor(Color.TRANSPARENT)
+            binding.timePicker.visibility = View.VISIBLE
         }
         binding.nextScheldule2.setOnClickListener {
             binding.nextScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.preScheldule2.setBackgroundColor(Color.TRANSPARENT)
+            binding.timePicker.visibility = View.VISIBLE
         }
         binding.timePicker.setInitialSelectedTime("36:36")
     }

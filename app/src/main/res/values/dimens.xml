@@ -5,5 +5,4 @@
     <dimen name="design_fab_size_normal" tools:override="true">57dp</dimen>
     <dimen name="design_fab_image_size" tools:override="true">57dp</dimen>
 
-
 </resources>
