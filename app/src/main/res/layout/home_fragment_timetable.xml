@@ -85,7 +85,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"
+            app:elevation="0dp"
+            style="@style/floatingHome"
+            android:backgroundTint="@android:color/transparent"
+            app:useCompatPadding="true"
+            android:tint="@null"
+            app:borderWidth="0dp"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

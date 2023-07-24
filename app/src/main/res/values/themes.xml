@@ -17,4 +17,10 @@
     <style name="ThemeOverlay.MaterialComponents.TimePicker" parent="@android:style/Widget.DatePicker">
         <item name="colorControlNormal">#74FFFFFF</item>
     </style>
+    
+    <style name="floatingHome" parent="Widget.Design.FloatingActionButton">
+        <item name = "android:foreground">
+            @drawable/home_time_add_background
+        </item>
+    </style>
 </resources>
