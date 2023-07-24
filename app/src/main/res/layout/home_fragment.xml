@@ -58,10 +58,10 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_margin="20dp"
+
                 android:layout_marginHorizontal="36dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/home_progeaabar_background"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -155,28 +155,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginVertical="20dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="18dp"
+            android:paddingVertical="20dp"
             android:background="@drawable/home_viewpager_background"
             app:layout_constraintBottom_toTopOf="@id/home_indicator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_home"
              />
-
-<!--    <me.relex.circleindicator.CircleIndicator3-->
-<!--        android:id="@+id/home_indicator"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginVertical="16dp"-->
-<!--        app:ci_drawable="@drawable/home_indicator_selected"-->
-<!--        app:ci_drawable_unselected="@drawable/home_indicator_unselected"-->
-<!--        app:ci_width="20dp"-->
-<!--        app:ci_height="20dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/layout_home_viewpager2"-->
-<!--        />-->
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/home_indicator"
@@ -186,6 +174,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:ci_drawable="@drawable/home_indicator_selected"
+        app:ci_drawable_unselected="@drawable/home_indicator_unselected"
         android:layout_marginVertical="20dp"
         app:ci_width="10dp"
         app:ci_height="10dp"

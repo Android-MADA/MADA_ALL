@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="popup_width">500dp</dimen>
     <dimen name="popup_height">1000dp</dimen>
+    <dimen name="design_fab_size_normal" tools:override="true">57dp</dimen>
+    <dimen name="design_fab_image_size" tools:override="true">57dp</dimen>
 
 
 </resources>
