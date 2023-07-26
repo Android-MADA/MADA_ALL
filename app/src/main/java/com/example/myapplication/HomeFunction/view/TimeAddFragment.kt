@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TimeAddFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -183,6 +184,16 @@ class TimeAddFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
+        }
+        else {
+            bottomNavigation?.isVisible = true
+        }
     }
 
 }

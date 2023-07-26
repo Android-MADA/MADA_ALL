@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +12,23 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CategoryAddFragment : Fragment() {
 
+    lateinit var binding : HomeFragmentCategoryAddBinding
+
     val cateIconArray = ArrayList<Drawable>()
     val cateColorArray = ArrayList<Int>()
+    val iconAdapter = HomeCateIconAdapter(cateIconArray)
+    val colorAdapter = HomeCateColorAdapter(cateColorArray)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,74 +41,86 @@ class CategoryAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding : HomeFragmentCategoryAddBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
-        val ivIcon = binding.ivHomeCateIcon
-        val ivColor = binding.ivHomeCateColor
-        val ivBack = binding.ivHomeCateAddBack
-        val iconAdapter = HomeCateIconAdapter(cateIconArray)
-        val colorAdapter = HomeCateColorAdapter(cateColorArray)
-        val btnSave = binding.btnHomeCateAddSave
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
+        hideBootomNavigation(true)
+        return binding.root
+    }
 
-        val rvIcon = binding.rvHomeCateIcon
-        val rvColor = binding.rvHomeCateColor
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        var iconListManager = GridLayoutManager(this.activity, 6)
-        var colorListManager = GridLayoutManager(this.activity, 6)
+        val iconListManager = GridLayoutManager(this.activity, 6)
+        val colorListManager = GridLayoutManager(this.activity, 6)
 
-        //clicklistener
+
         iconAdapter.setItemClickListener(object: HomeCateIconAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                ivIcon.setImageDrawable(cateIconArray[position])
-                rvIcon.isGone = true
+                binding.ivHomeCateIcon.setImageDrawable(cateIconArray[position])
+                binding.rvHomeCateIcon.isGone = true
             }
         })
 
-        ivBack.setOnClickListener {
-            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
+        binding.ivHomeCateAddBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            Log.d("navBack", "정상 작동")
         }
 
-        btnSave.setOnClickListener {
-            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
+        binding.btnHomeCateAddSave.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            Log.d("navSave", "정상 작동")
         }
 
         colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                ivColor.imageTintList = ColorStateList.valueOf(cateColorArray[position])
-                rvColor.isGone = true
+                binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(cateColorArray[position])
+                binding.rvHomeCateColor.isGone = true
             }
         })
 
-        var iconRecyclerList = rvIcon.apply {
+        var iconRecyclerList = binding.rvHomeCateIcon.apply {
             setHasFixedSize(true)
             layoutManager = iconListManager
             adapter = iconAdapter
 
         }
-        var colorRecyclerList = rvColor.apply{
+        var colorRecyclerList = binding.rvHomeCateColor.apply{
             setHasFixedSize(true)
             layoutManager = colorListManager
             adapter = colorAdapter
         }
 
-        ivIcon.setOnClickListener {
-            if(rvIcon.isVisible){
-                rvIcon.isGone = true
+        binding.ivHomeCateIcon.setOnClickListener {
+            if(binding.rvHomeCateIcon.isVisible){
+                binding.rvHomeCateIcon.isGone = true
             }
             else {
-                rvIcon.isVisible = true
+                binding.rvHomeCateIcon.isVisible = true
             }
         }
 
-        ivColor.setOnClickListener{
-            if(rvColor.isVisible){
-                rvColor.isGone = true
+        binding.ivHomeCateColor.setOnClickListener{
+            if(binding.rvHomeCateColor.isVisible){
+                binding.rvHomeCateColor.isGone = true
             }
             else {
-                rvColor.isVisible = true
+                binding.rvHomeCateColor.isVisible = true
             }
         }
+    }
 
-        return binding.root
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBootomNavigation(false)
+    }
+
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
+        }
+        else {
+            bottomNavigation?.isVisible = true
+        }
     }
 
     private fun initArrayList(){
