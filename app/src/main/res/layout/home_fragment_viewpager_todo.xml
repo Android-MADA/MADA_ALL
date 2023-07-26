@@ -2,11 +2,12 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".HomeFunction.view.viewpager2.HomeViewpagerTodoFragment">
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:context=".HomeFunction.view.viewpager2.HomeViewpagerTodoFragment"
         >
 
         <androidx.recyclerview.widget.RecyclerView

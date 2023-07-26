@@ -6,13 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeCategoryFragment : Fragment() {
 
@@ -31,31 +35,38 @@ class HomeCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
+        hideBootomNavigation(true)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        binding.ivHomeCategoryBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
+        }
 
-        //onclick listener
+        binding.btnHomeCategory.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
+        }
+
         categoryAdapter.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 //페이지 이동 + 데이터 전달
-                findNavController().navigate(R.id.action_homeCategoryFragment2_to_categoryAddFragment)
+                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
             }
         })
 
-        binding.btnHomeCategory.setOnClickListener {
-            findNavController().navigate(R.id.action_homeCategoryFragment2_to_categoryAddFragment)
-        }
-
-        binding.ivHomeCategoryBack.setOnClickListener {
-            findNavController().navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment2)
-        }
-
-        //rv 어댑터 연결
         binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
-
-        return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBootomNavigation(false)
+    }
+
+
 
     private fun initArrayList(){
         with(sampleCategoryArray){
@@ -64,6 +75,16 @@ class HomeCategoryFragment : Fragment() {
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "잠", resources.getColor(R.color.point_main)))
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "친구만나기", Color.parseColor("#F8D141")))
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "휴대폰", Color.parseColor("#486DA3")))
+        }
+    }
+
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
+        }
+        else {
+            bottomNavigation?.isVisible = true
         }
     }
 
