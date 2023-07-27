@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.R
@@ -27,6 +28,7 @@ class HomeTimetableFragment : Fragment() {
     val sampleTimeArray = ArrayList<SampleTimeData>()
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
     var bottomFlag = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
