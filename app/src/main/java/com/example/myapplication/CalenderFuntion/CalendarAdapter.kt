@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
+import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.util.Calendar
@@ -30,6 +32,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
+
+
+
     data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     //임시 데이터
     val tmpDATA = listOf(

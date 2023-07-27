@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.R
@@ -20,6 +21,7 @@ class HomeTimetableFragment : Fragment() {
     lateinit var binding : HomeFragmentTimetableBinding
     val sampleTimeArray = ArrayList<SampleTimeData>()
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

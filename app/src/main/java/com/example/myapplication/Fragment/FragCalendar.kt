@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.example.myapplication.CalenderFuntion.CalendarAdd
 import com.example.myapplication.CalenderFuntion.CalendarAddDday
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
+import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -36,6 +38,17 @@ class FragCalendar : Fragment(), OnItemListener {
     data class sche(var startMonth: Int, var endMonth: Int, var startDay: Int, var endDay: Int)
     var preStartToEnd : sche = sche(0, 0, 0, 0)
     var nextStartToEnd : sche = sche(0, 0, 0, 0)
+
+    data class CalendarDATA(
+        val startDate: String,
+        val endDate: String,
+        //val repeat: Char,
+        val dDay: Char,
+        val memo: String,
+       //val createAt: String,
+        //val updateAt: String
+    )
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -110,7 +123,12 @@ class FragCalendar : Fragment(), OnItemListener {
 
         val dayList = dayInMonthArray()
 
-        //데이터 정보 받아오기
+        //임시 데이터 정보 받아오기
+        val datas = arrayOf(        //임시 데이터
+            CalendarDATA("2023-07-06","2023-07-06",'N',"기말 강의평가 기간"),
+            CalendarDATA("2023-07-02","2023-07-06",'N',"데이터분석기초 기말고사")
+        )
+        val dataArray = Array(42) { Array<CalendarDATA?>(10) { null } }
 
 
         val adapter = CalendarAdapter(dayList)
@@ -140,11 +158,6 @@ class FragCalendar : Fragment(), OnItemListener {
             dayList.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH,1)
         }
-        /*
-        Log.i("TAG",preStartToEnd.startMonth.toString()+"월"+preStartToEnd.startDay.toString()+"일")
-        Log.i("TAG",preStartToEnd.endMonth.toString()+"월"+preStartToEnd.endDay.toString()+"일")
-        Log.i("TAG",nextStartToEnd.endMonth.toString()+"월"+nextStartToEnd.endDay.toString()+"일")
-        */
         return dayList
     }
     private fun yearMonthFromDate(date : LocalDate) :String{
