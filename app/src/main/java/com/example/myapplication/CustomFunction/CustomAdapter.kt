@@ -15,7 +15,7 @@ class CustomAdapter () : RecyclerView.Adapter<CustomAdapter.ItemViewHolder>()  {
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         //오류로 잠시 넣어둠(버루)
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.custom_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.custom_color,parent,false)
         return CustomAdapter.ItemViewHolder(view)
         //
     }
