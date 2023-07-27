@@ -1,12 +1,16 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
@@ -14,6 +18,7 @@ import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeTimetableFragment : Fragment() {
@@ -33,40 +38,56 @@ class HomeTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
+        hideBootomNavigation(true)
+        return binding.root
+    }
 
-        val btnBack = binding.ivHomeTimetableBack
-        val btnSave = binding.tvHomeTimetableSave
-        val btnAdd = binding.fabHomeTime
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.ivHomeTimetableBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        }
+
+        binding.tvHomeTimetableSave.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        }
+
+        binding.fabHomeTime.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+        }
 
         //rv adpter 연결
         timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 //페이지 이동 + 데이터 전달
-                findNavController().navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+                Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
             }
         })
 
         binding.rvHomeTimeSchedule.adapter = timeAdapter
         binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(this.activity)
 
-        //setonclickevent
+        //edt처리
 
-        btnBack.setOnClickListener {
-            findNavController().navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        //pie chart 추가
+
+
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        hideBootomNavigation(false)
+    }
+
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
         }
-
-        btnSave.setOnClickListener {
-            findNavController().navigate(R.id.action_homeTimetableFragment_to_fragHome)
+        else {
+            bottomNavigation?.isVisible = true
         }
-
-        btnAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-        }
-
-        // pie chart
-
-        //edt
-        return binding.root
     }
 
     private fun initArrayList(){
@@ -75,4 +96,7 @@ class HomeTimetableFragment : Fragment() {
             sampleTimeArray.add(SampleTimeData("오전수업", Color.parseColor("#FDA4B4"), "오전 10:00", "오전 10:30", "2023-07-20"))
         }
     }
+
+
 }
+

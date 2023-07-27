@@ -7,11 +7,10 @@
     <fragment
         android:id="@+id/fragHome"
         android:name="com.example.myapplication.Fragment.FragHome"
-        android:label="home_fragment"
-        tools:layout="@layout/home_fragment" >
+        android:label="FragHome" >
         <action
-            android:id="@+id/action_fragHome_to_homeCategoryFragment2"
-            app:destination="@id/homeCategoryFragment2" />
+            android:id="@+id/action_fragHome_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment" />
         <action
             android:id="@+id/action_fragHome_to_homeTimetableFragment"
             app:destination="@id/homeTimetableFragment" />
@@ -20,22 +19,35 @@
             app:destination="@id/homeRepeatTodoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/homeCategoryFragment2"
+        android:id="@+id/fragCalendar"
+        android:name="com.example.myapplication.Fragment.FragCalendar"
+        android:label="FragCalendar" />
+    <fragment
+        android:id="@+id/fragCustom"
+        android:name="com.example.myapplication.Fragment.FragCustom"
+        android:label="FragCustom" />
+    <fragment
+        android:id="@+id/fragMy"
+        android:name="com.example.myapplication.Fragment.FragMy"
+        android:label="FragMy" />
+    <fragment
+        android:id="@+id/homeCategoryFragment"
         android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
-        android:label="home_fragment_category"
-        tools:layout="@layout/home_fragment_category" >
+        android:label="HomeCategoryFragment" >
         <action
-            android:id="@+id/action_homeCategoryFragment2_to_categoryAddFragment"
+            android:id="@+id/action_homeCategoryFragment_to_categoryAddFragment"
             app:destination="@id/categoryAddFragment" />
+        <action
+            android:id="@+id/action_homeCategoryFragment_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
-        android:id="@+id/homeRepeatTodoFragment"
-        android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
-        android:label="home_fragment_repeat_todo"
-        tools:layout="@layout/home_fragment_repeat_todo" >
+        android:id="@+id/categoryAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryAddFragment"
+        android:label="CategoryAddFragment" >
         <action
-            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
-            app:destination="@id/fragHome" />
+            android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeTimetableFragment"
@@ -50,22 +62,19 @@
             app:destination="@id/fragHome" />
     </fragment>
     <fragment
-        android:id="@+id/categoryAddFragment"
-        android:name="com.example.myapplication.HomeFunction.view.CategoryAddFragment"
-        android:label="home_fragment_category_add"
-        tools:layout="@layout/home_fragment_category_add" >
-        <action
-            android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment2"
-            app:destination="@id/homeCategoryFragment2"
-            app:popUpTo="@id/categoryAddFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/timeAddFragment"
         android:name="com.example.myapplication.HomeFunction.view.TimeAddFragment"
-        android:label="home_fragment_time_add"
-        tools:layout="@layout/home_fragment_time_add" >
+        android:label="TimeAddFragment" >
         <action
             android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
             app:destination="@id/homeTimetableFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeRepeatTodoFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
+        android:label="HomeRepeatTodoFragment" >
+        <action
+            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
 </navigation>
