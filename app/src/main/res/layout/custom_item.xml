@@ -11,12 +11,11 @@
         android:id="@+id/custom_menutable"
         android:layout_width="360dp"
         android:layout_height="75dp"
-        android:behavior_peekHeight="78dp"
+        app:behavior_peekHeight="78dp"
         android:background="@drawable/custom_radius"
         android:orientation="vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:behavior_hideable="true"
-
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
