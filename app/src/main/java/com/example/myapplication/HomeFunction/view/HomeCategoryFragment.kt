@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewDebug.FlagToString
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -16,6 +17,7 @@ import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeCategoryFragment : Fragment() {
@@ -23,6 +25,7 @@ class HomeCategoryFragment : Fragment() {
     lateinit var binding : HomeFragmentCategoryBinding
     val sampleCategoryArray = ArrayList<sampleCategoryData>()
     val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
+    var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,7 @@ class HomeCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
-        hideBootomNavigation(true)
+        hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
 
@@ -44,6 +47,7 @@ class HomeCategoryFragment : Fragment() {
 
         binding.ivHomeCategoryBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.btnHomeCategory.setOnClickListener {
@@ -63,7 +67,7 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideBootomNavigation(false)
+        hideBottomNavigation(bottomFlag, activity)
     }
 
 
@@ -78,14 +82,5 @@ class HomeCategoryFragment : Fragment() {
         }
     }
 
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
-    }
 
 }

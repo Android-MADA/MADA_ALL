@@ -17,6 +17,7 @@ import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -25,6 +26,7 @@ class HomeTimetableFragment : Fragment() {
     lateinit var binding : HomeFragmentTimetableBinding
     val sampleTimeArray = ArrayList<SampleTimeData>()
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
+    var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class HomeTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
-        hideBootomNavigation(true)
+        hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
 
@@ -45,10 +47,12 @@ class HomeTimetableFragment : Fragment() {
 
         binding.ivHomeTimetableBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.tvHomeTimetableSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.fabHomeTime.setOnClickListener {
@@ -73,20 +77,12 @@ class HomeTimetableFragment : Fragment() {
 
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        hideBootomNavigation(false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigation(bottomFlag, activity)
     }
 
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
-    }
+
 
     private fun initArrayList(){
         with(sampleTimeArray){

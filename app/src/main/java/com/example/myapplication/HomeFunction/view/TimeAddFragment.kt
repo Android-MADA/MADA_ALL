@@ -15,9 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TimeAddFragment : Fragment() {
+
+    var bottomFlag = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +31,7 @@ class TimeAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding : HomeFragmentTimeAddBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
+        hideBottomNavigation(bottomFlag, activity)
 
         val ivColor = binding.ivHomeTimeColor
         val colorSelector = binding.layoutColorSelector
@@ -186,14 +190,5 @@ class TimeAddFragment : Fragment() {
         return binding.root
     }
 
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
-    }
 
 }
