@@ -8,7 +8,7 @@ import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTodoF
 
 class HomeViewPagerAdapter(f: Fragment) : FragmentStateAdapter(f) {
 
-    private val PAGENUMBER = 3
+    private val PAGENUMBER = 2
 
     override fun getItemCount(): Int {
         return PAGENUMBER

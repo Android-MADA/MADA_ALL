@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/fragHome"
         android:icon="@drawable/etc_home"
         android:enabled="true"
         android:title="" />
     <item
-        android:id="@+id/calendar"
+        android:id="@+id/fragCalendar"
         android:icon="@drawable/calendar"
         android:enabled="true"
         android:title="" />
     <item
-        android:id="@+id/custom"
+        android:id="@+id/fragCustom"
         android:icon="@drawable/etc_custom"
         android:enabled="true"
         android:title="" />
     <item
-        android:id="@+id/my"
+        android:id="@+id/fragMy"
         android:icon="@drawable/etc_my"
         android:enabled="true"
         android:title="" />
