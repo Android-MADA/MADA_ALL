@@ -1,5 +1,4 @@
 package com.example.myapplication
-/*
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -8,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-
-import kotlinx.android.synthetic.main.custom_item.*
-import kotlinx.android.synthetic.main.custom_page.view.*
-
+/*
 class CustomPage : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +18,7 @@ class CustomPage : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val recyclerView = view.custompage_recyclerview
-        recyclerView.adapter = Adapter(requireContext())
+        val View = view.custom_recyclerview
     }
 
     class Adapter(context: Context) : RecyclerView.Adapter<ViewHolder>() {
@@ -40,12 +35,12 @@ class CustomPage : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             @SuppressLint("SetTextI18n")
-            holder.custom_itemtable = "Item ${position + 1}"
+            holder.custom_menutable = "Item ${position + 1}"
         }
     }
 
     class ViewHolder(override val containerView: View) :
-        RecyclerView.ViewHolder(containerView), LayoutContainer
+        RecyclerView.ViewHolder(containerView)
 
     companion object {
         private const val ITEM_COUNT = 30
