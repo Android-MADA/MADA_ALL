@@ -16,7 +16,6 @@ import com.example.myapplication.Fragment.FragHome
 import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
