@@ -41,30 +41,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
         //rv 연결
         val cateAdapter = HomeViewpager2CategoryAdapter(cateList)
-        //cateAdapter = HomeViewpager2CategoryAdapter(cateList)
-//        cateAdapter!!.setFocusChangeListener(object : HomeViewpager2CategoryAdapter.OnFocusChangeListener{
-//            override fun onFocusChange(v: View, hasFocus: Boolean, cate: String, text : String, layout : LinearLayout) {
-//                if(hasFocus){
-//
-//                }else{
-//                    //for문으로 cateName 찾는 코드로 바꾸기
-//                    if(text != null){
-//                        when(cate){
-//                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData(text, false))}
-//                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData(text, false))}
-//                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData(text, false))}
-//                        else -> {}
-//                        }
-//                        cateAdapter!!.notifyDataSetChanged()
-//                        Log.d("edt", cateList[0].todoList.toString())
-//                    }
-//                    else{
-//                        layout.isGone = true
-//                    }
-//                }
-//
-//            }
-//        })
+
         cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
             override fun onClick(
                 v: View,
@@ -73,11 +50,11 @@ class HomeViewpagerTodoFragment : Fragment() {
                 edt : EditText,
                 layout: LinearLayout
             ) {
-                if(edt.text.toString() != null){
+                if(edt.text.toString() != ""){
                         when(cate){
-                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
-                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
-                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData(edt.text.toString(), false))}
+                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData("약속",edt.text.toString(), false))}
+                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData("운동",edt.text.toString(), false))}
+                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData("공부",edt.text.toString(),  false))}
                         else -> {}
                         }
                         cateAdapter!!.notifyDataSetChanged()
@@ -103,17 +80,17 @@ class HomeViewpagerTodoFragment : Fragment() {
     fun initArrayList(){
         // cate1 todo init
         with(todo1List){
-            this.add(SampleHomeTodoData("친구랑 저녁 약속!", false))
-            this.add(SampleHomeTodoData("스터디 회의", true))
+            this.add(SampleHomeTodoData("약속","친구랑 저녁 약속!", false))
+            this.add(SampleHomeTodoData("약속","스터디 회의", true))
         }
         // cate2 todo init
         with(todo2List){
-            this.add(SampleHomeTodoData("런데이 하기", false))
+            this.add(SampleHomeTodoData("운동","런데이 하기", false))
         }
         //cate3 todo init
         with(todo3List){
-            this.add(SampleHomeTodoData("서점에 전공 책 사러 가기", false))
-            this.add(SampleHomeTodoData("과제 제출하기", false))
+            this.add(SampleHomeTodoData("공부","서점에 전공 책 사러 가기", false))
+            this.add(SampleHomeTodoData("공부","과제 제출하기", false))
         }
         // total array init
         with(cateList){

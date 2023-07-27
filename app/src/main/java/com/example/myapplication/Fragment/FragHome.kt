@@ -49,9 +49,6 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
 
         homeIndicator.setViewPager(homeViewPager)
-
-
-
         return view
     }
 
