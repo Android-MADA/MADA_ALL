@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/grey3" /> <!-- 회색 -->
+    <corners android:radius="10dp" /> <!-- 둥글게 -->
+</selector>
