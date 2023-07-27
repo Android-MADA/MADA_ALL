@@ -16,8 +16,6 @@
         android:orientation="vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:behavior_hideable="true"
-
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TableRow>
@@ -73,7 +71,7 @@
         <TableRow>
 
             <ImageButton
-                android:id="@+id/btn_item_basic"
+                android:id="@+id/btn_cloth_basic"
 
                 android:layout_width="99dp"
                 android:layout_height="72dp"
@@ -82,7 +80,7 @@
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_item_glass_normal"
+                android:id="@+id/btn_cloth_dev"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -91,7 +89,7 @@
 
             <ImageButton
                 android:layout_width="99dp"
-                android:id="@+id/btn_item_hat_ber"
+                android:id="@+id/btn_cloth_movie"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -102,7 +100,7 @@
         <TableRow>
 
             <ImageButton
-                android:id="@+id/btn_item_hat_grad"
+                android:id="@+id/btn_cloth_caffK"
 
                 android:layout_width="99dp"
                 android:layout_height="72dp"
@@ -111,7 +109,7 @@
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_item_glass_8bit"
+                android:id="@+id/btn_cloth_v"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -120,7 +118,7 @@
 
             <ImageButton
                 android:layout_width="99dp"
-                android:id="@+id/btn_item_glass_woig"
+                android:id="@+id/btn_cloth_astronauts"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -131,7 +129,7 @@
         <TableRow>
 
             <ImageButton
-                android:id="@+id/btn_item_hat_ipod"
+                android:id="@+id/btn_cloth_zzim"
 
                 android:layout_width="99dp"
                 android:layout_height="72dp"
@@ -140,7 +138,7 @@
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_item_glass_sunR"
+                android:id="@+id/btn_cloth_hanbokF"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -149,14 +147,26 @@
 
             <ImageButton
                 android:layout_width="99dp"
-                android:id="@+id/btn_item_glass_sunB"
+                android:id="@+id/btn_cloth_hanbokM"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
                 android:background="@drawable/custom_radius"></ImageButton>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_cloth_snowman"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
 
         </TableRow>
 
     </TableLayout>
 </LinearLayout>
-

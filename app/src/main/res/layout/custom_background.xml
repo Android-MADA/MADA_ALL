@@ -73,7 +73,7 @@
         <TableRow>
 
             <ImageButton
-                android:id="@+id/btn_item_basic"
+                android:id="@+id/btn_back_basic"
 
                 android:layout_width="99dp"
                 android:layout_height="72dp"
@@ -82,7 +82,7 @@
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_item_glass_normal"
+                android:id="@+id/btn_back_brid_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -91,36 +91,7 @@
 
             <ImageButton
                 android:layout_width="99dp"
-                android:id="@+id/btn_item_hat_ber"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-        </TableRow>
-
-        <TableRow>
-
-            <ImageButton
-                android:id="@+id/btn_item_hat_grad"
-
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:id="@+id/btn_item_glass_8bit"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_item_glass_woig"
+                android:id="@+id/btn_back_n_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -131,7 +102,35 @@
         <TableRow>
 
             <ImageButton
-                android:id="@+id/btn_item_hat_ipod"
+                android:id="@+id/btn_back_win_s"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_back_normal_s"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:layout_width="99dp"
+                android:id="@+id/btn_back_store_s"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_back_zzim_s"
 
                 android:layout_width="99dp"
                 android:layout_height="72dp"
@@ -140,7 +139,7 @@
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_item_glass_sunR"
+                android:id="@+id/btn_back_uni_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -149,7 +148,7 @@
 
             <ImageButton
                 android:layout_width="99dp"
-                android:id="@+id/btn_item_glass_sunB"
+                android:id="@+id/btn_bakc_cin_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -159,4 +158,3 @@
 
     </TableLayout>
 </LinearLayout>
-
