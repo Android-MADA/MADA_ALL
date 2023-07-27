@@ -4,7 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.media.Image
+import android.util.Log
 import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,11 +25,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
-class CalendarAdapter(private val dayList: ArrayList<Date>)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<FragCalendar.CalendarDATA?>>)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -43,7 +48,10 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     )
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
-        val point : ImageView = itemView.findViewById(R.id.calenadar_point)
+        val lines = arrayOf<ImageView>(
+            itemView.findViewById(R.id.calenadar_line1),
+            itemView.findViewById(R.id.calenadar_line2)
+        )
     }
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -54,6 +62,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
     //데이터 설정
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var monthDate = dayList[holder.adapterPosition]
+
+
+
         var dateCalendar = Calendar.getInstance()
         dateCalendar.time = monthDate
         var dayNo = dateCalendar.get(Calendar.DAY_OF_MONTH)
@@ -61,6 +72,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
         var iYear = dateCalendar.get(Calendar.YEAR)
         var iMonth = dateCalendar.get(Calendar.MONTH) + 1
         var iDay = dateCalendar.get(Calendar.DAY_OF_MONTH)
+        val today = iYear.toString() +"-"+iMonth.toString()+"-"+iDay.toString()
         val colorMain = ContextCompat.getColor(holder.itemView.context, R.color.main)
         if(CalendarUtil.selectedDate.monthValue != iMonth) {
             holder.textDay.setTextColor(colorMain)
@@ -68,7 +80,27 @@ class CalendarAdapter(private val dayList: ArrayList<Date>)
         if(iYear == y && iMonth == m && iDay == d) {
             holder.itemView.setBackgroundResource(R.drawable.etc_calender_today)
             holder.textDay.setTextColor(Color.WHITE)
-            holder.point.setBackgroundResource(R.drawable.calendar_point)     //일단 임시로 일정 있는 거 표시
+        }
+        for(data in calendarDataArray[position]) {
+            if (data != null && data.floor !=-1) {
+                Log.d("error",data.memo)
+                Log.d("error",data.floor.toString())
+                val cal =holder.lines[data.floor]
+                cal.setColorFilter(Color.parseColor(data.color), PorterDuff.Mode.SRC_IN)
+                if(data.duration) {
+                    if(data.startDate==today || position%7==0) {
+                        cal.setImageResource(R.drawable.calendar_line_left)
+                    } else if(data.endDate==today || position%7==6) {
+                        cal.setImageResource(R.drawable.calendar_line_right)
+                    } else {
+                        cal.setImageResource(R.drawable.calendar_line_center)
+                    }
+                } else {
+                    holder.lines[data.floor].setImageResource(R.drawable.calendar_point)
+                }
+            } else {
+
+            }
         }
 
         holder.itemView.setOnClickListener {
