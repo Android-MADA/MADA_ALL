@@ -5,11 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 
-class CalendarScheduleAdapter(private val day : Int,private val position : Int ,private val MADAList: List<CalendarAdapter.MADA>) : RecyclerView.Adapter<CalendarScheduleAdapter.ItemViewHolder>()  {
-
-    data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
+class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCalendar.CalendarDATA?>) : RecyclerView.Adapter<CalendarScheduleAdapter.ItemViewHolder>()  {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
@@ -18,20 +17,21 @@ class CalendarScheduleAdapter(private val day : Int,private val position : Int ,
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.calendar_schedule,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.calendar_schedule_cell1,parent,false)
+
         return ItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val tmpMADA = MADAList[holder.adapterPosition]
+        //val tmpMADA = MADAList[holder.adapterPosition]
         //holder.textDay.text = tmpMADA.
-        holder.textTitle.text = tmpMADA.title
-        holder.textDuration.text = tmpMADA.startDate +" ~ "+ tmpMADA.endDate
+        //holder.textTitle.text = tmpMADA.title
+        //holder.textDuration.text = tmpMADA.startDate +" ~ "+ tmpMADA.endDate
     }
 
 
     override fun getItemCount(): Int {
-        return MADAList.size
+        return 1
     }
 
 }

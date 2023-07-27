@@ -2,7 +2,6 @@ package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +13,6 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -155,7 +153,7 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
-        val adapter = Calendar2Adapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
+        val adapter = CalendarSmallAdapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
         var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter
