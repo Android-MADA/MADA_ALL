@@ -28,8 +28,6 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
         //holder.textTitle.text = tmpMADA.title
         //holder.textDuration.text = tmpMADA.startDate +" ~ "+ tmpMADA.endDate
     }
-
-
     override fun getItemCount(): Int {
         return 1
     }
