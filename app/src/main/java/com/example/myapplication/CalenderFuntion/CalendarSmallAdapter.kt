@@ -12,10 +12,10 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class Calendar2Adapter(private val dayList: ArrayList<Date>, private val preList: ArrayList<Int>,
-                       private val nextList: ArrayList<Int>, private val cal : LinearLayout,
-                       private val preText: TextView, private val nextText: TextView)
-    : RecyclerView.Adapter<Calendar2Adapter.ItemViewHolder>() {
+class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val preList: ArrayList<Int>,
+                           private val nextList: ArrayList<Int>, private val cal : LinearLayout,
+                           private val preText: TextView, private val nextText: TextView)
+    : RecyclerView.Adapter<CalendarSmallAdapter.ItemViewHolder>() {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth

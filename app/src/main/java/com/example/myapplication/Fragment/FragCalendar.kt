@@ -43,6 +43,7 @@ class FragCalendar : Fragment(), OnItemListener {
 
     data class CalendarDATA(
         val startDate: String,
+        var startDate2: String,
         val endDate: String,
         val color: String,
         //val repeat: Char,
@@ -52,6 +53,7 @@ class FragCalendar : Fragment(), OnItemListener {
         //val updateAt: String
         var floor : Int,
         val duration : Boolean
+
     )
 
     val calendarDayArray = Array(42) {""}
@@ -132,11 +134,12 @@ class FragCalendar : Fragment(), OnItemListener {
 
         //임시 데이터 정보 받아오기
         val datas = arrayOf(        //임시 데이터
-            CalendarDATA("2023-7-2","2023-7-6","#2AA1B7",'N',"데이터분석기초 기말고사",-1,true),
-            CalendarDATA("2023-7-6","2023-7-6","#F8D141",'N',"기말 강의평가 기간",-1,false),
-            CalendarDATA("2023-7-6","2023-7-30","#89A9D9",'N',"방학",-1,true)
+            CalendarDATA("2023-7-2","2023-7-2","2023-7-6","#2AA1B7",'N',"데이터분석기초 기말고사",-1,true),
+            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","#F8D141",'N',"기말 강의평가 기간",-1,false),
+            CalendarDATA("2023-7-6","2023-7-6","2023-7-30","#89A9D9",'N',"방학",-1,true)
 
         )
+        val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
         for(data in datas) {
             var start = calendarDayArray.indexOf(data.startDate)
             var end = calendarDayArray.indexOf(data.endDate)
@@ -146,11 +149,12 @@ class FragCalendar : Fragment(), OnItemListener {
             } else {
                 data.floor=-1
             }
-            Log.d("size","==="+data.memo)
             for(i in start.. end) {
                 if(dataArray[i].size<2&&data.floor==-1) {
                     data.floor = dataArray[i].size
+                    data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
                 }
+
                 dataArray[i].add(data.copy())
             }
         }
