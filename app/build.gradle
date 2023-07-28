@@ -55,7 +55,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     //Time Picker
-    implementation project(path: ':Ticker')
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
     //SlidingUpPanel
     implementation 'com.github.hannesa2:AndroidSlidingUpPanel:4.5.0' // supportLib
 
