@@ -13,11 +13,12 @@
 
 
         <ImageView
-            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/backgorundPoint"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:src="@drawable/calendar_schedule_background_point"
-            android:tint="@color/sub1"/>
+            android:tint="@color/sub1"
+            app:layout_constraintRight_toRightOf="parent" />
         <TextView
             android:layout_marginTop="2dp"
             app:layout_constraintTop_toTopOf="parent"

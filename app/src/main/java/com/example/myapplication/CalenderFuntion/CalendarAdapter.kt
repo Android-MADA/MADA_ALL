@@ -38,9 +38,6 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
     var d = LocalDate.now().dayOfMonth
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
 
-
-
-    data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     //임시 데이터
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
@@ -81,7 +78,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
                 val cal =holder.lines[data.floor]
                 cal.setColorFilter(Color.parseColor(data.color), PorterDuff.Mode.SRC_IN)
                 if(data.duration) {
-                    if(data.startDate==today || data.startDate2==today ||position%7==0) {
+                    if((data.startDate==today&& position%7==6) ||(data.endDate==today&& position%7==0)) {
+                        cal.setImageResource(R.drawable.calendar_line_center2)
+                    } else if(data.startDate==today || data.startDate2==today ||position%7==0) {
                         cal.setImageResource(R.drawable.calendar_line_left)
                     } else if(data.endDate==today || position%7==6) {
                         cal.setImageResource(R.drawable.calendar_line_right)
@@ -122,10 +121,15 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
 
 
             //임시 데이터
-            val adapter = CalendarScheduleAdapter(calendarDataArray[position])
-            var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
-            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
-            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
+            if(calendarDataArray[position].isEmpty()) {
+
+            } else {
+                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay)
+                var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
+                mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
+                mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
+            }
+
         }
 
     }
