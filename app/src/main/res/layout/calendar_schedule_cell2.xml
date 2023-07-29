@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5">
+
+
+        <ImageView
+            android:id="@+id/backgorundPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:src="@drawable/calendar_schedule_background_point"
+            android:tint="@color/sub1"
+            app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/textTime1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:00-"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/textTime2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1:30"
+            android:textColor="@color/black"
+            android:textSize="14sp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:text="데이터 분석기초 기말고사" />
+</LinearLayout>

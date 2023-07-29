@@ -2,27 +2,29 @@
     //My
     <string name="app_name">MADA</string>
     <string name="app_explanation">매일마다 작성하는 일정관리 서비스</string>
+    <string name="signup1">앱 내에서 사용하실 \n닉네임을 설정해주세요.</string>
+    <string name="signup2_1">회원가입 완료!</string>
+    <string name="signup2_2">이제 마다를 본격적으로 즐겨 보세요</string>
+    <string name="notice_1">"서버에서 받아올 공지사항1"</string>
+    <string name="notice_2">"서버에서 받아올 공지사항2"</string>
 
-    <string name="splash_maillogin">로그인 후 \n이용해주세요!</string>
-    <string name="signup1">서비스 이용 약관에 동의해주세요.</string>
-    <string name="signup1_1">네, 모두 동의합니다.</string>
-    <string name="signup1_2">(필수) 만 14세 이상입니다.</string>
-    <string name="signup1_3">(필수) 서비스 이용약관 동의</string>
-    <string name="signup1_4">(필수) 개인정보 수집, 이용 동의</string>
-    <string name="signup2">성함과 전화번호를 입력해주세요.</string>
-    <string name="signup3">비밀번호를 입력해주세요.</string>
-    <string name="signup4_1">회원가입 완료!</string>
-    <string name="signup4_2">이제 마다를 본격적으로 즐겨 보세요</string>
+<!--    <string name="title_activity_login">LoginActivity</string>-->
+<!--    <string name="prompt_email">Email</string>-->
+<!--    <string name="prompt_password">Password</string>-->
+<!--    <string name="action_sign_in">Sign in or register</string>-->
+<!--    <string name="action_sign_in_short">Sign in</string>-->
+<!--    <string name="welcome">"Welcome !"</string>-->
+<!--    <string name="invalid_username">Not a valid username</string>-->
+<!--    <string name="invalid_password">Password must be >5 characters</string>-->
+<!--    <string name="login_failed">"Login failed"</string>-->
+<!--    <string name="title_activity_my_profile">MyProfileActivity</string>-->
+    <string name="title_activity_my_list_item">my_list_item</string>
 
-    <string name="findpw1">가입한 전화번호를 입력해주세요.</string>
-    <string name="findpw2">비밀번호를 입력해주세요.</string>
-    <string name="findpw3">비밀번호가 변경되었습니다.</string>
-    <string name="findpw3_1">다시 로그인 해주세요!</string>
-
-    <string name="idEr">가입되지 않은 전화번호입니다</string>
-    <string name="alreadtEr">이미 가입 된 전화번호입니다</string>
-    <string name="pwEr">비밀번호가 틀렸습니다</string>
-    <string name="numEr">인증번호가 틀렸습니다</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
     //Home
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -33,4 +35,7 @@
     <string name="cloth_name">의상</string>
     <string name="item_name">소품</string>
     <string name="background_name">배경</string>
+
+    //Calendar
+    <string name="number_picker_formatter">%02d</string>
 </resources>

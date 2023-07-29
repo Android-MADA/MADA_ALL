@@ -13,14 +13,59 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".Splash2Activity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MySignup1"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MySignup2"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyNoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyListItem"
+            android:exported="false"
+            android:label="@string/title_activity_my_list_item"
+            android:theme="@style/Theme.MyApplication" />
+        <activity
+            android:name=".MyFuction.MyWithdraw1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyPremiumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MySetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyProfileNickActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyRecordMonthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyRecordWeekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyRecordDayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity android:name=".CalenderFuntion.CalendarAdd"/>
         <activity android:name=".CalenderFuntion.CalendarAddDday"/>
     </application>
