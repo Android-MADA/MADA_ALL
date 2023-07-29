@@ -2,27 +2,31 @@ package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
+import com.google.android.material.chip.Chip
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
+
 
 class CalendarAdd : AppCompatActivity(), OnItemListener {
     private lateinit var calendar: Calendar
@@ -30,6 +34,7 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
     val preList: ArrayList<Int> = ArrayList()
     val nextList: ArrayList<Int> = ArrayList()
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
+    var scheduleSelect = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CalendarAddBinding.inflate(layoutInflater)
@@ -139,23 +144,98 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
             }
 
         }
-        binding.preScheldule2.setOnClickListener {
-            binding.preScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
-            binding.nextScheldule2.setBackgroundColor(Color.TRANSPARENT)
+        val schedules = arrayOf<TextView>(
+            binding.preScheldule2,
+            binding.nextScheldule2
+        )
+        schedules[0].setOnClickListener {
+            schedules[0].setBackgroundResource(R.drawable.calendar_prebackground)
+            schedules[1].setBackgroundColor(Color.TRANSPARENT)
             binding.timePicker.visibility = View.VISIBLE
+            scheduleSelect=0
         }
-        binding.nextScheldule2.setOnClickListener {
-            binding.nextScheldule2.setBackgroundResource(R.drawable.calendar_prebackground)
-            binding.preScheldule2.setBackgroundColor(Color.TRANSPARENT)
+        schedules[1].setOnClickListener {
+            schedules[1].setBackgroundResource(R.drawable.calendar_prebackground)
+            schedules[0].setBackgroundColor(Color.TRANSPARENT)
             binding.timePicker.visibility = View.VISIBLE
+            scheduleSelect=1
         }
-        binding.timePicker.setInitialSelectedTime("36:36")
+        val data1 = arrayOf("오전", "오후")
+        val data2 = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
+        val regex = """\s*(오전|오후)\s+(\d{1,2}):(\d{2})\s*""".toRegex()
+        val ticker1 = binding.numberPicker1
+        val ticker2 = binding.numberPicker2
+        val ticker3 = binding.numberPicker3
+        ticker1.minValue = 1
+        ticker1.maxValue = 2
+        ticker1.displayedValues  = data1
+        ticker3.minValue = 1
+        ticker3.maxValue = 12
+        ticker3.displayedValues  = data2
+        ticker1.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(newVal==1) {
+                schedules[scheduleSelect].text = schedules[scheduleSelect].text.toString().replace("오후","오전")
+            } else {
+                schedules[scheduleSelect].text = schedules[scheduleSelect].text.toString().replace("오전","오후")
+            }
+        }
+        ticker2.setOnValueChangedListener { picker, oldVal, newVal ->
+            val matchResult = regex.find(schedules[scheduleSelect].text.toString())
+            if (matchResult != null) {
+                val (ampm, hour, minute) = matchResult.destructured
+                schedules[scheduleSelect].text = "  "+ampm+" "+newVal+":"+minute+"  "
+            } else {
+            }
+        }
+        ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
+            val matchResult = regex.find(schedules[scheduleSelect].text.toString())
+            if (matchResult != null) {
+                val (ampm, hour, minute) = matchResult.destructured
+                schedules[scheduleSelect].text = "  "+ampm+" "+hour+":"+data2[newVal-1]+"  "
+            } else {
+            }
+        }
+        val chip1 = binding.chip1
+        val chip2 = binding.chip2
+        val chip3 = binding.chip3
+        val chip4 = binding.chip4
+        val chip5 = binding.chip5
+        chip1.setOnClickListener {
+            chip2.isChecked = false
+            chip3.isChecked = false
+            chip4.isChecked = false
+            chip5.isChecked = false
+        }
+        chip2.setOnClickListener {
+            chip1.isChecked = false
+            chip3.isChecked = false
+            chip4.isChecked = false
+            chip5.isChecked = false
+        }
+        chip3.setOnClickListener {
+            chip2.isChecked = false
+            chip1.isChecked = false
+            chip4.isChecked = false
+            chip5.isChecked = false
+        }
+        chip4.setOnClickListener {
+            chip2.isChecked = false
+            chip3.isChecked = false
+            chip1.isChecked = false
+            chip5.isChecked = false
+        }
+        chip5.setOnClickListener {
+            chip2.isChecked = false
+            chip3.isChecked = false
+            chip4.isChecked = false
+            chip1.isChecked = false
+        }
     }
     private fun setMonthView() {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
-        val adapter = Calendar2Adapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
+        val adapter = CalendarSmallAdapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
         var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter

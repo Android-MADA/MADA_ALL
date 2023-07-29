@@ -86,7 +86,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6),
             PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7)
         )
-        if(pieChartDataArray.size==8) {     //그날 정보가 없다면
+        if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             binding.none.visibility = View.VISIBLE
         } else
             binding.none.visibility = View.GONE

@@ -38,14 +38,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
     var d = LocalDate.now().dayOfMonth
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
 
-
-
-    data class MADA(val title: String, val startDate: String, val endDate: String, val colorCode: String)
     //임시 데이터
-    val tmpDATA = listOf(
-        MADA("기말 강의 평가 기간", "7월 2일", "7월 6일", "#2AA1B7"),
-        MADA("데이터 분석 기초 기말고사", "7월 4일", "7월 4일", "#F8D141")
-    )
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
         val lines = arrayOf<ImageView>(
@@ -62,9 +55,6 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
     //데이터 설정
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var monthDate = dayList[holder.adapterPosition]
-
-
-
         var dateCalendar = Calendar.getInstance()
         dateCalendar.time = monthDate
         var dayNo = dateCalendar.get(Calendar.DAY_OF_MONTH)
@@ -84,11 +74,13 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
         for(data in calendarDataArray[position]) {
             if (data != null && data.floor !=-1) {
                 Log.d("error",data.memo)
-                Log.d("error",data.floor.toString())
+                Log.d("error",data.startDate2.toString())
                 val cal =holder.lines[data.floor]
                 cal.setColorFilter(Color.parseColor(data.color), PorterDuff.Mode.SRC_IN)
                 if(data.duration) {
-                    if(data.startDate==today || position%7==0) {
+                    if((data.startDate==today&& position%7==6) ||(data.endDate==today&& position%7==0)) {
+                        cal.setImageResource(R.drawable.calendar_line_center2)
+                    } else if(data.startDate==today || data.startDate2==today ||position%7==0) {
                         cal.setImageResource(R.drawable.calendar_line_left)
                     } else if(data.endDate==today || position%7==6) {
                         cal.setImageResource(R.drawable.calendar_line_right)
@@ -115,7 +107,6 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
 
             val alertDialog = mBuilder.show()
             val display = (holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-            mBuilder?.window?.setLayout(display.width*9/10, 2000)
             mBuilder?.window?.setGravity(Gravity.CENTER)
 
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
@@ -130,11 +121,15 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
 
 
             //임시 데이터
+            if(calendarDataArray[position].isEmpty()) {
 
-            val adapter = CalendarScheduleAdapter(iDay,position,tmpDATA)
-            var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
-            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
-            mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
+            } else {
+                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay)
+                var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
+                mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
+                mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
+            }
+
         }
 
     }
