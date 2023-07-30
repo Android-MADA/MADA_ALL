@@ -16,7 +16,6 @@
         android:orientation="vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:behavior_hideable="true"
-
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -95,6 +94,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -124,6 +124,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -132,7 +133,6 @@
 
             <ImageButton
                 android:id="@+id/btn_color_yellow"
-
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -153,6 +153,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
