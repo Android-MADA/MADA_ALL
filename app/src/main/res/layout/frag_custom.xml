@@ -1,7 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/custom_ramdi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/c_ramdi">
+        </ImageView>
+    </FrameLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/CustomPagetabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed" >
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabbtn_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FF0000"
+                        android:text="색깔"
+                        android:textColor="#000000"
+                        android:textSize="20dp" />
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabbtn_cloth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FF0000"
+                        android:text="의상"
+                        android:textColor="#000000"
+                        android:textSize="20dp"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabbtn_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FF0000"
+                        android:text="소품"
+                        android:textColor="#000000"
+                        android:textSize="20dp"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabbtn_background"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FF0000"
+                        android:text="배경"
+                        android:textColor="#000000"
+                        android:textSize="20dp"/>
+                </com.google.android.material.tabs.TabLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="8">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/CustomBottomSheetViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

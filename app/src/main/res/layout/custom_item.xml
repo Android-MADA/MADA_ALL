@@ -73,7 +73,6 @@
 
             <ImageButton
                 android:id="@+id/btn_item_basic"
-
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -94,6 +93,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -123,6 +123,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -152,6 +153,95 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_item_hat_flower"
+
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_item_hat_v"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:layout_width="99dp"
+                android:id="@+id/btn_item_hat_dinof"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_item_hat_sheep"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_item_bag_e"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:layout_width="99dp"
+                android:id="@+id/btn_item_bag_luck"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_item_hat_heart"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_item_hat_bee"
+                android:layout_width="99dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/custom_radius"></ImageButton>
+
+            <ImageButton
+                android:layout_width="99dp"
+                android:id="@+id/btn_item_hat_heads"
+                android:layout_height="72dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
