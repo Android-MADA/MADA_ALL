@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class CustomAdapter () : RecyclerView.Adapter<CustomAdapter.ItemViewHolder>()  {
+open class CustomAdapter () : RecyclerView.Adapter<CustomAdapter.ItemViewHolder>()  {
 
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

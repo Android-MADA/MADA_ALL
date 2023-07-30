@@ -1,6 +1,5 @@
 package com.example.myapplication.Adpater
 
-/*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.myapplication.custom_cloth
@@ -11,7 +10,7 @@ import com.example.myapplication.custom_item
 class CustomPageAdapter(fm: FragmentManager?, private val numberOfFragment: Int) :
 
     CustomAdapter() {
-    override fun getItem(position: Int): Fragment {
+    fun getItem(position: Int): Any {
         return when (position) {
             0 -> custom_color()
             1 -> custom_cloth()
@@ -20,9 +19,5 @@ class CustomPageAdapter(fm: FragmentManager?, private val numberOfFragment: Int)
         }
     }
 
-    override fun getCount(): Int {
-        return numberOfFragment
-    }
 }
 
- */

@@ -8,10 +8,32 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/btn_custom_reset"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/custom_btn_reset"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:background="#00FF0000"></ImageButton>
+
+        <Button
+            android:id="@+id/btn_custom_save"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="#00FF0000"
+            android:textColor="#000000"
+            android:layout_gravity="right|top"
+            android:text="저장하기"></Button>
+
         <ImageView
             android:id="@+id/custom_ramdi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="263.45dp"
+            android:layout_height="330dp"
+            android:layout_marginTop="199dp"
+            android:layout_gravity="center_horizontal"
             android:src="@drawable/c_ramdi">
         </ImageView>
     </FrameLayout>
@@ -21,18 +43,21 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="358dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:id="@+id/CustomBottomSheet"
+            app:behavior_peekHeight="150dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="2"
+
+                >
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/CustomPagetabLayout"
                     android:layout_width="match_parent"
@@ -40,7 +65,7 @@
                     app:tabGravity="fill"
                     app:tabMode="fixed" >
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabbtn_color"
+                        android:id="@+id/tabItem1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -48,7 +73,7 @@
                         android:textColor="#000000"
                         android:textSize="20dp" />
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabbtn_cloth"
+                        android:id="@+id/tabItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -56,35 +81,37 @@
                         android:textColor="#000000"
                         android:textSize="20dp"/>
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabbtn_item"
+                        android:id="@+id/tabItem3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
                         android:text="소품"
                         android:textColor="#000000"
                         android:textSize="20dp"/>
+
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabbtn_background"
+                        android:id="@+id/tabItem4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
                         android:text="배경"
                         android:textColor="#000000"
-                        android:textSize="20dp"/>
+                        android:textSize="20dp" />
                 </com.google.android.material.tabs.TabLayout>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/CustomBottomSheetTable"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="8">
 
-                <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/CustomBottomSheetViewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
