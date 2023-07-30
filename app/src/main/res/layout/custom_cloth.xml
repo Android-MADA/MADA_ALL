@@ -16,7 +16,7 @@
         android:orientation="vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:behavior_hideable="true"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/rexs/android">
 
         <TableRow>
 
@@ -72,7 +72,6 @@
 
             <ImageButton
                 android:id="@+id/btn_cloth_basic"
-
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -81,6 +80,7 @@
 
             <ImageButton
                 android:id="@+id/btn_cloth_dev"
+                android:src="@drawable/set_dev"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -93,6 +93,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -122,6 +123,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
@@ -151,6 +153,7 @@
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>
