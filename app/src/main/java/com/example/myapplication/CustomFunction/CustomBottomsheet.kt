@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.tabs.TabLayout
 
 class CustomBottomsheet {
     /* 오류로 인해 잠시 뺴둠(버루)
@@ -35,4 +36,33 @@ class CustomBottomsheet {
         }
     })
     */
+
+
+    /* 탭레이아웃 전환 코드
+    customtabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+
+        // 탭 버튼을 선택할 때 이벤트
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            val transaction = supportFragmentManager.beginTransaction()
+            when(tab?.text) {
+                "tab1" -> transaction.replace(R.id.custom_colortable, custom_color() )
+                "tab2" -> transaction.replace(R.id.custom_clothtable, custom_cloth() )
+                "tab3" -> transaction.replace(R.id.custom_itemtable, custom_item() )
+                "tab4" -> transaction.replace(R.id.custom_backgroundtable, custom_background() )
+            }
+            transaction.commit()
+        }
+
+        // 다른 탭 버튼을 눌러 선택된 탭 버튼이 해제될 때 이벤트
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+            TODO("Not yet implemented")
+        }
+
+        // 선택된 탭 버튼을 다시 선택할 때 이벤
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+            TODO("Not yet implemented")
+        }
+    })
+}
+*/
 }
