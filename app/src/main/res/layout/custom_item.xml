@@ -8,63 +8,7 @@
 
 
     <TableLayout
-        android:id="@+id/custom_menutable"
-        android:layout_width="360dp"
-        android:layout_height="75dp"
-        app:behavior_peekHeight="78dp"
-        android:background="@drawable/custom_radius"
-        android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:behavior_hideable="true"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <TableRow>
-
-            <Button
-                android:id="@+id/btn_color"
-                android:layout_marginLeft="7dp"
-                android:layout_width="75dp"
-                android:background="#00FF0000"
-                android:text="색깔"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-            <Button
-                android:id="@+id/btn_hat"
-                android:layout_marginLeft="15dp"
-                android:layout_width="75dp"
-                android:background="#00FF0000"
-                android:text="모자"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-
-            <Button
-                android:id="@+id/btn_item"
-                android:layout_width="75dp"
-                android:layout_marginLeft="15dp"
-                android:background="#00FF0000"
-                android:text="소품"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-            <Button
-                android:id="@+id/btn_background"
-                android:layout_marginLeft="15dp"
-                android:layout_width="75dp"
-                android:layout_marginRight="7dp"
-                android:background="#00FF0000"
-                android:text="배경"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-
-        </TableRow>
-    </TableLayout>
-
-    <TableLayout
-        android:id="@+id/custom_colortable"
+        android:id="@+id/custom_itemtable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
