@@ -9,6 +9,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <ImageView
+            android:id="@+id/img_custom_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:src="@drawable/back_brid">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/custom_ramdi"
+            android:layout_width="263.45dp"
+            android:layout_height="330dp"
+            android:layout_marginTop="199dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/c_ramdi">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_custom_cloth"
+            android:layout_width="263.45dp"
+            android:layout_height="330dp"
+            android:layout_marginTop="199dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/set_astronauts">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_custom_item"
+            android:layout_width="263.45dp"
+            android:layout_height="330dp"
+            android:layout_marginTop="199dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/hat_bee">
+        </ImageView>
+
         <ImageButton
             android:id="@+id/btn_custom_reset"
             android:layout_width="24dp"
@@ -28,14 +64,9 @@
             android:layout_gravity="right|top"
             android:text="저장하기"></Button>
 
-        <ImageView
-            android:id="@+id/custom_ramdi"
-            android:layout_width="263.45dp"
-            android:layout_height="330dp"
-            android:layout_marginTop="199dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/c_ramdi">
-        </ImageView>
+
+
+
     </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -65,7 +96,6 @@
                     app:tabGravity="fill"
                     app:tabMode="fixed" >
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabItem1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -73,7 +103,6 @@
                         android:textColor="#000000"
                         android:textSize="20dp" />
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -81,7 +110,6 @@
                         android:textColor="#000000"
                         android:textSize="20dp"/>
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabItem3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -90,7 +118,6 @@
                         android:textSize="20dp"/>
 
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tabItem4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
@@ -101,7 +128,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/CustomBottomSheetTable"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -112,7 +139,14 @@
                     android:id="@+id/CustomBottomSheetViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-            </LinearLayout>
+
+                <ScrollView
+                    android:id="@+id/CustomScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </ScrollView>
+            </FrameLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
