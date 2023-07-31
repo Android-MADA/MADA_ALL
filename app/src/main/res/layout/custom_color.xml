@@ -17,7 +17,6 @@
 
             <ImageButton
                 android:id="@+id/btn_color_basic"
-
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -50,7 +49,6 @@
 
             <ImageButton
                 android:id="@+id/btn_color_Rblue"
-
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
