@@ -76,25 +76,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="358dp"
+            android:layout_height="514dp"
             android:orientation="vertical"
-            android:padding="20dp"
+            app:behavior_hideable="false"
             android:id="@+id/CustomBottomSheet"
-            app:behavior_peekHeight="150dp"
+            android:background="#FFFFFF"
+            app:behavior_peekHeight="160dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
+                android:layout_height="50dp"
 
                 >
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/CustomPagetabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:tabGravity="fill"
-                    app:tabMode="fixed" >
+                    app:tabMode="fixed">
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -102,20 +104,22 @@
                         android:text="색깔"
                         android:textColor="#000000"
                         android:textSize="20dp" />
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
                         android:text="의상"
                         android:textColor="#000000"
-                        android:textSize="20dp"/>
+                        android:textSize="20dp" />
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#00FF0000"
                         android:text="소품"
                         android:textColor="#000000"
-                        android:textSize="20dp"/>
+                        android:textSize="20dp" />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
@@ -131,9 +135,8 @@
             <FrameLayout
                 android:id="@+id/CustomBottomSheetTable"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="8">
+                android:layout_height="match_parent"
+                android:paddingTop="20dp">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/CustomBottomSheetViewPager"
