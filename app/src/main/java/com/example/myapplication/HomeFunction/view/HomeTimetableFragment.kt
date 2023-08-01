@@ -18,7 +18,6 @@ import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
-import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
 import com.github.mikephil.charting.data.Entry
@@ -50,6 +49,8 @@ class HomeTimetableFragment : Fragment() {
         HomeViewpagerTimetableFragment.PieChartData("제목8", "메모8", 20, 0, 22, 0, "#486DA3", 7)
     )
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArrayList()
@@ -71,13 +72,10 @@ class HomeTimetableFragment : Fragment() {
         //Pi Chart
         var chart = binding.chart
 
-        val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
-
-
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
-            entries.add(PieEntry(1f, "2"))
+            entries.add(PieEntry(1f, "999"))
             colorsItems.add(R.color.grey4)
         } else {
             var tmp = 0     //시작 시간
@@ -131,7 +129,6 @@ class HomeTimetableFragment : Fragment() {
             setExtraOffsets(25f,25f,25f,25f)    //크기 조절
             setUsePercentValues(false)
             setEntryLabelColor(Color.BLACK)
-            marker = marker_
             setDrawEntryLabels(false) //라벨 끄기
             //rotationAngle = 30f // 회전 각도, 굳이 필요 없을듯
             description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
@@ -142,10 +139,11 @@ class HomeTimetableFragment : Fragment() {
                     val pieEntry = e as PieEntry
                     val label = pieEntry.label
 
-                    if (label == "999") {
-                        pieDataSet.selectionShift = 1f //하이라이트 크기
-                    } else {
-                        pieDataSet.selectionShift = 30f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+                    if (label != "999") {
+                        val bundle = Bundle()
+                        bundle.putSerializable("pieChartData", pieChartDataArray[label.toInt()])
+                        bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                        Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
                     }
                 }
             }

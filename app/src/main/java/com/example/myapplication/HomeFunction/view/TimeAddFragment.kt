@@ -1,12 +1,19 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -42,23 +49,47 @@ class TimeAddFragment : Fragment() {
         val ticker2 = binding.numberPicker2
         val ticker3 = binding.numberPicker3
 
+        val textTitle = binding.edtHomeCategoryName
         val btnSubmit = binding.btnHomeTimeAddSubmit
         val btnDelete = binding.btnHomeTimeEditDelete
+        val textMemo = binding.edtHomeScheduleMemo
 
         val btnBack = binding.ivHomeAddTimeBack
         // 데이터 받기
         val receivedData = arguments?.getSerializable("pieChartDataArray") as  Array<HomeViewpagerTimetableFragment.PieChartData>?
-        if( receivedData != null) {
+        val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
 
+        fun convertTo12HourFormat(hour24: Int, minute: Int): String {
+            val amPm: String
+            val hour12: Int
+
+            if (hour24 >= 12) {
+                amPm = "오후"
+                hour12 = if (hour24 > 12) hour24 - 12 else hour24
+            } else {
+                amPm = "오전"
+                hour12 = if (hour24 == 0) 12 else hour24
+            }
+
+            val minuteStr = if (minute < 10) "0$minute" else minute.toString()
+            return "  $amPm $hour12:$minuteStr  "
         }
 
 
+        if(recievedPieData != null) {
+            btnSubmit.text = "수정"
+            btnDelete.isVisible = true
+
+            textTitle.setText(recievedPieData.title)
+            ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
+            colorSelector.isGone = true
+
+            times[0].text = convertTo12HourFormat(recievedPieData.startHour,recievedPieData.startMin)
+            times[1].text = convertTo12HourFormat(recievedPieData.endHour,recievedPieData.endMin)
+            textMemo.setText(recievedPieData.memo)
+        }
         //파라미터가 전달된다면(생성이 아니라 수정이라면)
 //        if(){
-//            //1. 등록 text를 수정 text 로 변경하기
-//            btnSubmit.text = "수정"
-//            //2. 삭제하기 btn 활설화시키기
-//            btnDelete.isVisible = true
 //            //3. 받아온 파라미터들을 알맞은 장소에 넣기
 //            //4. 이전 시간표 데이터는 삭제하기
 //        }
@@ -219,14 +250,70 @@ class TimeAddFragment : Fragment() {
 
         //등록 btn
         btnSubmit.setOnClickListener {
-            //1. db에 저장(생성) 또는 수정(수정)
-            // 수정버튼을 누르면 시간표가 생성되는 게 아니라 수정됨
+            var matchResult = regex.find(times[0].text.toString())
+            var start : Int = 0
+            var end : Int = 0
+            if (matchResult != null) {
+                val (ampm, tmpHour, tmpMin) = matchResult.destructured
+                if(ampm =="오전") {
+                    start = tmpHour.toInt()*60 + tmpMin.toInt()
+                } else {
+                    start = tmpHour.toInt()*60 + tmpMin.toInt() + 12*60
+                }
+
+            }
+            matchResult = regex.find(times[1].text.toString())
+            if (matchResult != null) {
+                val (ampm, tmpHour, tmpMin) = matchResult.destructured
+                if(ampm =="오전") {
+                    end = tmpHour.toInt()*60 + tmpMin.toInt()
+                } else {
+                    end = tmpHour.toInt()*60 + tmpMin.toInt() + 12*60
+                }
+            }
+            var check = true
+            if( receivedData != null) {
+                for (data in receivedData) {
+
+                    var tmpStart = data.startHour*60 + data.startMin
+                    var tmpEnd = data.endHour*60 + data.endMin
+                    if((start < tmpEnd&& start >= tmpStart) || (end > tmpStart&& end <= tmpEnd)) {
+                        if(data.divisionNumber != recievedPieData?.divisionNumber)
+                            check = false
+                    }
+                }
+                Log.d("receivedData","!null")
+            } else {
+
+            }
+            if(check) {         //이상 x
+                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                //만약 수정 상태라면 해당 데이터 수정 해야함!!!
+                //등록 상태라면 데이터 등록
+
+            } else {            //이미 해당 시간에 일정이 있을 때
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.home_fragment_time_add_warningsign, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+            }
+
             // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
             //2. 시간표 화면으로 이동
-            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+
         }
         //back btn
         btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        }
+        btnDelete.setOnClickListener {
+            //데이터 삭제 해야함
             findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
 

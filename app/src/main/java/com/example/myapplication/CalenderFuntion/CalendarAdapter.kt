@@ -68,7 +68,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             holder.textDay.setTextColor(colorMain)
         }
         if(iYear == y && iMonth == m && iDay == d) {
-            holder.itemView.setBackgroundResource(R.drawable.etc_calender_today)
+            holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background)
             holder.textDay.setTextColor(Color.WHITE)
         }
         for(data in calendarDataArray[position]) {
