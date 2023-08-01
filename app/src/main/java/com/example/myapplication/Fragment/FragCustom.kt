@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.CustomBottomSheetViewPager
-import com.example.myapplication.HomeFuction.view.HomeTimeEditFragment
 import com.example.myapplication.R
 import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
@@ -44,6 +43,7 @@ class FragCustom : Fragment() {
         frag_cloth = custom_cloth()
         frag_item = custom_item()
         frag_background = custom_background()
+        tabLayout = binding.CustomPagetabLayout
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {

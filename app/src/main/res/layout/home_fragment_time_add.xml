@@ -267,7 +267,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
                 <LinearLayout
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:id="@+id/timePicker"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

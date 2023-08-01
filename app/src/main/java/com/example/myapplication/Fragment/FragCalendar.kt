@@ -135,31 +135,42 @@ class FragCalendar : Fragment(), OnItemListener {
         val dayList = dayInMonthArray()
 
         //임시 데이터 정보 받아오기
-        val datas = arrayOf(        //임시 데이터
+        val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
             CalendarDATA("2023-7-2","2023-7-2","2023-7-6","","","#2AA1B7",'N',"데이터분석기초 기말고사",-1,true),
-            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30","#F8D141",'N',"기말 강의평가 기간",-1,false),
-            CalendarDATA("2023-7-21","2023-7-6","2023-7-30","","","#89A9D9",'N',"방학",-1,true),
-            CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","","#2AA1B7",'N',"이건 무슨 일정일까",-1,true)
+            CalendarDATA("2023-7-21","2023-7-6","2023-8-5","","","#89A9D9",'N',"방학",-1,true),
+            CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","","#2AA1B7",'N',"이건 무슨 일정일까",-1,true),
+            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30","#F8D141",'N',"기말 강의평가 기간",-1,false)
         )
         val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
         for(data in datas) {
             if(data!=null) {
                 var start = calendarDayArray.indexOf(data.startDate)
                 var end = calendarDayArray.indexOf(data.endDate)
+                if(end>=0 && start < 0)
+                    start = 0
+                else if(end<0 && start >=0)
+                    end = 41
 
-                if(dataArray[start].size<2) {
-                    data.floor = dataArray[start].size
-                } else {
-                    data.floor=-1
-                }
-                for(i in start.. end) {
-                    if(dataArray[i].size<2&&data.floor==-1) {
-                        data.floor = dataArray[i].size
-                        data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
+                if (start >= 0 && end >= 0) {
+                    // start와 end가 유효한 경우에만 dataArray 배열에 데이터 추가
+                    if(dataArray[start].size<2) {
+                        data.floor = dataArray[start].size
+                    } else {
+                        data.floor=-1
                     }
+                    for(i in start.. end) {
+                        if(dataArray[i].size<2&&data.floor==-1) {
+                            data.floor = dataArray[i].size
+                            data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
+                        }
 
-                    dataArray[i].add(data.copy())
+                        dataArray[i].add(data.copy())
+                    }
+                } else {
+                    // start와 end가 유효하지 않은 경우, 오류 처리 또는 다른 로직 수행
                 }
+
+
             }
         }
         val adapter = CalendarAdapter(dayList,dataArray)
