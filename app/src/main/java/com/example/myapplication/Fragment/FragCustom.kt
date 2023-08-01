@@ -45,7 +45,7 @@ class FragCustom : Fragment() {
         frag_background = custom_background()
         tabLayout = binding.CustomPagetabLayout
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val inflater1: LayoutInflater = layoutInflater
                 var pos = tab.position
