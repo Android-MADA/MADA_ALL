@@ -4,27 +4,28 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
 
     <TableLayout
         android:id="@+id/custom_itemtable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
         <TableRow>
 
             <ImageButton
                 android:id="@+id/btn_item_basic"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                android:background="@drawable/custom_radius"
+                android:src="@drawable/custom_null"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_normal"
+                android:src="@drawable/gh_normal_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -34,6 +35,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_hat_ber"
+                android:src="@drawable/hat_ber_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -46,7 +48,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_grad"
-
+                android:src="@drawable/hat_grad_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -55,6 +57,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_glass_8bit"
+                android:src="@drawable/g_8bit_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -64,6 +67,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_glass_woig"
+                android:src="@drawable/g_woig_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -76,7 +80,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_ipod"
-
+                android:src="@drawable/hat_ipod_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -85,6 +89,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_glass_sunR"
+                android:src="@drawable/g_sunr_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -94,6 +99,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_glass_sunB"
+                android:src="@drawable/g_sunb_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -106,7 +112,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_flower"
-
+                android:src="@drawable/hat_flower_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -115,6 +121,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_v"
+                android:src="@drawable/hat_v_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -124,6 +131,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_hat_dinof"
+                android:src="@drawable/hat_dinof_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -136,6 +144,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_sheep"
+                android:src="@drawable/hat_sheep_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -144,6 +153,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_bag_e"
+                android:src="@drawable/bag_e_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -153,6 +163,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_bag_luck"
+                android:src="@drawable/bag_luck_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
@@ -165,6 +176,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_heart"
+                android:src="@drawable/hat_heart_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -173,6 +185,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_bee"
+                android:src="@drawable/hat_bee_s"
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
@@ -182,6 +195,7 @@
             <ImageButton
                 android:layout_width="99dp"
                 android:id="@+id/btn_item_hat_heads"
+                android:src="@drawable/heads_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
