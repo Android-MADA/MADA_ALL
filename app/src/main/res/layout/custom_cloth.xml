@@ -7,6 +7,11 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
+    <ScrollView
+        android:id="@+id/CustomScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <TableLayout
         android:id="@+id/custom_clothtable"
@@ -124,4 +129,5 @@
         </TableRow>
 
     </TableLayout>
+    </ScrollView>
 </LinearLayout>
