@@ -25,7 +25,7 @@ class HomeCategoryFragment : Fragment() {
     lateinit var binding : HomeFragmentCategoryBinding
     val sampleCategoryArray = ArrayList<sampleCategoryData>()
     val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
-    var bottomFlag = true
+    private var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +81,5 @@ class HomeCategoryFragment : Fragment() {
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "휴대폰", Color.parseColor("#486DA3")))
         }
     }
-
 
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.R
 
 class HomeTimeColorAdapter(private val dataList : ArrayList<Int>) : RecyclerView.Adapter<HomeTimeColorAdapter.viewHolder>() {
