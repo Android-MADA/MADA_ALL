@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <FrameLayout
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,7 +14,6 @@
             android:id="@+id/img_custom_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
             android:src="@drawable/back_brid">
         </ImageView>
 
@@ -82,13 +79,14 @@
             android:orientation="vertical"
             app:behavior_hideable="false"
             android:id="@+id/CustomBottomSheet"
-            android:background="@drawable/calendar_dday_background"
+            android:background="#FFFFFF"
             app:behavior_peekHeight="160dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
+
                 >
 
                 <com.google.android.material.tabs.TabLayout
@@ -137,7 +135,8 @@
                 android:id="@+id/CustomBottomSheetTable"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="20dp">
+                android:paddingTop="20dp"
+                android:layout_marginBottom="100dp">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/CustomBottomSheetViewPager"
