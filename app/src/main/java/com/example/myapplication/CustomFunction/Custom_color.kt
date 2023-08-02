@@ -1,26 +1,27 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
 
-class custom_color {
+class custom_color : Fragment() {
 
     lateinit var binding: CustomColorBinding
     lateinit var fragbinding: FragCustomBinding
 
-    fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
-
         // val onClickbtncolorInstance = onClickbtncolor()
         var btn_pushed = true
 
@@ -34,9 +35,11 @@ class custom_color {
         var btncolorRblue = binding.btnColorRblue
         var btncoloryellow = binding.btnColorYellow
         btncolorbasic.setOnClickListener{
+            Log.d("dsa","fsaf")
             if (btn_pushed == true){
                 binding.btnColorBasic.setImageResource(R.drawable.color_basic_choice);
                 btn_pushed = false;
+
             }else {
                 binding.btnColorBasic.setImageResource(R.drawable.color_basic);
                 btn_pushed = true;

@@ -1,6 +1,7 @@
 package com.example.myapplication.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,10 @@ class FragCustom : Fragment() {
                 var pos = tab.position
                 when (pos) {
                     0 -> {//인플레이터 사용해서 레이아웃을 연결해주는 방식
-                        inflater1.inflate(R.layout.custom_color, binding.CustomBottomSheetTable, true)
+                        val colorFragment = custom_color()
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, colorFragment)
+                            .commit()
                     }
                     1 -> {
                         inflater1.inflate(R.layout.custom_cloth, binding.CustomBottomSheetTable, true)
