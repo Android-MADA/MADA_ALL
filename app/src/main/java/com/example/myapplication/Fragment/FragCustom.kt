@@ -27,10 +27,6 @@ import com.google.android.material.tabs.TabLayout
 
 class FragCustom : Fragment() {
     lateinit var binding: FragCustomBinding
-    private lateinit var frag_color: custom_color
-    private lateinit var frag_cloth: custom_cloth
-    private lateinit var frag_item: custom_item
-    private lateinit var frag_background: custom_background
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     private var tabCurrentIdx = 0
@@ -47,10 +43,10 @@ class FragCustom : Fragment() {
         var customtabLayout = binding.CustomPagetabLayout
         var viewPager = binding.CustomBottomSheetViewPager
 
-        frag_color = custom_color()
-        frag_cloth = custom_cloth()
-        frag_item = custom_item()
-        frag_background = custom_background()
+        val colorFragment = custom_color()
+        val clothFragment = custom_cloth()
+        val itemFragment = custom_item()
+        val backgroundFragment = custom_background()
 
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
@@ -61,11 +57,15 @@ class FragCustom : Fragment() {
                 val inflater1: LayoutInflater = layoutInflater
                 var pos = tab.position
                 when (pos) {
-                    0 -> {//인플레이터 사용해서 레이아웃을 연결해주는 방식
-                        inflater1.inflate(R.layout.custom_color, binding.CustomBottomSheetTable, true)
+                    0 -> {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, colorFragment)
+                            .commit()
                     }
                     1 -> {
-                        inflater1.inflate(R.layout.custom_cloth, binding.CustomBottomSheetTable, true)
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, clothFragment)
+                            .commit()
                     }
                     2 -> {
                         inflater1.inflate(R.layout.custom_item, binding.CustomBottomSheetTable, true)
