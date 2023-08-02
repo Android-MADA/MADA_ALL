@@ -3,28 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_viewpager_todo"
+        android:id="@+id/layout_repeat_todo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <CheckBox
+        <ImageView
             android:id="@+id/iv_repeat_todo"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/home_checkbox"
-            android:button="@null"
+            android:src="@drawable/home_checkbox_symbol_unchecked"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
         <TextView
-            android:id="@+id/tv_home_todo"
+            android:id="@+id/tv_repeat_todo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="할 일"
@@ -35,7 +36,7 @@
             android:layout_marginStart="16dp"
             />
         <TextView
-            android:id="@+id/tv_home_todo_edit"
+            android:id="@+id/tv_repeat_todo_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="···"
@@ -49,14 +50,14 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_viewpager_todo_edit"
+        android:id="@+id/layout_repeat_todo_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_viewpager_todo"
+        app:layout_constraintTop_toBottomOf="@id/layout_repeat_todo"
         android:visibility="gone"
         >
         <ImageView
@@ -66,7 +67,7 @@
             android:layout_gravity="center_vertical"
             />
         <EditText
-            android:id="@+id/edt_home_viewpager2_todo_edit"
+            android:id="@+id/edt_repeat_todo_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,7 +77,7 @@
             android:layout_marginLeft="16dp"
             />
         <ImageView
-            android:id="@+id/iv_home_viewpager_todo_save_edit"
+            android:id="@+id/iv_repeat_todo_save_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_check_24"

@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.viewPager2
+package com.example.myapplication.HomeFunction.repeatTodo
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +11,14 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
 import com.example.myapplication.R
 
-class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCateData> ) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
+class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<SampleHomeCateData> ) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
 
 
-    lateinit var todoAdapter : HomeViewpager2TodoAdapter
+    lateinit var todoAdapter : HomeRepeatTodoAdapter
+
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val cateIcon : ImageView
@@ -37,7 +39,7 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_catagory_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_repeat_cate_list, parent, false)
         return viewHolder(view)
     }
 
@@ -46,8 +48,8 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        todoAdapter = HomeViewpager2TodoAdapter(dataSet[position].todoList)
-        todoAdapter.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
+        todoAdapter = HomeRepeatTodoAdapter(dataSet[position].todoList)
+        todoAdapter.setItemClickListener(object : HomeRepeatTodoAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 //edt, btn 노출 with text
                 //cb, tx, menu visibility gone
@@ -75,14 +77,14 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
         holder.itemView.findViewById<ImageView>(R.id.iv_repeat_todo_save).setOnClickListener {
             itemClickListener.onClick(it, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
         }
-}
+    }
     interface OnItemClickListener {
         fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
-    fun setItemClickListener(onItemClickListener: HomeViewpager2CategoryAdapter.OnItemClickListener) {
+    fun setItemClickListener(onItemClickListener: HomeRepeatCategoryAdapter.OnItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
     // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : HomeViewpager2CategoryAdapter.OnItemClickListener
+    private lateinit var itemClickListener : HomeRepeatCategoryAdapter.OnItemClickListener
 }
