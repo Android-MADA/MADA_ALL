@@ -20,6 +20,7 @@ import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimet
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
+import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -35,6 +36,7 @@ class HomeTimetableFragment : Fragment() {
     lateinit var binding : HomeFragmentTimetableBinding
     val sampleTimeArray = ArrayList<SampleTimeData>()
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
+    private var bottomFlag = true
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
@@ -61,6 +63,7 @@ class HomeTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
+        hideBottomNavigation(bottomFlag, activity)
 
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
@@ -153,8 +156,6 @@ class HomeTimetableFragment : Fragment() {
             }
         })
 
-
-        hideBootomNavigation(true)
         return binding.root
     }
 
@@ -163,10 +164,12 @@ class HomeTimetableFragment : Fragment() {
 
         binding.ivHomeTimetableBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.tvHomeTimetableSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.fabHomeTime.setOnClickListener {
@@ -195,19 +198,9 @@ class HomeTimetableFragment : Fragment() {
 
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        hideBootomNavigation(false)
-    }
-
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigation(bottomFlag, activity)
     }
 
     //HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0)
