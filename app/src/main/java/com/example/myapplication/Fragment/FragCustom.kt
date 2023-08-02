@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.R
@@ -17,6 +19,9 @@ import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.CustomItemBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.tabs.TabLayout
 
 class FragCustom : Fragment() {
@@ -28,6 +33,8 @@ class FragCustom : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     private var tabCurrentIdx = 0
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +51,10 @@ class FragCustom : Fragment() {
         frag_item = custom_item()
         frag_background = custom_background()
         tabLayout = binding.CustomPagetabLayout
+
+        val fragmentManager: FragmentManager = childFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.commit()
 
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -79,16 +90,28 @@ class FragCustom : Fragment() {
         return binding.root
     }
 
-    private fun changeView(index: Int) {
-
-
-
+    fun onClickbtncolor() {
+        binding.customRamdi.setImageResource(R.drawable.c_ramdi)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
-
+    private fun initBottomSheet() {
+        val sheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
+        sheetBehavior.isGestureInsetBottomIgnored = true
+        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    STATE_DRAGGING -> {
+                        val inflater1: LayoutInflater = layoutInflater
+                        inflater1.inflate(R.layout.custom_color, binding.CustomBottomSheetTable, true)
+                    }
+                }
+            }
+        })
+    }
 
 }

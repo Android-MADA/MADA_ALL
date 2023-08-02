@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
+
 class custom_color {
 
     lateinit var binding: CustomColorBinding
@@ -20,6 +21,9 @@ class custom_color {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
 
+        // val onClickbtncolorInstance = onClickbtncolor()
+        var btn_pushed = true
+
         var btncolorbasic = binding.btnColorBasic
         var btncolorblue = binding.btnColorBlue
         var btncolorbluepurple = binding.btnColorBluepurple
@@ -30,8 +34,15 @@ class custom_color {
         var btncolorRblue = binding.btnColorRblue
         var btncoloryellow = binding.btnColorYellow
         btncolorbasic.setOnClickListener{
-            binding.btnColorBasic.setImageResource(R.drawable.color_basic_choice)
-            fragbinding.customRamdi.setImageResource(R.drawable.c_ramdi)
+            if (btn_pushed == true){
+                binding.btnColorBasic.setImageResource(R.drawable.color_basic_choice);
+                btn_pushed = false;
+            }else {
+                binding.btnColorBasic.setImageResource(R.drawable.color_basic);
+                btn_pushed = true;
+            }
+            // binding.btnColorBasic.setImageResource(R.drawable.color_basic_choice)
+            // onClickbtncolorInstance.onClickbtncolor("btncolorbasic")
 
         }
         btncolorblue.setOnClickListener{
