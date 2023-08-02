@@ -1,55 +1,52 @@
 package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
-import com.google.android.material.chip.Chip
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 
-class CalendarAdd : AppCompatActivity(), OnItemListener {
+class CalendarAddFragment : Fragment(), OnItemListener {
     private lateinit var calendar: Calendar
     lateinit var binding: CalendarAddBinding
-    val preList: ArrayList<Int> = ArrayList()
-    val nextList: ArrayList<Int> = ArrayList()
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     var scheduleSelect = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = CalendarAddBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        preList.add(intent.getIntExtra("Month",0))
-        nextList.add(intent.getIntExtra("Month",0))
-        preList.add(intent.getIntExtra("Day",0))
-        nextList.add(intent.getIntExtra("Day",0))
-        preList.add(intent.getIntExtra("Yoil",1))
-        nextList.add(intent.getIntExtra("Yoil",1))
-        preList.add(0)
-        nextList.add(0)
 
-        binding.preScheldule.text = "  "+preList[0].toString()+"월 " + preList[1].toString() +"일 ("+weekdays[preList[2]]+")  "
-        binding.nextScheldule.text = "  "+nextList[0].toString()+"월 " + nextList[1].toString() +"일 ("+weekdays[nextList[2]]+")  "
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = CalendarAddBinding.inflate(layoutInflater)
+        arguments?.let { bundle ->
+            val month = bundle.getInt("Month", 6)
+            val day = bundle.getInt("Day", 1)
+            val yoil = bundle.getInt("Yoil", 0)
+            binding.preScheldule.text = "  "+month.toString()+"월 " + day.toString() +"일 ("+weekdays[yoil]+")  "
+            binding.nextScheldule.text = binding.preScheldule.text
+        }
 
         binding.textDday.visibility= View.GONE
         binding.cal.visibility= View.GONE
@@ -57,25 +54,7 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
 
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
-        setMonthView()
-        binding.backButton.setOnClickListener {
-            //뭐가 있다면
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.calendar_add_popup, null)
-            val mBuilder = AlertDialog.Builder(this)
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
-            val display = (this.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
-                mBuilder.dismiss()
-            })
-            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                onBackPressed()
-            })
-            //onBackPressed()
-        }
+
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
             binding.layoutColorSelector.visibility = View.GONE
@@ -103,6 +82,7 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
         binding.calendarColor.setOnClickListener {
             binding.layoutColorSelector.visibility = View.VISIBLE
         }
+
         binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked) {
                 binding.textDday.visibility= View.VISIBLE
@@ -114,27 +94,26 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
-            setMonthView()
+            setMonthView(-1)
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
-            setMonthView()
+            setMonthView(1)
         }
 
         binding.preScheldule.setOnClickListener {
             binding.preScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
-            preList[3]=1
-            nextList[3]=0
             binding.cal.visibility= View.VISIBLE
+            setMonthView(-1)
+
         }
         binding.nextScheldule.setOnClickListener {
             binding.nextScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
-            preList[3]=0
-            nextList[3]=1
             binding.cal.visibility= View.VISIBLE
+            setMonthView(1)
         }
         binding.switch2.setOnCheckedChangeListener { p0, isChecked ->
             if(isChecked) {
@@ -230,13 +209,60 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
             chip4.isChecked = false
             chip1.isChecked = false
         }
+        return binding.root
     }
-    private fun setMonthView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.backButton.setOnClickListener {
+            //뭐가 있다면
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+            val display = requireActivity().windowManager.defaultDisplay
+            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                mBuilder.dismiss()
+            })
+            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                mBuilder.dismiss()
+            })
+            //onBackPressed()
+        }
+        binding.button.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+        }
+
+    }
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        hideBootomNavigation(false)
+    }
+
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
+        }
+        else {
+            bottomNavigation?.isVisible = true
+        }
+    }
+    private fun setMonthView(preNext : Int) {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
-        val adapter = CalendarSmallAdapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
-        var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
+        val adapter: CalendarSmallAdapter = if (preNext == -1) {
+            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule)
+        } else {
+            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule)
+        }
+
+
+        var manager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(),7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter
     }
@@ -259,6 +285,5 @@ class CalendarAdd : AppCompatActivity(), OnItemListener {
     }
     override fun onItemClick(dayText: String) {
         var yearMonthDay = yearMonthFromDate(CalendarUtil.selectedDate) + " " + dayText + "일"
-        Toast.makeText(this, yearMonthDay, Toast.LENGTH_SHORT).show()
     }
 }

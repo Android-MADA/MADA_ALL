@@ -12,9 +12,8 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val preList: ArrayList<Int>,
-                           private val nextList: ArrayList<Int>, private val cal : LinearLayout,
-                           private val preText: TextView, private val nextText: TextView)
+class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal : LinearLayout,
+                           private val preNexttext: TextView,)
     : RecyclerView.Adapter<CalendarSmallAdapter.ItemViewHolder>() {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -45,24 +44,12 @@ class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val pre
             holder.textDay.setTextColor(Color.LTGRAY)
         }
         if(iYear == y && iMonth == m && iDay == d) {
-            holder.itemView.setBackgroundResource(R.drawable.calendar_smallbackground)
+            holder.textDay.setBackgroundResource(R.drawable.calendar_smallbackground)
             holder.textDay.setTextColor(Color.WHITE)
         }
 
         holder.itemView.setOnClickListener {
-            if(preList[3]==1) {
-                preList[0]= iMonth
-                preList[1]= iDay
-                preList[2]= position
-                preText.text =preList[0].toString()+"월 " + preList[1].toString() +"일 ("+weekdays[preList[2]%7]+")"
-                cal.visibility = View.GONE
-            } else if(nextList[3]==1) {
-                nextList[0]= iMonth
-                nextList[1]= iDay
-                nextList[2]= position%7
-                nextText.text = nextList[0].toString()+"월 " + nextList[1].toString() +"일 ("+weekdays[nextList[2]%7]+")"
-                cal.visibility = View.GONE
-            }
+            preNexttext.text ="  ${iMonth}월 ${iDay}일 (${weekdays[position]})  "
         }
 
     }

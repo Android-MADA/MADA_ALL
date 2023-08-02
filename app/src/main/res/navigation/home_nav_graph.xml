@@ -21,7 +21,33 @@
     <fragment
         android:id="@+id/fragCalendar"
         android:name="com.example.myapplication.Fragment.FragCalendar"
-        android:label="FragCalendar" />
+        android:label="FragCalendar"
+        tools:layout="@layout/frag_calendar">
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAdd"
+            app:destination="@id/calendarAdd" />
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAddS"
+            app:destination="@id/calendarAddS" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAdd"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddFragment"
+        android:label="CalendarAdd"
+        tools:layout="@layout/calendar_add">
+        <action
+            android:id="@+id/action_calendarAdd_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAddS"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddSFragment"
+        android:label="CalendarAddS "
+        tools:layout="@layout/calendar_add_s">
+        <action
+            android:id="@+id/action_calendarAddS_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+    </fragment>
     <fragment
         android:id="@+id/fragCustom"
         android:name="com.example.myapplication.Fragment.FragCustom"

@@ -2,16 +2,20 @@ package com.example.myapplication.CalenderFuntion
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCalendar.CalendarDATA?>,private val today: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
@@ -52,7 +56,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
                 VIEW_TYPE_WITH_DURATION -> {
                     val viewHolderWithDuration = holder as ItemViewHolderWithDuration
                     viewHolderWithDuration.textDay.text = "${today}일"
-                    viewHolderWithDuration.textTitle.text = item.memo
+                    viewHolderWithDuration.textTitle.text = item.title
                     val date1 = LocalDate.parse(item.startDate, formatter)
                     val date2 = LocalDate.parse(item.endDate, formatter)
                     viewHolderWithDuration.textDuration.text = ("${date1.monthValue}월 ${date1.dayOfMonth}일 ~ ${date2.monthValue}월 ${date2.dayOfMonth}일")
@@ -64,6 +68,24 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
                     viewHolderWithoutDuration.textTime2.text = convertTo12HourFormat(item.endTime)
                     viewHolderWithoutDuration.backgroundPoint.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
                 }
+            }
+            holder.itemView.setOnClickListener {
+                val bundle = Bundle()
+                if(item.title!="")
+                    bundle.putString("title", item.title)
+                if(item.startDate!="")
+                    bundle.putString("preSchedule",convertToDateKoreanFormat(item.startDate))
+                if(item.endDate!="")
+                    bundle.putString("nextSchedule",convertToDateKoreanFormat(item.endDate))
+                if(item.startTime!="")
+                    bundle.putString("preClock",convertTo12HourFormat2(item.startTime))
+                if(item.endTime!="")
+                    bundle.putString("nextClock",convertTo12HourFormat2(item.endTime))
+                if(item.repeat!="")
+                    bundle.putString("cycle",item.repeat)
+                if(item.memo!="")
+                    bundle.putString("memo",item.memo)
+                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
             }
         }
 
@@ -92,5 +114,20 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
         val convertedHour = if (hour > 12) hour - 12 else hour
 
         return "$convertedHour:$minute"
+    }
+    fun convertTo12HourFormat2(timeString: String): String {
+        val parts = timeString.split(":")
+        val hour = parts[0].toInt()
+        val minute = parts[1]
+        val convertedHour = if (hour > 12) hour - 12 else hour
+        val ampm = if (hour > 12) "pm" else "am"
+        return "  $ampm $convertedHour:$minute  "
+    }
+    fun convertToDateKoreanFormat(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
     }
 }

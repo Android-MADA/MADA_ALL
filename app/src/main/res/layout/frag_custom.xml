@@ -82,14 +82,13 @@
             android:orientation="vertical"
             app:behavior_hideable="false"
             android:id="@+id/CustomBottomSheet"
-            android:background="#FFFFFF"
+            android:background="@drawable/calendar_dday_background"
             app:behavior_peekHeight="160dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-
                 >
 
                 <com.google.android.material.tabs.TabLayout
