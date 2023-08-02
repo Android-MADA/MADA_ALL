@@ -55,18 +55,18 @@
             android:maxLength="10" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <android.widget.Button
+    <Button
         android:id="@+id/signup1_Btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="80dp"
         android:text="완료하기"
+        android:background="@drawable/my_btn_nomal"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="16dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
