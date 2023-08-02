@@ -45,4 +45,3 @@ fun hideBottomNavigation(bool : Boolean, activity: Activity?){
         bottomNavigation?.isVisible = true
     }
 }
-

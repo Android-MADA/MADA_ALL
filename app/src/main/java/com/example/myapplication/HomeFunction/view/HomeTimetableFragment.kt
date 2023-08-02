@@ -52,7 +52,6 @@ class HomeTimetableFragment : Fragment() {
     )
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArrayList()
@@ -64,7 +63,7 @@ class HomeTimetableFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
         hideBottomNavigation(bottomFlag, activity)
-
+        
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
         val currentTime = Calendar.getInstance()
@@ -155,7 +154,6 @@ class HomeTimetableFragment : Fragment() {
                 // 아무 것도 선택되지 않았을 때의 동작을 구현합니다.
             }
         })
-
         return binding.root
     }
 
@@ -202,6 +200,7 @@ class HomeTimetableFragment : Fragment() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
     }
+
 
     //HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0)
     private fun initArrayList(){
