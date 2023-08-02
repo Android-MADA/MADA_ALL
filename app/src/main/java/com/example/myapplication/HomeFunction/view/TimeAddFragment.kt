@@ -23,9 +23,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TimeAddFragment : Fragment() {
+
+    private var bottomFlag = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,6 +39,7 @@ class TimeAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding : HomeFragmentTimeAddBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
+        hideBottomNavigation(bottomFlag, activity)
 
         val ivColor = binding.ivHomeTimeColor
         val colorSelector = binding.layoutColorSelector

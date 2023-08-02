@@ -16,6 +16,7 @@ import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeCategoryFragment : Fragment() {
@@ -23,6 +24,7 @@ class HomeCategoryFragment : Fragment() {
     lateinit var binding : HomeFragmentCategoryBinding
     val sampleCategoryArray = ArrayList<sampleCategoryData>()
     val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
+    private var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +37,7 @@ class HomeCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
-        hideBootomNavigation(true)
+        hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
 
@@ -44,6 +46,7 @@ class HomeCategoryFragment : Fragment() {
 
         binding.ivHomeCategoryBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
+            bottomFlag = false
         }
 
         binding.btnHomeCategory.setOnClickListener {
@@ -63,7 +66,7 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideBootomNavigation(false)
+        hideBottomNavigation(bottomFlag, activity)
     }
 
 
@@ -75,16 +78,6 @@ class HomeCategoryFragment : Fragment() {
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "잠", resources.getColor(R.color.point_main)))
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "친구만나기", Color.parseColor("#F8D141")))
             sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "휴대폰", Color.parseColor("#486DA3")))
-        }
-    }
-
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
         }
     }
 

@@ -12,11 +12,13 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentRepeatTodoBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeRepeatTodoFragment : Fragment() {
 
     lateinit var binding : HomeFragmentRepeatTodoBinding
+    private var bottomFlag = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -26,7 +28,7 @@ class HomeRepeatTodoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_repeat_todo, container, false)
-        hideBootomNavigation(true)
+        hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
 
@@ -35,15 +37,12 @@ class HomeRepeatTodoFragment : Fragment() {
 
         binding.ivHomeRepeatBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
+            bottomFlag = false
         }
     }
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigation(bottomFlag, activity)
     }
 }

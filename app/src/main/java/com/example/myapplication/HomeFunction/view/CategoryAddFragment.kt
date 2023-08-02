@@ -19,6 +19,7 @@ import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
+import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CategoryAddFragment : Fragment() {
@@ -29,6 +30,7 @@ class CategoryAddFragment : Fragment() {
     val cateColorArray = ArrayList<Int>()
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
+    private var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class CategoryAddFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
-        hideBootomNavigation(true)
+        hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
 
@@ -110,17 +112,6 @@ class CategoryAddFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideBootomNavigation(false)
-    }
-
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
-        }
     }
 
     private fun initArrayList(){
