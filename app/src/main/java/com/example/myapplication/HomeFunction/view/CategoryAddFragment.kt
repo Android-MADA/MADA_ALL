@@ -32,6 +32,8 @@ class CategoryAddFragment : Fragment() {
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
     private var bottomFlag = true
 
+    var bottomFlag = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArrayList()
@@ -42,7 +44,6 @@ class CategoryAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         hideBottomNavigation(bottomFlag, activity)
         return binding.root

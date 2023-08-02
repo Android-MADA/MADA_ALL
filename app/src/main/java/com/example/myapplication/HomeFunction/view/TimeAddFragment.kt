@@ -19,6 +19,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
@@ -97,12 +98,19 @@ class TimeAddFragment : Fragment() {
             times[1].text = convertTo12HourFormat(recievedPieData.endHour,recievedPieData.endMin)
             textMemo.setText(recievedPieData.memo)
         }
+
         //파라미터가 전달된다면(생성이 아니라 수정이라면)
 //        if(){
 //            //3. 받아온 파라미터들을 알맞은 장소에 넣기
 //            //4. 이전 시간표 데이터는 삭제하기
 //        }
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val timepickerStart = binding.homeTimepickerStart
+        val timepickerEnd = binding.homeTimepickerEnd
 
         //색상 선택창
         val colorListManager = GridLayoutManager(this.activity, 6)
@@ -273,17 +281,13 @@ class TimeAddFragment : Fragment() {
             //2. 시간표 화면으로 이동
 
         }
-        //back btn
-        btnBack.setOnClickListener {
-            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        binding.ivHomeAddTimeBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
         btnDelete.setOnClickListener {
             //데이터 삭제 해야함
             findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
-
-        return binding.root
-    }
 
     private fun initColorArray(){
         with(timeColorArray){
@@ -302,5 +306,26 @@ class TimeAddFragment : Fragment() {
 
         }
     }
+
+    private fun initColorArray(){
+        with(timeColorArray){
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
+            timeColorArray.add(android.graphics.Color.parseColor("#D4ECF1"))
+            timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
+
+
+        }
+        view.text = "${AM_PM_start} ${hourStart}:${minute}"
+    }
+
 
 }

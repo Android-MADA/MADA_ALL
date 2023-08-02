@@ -17,6 +17,7 @@ import com.example.myapplication.R
 class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCateData> ) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
 
 
+    lateinit var todoAdapter : HomeViewpager2TodoAdapter
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val cateIcon : ImageView
@@ -46,10 +47,18 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        todoAdapter = HomeViewpager2TodoAdapter(dataSet[position].todoList)
+        todoAdapter.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                //edt, btn 노출 with text
+                //cb, tx, menu visibility gone
+            }
+
+        })
         holder.cateIcon.setImageResource(dataSet[position].icon)
         holder.cateTv.text = dataSet[position].cateName
         holder.todoRv.apply {
-            adapter = HomeViewpager2TodoAdapter(dataSet[position].todoList)
+            adapter = todoAdapter
             layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
         }
@@ -67,21 +76,6 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
         holder.itemView.findViewById<ImageView>(R.id.iv_home_viewpager_todo_save).setOnClickListener {
             itemClickListener.onClick(it, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
         }
-        //edt 저장 리스너 작성하기
-//        holder.edtTodo.setOnFocusChangeListener { v, hasFocus->
-//            edtFocusChangeListener.onFocusChange(v, hasFocus, dataSet[position].cateName, holder.edtTodo.text.toString(), holder.todoAdd)
-//        }
-//    }
-
-//    interface OnFocusChangeListener {
-//        fun onFocusChange(v : View, hasFocus : Boolean, cate : String, text : String, layout : LinearLayout)
-//    }
-//
-//    fun setFocusChangeListener(onFocusChangeListener: OnFocusChangeListener){
-//        this.edtFocusChangeListener = onFocusChangeListener
-//    }
-//
-//    private lateinit var edtFocusChangeListener: OnFocusChangeListener
 }
     interface OnItemClickListener {
         fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
