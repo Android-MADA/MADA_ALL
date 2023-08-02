@@ -32,8 +32,6 @@ class CategoryAddFragment : Fragment() {
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
     private var bottomFlag = true
 
-    var bottomFlag = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArrayList()
