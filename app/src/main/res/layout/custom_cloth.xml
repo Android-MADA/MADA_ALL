@@ -4,169 +4,130 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:id="@+id/CustomScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <TableLayout
-        android:id="@+id/custom_menutable"
-        android:layout_width="360dp"
-        android:layout_height="75dp"
-        app:behavior_peekHeight="78dp"
-        android:background="@drawable/custom_radius"
-        android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:behavior_hideable="true"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        <TableLayout
+            android:id="@+id/custom_clothtable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TableRow>
+            <TableRow>
 
-            <Button
-                android:id="@+id/btn_color"
-                android:layout_marginLeft="7dp"
-                android:layout_width="75dp"
-                android:background="#00FF0000"
-                android:text="색깔"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                <ImageButton
+                    android:id="@+id/btn_cloth_basic"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/custom_null"></ImageButton>
 
-            <Button
-                android:id="@+id/btn_hat"
-                android:layout_marginLeft="15dp"
-                android:layout_width="75dp"
-                android:background="#00FF0000"
-                android:text="모자"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+                <ImageButton
+                    android:id="@+id/btn_cloth_dev"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_dev_s"></ImageButton>
 
+                <ImageButton
+                    android:id="@+id/btn_cloth_movie"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_movie_s"></ImageButton>
 
-            <Button
-                android:id="@+id/btn_item"
-                android:layout_width="75dp"
-                android:layout_marginLeft="15dp"
-                android:background="#00FF0000"
-                android:text="소품"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+            </TableRow>
 
-            <Button
-                android:id="@+id/btn_background"
-                android:layout_marginLeft="15dp"
-                android:layout_width="75dp"
-                android:layout_marginRight="7dp"
-                android:background="#00FF0000"
-                android:text="배경"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
+            <TableRow>
 
+                <ImageButton
+                    android:id="@+id/btn_cloth_caffK"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_caffk_s"></ImageButton>
 
-        </TableRow>
-    </TableLayout>
+                <ImageButton
+                    android:id="@+id/btn_cloth_v"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_v_s"></ImageButton>
 
-    <TableLayout
-        android:id="@+id/custom_colortable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+                <ImageButton
+                    android:id="@+id/btn_cloth_astronauts"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_astronauts_s"></ImageButton>
 
-        <TableRow>
+            </TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_basic"
+            <TableRow>
 
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_zzim"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_zzim_s"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_dev"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_hanbokF"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_hanbokf_s"></ImageButton>
 
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_movie"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_hanbokM"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_hanbokm_s"></ImageButton>
 
-        </TableRow>
+            </TableRow>
 
-        <TableRow>
+            <TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_caffK"
-
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:id="@+id/btn_cloth_v"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_astronauts"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-        </TableRow>
-
-        <TableRow>
-
-            <ImageButton
-                android:id="@+id/btn_cloth_zzim"
-
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:id="@+id/btn_cloth_hanbokF"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_hanbokM"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
-
-        </TableRow>
-
-        <TableRow>
-
-            <ImageButton
-                android:id="@+id/btn_cloth_snowman"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_snowman"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_snowman_s"></ImageButton>
 
 
-        </TableRow>
+            </TableRow>
 
-    </TableLayout>
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>

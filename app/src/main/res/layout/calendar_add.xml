@@ -389,6 +389,8 @@
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
                     android:layout_marginHorizontal="10dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -469,7 +471,7 @@
                             android:background="@android:color/transparent"
                             android:text="  오전 10:00  "
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/textView9"
@@ -486,7 +488,7 @@
                             android:background="@android:color/transparent"
                             android:text="  오전 11:00  "
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -587,9 +589,9 @@
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:text="반복 안함"
-                android:textSize="18dp"
+                android:textColor="@color/black"
 
-                android:textColor="@color/black" />
+                android:textSize="16sp" />
         </LinearLayout>
 
             <com.google.android.material.chip.ChipGroup
@@ -605,7 +607,7 @@
                     android:width="20dp"
                     android:checkable="true"
                     android:text="반복 안함"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     app:chipStrokeColor="#F0F0F0" />
 
                 <com.google.android.material.chip.Chip
@@ -614,7 +616,7 @@
                     android:layout_height="55dp"
                     android:checkable="true"
                     android:text="매일"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     app:chipStrokeColor="#F0F0F0" />
 
                 <com.google.android.material.chip.Chip
@@ -623,7 +625,7 @@
                     android:layout_height="55dp"
                     android:checkable="true"
                     android:text="매주"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     app:chipStrokeColor="#F0F0F0" />
 
                 <com.google.android.material.chip.Chip
@@ -632,7 +634,7 @@
                     android:layout_height="55dp"
                     android:checkable="true"
                     android:text="매월"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     app:chipStrokeColor="#F0F0F0" />
 
                 <com.google.android.material.chip.Chip
@@ -641,7 +643,7 @@
                     android:layout_height="55dp"
                     android:checkable="true"
                     android:text="매년"
-                    android:textSize="18dp"
+                    android:textSize="16sp"
                     app:chipStrokeColor="#F0F0F0" />
 
             </com.google.android.material.chip.ChipGroup>

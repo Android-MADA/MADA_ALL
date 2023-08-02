@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomeRepeatTodoFragment : Fragment() {
 
     lateinit var binding : HomeFragmentRepeatTodoBinding
-    var bottomFlag = true
+    private var bottomFlag = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

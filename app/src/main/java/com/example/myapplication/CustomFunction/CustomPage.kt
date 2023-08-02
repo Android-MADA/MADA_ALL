@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 /*
 class CustomPage : Fragment() {
     override fun onCreateView(
@@ -14,7 +13,7 @@ class CustomPage : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.custom_page, container, false)
+        return inflater.inflate(R.layout.frag_custom, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

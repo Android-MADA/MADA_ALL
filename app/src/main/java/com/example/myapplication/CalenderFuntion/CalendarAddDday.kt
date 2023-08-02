@@ -19,36 +19,29 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddDdayBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class CalendarAddDday : AppCompatActivity(), OnItemListener {
     private lateinit var calendar: Calendar
     lateinit var binding: CalendarAddDdayBinding
-    val preList: ArrayList<Int> = ArrayList()
-    val nextList: ArrayList<Int> = ArrayList()
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CalendarAddDdayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        preList.add(intent.getIntExtra("Month",0))
-        nextList.add(intent.getIntExtra("Month",0))
-        preList.add(intent.getIntExtra("Day",0))
-        nextList.add(intent.getIntExtra("Day",0))
-        preList.add(intent.getIntExtra("Yoil",1))
-        nextList.add(intent.getIntExtra("Yoil",1))
-        preList.add(0)
-        nextList.add(0)
+        val today: LocalDate = LocalDate.now()
 
-        binding.preScheldule.text = "  "+preList[0].toString()+"월 " + preList[1].toString() +"일 ("+weekdays[preList[2]]+")  "
-        binding.nextScheldule.text = "  "+nextList[0].toString()+"월 " + nextList[1].toString() +"일 ("+weekdays[nextList[2]]+")  "
+        binding.preScheldule.text = "  ${today.monthValue}월 ${today.dayOfMonth}일 (${today.dayOfWeek.getDisplayName(
+            TextStyle.FULL, Locale.getDefault())})  "
+        binding.nextScheldule.text = binding.preScheldule.text
 
         binding.cal.visibility= View.GONE
 
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
-        setMonthView()
         binding.backButton.setOnClickListener {
             //뭐가 있다면
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.calendar_add_popup, null)
@@ -90,34 +83,34 @@ class CalendarAddDday : AppCompatActivity(), OnItemListener {
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
-            setMonthView()
+            setMonthView(-1)
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
-            setMonthView()
+            setMonthView(1)
         }
 
         binding.preScheldule.setOnClickListener {
             binding.preScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
-            preList[3]=1
-            nextList[3]=0
             binding.cal.visibility= View.VISIBLE
         }
         binding.nextScheldule.setOnClickListener {
             binding.nextScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
-            preList[3]=0
-            nextList[3]=1
             binding.cal.visibility= View.VISIBLE
         }
     }
-    private fun setMonthView() {
+    private fun setMonthView(preNext : Int) {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
-        val adapter = CalendarSmallAdapter(dayList,preList,nextList,binding.cal,binding.preScheldule,binding.nextScheldule)
+        val adapter: CalendarSmallAdapter = if (preNext == -1) {
+            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule)
+        } else {
+            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule)
+        }
         var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter

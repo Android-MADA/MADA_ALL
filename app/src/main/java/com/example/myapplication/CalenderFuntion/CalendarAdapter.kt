@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.media.Image
+import android.os.Bundle
 import android.util.Log
 import android.view.Display
 import android.view.Gravity
@@ -20,6 +21,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Fragment.FragCalendar
@@ -30,6 +33,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import androidx.navigation.fragment.findNavController
 
 class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<FragCalendar.CalendarDATA?>>)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
@@ -68,13 +72,11 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             holder.textDay.setTextColor(colorMain)
         }
         if(iYear == y && iMonth == m && iDay == d) {
-            holder.itemView.setBackgroundResource(R.drawable.etc_calender_today)
+            holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background)
             holder.textDay.setTextColor(Color.WHITE)
         }
         for(data in calendarDataArray[position]) {
             if (data != null && data.floor !=-1) {
-                Log.d("error",data.memo)
-                Log.d("error",data.startDate2.toString())
                 val cal =holder.lines[data.floor]
                 cal.setColorFilter(Color.parseColor(data.color), PorterDuff.Mode.SRC_IN)
                 if(data.duration) {
@@ -112,11 +114,12 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
-                val intent = Intent(holder.itemView.context, CalendarAdd::class.java)
-                intent.putExtra("Month",iMonth)
-                intent.putExtra("Day",iDay)
-                intent.putExtra("Yoil",position%7)
-                holder.itemView.context.startActivity(intent)
+                val bundle = Bundle()
+                bundle.putInt("Month", iMonth)
+                bundle.putInt("Day", iDay)
+                bundle.putInt("Yoil", position%7)
+                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
+                mBuilder.dismiss()
             })
 
 

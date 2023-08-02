@@ -30,6 +30,7 @@ class CategoryAddFragment : Fragment() {
     val cateColorArray = ArrayList<Int>()
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
+    private var bottomFlag = true
 
     var bottomFlag = true
 

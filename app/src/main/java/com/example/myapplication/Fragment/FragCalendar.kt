@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,13 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
-import com.example.myapplication.CalenderFuntion.CalendarAdd
 import com.example.myapplication.CalenderFuntion.CalendarAddDday
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -48,23 +46,36 @@ class FragCalendar : Fragment(), OnItemListener {
         val startTime : String,
         val endTime : String,
         val color: String,
-        //val repeat: Char,
+        val repeat: String,
         val dDay: Char,
-        val memo: String,
+        val title: String,
        //val createAt: String,
         //val updateAt: String
         var floor : Int,
-        val duration : Boolean
+        val duration : Boolean,
+        val memo : String
 
     )
 
     val calendarDayArray = Array(42) {""}
     @RequiresApi(Build.VERSION_CODES.O)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragCalendarBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
 
@@ -120,9 +131,11 @@ class FragCalendar : Fragment(), OnItemListener {
                 requireContext().startActivity(intent)
             })
         }
+        binding.fabHomeTime.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd)
+        }
 
 
-        return binding.root
     }
     private fun setMonthView() {
         val dataArray = Array<ArrayList<CalendarDATA?>>(42) { ArrayList() }
@@ -135,31 +148,46 @@ class FragCalendar : Fragment(), OnItemListener {
         val dayList = dayInMonthArray()
 
         //임시 데이터 정보 받아오기
-        val datas = arrayOf(        //임시 데이터
-            CalendarDATA("2023-7-2","2023-7-2","2023-7-6","","","#2AA1B7",'N',"데이터분석기초 기말고사",-1,true),
-            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30","#F8D141",'N',"기말 강의평가 기간",-1,false),
-            CalendarDATA("2023-7-21","2023-7-6","2023-7-30","","","#89A9D9",'N',"방학",-1,true),
-            CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","","#2AA1B7",'N',"이건 무슨 일정일까",-1,true)
+        val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
+            CalendarDATA("2023-7-2","2023-7-2","2023-7-6","","",
+                "#2AA1B7","반복 안함",'N',"데이터분석기초 기말고사",-1,true,""),
+            CalendarDATA("2023-7-21","2023-7-21","2023-8-5","","",
+                "#89A9D9","매일",'N',"방학",-1,true,""),
+            CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","",
+                "#2AA1B7","매주",'N',"이건 무슨 일정일까",-1,true,""),
+            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30",
+                "#F8D141","매월",'N',"기말 강의평가 기간",-1,false,"메모 ")
         )
         val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
         for(data in datas) {
             if(data!=null) {
                 var start = calendarDayArray.indexOf(data.startDate)
                 var end = calendarDayArray.indexOf(data.endDate)
+                if(end>=0 && start < 0)
+                    start = 0
+                else if(end<0 && start >=0)
+                    end = 41
 
-                if(dataArray[start].size<2) {
-                    data.floor = dataArray[start].size
-                } else {
-                    data.floor=-1
-                }
-                for(i in start.. end) {
-                    if(dataArray[i].size<2&&data.floor==-1) {
-                        data.floor = dataArray[i].size
-                        data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
+                if (start >= 0 && end >= 0) {
+                    // start와 end가 유효한 경우에만 dataArray 배열에 데이터 추가
+                    if(dataArray[start].size<2) {
+                        data.floor = dataArray[start].size
+                    } else {
+                        data.floor=-1
                     }
+                    for(i in start.. end) {
+                        if(dataArray[i].size<2&&data.floor==-1) {
+                            data.floor = dataArray[i].size
+                            data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
+                        }
 
-                    dataArray[i].add(data.copy())
+                        dataArray[i].add(data.copy())
+                    }
+                } else {
+                    // start와 end가 유효하지 않은 경우, 오류 처리 또는 다른 로직 수행
                 }
+
+
             }
         }
         val adapter = CalendarAdapter(dayList,dataArray)
