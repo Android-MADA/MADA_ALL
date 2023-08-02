@@ -20,6 +20,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
@@ -29,9 +31,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class TimeAddFragment : Fragment() {
 
     private var bottomFlag = true
+    var timeColorArray = ArrayList<Int>()
+    var colorAdapter = HomeTimeColorAdapter(timeColorArray)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initColorArray()
     }
 
     override fun onCreateView(
@@ -42,7 +47,7 @@ class TimeAddFragment : Fragment() {
         hideBottomNavigation(bottomFlag, activity)
 
         val ivColor = binding.ivHomeTimeColor
-        val colorSelector = binding.layoutColorSelector
+        val colorSelector = binding.rvHomeTimeColor
 
         val times = arrayOf<TextView>(
             binding.tvHomeTimeStart,
@@ -100,8 +105,19 @@ class TimeAddFragment : Fragment() {
 
 
         //색상 선택창
-        // radio group 처리하기
-        // 클릭 시 아이콘 색도 바꾸기
+        val colorListManager = GridLayoutManager(this.activity, 6)
+        colorAdapter.setItemClickListener(object: HomeTimeColorAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                binding.ivHomeTimeColor.imageTintList = ColorStateList.valueOf(timeColorArray[position])
+                binding.rvHomeTimeColor.isGone = true
+            }
+        })
+        var colorRecyclerList = binding.rvHomeTimeColor.apply{
+            setHasFixedSize(true)
+            layoutManager = colorListManager
+            adapter = colorAdapter
+        }
+
         ivColor.setOnClickListener {
             if(colorSelector.isVisible){
                 colorSelector.isGone = true
@@ -112,62 +128,7 @@ class TimeAddFragment : Fragment() {
         }
 
         // 데이터 클래스 작성해서 옮기기
-        var selectedColor = resources.getColor(R.color.sub2)
 
-        fun homeColorClick(color : Int){
-            ivColor.imageTintList = ColorStateList.valueOf(color)
-            selectedColor = color
-            Log.d("color", selectedColor.toString())
-            colorSelector.isGone = true
-        }
-
-        binding.ivHomeTimeColor1.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub5))
-        }
-
-        binding.ivHomeTimeColor2.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.main))
-        }
-
-        binding.ivHomeTimeColor3.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub4))
-        }
-
-        binding.ivHomeTimeColor4.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub6))
-        }
-
-        binding.ivHomeTimeColor5.setOnClickListener {
-            homeColorClick(Color.parseColor("#FDA4B4"))
-        }
-
-        binding.ivHomeTimeColor6.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub3))
-        }
-
-        binding.ivHomeTimeColor7.setOnClickListener {
-            homeColorClick(Color.parseColor("#D4ECF1"))
-        }
-
-        binding.ivHomeTimeColor8.setOnClickListener {
-            homeColorClick(Color.parseColor("#7FC7D4"))
-        }
-
-        binding.ivHomeTimeColor9.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.point_main))
-        }
-
-        binding.ivHomeTimeColor10.setOnClickListener {
-            homeColorClick(Color.parseColor("#FDF3CF"))
-        }
-
-        binding.ivHomeTimeColor11.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub1))
-        }
-
-        binding.ivHomeTimeColor12.setOnClickListener {
-            homeColorClick(resources.getColor(R.color.sub2))
-        }
 
 
         var scheduleSelect = 0
@@ -324,13 +285,21 @@ class TimeAddFragment : Fragment() {
         return binding.root
     }
 
-    fun hideBootomNavigation(bool : Boolean){
-        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        if(bool){
-            bottomNavigation?.isGone = true
-        }
-        else {
-            bottomNavigation?.isVisible = true
+    private fun initColorArray(){
+        with(timeColorArray){
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
+            timeColorArray.add(android.graphics.Color.parseColor("#D4ECF1"))
+            timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
+
         }
     }
 
