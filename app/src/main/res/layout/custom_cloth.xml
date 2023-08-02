@@ -13,120 +13,121 @@
         android:layout_height="match_parent">
 
 
-    <TableLayout
-        android:id="@+id/custom_clothtable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        <TableLayout
+            android:id="@+id/custom_clothtable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TableRow>
-            <ImageButton
-                android:id="@+id/btn_cloth_basic"
-                android:src="@drawable/custom_null"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+            <TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_dev"
-                android:src="@drawable/set_dev_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_basic"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/custom_null"></ImageButton>
 
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_movie"
-                android:src="@drawable/set_movie_s"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_dev"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_dev_s"></ImageButton>
 
-        </TableRow>
+                <ImageButton
+                    android:id="@+id/btn_cloth_movie"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_movie_s"></ImageButton>
 
-        <TableRow>
+            </TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_caffK"
-                android:src="@drawable/set_caffk_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+            <TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_v"
-                android:src="@drawable/set_v_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_caffK"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_caffk_s"></ImageButton>
 
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_astronauts"
-                android:src="@drawable/set_astronauts_s"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_v"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_v_s"></ImageButton>
 
-        </TableRow>
+                <ImageButton
+                    android:id="@+id/btn_cloth_astronauts"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_astronauts_s"></ImageButton>
 
-        <TableRow>
+            </TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_zzim"
-                android:src="@drawable/set_zzim_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+            <TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_hanbokF"
-                android:src="@drawable/set_hanbokf_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_zzim"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_zzim_s"></ImageButton>
 
-            <ImageButton
-                android:layout_width="99dp"
-                android:id="@+id/btn_cloth_hanbokM"
-                android:src="@drawable/set_hanbokm_s"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+                <ImageButton
+                    android:id="@+id/btn_cloth_hanbokF"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_hanbokf_s"></ImageButton>
 
-        </TableRow>
+                <ImageButton
+                    android:id="@+id/btn_cloth_hanbokM"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_hanbokm_s"></ImageButton>
 
-        <TableRow>
+            </TableRow>
 
-            <ImageButton
-                android:id="@+id/btn_cloth_snowman"
-                android:src="@drawable/set_snowman_s"
-                android:layout_width="99dp"
-                android:layout_height="72dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/custom_radius"></ImageButton>
+            <TableRow>
+
+                <ImageButton
+                    android:id="@+id/btn_cloth_snowman"
+                    android:layout_width="99dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/custom_radius"
+                    android:src="@drawable/set_snowman_s"></ImageButton>
 
 
-        </TableRow>
+            </TableRow>
 
-    </TableLayout>
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>
