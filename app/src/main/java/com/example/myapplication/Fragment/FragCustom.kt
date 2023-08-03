@@ -1,7 +1,6 @@
 package com.example.myapplication.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.CustomBottomSheetViewPager
+import com.example.myapplication.HomeFuction.view.HomeTimeEditFragment
 import com.example.myapplication.R
 import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
@@ -27,10 +27,6 @@ import com.google.android.material.tabs.TabLayout
 
 class FragCustom : Fragment() {
     lateinit var binding: FragCustomBinding
-    private lateinit var frag_color: custom_color
-    private lateinit var frag_cloth: custom_cloth
-    private lateinit var frag_item: custom_item
-    private lateinit var frag_background: custom_background
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     private var tabCurrentIdx = 0
@@ -47,48 +43,29 @@ class FragCustom : Fragment() {
         var customtabLayout = binding.CustomPagetabLayout
         var viewPager = binding.CustomBottomSheetViewPager
 
-        frag_color = custom_color()
-        frag_cloth = custom_cloth()
-        frag_item = custom_item()
-        frag_background = custom_background()
-        tabLayout = binding.CustomPagetabLayout
+        val colorFragment = custom_color()
+        val clothFragment = custom_cloth()
+        val itemFragment = custom_item()
+        val backgroundFragment = custom_background()
 
-        var width = 580
-        var height = 580
-        val image = binding.customRamdi
-        val layoutParams = image.layoutParams
-        layoutParams.width = 1080 // 원하는 너비(dp 단위)
-        layoutParams.height = 1080 // 원하는 높이(dp 단위)
-        image.layoutParams = layoutParams
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // 바텀시트 상태 변화를 감지하는 메서드
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                layoutParams.width = (width*(1-slideOffset)+500).toInt()
-                layoutParams.height = (height*(1-slideOffset)+500).toInt()
-                image.layoutParams = layoutParams
-            }
-        })
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val inflater1: LayoutInflater = layoutInflater
                 var pos = tab.position
                 when (pos) {
-                    0 -> {//인플레이터 사용해서 레이아웃을 연결해주는 방식
-                        val colorFragment = custom_color()
+                    0 -> {
                         childFragmentManager.beginTransaction()
                             .replace(R.id.CustomBottomSheetTable, colorFragment)
                             .commit()
                     }
                     1 -> {
-                        inflater1.inflate(R.layout.custom_cloth, binding.CustomBottomSheetTable, true)
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, clothFragment)
+                            .commit()
                     }
                     2 -> {
                         inflater1.inflate(R.layout.custom_item, binding.CustomBottomSheetTable, true)
@@ -110,7 +87,7 @@ class FragCustom : Fragment() {
 
 
 
-        return binding.root
+        return view
     }
 
     fun onClickbtncolor() {

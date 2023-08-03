@@ -79,13 +79,14 @@
             android:orientation="vertical"
             app:behavior_hideable="false"
             android:id="@+id/CustomBottomSheet"
-            android:background="#FFFFFF"
             app:behavior_peekHeight="160dp"
+            android:background="@drawable/calendar_dday_background"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:background="#FFFFFF"
 
                 >
 
