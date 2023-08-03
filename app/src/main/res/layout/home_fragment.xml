@@ -175,23 +175,22 @@
             />
 
         <FrameLayout
+            android:id="@+id/layout_calendarview_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/layout_calendarview_home"
-            app:layout_constraintTop_toBottomOf="@id/layout_home"
-            app:layout_constraintStart_toStartOf="parent"
             android:paddingStart="20dp"
             android:paddingTop="3dp"
             android:visibility="gone"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_home">
+
             <CalendarView
                 android:id="@+id/calendarview_home"
                 android:layout_width="300dp"
                 android:layout_height="310dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/home_calendarview_background"
-                android:theme="@style/CreateProfileTheme"
-                />
+                android:theme="@style/CreateProfileTheme" />
         </FrameLayout>
 
         <me.relex.circleindicator.CircleIndicator3
