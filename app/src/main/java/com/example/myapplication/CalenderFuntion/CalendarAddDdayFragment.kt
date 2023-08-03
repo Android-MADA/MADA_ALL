@@ -10,12 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddDdayBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -39,7 +42,7 @@ class CalendarAddDdayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CalendarAddDdayBinding.inflate(layoutInflater)
-
+        hideBootomNavigation(true)
         val ddayValue = arguments?.getBoolean("dday", false)
         val today: LocalDate = LocalDate.now()
         val dayOfWeekKorean = today.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
@@ -134,6 +137,19 @@ class CalendarAddDdayFragment : Fragment() {
         binding.addBtn.setOnClickListener {
             //데이터 추가 코드
             Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBootomNavigation(false)
+    }
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
+        }
+        else {
+            bottomNavigation?.isVisible = true
         }
     }
 

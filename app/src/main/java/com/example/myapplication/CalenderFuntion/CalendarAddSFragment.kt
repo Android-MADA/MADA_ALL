@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.example.myapplication.databinding.CalendarAddSBinding
@@ -40,9 +41,10 @@ class CalendarAddSFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         binding = CalendarAddSBinding.inflate(layoutInflater)
-
+        hideBootomNavigation(true)
         val title = arguments?.getString("title")
         val preSchedule = arguments?.getString("preSchedule") ?:"2023-6-1"
         val nextSchedule = arguments?.getString("nextSchedule") ?:"2023-6-1"
@@ -127,8 +129,8 @@ class CalendarAddSFragment : Fragment() {
         }
 
     }
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
+    override fun onDestroyView() {
+        super.onDestroyView()
         hideBootomNavigation(false)
     }
 
@@ -148,4 +150,9 @@ class CalendarAddSFragment : Fragment() {
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+
+
+
+
+
 }

@@ -46,7 +46,7 @@ class CalendarAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CalendarAddBinding.inflate(layoutInflater)
-
+        hideBootomNavigation(true)
         val bundle = arguments
         val title = bundle?.getString("title") ?: ""
         val preSchedule = bundle?.getString("preSchedule") ?: "2023-6-1"
@@ -337,8 +337,8 @@ class CalendarAddFragment : Fragment() {
         }
 
     }
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
+    override fun onDestroyView() {
+        super.onDestroyView()
         hideBootomNavigation(false)
     }
 
