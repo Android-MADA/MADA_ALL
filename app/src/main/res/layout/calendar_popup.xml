@@ -16,7 +16,7 @@
             android:id="@+id/textDay2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
             android:gravity="bottom"
             android:text="6일"
@@ -31,15 +31,15 @@
             android:layout_marginTop="20dp"
             android:gravity="bottom"
             android:text="화요일"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
         android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="20dp"
         android:background="?android:attr/listDivider" />
 
     <androidx.core.widget.NestedScrollView
@@ -55,9 +55,10 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="25dp"
         android:orientation="horizontal">
 
 
