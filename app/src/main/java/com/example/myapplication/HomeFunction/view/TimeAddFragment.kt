@@ -219,7 +219,7 @@ class TimeAddFragment : Fragment() {
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
                 times[scheduleSelect].text =
-                    "  " + ampm + " " + hour + ":" + data2[newVal - 1] + "  "
+                    "  " + ampm + " " + hour + ":" + data2[newVal] + "  "
             } else {
             }
         }
