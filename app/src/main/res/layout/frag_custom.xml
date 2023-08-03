@@ -144,6 +144,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
+                <ScrollView
+                    android:id="@+id/CustomScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </ScrollView>
             </FrameLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

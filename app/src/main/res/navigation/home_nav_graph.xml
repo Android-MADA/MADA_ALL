@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/fragHome">
+    <fragment
+        android:id="@+id/fragHome"
+        android:name="com.example.myapplication.Fragment.FragHome"
+        android:label="FragHome" >
+        <action
+            android:id="@+id/action_fragHome_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_homeTimetableFragment"
+            app:destination="@id/homeTimetableFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
+            app:destination="@id/homeRepeatTodoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragCalendar"
+        android:name="com.example.myapplication.Fragment.FragCalendar"
+        android:label="FragCalendar"
+        tools:layout="@layout/frag_calendar">
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAdd"
+            app:destination="@id/calendarAdd" />
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAddS"
+            app:destination="@id/calendarAddS" />
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAddDday"
+            app:destination="@id/calendarAddDday" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAdd"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddFragment"
+        android:label="CalendarAdd"
+        tools:layout="@layout/calendar_add">
+        <action
+            android:id="@+id/action_calendarAdd_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAddS"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddSFragment"
+        android:label="CalendarAddS "
+        tools:layout="@layout/calendar_add_s">
+        <action
+            android:id="@+id/action_calendarAddS_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_calendarAddS_to_calendarAdd"
+            app:destination="@id/calendarAdd" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAddDday"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment"
+        android:label="CalendarAddDday "
+        tools:layout="@layout/calendar_add_dday">
+        <action
+            android:id="@+id/action_calendarAddDday_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragCustom"
+        android:name="com.example.myapplication.Fragment.FragCustom"
+        android:label="FragCustom" />
+    <fragment
+        android:id="@+id/fragMy"
+        android:name="com.example.myapplication.Fragment.FragMy"
+        android:label="FragMy" />
+    <fragment
+        android:id="@+id/homeCategoryFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
+        android:label="HomeCategoryFragment" >
+        <action
+            android:id="@+id/action_homeCategoryFragment_to_categoryAddFragment"
+            app:destination="@id/categoryAddFragment" />
+        <action
+            android:id="@+id/action_homeCategoryFragment_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryAddFragment"
+        android:label="CategoryAddFragment" >
+        <action
+            android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeTimetableFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeTimetableFragment"
+        android:label="home_fragment_timetable"
+        tools:layout="@layout/home_fragment_timetable" >
+        <action
+            android:id="@+id/action_homeTimetableFragment_to_timeAddFragment"
+            app:destination="@id/timeAddFragment" />
+        <action
+            android:id="@+id/action_homeTimetableFragment_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.TimeAddFragment"
+        android:label="TimeAddFragment" >
+        <action
+            android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
+            app:destination="@id/homeTimetableFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeRepeatTodoFragment"
+        android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
+        android:label="HomeRepeatTodoFragment" >
+        <action
+            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+</navigation>
