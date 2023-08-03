@@ -76,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:hint="제목"
+                    android:background="@null"
                     android:textAlignment="textEnd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_home_category_name"
