@@ -3,10 +3,10 @@
     android:shape="rectangle">
     <!-- 버튼 둥글게 -->
     <corners
-        android:bottomRightRadius="18dp"
-        android:bottomLeftRadius="18dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
         android:topLeftRadius="18dp"
         android:topRightRadius="18dp"/>
     <!-- 버튼 색깔 -->
-    <solid android:color="@color/grey4"/>
+    <solid android:color="@color/grey3"/>
 </shape>
