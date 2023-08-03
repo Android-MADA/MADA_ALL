@@ -1,17 +1,12 @@
 package com.example.myapplication.HomeFunction.view.viewpager2
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapplication.CalenderFuntion.CalendarAddDday
 import com.example.myapplication.CustomCircleBarView
-import com.example.myapplication.Fragment.FragHome
-import com.example.myapplication.HomeFunction.view.HomeTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
@@ -22,10 +17,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

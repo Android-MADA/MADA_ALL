@@ -5,10 +5,6 @@
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 
-    <style name="InfoTimePicker">
-        <item name="android:textSize">18dp</item>
-        <item name="android:textColorPrimary">@color/black</item>
-    </style>
 
     <style name="ThemeOverlay.MaterialComponents.TimePicker" parent="@android:style/Widget.DatePicker">
         <item name="colorControlNormal">#74FFFFFF</item>
@@ -41,4 +37,5 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50dp</item>
     </style>
+
 </resources>

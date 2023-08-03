@@ -1,5 +1,6 @@
 package com.example.myapplication.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyFuction.MyListAdapter
 import com.example.myapplication.MyFuction.MyListItem
+import com.example.myapplication.MyFuction.MyRecordMonthActivity
 import com.example.myapplication.databinding.FragMyBinding
+import com.example.myapplication.databinding.MyRecordMonthBinding
 
 class FragMy : Fragment() {
 
@@ -21,7 +24,10 @@ class FragMy : Fragment() {
         binding = FragMyBinding.inflate(inflater, container, false)
 
         binding.myRecordBtn.setOnClickListener{
-            Toast.makeText(this.context, "[내 기록 확인하기]", Toast.LENGTH_SHORT).show()
+            //임시로 짜둠
+            val intent = Intent(requireContext(), MyRecordMonthActivity::class.java)
+            startActivity(intent)
+
         }
 
         // 리스트
@@ -38,6 +44,7 @@ class FragMy : Fragment() {
         binding.rvMyitem.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL,false)
         binding.rvMyitem.setHasFixedSize(true)
         binding.rvMyitem.adapter = MyListAdapter(MyList)
+
 
         return binding.root
 

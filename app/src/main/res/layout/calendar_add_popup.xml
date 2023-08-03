@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -18,65 +18,80 @@
         android:textColor="@color/black"
         android:text="저장하지 않고 나가시겠습니가?" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tmp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-
-        <ImageButton
-            app:layout_constraintTop_toTopOf="@id/tmp"
-            app:layout_constraintLeft_toLeftOf="@id/tmp"
-            android:id="@+id/nobutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="50dp"
-            app:tint="@color/grey3"
-            android:src="@drawable/calendar_button_size"
-            android:background="@android:color/transparent"/>
-
-        <ImageButton
-            app:layout_constraintTop_toTopOf="@id/tmp"
-            app:layout_constraintRight_toRightOf="@id/tmp"
-            android:id="@+id/yesbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="예"
-            android:layout_marginRight="50dp"
-            app:tint="@color/sub4"
-            android:src="@drawable/calendar_button_size"
-            android:background="@android:color/transparent"/>
-
         <TextView
-            app:layout_constraintTop_toTopOf="@id/tmp"
-            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아니오"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/nobutton"
-            app:layout_constraintStart_toStartOf="@id/nobutton" />
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/nobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/calendar_button_size"
+                android:scaleType="fitCenter"
+                app:tint="@color/grey3" />
+
+            <TextView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아니오"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
-            app:layout_constraintTop_toTopOf="@id/tmp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@id/yesbutton"
-            app:layout_constraintEnd_toEndOf="@id/yesbutton"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="예"/>
+            android:layout_height="match_parent"
+            android:text="" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/yesbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/calendar_button_size"
+                android:text="예"
+                android:scaleType="fitCenter"
+                app:tint="@color/sub4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="예"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:text="" />
