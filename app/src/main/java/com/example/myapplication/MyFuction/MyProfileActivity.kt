@@ -1,7 +1,9 @@
 package com.example.myapplication.MyFuction
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MyProfileBinding
 
 class MyProfileActivity : AppCompatActivity() {
@@ -13,6 +15,8 @@ class MyProfileActivity : AppCompatActivity() {
 
         binding = MyProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
     }
 }

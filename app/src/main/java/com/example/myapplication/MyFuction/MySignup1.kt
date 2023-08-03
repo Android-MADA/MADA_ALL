@@ -21,24 +21,13 @@ class MySignup1 : AppCompatActivity() {
 
         binding.signup1Btn.setOnClickListener {
             isButtonClicked = !isButtonClicked
-            updateButtonState(binding.signup1Btn)
+            binding.signup1Btn.setBackgroundResource(R.drawable.my_btn_ok)
 
             val intent = Intent(this@MySignup1, MySignup2::class.java)
             startActivity(intent)
             finish()
-
-            updateButtonState(binding.signup1Btn)
         }
     }
 
-    private fun updateButtonState(customButton: Button) {
-        if (isButtonClicked) {
-            // 버튼이 클릭되었을 때 색상 설정
-            customButton.setBackgroundResource(R.drawable.my_btn_ok)
-        } else {
-            // 버튼이 클릭되지 않았을 때 색상 설정
-            customButton.setBackgroundResource(R.drawable.my_btn_nomal)
-        }
-    }
 }
 
