@@ -199,7 +199,7 @@ class CalendarAddFragment : Fragment() {
             val matchResult = regex.find(schedules[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
-                schedules[scheduleSelect].text = "  "+ampm+" "+hour+":"+data2[newVal-1]+"  "
+                schedules[scheduleSelect].text = "  "+ampm+" "+hour+":"+data2[newVal]+"  "
             } else {
             }
         }
