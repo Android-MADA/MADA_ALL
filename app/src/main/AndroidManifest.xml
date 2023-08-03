@@ -67,7 +67,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity android:name=".CalenderFuntion.CalendarAddFragment"/>
-        <activity android:name=".CalenderFuntion.CalendarAddDday"/>
+        <activity android:name=".CalenderFuntion.CalendarAddDdayFragment"/>
     </application>
 
 </manifest>

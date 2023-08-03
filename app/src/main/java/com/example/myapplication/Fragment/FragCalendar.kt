@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
@@ -18,7 +19,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
-import com.example.myapplication.CalenderFuntion.CalendarAddDday
+import com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import java.lang.Integer.min
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -69,17 +71,9 @@ class FragCalendar : Fragment(), OnItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragCalendarBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
-
-
+        binding = FragCalendarBinding.inflate(inflater, container, false)
         setMonthView()
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
@@ -91,51 +85,141 @@ class FragCalendar : Fragment(), OnItemListener {
             calendar.add(Calendar.MONTH, 1)
             setMonthView()
         }
-        binding.dday1.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
-            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                val intent = Intent(requireContext(), CalendarAddDday::class.java)
-                requireContext().startActivity(intent)
-            })
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
+            CalendarDATA("2023-7-21","2023-7-21","2023-8-31","","",
+                "#FFE7EB","",'Y',"방학",-1,true,"방학이 끝나간다..."),
+            CalendarDATA("2023-7-2","2023-7-2","2023-9-2","","",
+                "#E1E9F5","",'Y',"UMC 데모데이",-1,true,"메모는 여기에 뜨게 하면 될것 같습니다!")
+
+        )
+
+        for (i in 0 until min(datasDday.size, 3)) {
+            val color = datasDday[i].color
+            val imageResource = when (color) {
+                "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
+                "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
+                "#F5EED1" -> R.drawable.calendar_ddayyellow_smallbackground
+                else -> R.drawable.calendar_dday_plus
+            }
+            when (i) {
+                0 -> {
+                    binding.dday1.setImageResource(imageResource)
+                    binding.dday1Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                    binding.dday1TextInfo.text = datasDday[i].title
+                }
+                1 -> {
+                    binding.dday2.setImageResource(imageResource)
+                    binding.dday2Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                    binding.dday2TextInfo.text = datasDday[i].title
+                }
+                2 -> {
+                    binding.dday3.setImageResource(imageResource)
+                    binding.dday3Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                    binding.dday3TextInfo.text = datasDday[i].title
+                }
+            }
+        }
+        binding.dday1.setOnClickListener {
+            if(datasDday.size>=1) {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+            } else {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                    val bundle = Bundle()
+                    bundle.putBoolean("dday", true)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                })
+            }
         }
         binding.dday2.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
-            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                val intent = Intent(requireContext(), CalendarAddDday::class.java)
-                requireContext().startActivity(intent)
-            })
+
+            if(datasDday.size>=2) {
+
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+            } else {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                    val bundle = Bundle()
+                    bundle.putBoolean("dday", true)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                })
+            }
+
         }
         binding.dday3.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
-            mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                val intent = Intent(requireContext(), CalendarAddDday::class.java)
-                requireContext().startActivity(intent)
-            })
+            if(datasDday.size==3) {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+            } else {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
+                    val bundle = Bundle()
+                    bundle.putBoolean("dday", true)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                })
+            }
+
         }
-        binding.fabHomeTime.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd)
+        binding.calendarDdayPlusBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("Month",calendar.get(Calendar.MONTH) + 1)
+            bundle.putInt("Day",calendar.get(Calendar.DAY_OF_MONTH))
+            bundle.putInt("Yoil",calendar.get(Calendar.DAY_OF_WEEK) - 1)
+            Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
         }
 
 
+    }
+    fun daysRemainingToDate(targetDate: String): Int {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val today = LocalDate.now()
+        val target = LocalDate.parse(targetDate, dateFormatter)
+        val daysRemaining = target.toEpochDay() - today.toEpochDay()
+        return daysRemaining.toInt()
     }
     private fun setMonthView() {
         val dataArray = Array<ArrayList<CalendarDATA?>>(42) { ArrayList() }

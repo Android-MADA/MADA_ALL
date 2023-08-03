@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 
 class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal : LinearLayout,
-                           private val preNexttext: TextView,)
+                           private val preNexttext: TextView, private val ddaytext : TextView)
     : RecyclerView.Adapter<CalendarSmallAdapter.ItemViewHolder>() {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -49,11 +50,21 @@ class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal
         }
 
         holder.itemView.setOnClickListener {
-            preNexttext.text ="  ${iMonth}월 ${iDay}일 (${weekdays[position]})  "
+            preNexttext.text ="  ${iMonth}월 ${iDay}일 (${weekdays[position%7]})  "
+
+            ddaytext.text ="D - ${daysRemainingToDate("${iYear}-${iMonth}-${iDay}")}"
+            cal.visibility = View.GONE
         }
 
     }
-
+    fun daysRemainingToDate(targetDate: String): Int {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val today = LocalDate.now()
+        val target = LocalDate.parse(targetDate, dateFormatter)
+        var daysRemaining = target.toEpochDay() - today.toEpochDay()
+        if(daysRemaining<0) daysRemaining=0
+        return daysRemaining.toInt()
+    }
     override fun getItemCount(): Int {
         return dayList.size
     }

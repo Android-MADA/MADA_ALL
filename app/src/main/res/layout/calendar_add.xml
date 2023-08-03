@@ -52,9 +52,12 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
 
         <LinearLayout
+            android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -62,15 +65,15 @@
             <LinearLayout
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/textView3"
+                    android:id="@+id/textTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
+
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:background="@android:color/transparent"
@@ -84,20 +87,22 @@
                     android:id="@+id/calendar_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="0"
                     android:scaleType="fitCenter"
                     app:tint="@color/main"
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layout_color_selector"
+                android:id="@+id/layout_color_selectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
+                    android:id="@+id/layout_color_selector1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -157,20 +162,55 @@
                         android:background="@android:color/transparent"
                         />
                 </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layout_color_selector2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
+                    <ImageButton
+                        android:id="@+id/calendar_color7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/calendar_color_select"
+                        app:tint="@color/sub5"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        />
+                    <ImageButton
+                        android:id="@+id/calendar_color8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub6"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@android:color/transparent"/>
+                    <ImageButton
+                        android:id="@+id/calendar_color9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        android:layout_marginHorizontal="10dp"
+                        app:tint="#F5EED1"
+                        android:background="@android:color/transparent"
+                        />
 
+                </LinearLayout>
 
             </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="15dp"/>
+                android:layout_marginVertical="15dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
 
 
@@ -179,7 +219,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:layout_marginLeft="15dp"
                     android:layout_gravity="center"
                     android:textColor="@color/black"
                     android:text="디데이 설정 여부"/>
@@ -190,58 +229,57 @@
                     android:layout_weight="1"
                     />
                 <CheckBox
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
                     android:id="@+id/checkBox"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-
                     />
             </LinearLayout>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/textDday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="30dp"
                 android:gravity="center"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:textColor="@color/point_main"
-                android:text="D - 7" />
+                android:text="D - 0" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="15dp"/>
+                android:layout_marginVertical="15dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
 
                 <ImageView
-
                     android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
                     app:srcCompat="@drawable/calendar_calendar_image" />
 
                 <TextView
-                    android:layout_marginLeft="15dp"
                     android:id="@+id/preScheldule"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:background="@android:color/transparent"
+                    android:gravity="center"
                     android:text="  6월 9일 (금)  "
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView5"
@@ -264,6 +302,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/cal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -310,7 +349,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="30dp"
                     android:orientation="horizontal">
 
@@ -389,9 +427,7 @@
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:layout_marginHorizontal="10dp">
+                    android:layout_gravity="center">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -406,254 +442,274 @@
                 android:layout_marginHorizontal="15dp"/>
 
             <LinearLayout
+                android:id="@+id/clockAndCycle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        app:srcCompat="@drawable/calendar_clock" />
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:text="하루 종일"
-                        android:textSize="18dp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <Switch
-                        android:id="@+id/switch2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="15dp"
-
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/colck"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal">
 
-                        <View
-                            android:layout_width="45dp"
-                            android:layout_height="60dp" />
-
-                        <TextView
-                            android:id="@+id/preScheldule2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:text="  오전 10:00  "
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/calendar_clock" />
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/textView8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="    ~    " />
-
-                        <TextView
-                            android:id="@+id/nextScheldule2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:text="  오전 11:00  "
+                            android:layout_marginLeft="10dp"
+                            android:text="하루 종일"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Switch
+                            android:id="@+id/switch2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="15dp"
+
+                            />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/timePicker"
+                        android:id="@+id/colck"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="20dp"
-                        android:orientation="horizontal">
-                        <com.shawnlin.numberpicker.NumberPicker
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="40dp" />
+
+                            <TextView
+                                android:id="@+id/preScheldule2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:text="  오전 10:00  "
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textView9"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="    ~    " />
+
+                            <TextView
+                                android:id="@+id/nextScheldule2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:text="  오전 11:00  "
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/timePicker"
+                            android:layout_width="match_parent"
+                            android:layout_height="170dp"
                             android:layout_marginHorizontal="20dp"
-                            android:id="@+id/number_picker1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            app:np_width="64dp"
-                            app:np_height="180dp"
-                            app:np_dividerColor="@android:color/transparent"
-                            app:np_selectedTextColor="@color/black"
-                            app:np_selectedTextSize="24sp"
-                            app:np_textColor="@color/grey3"
-                            app:np_textSize="24sp"
-                            app:np_wrapSelectorWheel="false"
-                            app:np_value="0" />
-                        <com.shawnlin.numberpicker.NumberPicker
-                            android:layout_marginHorizontal="20dp"
-                            android:id="@+id/number_picker2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            app:np_width="64dp"
-                            app:np_height="180dp"
-                            app:np_dividerColor="@android:color/transparent"
-                            app:np_max="12"
-                            app:np_min="1"
-                            app:np_selectedTextColor="@color/black"
-                            app:np_selectedTextSize="24sp"
-                            app:np_textColor="@color/grey3"
-                            app:np_textSize="24sp"
-                            app:np_wrapSelectorWheel="true"
-                            app:np_value="10" />
-                        <TextView
-                            android:layout_marginHorizontal="20dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text=":"
-                            android:textSize="24sp"
-                            android:textColor="@color/black"/>
-                        <com.shawnlin.numberpicker.NumberPicker
-                            android:layout_marginHorizontal="20dp"
-                            android:id="@+id/number_picker3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            app:np_formatter="@string/number_picker_formatter"
-                            app:np_width="64dp"
-                            app:np_height="180dp"
-                            app:np_dividerColor="@android:color/transparent"
-                            app:np_max="59"
-                            app:np_min="0"
-                            app:np_selectedTextColor="@color/black"
-                            app:np_selectedTextSize="24sp"
-                            app:np_textColor="@color/grey3"
-                            app:np_textSize="24sp"
-                            app:np_wrapSelectorWheel="true"
-                            app:np_value="0" />
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <com.shawnlin.numberpicker.NumberPicker
+                                android:id="@+id/number_picker1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginHorizontal="20dp"
+                                app:np_dividerColor="@android:color/transparent"
+                                app:np_height="180dp"
+                                app:np_max="1"
+                                app:np_min="0"
+                                app:np_selectedTextColor="@color/black"
+                                app:np_selectedTextSize="24sp"
+                                app:np_textColor="@color/grey3"
+                                app:np_textSize="24sp"
+                                app:np_value="0"
+                                app:np_width="64dp"
+                                app:np_wrapSelectorWheel="false" />
+
+                            <com.shawnlin.numberpicker.NumberPicker
+                                android:id="@+id/number_picker2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginHorizontal="20dp"
+                                app:np_dividerColor="@android:color/transparent"
+                                app:np_height="180dp"
+                                app:np_max="12"
+                                app:np_min="1"
+                                app:np_selectedTextColor="@color/black"
+                                app:np_selectedTextSize="24sp"
+                                app:np_textColor="@color/grey3"
+                                app:np_textSize="24sp"
+                                app:np_value="10"
+                                app:np_width="64dp"
+                                app:np_wrapSelectorWheel="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="20dp"
+                                android:gravity="center"
+                                android:text=":"
+                                android:textColor="@color/black"
+                                android:textSize="24sp" />
+
+                            <com.shawnlin.numberpicker.NumberPicker
+                                android:id="@+id/number_picker3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginHorizontal="20dp"
+                                app:np_dividerColor="@android:color/transparent"
+                                app:np_formatter="@string/number_picker_formatter"
+                                app:np_height="180dp"
+                                app:np_max="59"
+                                app:np_min="0"
+                                app:np_selectedTextColor="@color/black"
+                                app:np_selectedTextSize="24sp"
+                                app:np_textColor="@color/grey3"
+                                app:np_textSize="24sp"
+                                app:np_value="0"
+                                app:np_width="64dp"
+                                app:np_wrapSelectorWheel="true" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
-
-
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="15dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/calendar_recycle" />
+
+                    <TextView
+                        android:id="@+id/cyclebtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:background="@android:color/transparent"
+                        android:text="반복 안함"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:visibility="gone">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:width="20dp"
+                        android:checkable="true"
+                        android:text="반복 안함"
+                        android:textSize="16sp"
+                        app:chipStrokeColor="#F0F0F0" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:checkable="true"
+                        android:text="매일"
+                        android:textSize="16sp"
+                        app:chipStrokeColor="#F0F0F0" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:checkable="true"
+                        android:text="매주"
+                        android:textSize="16sp"
+                        app:chipStrokeColor="#F0F0F0" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:checkable="true"
+                        android:text="매월"
+                        android:textSize="16sp"
+                        app:chipStrokeColor="#F0F0F0" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:checkable="true"
+                        android:text="매년"
+                        android:textSize="16sp"
+                        app:chipStrokeColor="#F0F0F0" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="15dp"
+                    android:background="?android:attr/listDivider" />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="15dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                app:srcCompat="@drawable/calendar_recycle" />
 
-            <Button
-                android:id="@+id/btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:text="반복 안함"
-                android:textColor="@color/black"
-
-                android:textSize="16sp" />
-        </LinearLayout>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginHorizontal="70dp">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:width="20dp"
-                    android:checkable="true"
-                    android:text="반복 안함"
-                    android:textSize="16sp"
-                    app:chipStrokeColor="#F0F0F0" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:checkable="true"
-                    android:text="매일"
-                    android:textSize="16sp"
-                    app:chipStrokeColor="#F0F0F0" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:checkable="true"
-                    android:text="매주"
-                    android:textSize="16sp"
-                    app:chipStrokeColor="#F0F0F0" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:checkable="true"
-                    android:text="매월"
-                    android:textSize="16sp"
-                    app:chipStrokeColor="#F0F0F0" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:checkable="true"
-                    android:text="매년"
-                    android:textSize="16sp"
-                    app:chipStrokeColor="#F0F0F0" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="15dp"/>
             <LinearLayout
                 android:layout_marginBottom="300dp"
                 android:layout_width="match_parent"
@@ -661,28 +717,36 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/imageView10"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
                     app:srcCompat="@drawable/calendar_memo" />
 
                 <EditText
-                    android:id="@+id/editView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/textMemo"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:ems="12"
                     android:hint="메모"
                     android:inputType="text"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
                     android:importantForAutofill="no" />
 
             </LinearLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textBlank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

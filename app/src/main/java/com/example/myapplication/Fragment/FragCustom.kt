@@ -53,10 +53,29 @@ class FragCustom : Fragment() {
         frag_background = custom_background()
         tabLayout = binding.CustomPagetabLayout
 
+        var width = 580
+        var height = 580
+        val image = binding.customRamdi
+        val layoutParams = image.layoutParams
+        layoutParams.width = 1080 // 원하는 너비(dp 단위)
+        layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        image.layoutParams = layoutParams
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
 
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // 바텀시트 상태 변화를 감지하는 메서드
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                layoutParams.width = (width*(1-slideOffset)+500).toInt()
+                layoutParams.height = (height*(1-slideOffset)+500).toInt()
+                image.layoutParams = layoutParams
+            }
+        })
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val inflater1: LayoutInflater = layoutInflater
