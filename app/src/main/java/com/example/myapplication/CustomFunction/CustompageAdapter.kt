@@ -7,7 +7,7 @@ import com.example.myapplication.custom_color
 import com.example.myapplication.custom_background
 import com.example.myapplication.custom_item
 
-class CustomPageAdapter(fm: FragmentManager?, private val numberOfFragment: Int) :
+class CustompageAdapter(fm: FragmentManager?, private val numberOfFragment: Int) :
 
     CustomAdapter() {
     fun getItem(position: Int): Any {

@@ -1,11 +1,15 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.Fragment.OnClothImageChangeListener
+import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
@@ -14,6 +18,17 @@ class custom_cloth : Fragment() {
     lateinit var binding: CustomClothBinding
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
+
+    private var imageChangeListener: OnClothImageChangeListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is OnClothImageChangeListener) {
+            imageChangeListener = parentFragment as? OnClothImageChangeListener
+        } else {
+            throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +104,24 @@ class custom_cloth : Fragment() {
 
             else -> throw IllegalArgumentException("Unknown button ID")
         }
+    }
+
+    fun onClothButtonClick(clickedButton: ImageButton) {
+        val buttonInfo = when (clickedButton.id) {
+            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
+            R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, R.drawable.set_dev)
+            R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, R.drawable.set_movie)
+            R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, R.drawable.set_caffk)
+            R.id.btn_cloth_v -> ButtonInfo(clickedButton.id, R.drawable.set_v)
+            R.id.btn_cloth_astronauts -> ButtonInfo(clickedButton.id, R.drawable.set_astronauts)
+            R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, R.drawable.set_zzim)
+            R.id.btn_cloth_hanbokF -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokf)
+            R.id.btn_cloth_hanbokM -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokm)
+            R.id.btn_cloth_snowman -> ButtonInfo(clickedButton.id, R.drawable.set_snowman)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        imageChangeListener?.onClothButtonSelected(buttonInfo)
     }
 
 
