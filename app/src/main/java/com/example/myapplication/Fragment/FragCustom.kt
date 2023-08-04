@@ -110,9 +110,6 @@ class FragCustom : Fragment() {
         imgCustomItem_layoutParams.height = 1080 // 원하는 높이(dp 단위)
         imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-
-
-
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
