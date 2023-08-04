@@ -24,7 +24,7 @@
             <ImageButton
                 android:id="@+id/btn_item_basic"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/custom_radius"
                 android:src="@drawable/custom_null"></ImageButton>
 
@@ -34,7 +34,7 @@
                 android:layout_width="99dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
             <ImageButton
@@ -43,7 +43,7 @@
                 android:src="@drawable/hat_ber_s"
                 android:layout_height="72dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
@@ -205,6 +205,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="27dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/custom_radius"></ImageButton>
 
         </TableRow>

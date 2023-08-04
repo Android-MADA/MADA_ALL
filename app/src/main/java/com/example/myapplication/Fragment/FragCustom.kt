@@ -110,6 +110,12 @@ class FragCustom : Fragment() {
         imgCustomItem_layoutParams.height = 1080 // 원하는 높이(dp 단위)
         imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
+        val imgCustomBackground = binding.imgCustomBackground
+        val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
+        imgCustomBackground_layoutParams.width = 1080 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
+
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -127,7 +133,11 @@ class FragCustom : Fragment() {
 
                 imgCustomItem_layoutParams.width = (width*(1-slideOffset)+600).toInt()
                 imgCustomItem_layoutParams.height = (height*(1-slideOffset)+600).toInt()
-                imgCustomItem.layoutParams = imgCustomCloth_layoutParams
+                imgCustomItem.layoutParams = imgCustomItem_layoutParams
+
+                imgCustomBackground_layoutParams.width = (width*(1-slideOffset)+600).toInt()
+                imgCustomBackground_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
             }
