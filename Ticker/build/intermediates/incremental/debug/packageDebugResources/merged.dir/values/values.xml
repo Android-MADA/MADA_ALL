@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="grey">#5E5E5E</color>
+    <color name="time_unit_selected_color">#000000</color>
+    <color name="time_unit_unselected_color">#A6A6A6</color>
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+    <style name="Base.Theme.Ticker" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Bold18Sp8DpPaddedTextView">
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+    <style name="Theme.Ticker" parent="Base.Theme.Ticker"/>
+    <declare-styleable name="Ticker">
+        <attr format="enum" name="hoursFormat">
+            <enum name="hours12" value="12"/>
+            <enum name="hours24" value="24"/>
+        </attr>
+        <attr format="integer" name="minutesInterval"/>
+        <attr format="boolean" name="shouldAmSelected"/>
+    </declare-styleable>
+</resources>
