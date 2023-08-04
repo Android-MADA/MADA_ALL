@@ -19,13 +19,17 @@ class custom_color : Fragment() {
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
 
+
     private var imageChangeListener: OnImageChangeListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 부모 프래그먼트로 캐스팅하여 인터페이스 객체를 가져옴
         if (context is OnImageChangeListener) {
-            imageChangeListener = context
+            imageChangeListener = parentFragment as? OnImageChangeListener
+            // imageChangeListener = context
+        } else {
+            throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
         }
     }
 
@@ -38,15 +42,33 @@ class custom_color : Fragment() {
         fragbinding = FragCustomBinding.inflate(inflater)
 
 
-        binding.btnColorBasic.setOnClickListener{ onImageButtonClick(binding.btnColorBasic) }
-        binding.btnColorBlue.setOnClickListener{ onImageButtonClick(binding.btnColorBlue) }
-        binding.btnColorRblue.setOnClickListener{ onImageButtonClick(binding.btnColorRblue)}
-        binding.btnColorBluepurple.setOnClickListener { onImageButtonClick(binding.btnColorBluepurple)}
-        binding.btnColorGreen.setOnClickListener{onImageButtonClick(binding.btnColorGreen) }
-        binding.btnColorOrange.setOnClickListener{onImageButtonClick(binding.btnColorOrange) }
-        binding.btnColorPink.setOnClickListener{onImageButtonClick(binding.btnColorPink) }
-        binding.btnColorPurple.setOnClickListener{onImageButtonClick(binding.btnColorPurple) }
-        binding.btnColorYellow.setOnClickListener{onImageButtonClick(binding.btnColorYellow) }
+        binding.btnColorBasic.setOnClickListener{
+            onImageButtonClick(binding.btnColorBasic)
+            onColorButtonClick(it as ImageButton) }
+        binding.btnColorBlue.setOnClickListener{
+            onImageButtonClick(binding.btnColorBlue)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorRblue.setOnClickListener{
+            onImageButtonClick(binding.btnColorRblue)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorBluepurple.setOnClickListener {
+            onImageButtonClick(binding.btnColorBluepurple)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorGreen.setOnClickListener{
+            onImageButtonClick(binding.btnColorGreen)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorOrange.setOnClickListener{
+            onImageButtonClick(binding.btnColorOrange)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorPink.setOnClickListener{
+            onImageButtonClick(binding.btnColorPink)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorPurple.setOnClickListener{
+            onImageButtonClick(binding.btnColorPurple)
+            onColorButtonClick(it as ImageButton)}
+        binding.btnColorYellow.setOnClickListener{
+            onImageButtonClick(binding.btnColorYellow)
+            onColorButtonClick(it as ImageButton)}
 
         return binding.root
     }
