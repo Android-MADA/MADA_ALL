@@ -67,10 +67,14 @@ class FragCustom : Fragment() {
                             .commit()
                     }
                     2 -> {
-                        inflater1.inflate(R.layout.custom_item, binding.CustomBottomSheetTable, true)
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, itemFragment)
+                            .commit()
                     }
                     3 -> {
-                        inflater1.inflate(R.layout.custom_background, binding.CustomBottomSheetTable, true)
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, backgroundFragment)
+                            .commit()
                     }
                 }
             }
@@ -86,15 +90,69 @@ class FragCustom : Fragment() {
 
 
 
+        var width = 580
+        var height = 580
+        val customRamdi = binding.customRamdi
+        val customRamdi_layoutParams = customRamdi.layoutParams
+        customRamdi_layoutParams.width = 1080 // 원하는 너비(dp 단위)
+        customRamdi_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        customRamdi.layoutParams = customRamdi_layoutParams
+
+        val imgCustomCloth = binding.imgCustomCloth
+        val imgCustomCloth_layoutParams = imgCustomCloth.layoutParams
+        imgCustomCloth_layoutParams.width = 1080 // 원하는 너비(dp 단위)
+        imgCustomCloth_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
+
+        val imgCustomItem = binding.imgCustomItem
+        val imgCustomItem_layoutParams = imgCustomItem.layoutParams
+        imgCustomItem_layoutParams.width = 1080 // 원하는 너비(dp 단위)
+        imgCustomItem_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomItem.layoutParams = imgCustomItem_layoutParams
+
+
+
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // 바텀시트 상태 변화를 감지하는 메서드
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                customRamdi_layoutParams.width = (width*(1-slideOffset)+600).toInt()
+                customRamdi_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                customRamdi.layoutParams = imgCustomCloth_layoutParams
+
+                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+600).toInt()
+                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
+
+                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+600).toInt()
+                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomItem.layoutParams = imgCustomCloth_layoutParams
+
+
+            }
+        })
+
+
+
+
+
+
         return view
     }
 
     fun onClickbtncolor() {
         binding.customRamdi.setImageResource(R.drawable.c_ramdi)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
+
 
     private fun initBottomSheet() {
         val sheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)

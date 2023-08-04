@@ -19,27 +19,26 @@
 
         <ImageView
             android:id="@+id/custom_ramdi"
-            android:layout_width="263.45dp"
-            android:layout_height="330dp"
-            android:layout_marginTop="199dp"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/c_ramdi">
-        </ImageView>
+            android:layout_marginTop="100dp"
+            android:src="@drawable/c_ramdi"></ImageView>
 
         <ImageView
             android:id="@+id/img_custom_cloth"
-            android:layout_width="263.45dp"
-            android:layout_height="330dp"
-            android:layout_marginTop="199dp"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/set_astronauts">
         </ImageView>
 
         <ImageView
             android:id="@+id/img_custom_item"
-            android:layout_width="263.45dp"
-            android:layout_height="330dp"
-            android:layout_marginTop="199dp"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/hat_bee">
         </ImageView>
@@ -75,11 +74,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="514dp"
+            android:layout_height="300dp"
             android:orientation="vertical"
             app:behavior_hideable="false"
             android:id="@+id/CustomBottomSheet"
-            app:behavior_peekHeight="160dp"
+            app:behavior_peekHeight="60dp"
             android:background="@drawable/calendar_dday_background"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -135,9 +134,8 @@
             <FrameLayout
                 android:id="@+id/CustomBottomSheetTable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="20dp"
-                android:layout_marginBottom="100dp">
+                android:layout_height="230dp"
+                android:paddingTop="10dp">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/CustomBottomSheetViewPager"

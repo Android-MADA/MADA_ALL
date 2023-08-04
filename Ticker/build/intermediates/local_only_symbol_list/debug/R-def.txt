@@ -1,0 +1,28 @@
+R_DEF: Internal format may change without notice
+local
+attr? hoursFormat
+attr? minutesInterval
+attr? shouldAmSelected
+color black
+color grey
+color time_unit_selected_color
+color time_unit_unselected_color
+drawable ic_time_separating_colons
+id guideline_vertical_center
+id hours12
+id hours24
+id rv_hours
+id rv_minutes
+id tv_ampm
+layout layout_default_ticker_time
+layout layout_ticker
+mipmap ic_launcher
+mipmap ic_launcher_round
+string am
+string pm
+style Base.Theme.Ticker
+style Bold18Sp8DpPaddedTextView
+style Theme.Ticker
+styleable Ticker hoursFormat minutesInterval shouldAmSelected
+xml backup_rules
+xml data_extraction_rules
