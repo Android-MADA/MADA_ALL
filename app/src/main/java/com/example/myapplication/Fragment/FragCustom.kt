@@ -1,5 +1,6 @@
 package com.example.myapplication.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,6 @@ import com.google.android.material.tabs.TabLayout
 import java.lang.Math.log
 
 interface OnImageChangeListener {
-    fun onImageChanged(resourceId: Int)
     fun onButtonSelected(buttonInfo: ButtonInfo)
 }
 
@@ -159,10 +159,6 @@ class FragCustom : Fragment(), OnImageChangeListener {
 
 
         return view
-    }
-
-    override fun onImageChanged(resourceId: Int) {
-        customRamdi?.setImageResource(resourceId)
     }
 
     override fun onButtonSelected(buttonInfo: ButtonInfo) {
