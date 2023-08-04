@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
@@ -33,7 +34,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class FragCalendar : Fragment(), OnItemListener {
+class FragCalendar : Fragment(){
 
     lateinit var binding: FragCalendarBinding
     private lateinit var calendar: Calendar
@@ -128,12 +129,40 @@ class FragCalendar : Fragment(), OnItemListener {
         binding.dday1.setOnClickListener {
             if(datasDday.size>=1) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                if(datasDday[0].color == "#E1E9F5") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
+                } else if(datasDday[0].color == "#FFE7EB") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
+                } else if(datasDday[0].color == "#F5EED1"){
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
+                }
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[0].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[0].endDate)
+                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday1Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
                     .create()
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putString("title",datasDday[0].title)
+                    bundle.putString("startDate",datasDday[0].startDate)
+                    bundle.putString("endDate",datasDday[0].endDate)
+                    bundle.putString("memo",datasDday[0].memo)
+                    bundle.putString("color",datasDday[0].color)
+                    bundle.putInt("dday",daysRemainingToDate(datasDday[0].endDate))
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                }
+                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
+                    //일정 삭제 코드 추가
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
+                    mBuilder.dismiss()
+                }
+                //mDialogView.findViewById<ImageButton>(R.id.plus).setImageResource(R.drawable.)
+
             } else {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -143,9 +172,7 @@ class FragCalendar : Fragment(), OnItemListener {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
                 mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                    val bundle = Bundle()
-                    bundle.putBoolean("dday", true)
-                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday)
                     mBuilder.dismiss()
                 })
             }
@@ -153,14 +180,39 @@ class FragCalendar : Fragment(), OnItemListener {
         binding.dday2.setOnClickListener {
 
             if(datasDday.size>=2) {
-
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                if(datasDday[1].color == "#E1E9F5") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
+                } else if(datasDday[1].color == "#F0768C") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
+                } else if(datasDday[1].color == "#F5EED1"){
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
+                }
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[1].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[1].endDate)
+                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday2Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
                     .create()
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putString("title",datasDday[1].title)
+                    bundle.putString("startDate",datasDday[1].startDate)
+                    bundle.putString("endDate",datasDday[1].endDate)
+                    bundle.putString("memo",datasDday[1].memo)
+                    bundle.putString("color",datasDday[1].color)
+                    bundle.putInt("dday",daysRemainingToDate(datasDday[1].endDate))
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                }
+                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
+                    //일정 삭제 코드 추가
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
+                    mBuilder.dismiss()
+                }
             } else {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -170,9 +222,7 @@ class FragCalendar : Fragment(), OnItemListener {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
                 mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                    val bundle = Bundle()
-                    bundle.putBoolean("dday", true)
-                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday)
                     mBuilder.dismiss()
                 })
             }
@@ -181,12 +231,38 @@ class FragCalendar : Fragment(), OnItemListener {
         binding.dday3.setOnClickListener {
             if(datasDday.size==3) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
+                if(datasDday[2].color == "#E1E9F5") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
+                } else if(datasDday[2].color == "#F0768C") {
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
+                } else if(datasDday[2].color == "#F5EED1"){
+                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
+                }
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[2].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[2].endDate)
+                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday3Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
                     .create()
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putString("title",datasDday[2].title)
+                    bundle.putString("startDate",datasDday[2].startDate)
+                    bundle.putString("endDate",datasDday[2].endDate)
+                    bundle.putString("memo",datasDday[2].memo)
+                    bundle.putString("color",datasDday[2].color)
+                    bundle.putInt("dday",daysRemainingToDate(datasDday[2].endDate))
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    mBuilder.dismiss()
+                }
+                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
+                    //일정 삭제 코드 추가
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
+                    mBuilder.dismiss()
+                }
             } else {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -196,9 +272,7 @@ class FragCalendar : Fragment(), OnItemListener {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
                 mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                    val bundle = Bundle()
-                    bundle.putBoolean("dday", true)
-                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
+                    Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday)
                     mBuilder.dismiss()
                 })
             }
@@ -301,9 +375,12 @@ class FragCalendar : Fragment(), OnItemListener {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
         return date.format(formatter)
     }
-    override fun onItemClick(dayText: String) {
-        var yearMonthDay = yearMonthFromDate(CalendarUtil.selectedDate) + " " + dayText + "일"
-        Toast.makeText(context, yearMonthDay, Toast.LENGTH_SHORT).show()
+    fun convertToDateKoreanFormat(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("M월 d일", Locale("ko", "KR"))
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
     }
 
 }
