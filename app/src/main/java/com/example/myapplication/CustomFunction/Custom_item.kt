@@ -1,16 +1,31 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.Fragment.OnClothImageChangeListener
+import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.databinding.CustomItemBinding
 
 class custom_item : Fragment() {
     lateinit var binding: CustomItemBinding
     private var selectedButton: ImageButton? = null
+
+    private var imageChangeListener: OnItemImageChangeListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is OnClothImageChangeListener) {
+            imageChangeListener = parentFragment as? OnItemImageChangeListener
+        } else {
+            throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,6 +120,32 @@ class custom_item : Fragment() {
             R.id.btn_item_hat_heads -> R.drawable.heads_s
             else -> throw IllegalArgumentException("Unknown button ID")
         }
+    }
+
+    fun onClothButtonClick(clickedButton: ImageButton) {
+        val buttonInfo = when (clickedButton.id) {
+            R.id.btn_item_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
+            R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, R.drawable.g_nomal)
+            R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, R.drawable.hat_ber)
+            R.id.btn_item_hat_grad -> ButtonInfo(clickedButton.id, R.drawable.hat_grad)
+            R.id.btn_item_glass_8bit -> ButtonInfo(clickedButton.id, R.drawable.g_8bit)
+            R.id.btn_item_glass_woig -> ButtonInfo(clickedButton.id, R.drawable.g_woig)
+            R.id.btn_item_hat_ipod -> ButtonInfo(clickedButton.id, R.drawable.hat_ipod)
+            R.id.btn_item_glass_sunR -> ButtonInfo(clickedButton.id, R.drawable.g_sunr)
+            R.id.btn_item_glass_sunB -> ButtonInfo(clickedButton.id, R.drawable.g_sunb)
+            R.id.btn_item_hat_flower -> ButtonInfo(clickedButton.id, R.drawable.hat_flower)
+            R.id.btn_item_hat_v -> ButtonInfo(clickedButton.id, R.drawable.hat_v)
+            R.id.btn_item_hat_dinof -> ButtonInfo(clickedButton.id, R.drawable.hat_dinof)
+            R.id.btn_item_hat_sheep -> ButtonInfo(clickedButton.id, R.drawable.hat_sheep)
+            R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id, R.drawable.bag_e)
+            R.id.btn_item_bag_luck -> ButtonInfo(clickedButton.id, R.drawable.bag_luck)
+            R.id.btn_item_hat_heart -> ButtonInfo(clickedButton.id, R.drawable.hat_heart)
+            R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, R.drawable.hat_bee)
+            R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, R.drawable.heads)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        imageChangeListener?.onItemButtonSelected(buttonInfo)
     }
 
 }

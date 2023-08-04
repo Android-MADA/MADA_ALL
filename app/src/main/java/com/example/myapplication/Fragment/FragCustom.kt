@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.R
@@ -28,17 +29,28 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import com.google.android.material.tabs.TabLayout
 import java.lang.Math.log
 
-interface OnImageChangeListener {
-    fun onButtonSelected(buttonInfo: ButtonInfo)
+interface OnColorImageChangeListener {
+    fun onColorButtonSelected(buttonInfo: ButtonInfo)
+}
+
+interface OnClothImageChangeListener {
+    fun onClothButtonSelected(clothbuttonInfo: ButtonInfo)
+}
+
+interface OnItemImageChangeListener {
+    fun onItemButtonSelected(buttonInfo: ButtonInfo)
+}
+
+interface OnBackgroundImageChangeListener {
+    fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
 
-class FragCustom : Fragment(), OnImageChangeListener {
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener {
     lateinit var binding: FragCustomBinding
     private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
-    private var customRamdi: ImageView? = null
 
 
 
@@ -50,7 +62,8 @@ class FragCustom : Fragment(), OnImageChangeListener {
         binding = FragCustomBinding.inflate(inflater, container, false)
         var view = binding.root
         var customtabLayout = binding.CustomPagetabLayout
-        var viewPager = binding.CustomBottomSheetViewPager
+        binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
 
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
@@ -154,20 +167,28 @@ class FragCustom : Fragment(), OnImageChangeListener {
         })
 
 
-
-
-
-
         return view
     }
 
-    override fun onButtonSelected(buttonInfo: ButtonInfo) {
+
+
+    override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
-        customRamdi?.setImageResource(buttonInfo.selectedImageResource)
+        binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
+    }
+    override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
+        binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
+    }
+    override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
+        binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
+    }
+    override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
+        binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewPager = binding.CustomBottomSheetViewPager
     }
 
 

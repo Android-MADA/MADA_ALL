@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
-import com.example.myapplication.Fragment.OnImageChangeListener
+import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
@@ -20,13 +20,13 @@ class custom_color : Fragment() {
     private var selectedButton: ImageButton? = null
 
 
-    private var imageChangeListener: OnImageChangeListener? = null
+    private var imageChangeListener: OnColorImageChangeListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 부모 프래그먼트로 캐스팅하여 인터페이스 객체를 가져옴
-        if (context is OnImageChangeListener) {
-            imageChangeListener = parentFragment as? OnImageChangeListener
+        if (parentFragment is OnColorImageChangeListener) {
+            imageChangeListener = parentFragment as? OnColorImageChangeListener
             // imageChangeListener = context
         } else {
             throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
@@ -135,7 +135,7 @@ class custom_color : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        imageChangeListener?.onButtonSelected(buttonInfo)
+        imageChangeListener?.onColorButtonSelected(buttonInfo)
     }
 
 
