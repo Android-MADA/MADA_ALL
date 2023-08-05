@@ -1,16 +1,31 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.Fragment.OnBackgroundImageChangeListener
+import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.databinding.CustomBackgroundBinding
 
 class custom_background : Fragment() {
     lateinit var binding: CustomBackgroundBinding
     private var selectedButton: ImageButton? = null
+
+    private var imageChangeListener: OnBackgroundImageChangeListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is OnBackgroundImageChangeListener) {
+            imageChangeListener = parentFragment as? OnBackgroundImageChangeListener
+        } else {
+            throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,16 +33,36 @@ class custom_background : Fragment() {
     ): View? {
         binding = CustomBackgroundBinding.inflate(inflater, container, false)
 
-        binding.btnBackBasic.setOnClickListener{ onImageButtonClick(binding.btnBackBasic) }
-        binding.btnBackBridS.setOnClickListener{ onImageButtonClick(binding.btnBackBridS) }
-        binding.btnBackNS.setOnClickListener{ onImageButtonClick(binding.btnBackNS) }
-        binding.btnBackWinS.setOnClickListener{ onImageButtonClick(binding.btnBackWinS) }
-        binding.btnBackNormalS.setOnClickListener{ onImageButtonClick(binding.btnBackNormalS) }
-        binding.btnBackStoreS.setOnClickListener{ onImageButtonClick(binding.btnBackStoreS) }
-        binding.btnBackZzimS.setOnClickListener{ onImageButtonClick(binding.btnBackZzimS) }
-        binding.btnBackUniS.setOnClickListener{ onImageButtonClick(binding.btnBackUniS) }
-        binding.btnBackCinS.setOnClickListener{ onImageButtonClick(binding.btnBackCinS) }
-        binding.btnBackSumS.setOnClickListener{ onImageButtonClick(binding.btnBackSumS) }
+        binding.btnBackBasic.setOnClickListener{
+            onImageButtonClick(binding.btnBackBasic)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackBridS.setOnClickListener{
+            onImageButtonClick(binding.btnBackBridS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackNS.setOnClickListener{
+            onImageButtonClick(binding.btnBackNS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackWinS.setOnClickListener{
+            onImageButtonClick(binding.btnBackWinS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackNormalS.setOnClickListener{
+            onImageButtonClick(binding.btnBackNormalS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackStoreS.setOnClickListener{
+            onImageButtonClick(binding.btnBackStoreS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackZzimS.setOnClickListener{
+            onImageButtonClick(binding.btnBackZzimS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackUniS.setOnClickListener{
+            onImageButtonClick(binding.btnBackUniS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackCinS.setOnClickListener{
+            onImageButtonClick(binding.btnBackCinS)
+            onBackgroundButtonClick(it as ImageButton)}
+        binding.btnBackSumS.setOnClickListener{
+            onImageButtonClick(binding.btnBackSumS)
+            onBackgroundButtonClick(it as ImageButton)}
 
         return binding.root
     }
@@ -81,5 +116,23 @@ class custom_background : Fragment() {
 
             else -> throw IllegalArgumentException("Unknown button ID")
         }
+    }
+
+    fun onBackgroundButtonClick(clickedButton: ImageButton) {
+        val buttonInfo = when (clickedButton.id) {
+            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, R.drawable.back_brid)
+            R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, R.drawable.back_brid_s)
+            R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, R.drawable.back_n_s)
+            R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, R.drawable.back_win_s)
+            R.id.btn_back_normal_s -> ButtonInfo(clickedButton.id, R.drawable.back_nomal)
+            R.id.btn_back_store_s -> ButtonInfo(clickedButton.id, R.drawable.back_store_s)
+            R.id.btn_back_zzim_s -> ButtonInfo(clickedButton.id, R.drawable.back_zzim_s)
+            R.id.btn_back_uni_s -> ButtonInfo(clickedButton.id, R.drawable.back_uni)
+            R.id.btn_back_cin_s -> ButtonInfo(clickedButton.id, R.drawable.back_cin_s)
+            R.id.btn_back_sum_s -> ButtonInfo(clickedButton.id, R.drawable.back_sum)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
 }

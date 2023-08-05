@@ -33,24 +33,60 @@ class custom_item : Fragment() {
     ): View? {
         binding = CustomItemBinding.inflate(inflater, container, false)
 
-        binding.btnItemBasic.setOnClickListener{ onImageButtonClick(binding.btnItemBasic) }
-        binding.btnItemGlassNormal.setOnClickListener{ onImageButtonClick(binding.btnItemGlassNormal) }
-        binding.btnItemHatBer.setOnClickListener{ onImageButtonClick(binding.btnItemHatBer) }
-        binding.btnItemHatGrad.setOnClickListener{ onImageButtonClick(binding.btnItemHatGrad) }
-        binding.btnItemGlass8bit.setOnClickListener{ onImageButtonClick(binding.btnItemGlass8bit) }
-        binding.btnItemGlassWoig.setOnClickListener{ onImageButtonClick(binding.btnItemGlassWoig) }
-        binding.btnItemHatIpod.setOnClickListener{ onImageButtonClick(binding.btnItemHatIpod) }
-        binding.btnItemGlassSunR.setOnClickListener{ onImageButtonClick(binding.btnItemGlassSunR) }
-        binding.btnItemGlassSunB.setOnClickListener{ onImageButtonClick(binding.btnItemGlassSunB) }
-        binding.btnItemHatFlower.setOnClickListener{ onImageButtonClick(binding.btnItemHatFlower) }
-        binding.btnItemHatV.setOnClickListener{ onImageButtonClick(binding.btnItemHatV) }
-        binding.btnItemHatDinof.setOnClickListener{ onImageButtonClick(binding.btnItemHatDinof) }
-        binding.btnItemHatSheep.setOnClickListener{ onImageButtonClick(binding.btnItemHatSheep) }
-        binding.btnItemBagE.setOnClickListener{ onImageButtonClick(binding.btnItemBagE) }
-        binding.btnItemBagLuck.setOnClickListener{ onImageButtonClick(binding.btnItemBagLuck) }
-        binding.btnItemHatHeart.setOnClickListener{ onImageButtonClick(binding.btnItemHatHeart) }
-        binding.btnItemHatBee.setOnClickListener{ onImageButtonClick(binding.btnItemHatBee) }
-        binding.btnItemHatHeads.setOnClickListener{ onImageButtonClick(binding.btnItemHatHeads) }
+        binding.btnItemBasic.setOnClickListener{
+            onImageButtonClick(binding.btnItemBasic)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemGlassNormal.setOnClickListener{
+            onImageButtonClick(binding.btnItemGlassNormal)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatBer.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatBer)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatGrad.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatGrad)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemGlass8bit.setOnClickListener{
+            onImageButtonClick(binding.btnItemGlass8bit)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemGlassWoig.setOnClickListener{
+            onImageButtonClick(binding.btnItemGlassWoig)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatIpod.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatIpod)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemGlassSunR.setOnClickListener{
+            onImageButtonClick(binding.btnItemGlassSunR)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemGlassSunB.setOnClickListener{
+            onImageButtonClick(binding.btnItemGlassSunB)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatFlower.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatFlower)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatV.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatV)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatDinof.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatDinof)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatSheep.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatSheep)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemBagE.setOnClickListener{
+            onImageButtonClick(binding.btnItemBagE)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemBagLuck.setOnClickListener{
+            onImageButtonClick(binding.btnItemBagLuck)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatHeart.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatHeart)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatBee.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatBee)
+            onItemButtonClick(it as ImageButton)}
+        binding.btnItemHatHeads.setOnClickListener{
+            onImageButtonClick(binding.btnItemHatHeads)
+            onItemButtonClick(it as ImageButton)}
 
 
         return binding.root
@@ -122,7 +158,7 @@ class custom_item : Fragment() {
         }
     }
 
-    fun onClothButtonClick(clickedButton: ImageButton) {
+    fun onItemButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
             R.id.btn_item_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
             R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, R.drawable.g_nomal)
