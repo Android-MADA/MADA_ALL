@@ -37,16 +37,36 @@ class custom_cloth : Fragment() {
         binding = CustomClothBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
 
-        binding.btnClothBasic.setOnClickListener{ onImageButtonClick(binding.btnClothBasic) }
-        binding.btnClothDev.setOnClickListener{ onImageButtonClick(binding.btnClothDev) }
-        binding.btnClothMovie.setOnClickListener{ onImageButtonClick(binding.btnClothMovie) }
-        binding.btnClothCaffK.setOnClickListener{ onImageButtonClick(binding.btnClothCaffK) }
-        binding.btnClothV.setOnClickListener{ onImageButtonClick(binding.btnClothV) }
-        binding.btnClothAstronauts.setOnClickListener{ onImageButtonClick(binding.btnClothAstronauts) }
-        binding.btnClothZzim.setOnClickListener{ onImageButtonClick(binding.btnClothZzim) }
-        binding.btnClothHanbokF.setOnClickListener{ onImageButtonClick(binding.btnClothHanbokF) }
-        binding.btnClothHanbokM.setOnClickListener{ onImageButtonClick(binding.btnClothHanbokM) }
-        binding.btnClothSnowman.setOnClickListener{ onImageButtonClick(binding.btnClothSnowman) }
+        binding.btnClothBasic.setOnClickListener{
+            onImageButtonClick(binding.btnClothBasic)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothDev.setOnClickListener{
+            onImageButtonClick(binding.btnClothDev)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothMovie.setOnClickListener{
+            onImageButtonClick(binding.btnClothMovie)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothCaffK.setOnClickListener{
+            onImageButtonClick(binding.btnClothCaffK)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothV.setOnClickListener{
+            onImageButtonClick(binding.btnClothV)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothAstronauts.setOnClickListener{
+            onImageButtonClick(binding.btnClothAstronauts)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothZzim.setOnClickListener{
+            onImageButtonClick(binding.btnClothZzim)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothHanbokF.setOnClickListener{
+            onImageButtonClick(binding.btnClothHanbokF)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothHanbokM.setOnClickListener{
+            onImageButtonClick(binding.btnClothHanbokM)
+            onClothButtonClick(it as ImageButton)}
+        binding.btnClothSnowman.setOnClickListener{
+            onImageButtonClick(binding.btnClothSnowman)
+            onClothButtonClick(it as ImageButton)}
 
 
         return binding.root
