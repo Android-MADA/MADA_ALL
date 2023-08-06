@@ -338,14 +338,6 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
 
-                val displayMetrics = DisplayMetrics()
-                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-                val deviceWidth = displayMetrics.widthPixels
-
-                val desiredRatio = 0.8f
-                val desiredWidth = (deviceWidth * desiredRatio).toInt()
-                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
                 val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
@@ -363,15 +355,15 @@ class CalendarAddFragment : Fragment() {
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
             FragCalendar.CalendarDATA(
                 "2023-7-21", "2023-7-21", "2023-8-31", "", "",
-                "#FFE7EB", "", 'Y', "방학", -1, true, "방학이 끝나간다..."
+                "#FFE7EB", "", 'Y', "방학", -1, true, "방학이 끝나간다...","CAL"
             ),
             FragCalendar.CalendarDATA(
                 "2023-7-2", "2023-7-2", "2023-9-2", "", "",
-                "#E1E9F5", "", 'Y', "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!"
+                "#E1E9F5", "", 'Y', "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!","CAL"
             ),
             FragCalendar.CalendarDATA(
                     "2023-7-1", "2023-7-1", "2023-11-27", "", "",
-            "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어"
+            "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어","CAL"
         )
         )
         binding.button.setOnClickListener {

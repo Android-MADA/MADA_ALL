@@ -41,14 +41,14 @@ class HomeTimetableFragment : Fragment() {
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
     val pieChartDataArray = arrayOf(        //임시 데이터
-        HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
-        HomeViewpagerTimetableFragment.PieChartData("제목2", "메모2", 1, 0, 6, 0, "#516773", 1),
-        HomeViewpagerTimetableFragment.PieChartData("제목3", "메모3", 9, 0, 12, 0, "#FDA4B4", 2),
-        HomeViewpagerTimetableFragment.PieChartData("제목4", "메모4", 12, 0, 13, 30, "#52B6C9", 3),
-        HomeViewpagerTimetableFragment.PieChartData("제목5", "메모5", 13, 30, 14, 30, "#516773", 4),
-        HomeViewpagerTimetableFragment.PieChartData("제목6", "메모6", 14, 30, 16, 30, "#52B6C9", 5),
-        HomeViewpagerTimetableFragment.PieChartData("제목7", "메모7", 16, 30, 18, 0, "#FCE79A", 6),
-        HomeViewpagerTimetableFragment.PieChartData("제목8", "메모8", 20, 0, 22, 0, "#486DA3", 7)
+        HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0,"TIME"),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
+        HomeViewpagerTimetableFragment.PieChartData("제목2", "메모2", 1, 0, 6, 0, "#516773", 1,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목3", "메모3", 9, 0, 12, 0, "#FDA4B4", 2,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목4", "메모4", 12, 0, 13, 30, "#52B6C9", 3,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목5", "메모5", 13, 30, 14, 30, "#516773", 4,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목6", "메모6", 14, 30, 16, 30, "#52B6C9", 5,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목7", "메모7", 16, 30, 18, 0, "#FCE79A", 6,"TIME"),
+        HomeViewpagerTimetableFragment.PieChartData("제목8", "메모8", 20, 0, 22, 0, "#486DA3", 7,"TIME")
     )
 
 

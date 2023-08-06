@@ -56,7 +56,8 @@ class FragCalendar : Fragment(){
         //val updateAt: String
         var floor : Int,
         val duration : Boolean,
-        val memo : String
+        val memo : String,
+        val what : String       //종류
 
     )
 
@@ -94,9 +95,9 @@ class FragCalendar : Fragment(){
 
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
             CalendarDATA("2023-7-21","2023-7-21","2023-8-31","","",
-                "#FFE7EB","",'Y',"방학",-1,true,"방학이 끝나간다..."),
+                "#FFE7EB","",'Y',"방학",-1,true,"방학이 끝나간다...","CAL"),
             CalendarDATA("2023-7-2","2023-7-2","2023-9-2","","",
-                "#E1E9F5","",'Y',"UMC 데모데이",-1,true,"메모는 여기에 뜨게 하면 될것 같습니다!")
+                "#E1E9F5","",'Y',"UMC 데모데이",-1,true,"메모는 여기에 뜨게 하면 될것 같습니다!","CAL")
 
         )
 
@@ -145,6 +146,7 @@ class FragCalendar : Fragment(){
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+
                 mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
                     val bundle = Bundle()
                     bundle.putString("title",datasDday[0].title)
@@ -308,13 +310,13 @@ class FragCalendar : Fragment(){
         //임시 데이터 정보 받아오기
         val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
             CalendarDATA("2023-7-2","2023-7-2","2023-7-6","","",
-                "#2AA1B7","반복 안함",'N',"데이터분석기초 기말고사",-1,true,""),
+                "#2AA1B7","반복 안함",'N',"데이터분석기초 기말고사",-1,true,"","CAL"),
             CalendarDATA("2023-7-21","2023-7-21","2023-8-5","","",
-                "#89A9D9","매일",'N',"방학",-1,true,""),
+                "#89A9D9","매일",'N',"방학",-1,true,"","CAL"),
             CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","",
-                "#2AA1B7","매주",'N',"이건 무슨 일정일까",-1,true,""),
+                "#2AA1B7","매주",'N',"이건 무슨 일정일까",-1,true,"","CAL"),
             CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30",
-                "#F8D141","매월",'N',"기말 강의평가 기간",-1,false,"메모 ")
+                "#F8D141","매월",'N',"기말 강의평가 기간",-1,false,"메모 ","CAL")
         )
         val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
         for(data in datas) {

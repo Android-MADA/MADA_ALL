@@ -2,6 +2,7 @@ package com.example.myapplication.Fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -163,7 +164,8 @@ class FragCustom : Fragment(), OnImageChangeListener {
 
     override fun onButtonSelected(buttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
-        customRamdi?.setImageResource(buttonInfo.selectedImageResource)
+        Log.d("dsa",buttonInfo.selectedImageResource.toString())
+        binding.customRamdi.setImageResource(buttonInfo.selectedImageResource)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
