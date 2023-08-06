@@ -25,7 +25,7 @@ class custom_color : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 부모 프래그먼트로 캐스팅하여 인터페이스 객체를 가져옴
-        if (context is OnImageChangeListener) {
+        if (parentFragment is OnImageChangeListener) {
             imageChangeListener = parentFragment as? OnImageChangeListener
             // imageChangeListener = context
         } else {
