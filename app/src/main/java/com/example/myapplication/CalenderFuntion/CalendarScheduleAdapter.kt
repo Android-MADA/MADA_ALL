@@ -1,5 +1,6 @@
 package com.example.myapplication.CalenderFuntion
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -17,7 +18,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCalendar.CalendarDATA?>,private val today: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCalendar.CalendarDATA?>,private val today: Int
+            , private val parentView : View, private val parentDialog : AlertDialog) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
     companion object {
@@ -67,16 +69,18 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
                     viewHolderWithoutDuration.textTime1.text = convertTo12HourFormat(item.startTime)+"-"
                     viewHolderWithoutDuration.textTime2.text = convertTo12HourFormat(item.endTime)
                     viewHolderWithoutDuration.backgroundPoint.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
+                    viewHolderWithoutDuration.textTitle.text = item.title
                 }
             }
             holder.itemView.setOnClickListener {
+                //임시
                 val bundle = Bundle()
                 if(item.title!="")
                     bundle.putString("title", item.title)
                 if(item.startDate!="")
-                    bundle.putString("preSchedule",convertToDateKoreanFormat(item.startDate))
+                    bundle.putString("preSchedule",item.startDate)
                 if(item.endDate!="")
-                    bundle.putString("nextSchedule",convertToDateKoreanFormat(item.endDate))
+                    bundle.putString("nextSchedule",item.endDate)
                 if(item.startTime!="")
                     bundle.putString("preClock",convertTo12HourFormat2(item.startTime))
                 if(item.endTime!="")
@@ -85,7 +89,10 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
                     bundle.putString("cycle",item.repeat)
                 if(item.memo!="")
                     bundle.putString("memo",item.memo)
-                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
+                bundle.putString("color",item.color)
+                Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
+                parentDialog.dismiss()
+
             }
         }
 
@@ -105,6 +112,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
         val textTime1: TextView = itemView.findViewById(R.id.textTime1)
         val textTime2: TextView = itemView.findViewById(R.id.textTime2)
         val backgroundPoint: ImageView = itemView.findViewById(R.id.backgorundPoint)
+        val textTitle: TextView = itemView.findViewById(R.id.textTitle)
     }
 
     fun convertTo12HourFormat(timeString: String): String {
@@ -120,14 +128,8 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<FragCale
         val hour = parts[0].toInt()
         val minute = parts[1]
         val convertedHour = if (hour > 12) hour - 12 else hour
-        val ampm = if (hour > 12) "pm" else "am"
+        val ampm = if (hour > 12) "오전" else "오후"
         return "  $ampm $convertedHour:$minute  "
     }
-    fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
 
-        val date = inputFormat.parse(dateString)
-        return outputFormat.format(date)
-    }
 }

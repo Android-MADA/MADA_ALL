@@ -115,9 +115,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val bundle = Bundle()
-                bundle.putInt("Month", iMonth)
-                bundle.putInt("Day", iDay)
-                bundle.putInt("Yoil", position%7)
+                bundle.putString("preSchedule", "$iYear-$iMonth-$iDay-")
+                bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay-")
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 mBuilder.dismiss()
             })
@@ -127,7 +126,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             if(calendarDataArray[position].isEmpty()) {
 
             } else {
-                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay)
+                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder)
                 var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter

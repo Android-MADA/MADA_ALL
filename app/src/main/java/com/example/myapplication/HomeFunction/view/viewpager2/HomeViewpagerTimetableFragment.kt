@@ -1,6 +1,5 @@
 package com.example.myapplication.HomeFunction.view.viewpager2
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,10 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapplication.CalenderFuntion.CalendarAddDday
+import androidx.navigation.Navigation
 import com.example.myapplication.CustomCircleBarView
-import com.example.myapplication.Fragment.FragHome
-import com.example.myapplication.HomeFunction.view.HomeTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
@@ -22,10 +19,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,7 +45,8 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val endHour: Int,
         val endMin: Int,
         val colorCode: String,
-        val divisionNumber: Int
+        val divisionNumber: Int,
+        val what : String
     ) : Serializable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,14 +73,14 @@ class HomeViewpagerTimetableFragment : Fragment() {
         //파이차트
         var chart = binding.chart
         val pieChartDataArray = arrayOf(        //임시 데이터
-            PieChartData("제목1", "메모1", 0,0,1,0, "#486DA3",0),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
-            PieChartData("제목2", "메모2", 1,0,6,0, "#516773",1),
-            PieChartData("제목3", "메모3", 9,0,12,0, "#FDA4B4",2),
-            PieChartData("제목4", "메모4", 12,0,13,30, "#52B6C9",3),
-            PieChartData("제목5", "메모5", 13,30,14,30, "#516773",4),
-            PieChartData("제목6", "메모6", 14,30,16,30, "#52B6C9",5),
-            PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6),
-            PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7)
+            PieChartData("제목1", "메모1", 0,0,1,0, "#486DA3",0,"TIME"),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
+            PieChartData("제목2", "메모2", 1,0,6,0, "#516773",1,"TIME"),
+            PieChartData("제목3", "메모3", 9,0,12,0, "#FDA4B4",2,"TIME"),
+            PieChartData("제목4", "메모4", 12,0,13,30, "#52B6C9",3,"TIME"),
+            PieChartData("제목5", "메모5", 13,30,14,30, "#516773",4,"TIME"),
+            PieChartData("제목6", "메모6", 14,30,16,30, "#52B6C9",5,"TIME"),
+            PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6,"TIME"),
+            PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7,"TIME")
         )
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             binding.none.visibility = View.VISIBLE
@@ -147,6 +142,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             //rotationAngle = 30f // 회전 각도, 굳이 필요 없을듯
             description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
         }
+        var lastSelectedEntry = 1
         chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e is PieEntry) {
@@ -158,10 +154,15 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     } else {
                         pieDataSet.selectionShift = 30f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
                     }
+                    lastSelectedEntry = label.toInt()
                 }
             }
             override fun onNothingSelected() {
-                // 아무 것도 선택되지 않았을 때의 동작을 구현합니다.
+                val bundle = Bundle()
+                bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
+                bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+
             }
         })
 
