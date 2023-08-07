@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
             app:destination="@id/homeRepeatTodoFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_timeAddFragment"
+            app:destination="@id/timeAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragCalendar"
@@ -29,6 +32,12 @@
         <action
             android:id="@+id/action_fragCalendar_to_calendarAddS"
             app:destination="@id/calendarAddS" />
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarAddDday"
+            app:destination="@id/calendarAddDday" />
+        <action
+            android:id="@+id/action_fragCalendar_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
     </fragment>
     <fragment
         android:id="@+id/calendarAdd"
@@ -46,6 +55,18 @@
         tools:layout="@layout/calendar_add_s">
         <action
             android:id="@+id/action_calendarAddS_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_calendarAddS_to_calendarAdd"
+            app:destination="@id/calendarAdd" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarAddDday"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment"
+        android:label="CalendarAddDday "
+        tools:layout="@layout/calendar_add_dday">
+        <action
+            android:id="@+id/action_calendarAddDday_to_fragCalendar"
             app:destination="@id/fragCalendar" />
     </fragment>
     <fragment

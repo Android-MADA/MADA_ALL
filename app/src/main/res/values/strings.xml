@@ -5,19 +5,13 @@
     <string name="signup1">앱 내에서 사용하실 \n닉네임을 설정해주세요.</string>
     <string name="signup2_1">회원가입 완료!</string>
     <string name="signup2_2">이제 마다를 본격적으로 즐겨 보세요</string>
-    <string name="notice_1">"서버에서 받아올 공지사항1"</string>
-    <string name="notice_2">"서버에서 받아올 공지사항2"</string>
-
-<!--    <string name="title_activity_login">LoginActivity</string>-->
-<!--    <string name="prompt_email">Email</string>-->
-<!--    <string name="prompt_password">Password</string>-->
-<!--    <string name="action_sign_in">Sign in or register</string>-->
-<!--    <string name="action_sign_in_short">Sign in</string>-->
-<!--    <string name="welcome">"Welcome !"</string>-->
-<!--    <string name="invalid_username">Not a valid username</string>-->
-<!--    <string name="invalid_password">Password must be >5 characters</string>-->
-<!--    <string name="login_failed">"Login failed"</string>-->
-<!--    <string name="title_activity_my_profile">MyProfileActivity</string>-->
+    <string name="notice_1">서버에서 받아올 공지사항1</string>
+    <string name="notice_2">서버에서 받아올 공지사항2</string>
+    <string name="ment_1">나는 전투를 준비하면서 계획은 무용하나 계획하는\n것은 꼭 필요함을 항상 발견해왔다.</string>
+    <string name="ment_2">Dwight D. Eisenhower</string>
+    <string name="withdraw_1">탈퇴하기 전에 아래 주의사항을\n꼭 확인해 주세요.</string>
+    <string name="withdraw_2">• 회원 탈퇴 시 계정과 관련된 정보는 복구가 불가능\n   합니다.\n\n• 결제 관련.. 탈퇴하면 프리미엄 결제도 해지되나요?\n\n• 탈퇴 시 주의사항\n\n• 탈퇴 후 7일 동안은 동일한 계정 및 전화번호로 재가입\n   하실 수 없습니다.</string>
+    <string name="withdraw_3">상단 주의사항을 모두 확인했으며 탈퇴에 동의합니다.</string>
     <string name="title_activity_my_list_item">my_list_item</string>
 
     <!-- Strings used for fragments for navigation -->

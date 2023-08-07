@@ -46,12 +46,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_width="347dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="260dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/my_mada_character" />
 
     <Button
@@ -61,6 +61,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="80dp"
         android:text="마다 시작하기"
+        android:background="@drawable/my_btn_nomal"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"

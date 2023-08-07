@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="5dp" android:right="15dp" android:bottom="5dp" android:left="15dp">
+        <shape>
+            <solid android:color="@color/main" /> <!-- 배경색 -->
+            <corners
+                android:topLeftRadius="20dp"
+                android:topRightRadius="20dp"
+                android:bottomLeftRadius="20dp"
+                android:bottomRightRadius="20dp" /> <!-- 선 휘는 각도 -->
+        </shape>
+    </item>
+</layer-list>
