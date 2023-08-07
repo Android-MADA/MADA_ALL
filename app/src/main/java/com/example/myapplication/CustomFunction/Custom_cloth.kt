@@ -128,7 +128,7 @@ class custom_cloth : Fragment() {
 
     fun onClothButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
+            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, R.drawable.custom_empty)
             R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, R.drawable.set_dev)
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, R.drawable.set_movie)
             R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, R.drawable.set_caffk)
