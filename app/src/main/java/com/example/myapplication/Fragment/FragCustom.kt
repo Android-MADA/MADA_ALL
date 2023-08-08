@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -37,6 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.lang.Math.log
+import java.math.BigInteger
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -64,12 +66,30 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var selectedClothButtonInfo: ButtonInfo? = null
     private var selectedItemButtonInfo: ButtonInfo? = null
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
+    private var custom_save = false
+    private var button_temdata : selectedButtonInfo? = null
 
-    data class CustomDATA(
-        var selectedColorButtonInfo: ButtonInfo? = null,
-        var selectedClothButtonInfo: ButtonInfo? = null,
-        var selectedItemButtonInfo: ButtonInfo? = null,
-        var selectedBackgroundButtonInfo: ButtonInfo? = null
+    data class selectedButtonInfo(
+        var selectedColorButtonInfo: ButtonInfo?,
+        var selectedClothButtonInfo: ButtonInfo?,
+        var selectedItemButtonInfo: ButtonInfo?,
+        var selectedBackgroundButtonInfo: ButtonInfo?
+    )
+
+
+
+    data class USER_POSSESSION_ITEM(
+        var user_id : BigInteger,
+        var item_id : Int,
+        var wearing : Char
+
+    )
+
+    data class MISSION(
+        var id : Int,
+        var item_id : Int,
+        var wearing : Char
+
     )
 
     override fun onCreateView(
@@ -88,6 +108,24 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val clothFragment = custom_cloth()
         val itemFragment = custom_item()
         val backgroundFragment = custom_background()
+
+        if(custom_save == true){
+            button_temdata?.selectedColorButtonInfo?.let { colorButtonInfo ->
+                onColorButtonSelected(colorButtonInfo)
+            }
+
+            button_temdata?.selectedClothButtonInfo?.let { clothButtonInfo ->
+                onClothButtonSelected(clothButtonInfo)
+            }
+
+            button_temdata?.selectedItemButtonInfo?.let { itemButtonInfo ->
+                onItemButtonSelected(itemButtonInfo)
+            }
+
+            button_temdata?.selectedBackgroundButtonInfo?.let { backgroundButtonInfo ->
+                onBackgroundButtonSelected(backgroundButtonInfo)
+            }
+        }
 
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
@@ -221,6 +259,22 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
 
+        binding.btnCustomSave.setOnClickListener{
+            custom_save = true
+            button_temdata = getSelectedButtonInfo()
+        }
+
+        binding.btnCustomReset.setOnClickListener{
+            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
+            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
+
+
+        }
+
+
+
 
         return view
     }
@@ -229,23 +283,27 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
+        custom_save = false
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
     }
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
+        custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
         selectedClothButtonInfo = clothbuttonInfo
     }
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
+        custom_save = false
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
     }
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
+        custom_save = false
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
         selectedBackgroundButtonInfo = backgroundbuttonInfo
     }
 
-    fun getSelectedButtonInfo(){
+    fun getSelectedButtonInfo(): selectedButtonInfo {
 
         fun getSelectedColorButtonInfo(): ButtonInfo? {
             return selectedColorButtonInfo
@@ -262,12 +320,18 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         fun getSelectedBackgroundButtonInfo(): ButtonInfo? {
             return selectedBackgroundButtonInfo
         }
-        val temdata = CustomDATA(
+        val temdata = selectedButtonInfo(
             getSelectedColorButtonInfo(),
             getSelectedClothButtonInfo(),
             getSelectedItemButtonInfo(),
             getSelectedBackgroundButtonInfo())
 
+        return temdata
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -277,7 +341,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 }
 
     /* override fun onBackPressed() {
-        // if(저장하지 않았다면) {
+        // if(var custom_save = false) {
             val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
             val mBuilder = AlertDialog.Builder(requireContext())
                 .setView(mDialogView)

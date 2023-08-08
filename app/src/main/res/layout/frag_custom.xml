@@ -15,7 +15,7 @@
             android:layout_width="700dp"
             android:layout_height="700dp"
             android:layout_gravity="top|center"
-            android:src="@drawable/back_brid">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageView
@@ -32,7 +32,7 @@
             android:layout_height="400dp"
             android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/set_astronauts">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageView
@@ -41,7 +41,7 @@
             android:layout_height="400dp"
             android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/hat_bee">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageButton
