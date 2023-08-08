@@ -13,5 +13,8 @@ class MyRecordMonthActivity : AppCompatActivity() {
         binding = MyRecordMonthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
     }
 }

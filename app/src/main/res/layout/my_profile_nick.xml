@@ -4,16 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".MyFuction.MyProfileNickActivity">
+
+    <LinearLayout
+        android:id="@+id/toolbar_my"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/sub5"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/calendar_arrow_left"
+            android:background="@android:color/transparent"/>
+
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="닉네임 변경" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
         android:hint="닉네임"
         android:orientation="vertical"
         app:counterEnabled="true"
@@ -22,7 +58,7 @@
         app:hintTextColor="@color/grey3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_my">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -37,6 +73,7 @@
         android:id="@+id/my_nick_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/my_btn_ok"
         android:text="닉네임 변경"
