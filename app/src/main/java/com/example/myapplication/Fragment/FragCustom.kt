@@ -60,6 +60,17 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
+    private var selectedColorButtonInfo: ButtonInfo? = null
+    private var selectedClothButtonInfo: ButtonInfo? = null
+    private var selectedItemButtonInfo: ButtonInfo? = null
+    private var selectedBackgroundButtonInfo: ButtonInfo? = null
+
+    data class CustomDATA(
+        var selectedColorButtonInfo: ButtonInfo? = null,
+        var selectedClothButtonInfo: ButtonInfo? = null,
+        var selectedItemButtonInfo: ButtonInfo? = null,
+        var selectedBackgroundButtonInfo: ButtonInfo? = null
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -219,15 +230,44 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
+        selectedColorButtonInfo = colorbuttonInfo
     }
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
+        selectedClothButtonInfo = clothbuttonInfo
     }
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
+        selectedItemButtonInfo = itembuttonInfo
     }
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
+        selectedBackgroundButtonInfo = backgroundbuttonInfo
+    }
+
+    fun getSelectedButtonInfo(){
+
+        fun getSelectedColorButtonInfo(): ButtonInfo? {
+            return selectedColorButtonInfo
+        }
+
+        fun getSelectedClothButtonInfo(): ButtonInfo? {
+            return selectedClothButtonInfo
+        }
+
+        fun getSelectedItemButtonInfo(): ButtonInfo? {
+            return selectedItemButtonInfo
+        }
+
+        fun getSelectedBackgroundButtonInfo(): ButtonInfo? {
+            return selectedBackgroundButtonInfo
+        }
+        val temdata = CustomDATA(
+            getSelectedColorButtonInfo(),
+            getSelectedClothButtonInfo(),
+            getSelectedItemButtonInfo(),
+            getSelectedBackgroundButtonInfo())
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
