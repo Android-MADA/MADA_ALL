@@ -1,16 +1,24 @@
 package com.example.myapplication.Fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.R
@@ -27,19 +35,31 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import java.lang.Math.log
 
-interface OnImageChangeListener {
-    fun onButtonSelected(buttonInfo: ButtonInfo)
+interface OnColorImageChangeListener {
+    fun onColorButtonSelected(buttonInfo: ButtonInfo)
+}
+
+interface OnClothImageChangeListener {
+    fun onClothButtonSelected(clothbuttonInfo: ButtonInfo)
+}
+
+interface OnItemImageChangeListener {
+    fun onItemButtonSelected(buttonInfo: ButtonInfo)
+}
+
+interface OnBackgroundImageChangeListener {
+    fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
 
-class FragCustom : Fragment(), OnImageChangeListener {
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener {
     lateinit var binding: FragCustomBinding
     private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
-    private var customRamdi: ImageView? = null
 
 
 
@@ -51,7 +71,10 @@ class FragCustom : Fragment(), OnImageChangeListener {
         binding = FragCustomBinding.inflate(inflater, container, false)
         var view = binding.root
         var customtabLayout = binding.CustomPagetabLayout
-        var viewPager = binding.CustomBottomSheetViewPager
+        binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
+        viewPager = binding.CustomBottomSheetViewPager
+        val tabTitles = listOf<String>("색깔", "의상", "소품", "배경")
 
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
@@ -61,6 +84,42 @@ class FragCustom : Fragment(), OnImageChangeListener {
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
+
+        TabLayoutMediator(customtabLayout, viewPager) {tab, position ->
+            val inflater1: LayoutInflater = layoutInflater
+            var pos = tab.position
+            when (pos) {
+                0 -> {
+                    tab.text = "색깔"
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.CustomBottomSheetTable, colorFragment)
+                        .commit()
+                }
+
+                1 -> {
+                    tab.text = "의상"
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.CustomBottomSheetTable, clothFragment)
+                        .commit()
+                }
+
+                2 -> {
+                    tab.text = "소품"
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.CustomBottomSheetTable, itemFragment)
+                        .commit()
+                }
+
+                3 -> {
+                    tab.text = "배경"
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.CustomBottomSheetTable, backgroundFragment)
+                        .commit()
+                }
+            }
+        }.attach()
+
+        /*
 
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -97,7 +156,7 @@ class FragCustom : Fragment(), OnImageChangeListener {
             override fun onTabReselected(tab: TabLayout.Tab) {
                 // do nothing
             }
-        })
+        }) */
 
 
 
@@ -105,26 +164,26 @@ class FragCustom : Fragment(), OnImageChangeListener {
         var height = 580
         val customRamdi = binding.customRamdi
         val customRamdi_layoutParams = customRamdi.layoutParams
-        customRamdi_layoutParams.width = 1080 // 원하는 너비(dp 단위)
-        customRamdi_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        customRamdi_layoutParams.width = 818 // 원하는 너비(dp 단위)
+        customRamdi_layoutParams.height = 920 // 원하는 높이(dp 단위)
         customRamdi.layoutParams = customRamdi_layoutParams
 
         val imgCustomCloth = binding.imgCustomCloth
         val imgCustomCloth_layoutParams = imgCustomCloth.layoutParams
-        imgCustomCloth_layoutParams.width = 1080 // 원하는 너비(dp 단위)
-        imgCustomCloth_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomCloth_layoutParams.width = 818 // 원하는 너비(dp 단위)
+        imgCustomCloth_layoutParams.height = 920 // 원하는 높이(dp 단위)
         imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
         val imgCustomItem = binding.imgCustomItem
         val imgCustomItem_layoutParams = imgCustomItem.layoutParams
-        imgCustomItem_layoutParams.width = 1080 // 원하는 너비(dp 단위)
-        imgCustomItem_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomItem_layoutParams.width = 818 // 원하는 너비(dp 단위)
+        imgCustomItem_layoutParams.height = 920 // 원하는 높이(dp 단위)
         imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
         val imgCustomBackground = binding.imgCustomBackground
         val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 1080 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 1080 // 원하는 높이(dp 단위)
+        imgCustomBackground_layoutParams.width = 1900 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 1900 // 원하는 높이(dp 단위)
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
@@ -134,20 +193,20 @@ class FragCustom : Fragment(), OnImageChangeListener {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width*(1-slideOffset)+600).toInt()
-                customRamdi_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                customRamdi_layoutParams.width = (width*(1-slideOffset)+682).toInt()
+                customRamdi_layoutParams.height = (height*(1-slideOffset)+767).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+600).toInt()
-                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+682).toInt()
+                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+767).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+600).toInt()
-                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+682).toInt()
+                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+767).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width*(1-slideOffset)+600).toInt()
-                imgCustomBackground_layoutParams.height = (height*(1-slideOffset)+600).toInt()
+                imgCustomBackground_layoutParams.width = (width*(1-slideOffset)+1500).toInt()
+                imgCustomBackground_layoutParams.height = (height*(1-slideOffset)+1500).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
@@ -155,23 +214,55 @@ class FragCustom : Fragment(), OnImageChangeListener {
         })
 
 
-
-
-
-
         return view
     }
 
-    override fun onButtonSelected(buttonInfo: ButtonInfo) {
+
+
+    override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
-        Log.d("dsa",buttonInfo.selectedImageResource.toString())
-        binding.customRamdi.setImageResource(buttonInfo.selectedImageResource)
+        binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
+    }
+    override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
+        binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
+    }
+    override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
+        binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
+    }
+    override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
+        binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewPager = binding.CustomBottomSheetViewPager
     }
-
-
-
 }
+
+    /* override fun onBackPressed() {
+        // if(저장하지 않았다면) {
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+            val deviceWidth = displayMetrics.widthPixels
+
+            val desiredRatio = 0.8f
+            val desiredWidth = (deviceWidth * desiredRatio).toInt()
+            mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+            val display = requireActivity().windowManager.defaultDisplay
+            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                mBuilder.dismiss()
+            })
+            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                저장
+            }) */
