@@ -61,8 +61,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,7 +72,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
-        val tabTitles = listOf<String>("색깔", "의상", "소품", "배경")
 
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
@@ -90,28 +87,28 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             var pos = tab.position
             when (pos) {
                 0 -> {
-                    tab.text = "색깔"
+                    tab.setText("색깔")
                     childFragmentManager.beginTransaction()
                         .replace(R.id.CustomBottomSheetTable, colorFragment)
                         .commit()
                 }
 
                 1 -> {
-                    tab.text = "의상"
+                    tab.setText("의상")
                     childFragmentManager.beginTransaction()
                         .replace(R.id.CustomBottomSheetTable, clothFragment)
                         .commit()
                 }
 
                 2 -> {
-                    tab.text = "소품"
+                    tab.setText("소품")
                     childFragmentManager.beginTransaction()
                         .replace(R.id.CustomBottomSheetTable, itemFragment)
                         .commit()
                 }
 
                 3 -> {
-                    tab.text = "배경"
+                    tab.setText("배경")
                     childFragmentManager.beginTransaction()
                         .replace(R.id.CustomBottomSheetTable, backgroundFragment)
                         .commit()
@@ -160,24 +157,24 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        var width = 580
-        var height = 580
+        var width = 500
+        var height = 500
         val customRamdi = binding.customRamdi
         val customRamdi_layoutParams = customRamdi.layoutParams
-        customRamdi_layoutParams.width = 818 // 원하는 너비(dp 단위)
-        customRamdi_layoutParams.height = 920 // 원하는 높이(dp 단위)
+        customRamdi_layoutParams.width = 1200 // 원하는 너비(dp 단위)
+        customRamdi_layoutParams.height = 1200 // 원하는 높이(dp 단위)
         customRamdi.layoutParams = customRamdi_layoutParams
 
         val imgCustomCloth = binding.imgCustomCloth
         val imgCustomCloth_layoutParams = imgCustomCloth.layoutParams
-        imgCustomCloth_layoutParams.width = 818 // 원하는 너비(dp 단위)
-        imgCustomCloth_layoutParams.height = 920 // 원하는 높이(dp 단위)
+        imgCustomCloth_layoutParams.width = 1200 // 원하는 너비(dp 단위)
+        imgCustomCloth_layoutParams.height = 1200 // 원하는 높이(dp 단위)
         imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
         val imgCustomItem = binding.imgCustomItem
         val imgCustomItem_layoutParams = imgCustomItem.layoutParams
-        imgCustomItem_layoutParams.width = 818 // 원하는 너비(dp 단위)
-        imgCustomItem_layoutParams.height = 920 // 원하는 높이(dp 단위)
+        imgCustomItem_layoutParams.width = 1200 // 원하는 너비(dp 단위)
+        imgCustomItem_layoutParams.height = 1200 // 원하는 높이(dp 단위)
         imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
         val imgCustomBackground = binding.imgCustomBackground
@@ -193,16 +190,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width*(1-slideOffset)+682).toInt()
-                customRamdi_layoutParams.height = (height*(1-slideOffset)+767).toInt()
+                customRamdi_layoutParams.width = (width*(1-slideOffset)+700).toInt()
+                customRamdi_layoutParams.height = (height*(1-slideOffset)+700).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+682).toInt()
-                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+767).toInt()
+                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+700).toInt()
+                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+700).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+682).toInt()
-                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+767).toInt()
+                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+700).toInt()
+                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+700).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
                 imgCustomBackground_layoutParams.width = (width*(1-slideOffset)+1500).toInt()
