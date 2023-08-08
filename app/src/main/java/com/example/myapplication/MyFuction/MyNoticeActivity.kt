@@ -13,5 +13,9 @@ class MyNoticeActivity : AppCompatActivity() {
         binding = MyNoticeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+
     }
 }

@@ -17,12 +17,11 @@ class MyPremiumActivity : AppCompatActivity() {
         binding = MyPremiumBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.myPremiumBtn.setOnClickListener {
-            //isButtonClicked = !isButtonClicked
-            //binding.myPremiumBtn.setBackgroundResource(R.drawable.my_withdrwaw_btn_ok)
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
 
-            val intent = Intent(this, Splash2Activity::class.java)
-            startActivity(intent)
+        binding.myPremiumBtn.setOnClickListener {
             finish()
         }
 
