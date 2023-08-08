@@ -23,27 +23,25 @@
 
             <ImageButton
                 android:id="@+id/btn_color_basic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:layout_margin="10dp"
-                android:src="@drawable/color_basic"></ImageButton>
+                android:src="@drawable/color_basic"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:layout_margin="10dp"
-                android:src="@drawable/color_blue"></ImageButton>
+                android:src="@drawable/color_blue"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_green"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:src="@drawable/color_green"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="25dp"
                 android:background="#FFFFFF"
-                android:layout_margin="10dp"
-                android:src="@drawable/color_green"></ImageButton>
+                android:layout_marginRight="28dp"></ImageButton>
 
         </TableRow>
 
@@ -51,64 +49,52 @@
 
             <ImageButton
                 android:id="@+id/btn_color_Rblue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_rblue"
                 android:layout_marginLeft="28dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/color_rblue"></ImageButton>
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_bluepurple"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_bluepurple"
                 android:layout_marginLeft="28dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/color_bluepurple"></ImageButton>
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_orange"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_orange"
                 android:layout_marginLeft="28dp"
+                android:layout_marginTop="25dp"
                 android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="28dp"
-                android:src="@drawable/color_orange"></ImageButton>
+                android:layout_marginRight="28dp"></ImageButton>
 
         </TableRow>
 
         <TableRow
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btn_color_yellow"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_yellow"
                 android:layout_marginLeft="28dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/color_yellow"></ImageButton>
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_purple"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_purple"
                 android:layout_marginLeft="28dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/color_purple"></ImageButton>
+                android:layout_marginTop="25dp"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_pink"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:src="@drawable/color_pink"
                 android:layout_marginLeft="28dp"
+                android:layout_marginTop="25dp"
                 android:background="#FFFFFF"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="28dp"
-                android:src="@drawable/color_pink"></ImageButton>
+                android:layout_marginRight="28dp"></ImageButton>
 
         </TableRow>
 
