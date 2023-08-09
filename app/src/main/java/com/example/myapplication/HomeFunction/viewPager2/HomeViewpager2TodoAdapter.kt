@@ -52,6 +52,20 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         //checkbox value change
+        //카테고리 아이디에 따라 다르게 넣기 -> 동적으로 변화해서...따로 livedata나 다른 서버 연결 하고서 다듬어야 될 듯..
+        var cbColor = R.drawable.home_checkbox1
+        when(dataSet[position].todoCate){
+            "약속" -> {cbColor = R.drawable.home_checkbox1}
+            "2" -> {cbColor = R.drawable.home_checkbox2}
+            "3" -> {cbColor = R.drawable.home_checkbox3}
+            "4" -> {cbColor = R.drawable.home_checkbox4}
+            "운동" -> {cbColor = R.drawable.home_checkbox5}
+            "공부" -> {cbColor = R.drawable.home_checkbox6}
+            "7" -> {cbColor = R.drawable.home_checkbox7}
+            else -> {}
+
+        }
+        holder.todoCheckBox.setBackgroundResource(cbColor)
         //menu창 누르면 메뉴창 오픈, 각 메뉴 별로 행동 설정
         holder.tvTodo.text = dataSet[position].todoName
         holder.todoCheckBox.isChecked = dataSet[position].done
