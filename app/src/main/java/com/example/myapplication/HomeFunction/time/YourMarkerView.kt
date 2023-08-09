@@ -4,16 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import com.example.myapplication.HomeFunction.view.HomeTimetableFragment
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
+import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry

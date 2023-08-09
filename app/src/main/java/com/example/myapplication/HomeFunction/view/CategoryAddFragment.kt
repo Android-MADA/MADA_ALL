@@ -1,7 +1,9 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +11,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.HomeFunction.HomeCustomBackDialog
 import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
 import com.example.myapplication.R
@@ -62,13 +69,55 @@ class CategoryAddFragment : Fragment() {
         })
 
         binding.ivHomeCateAddBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            //다이얼로그
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+
+            mDialogView.findViewById<Button>(R.id.btn_home_dialog_back_no).setOnClickListener {
+                mBuilder.dismiss()
+            }
+            mDialogView.findViewById<Button>(R.id.btn_home_dialog_back_yes).setOnClickListener {
+
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                mBuilder.dismiss()
+            }
+
+
+            //Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             Log.d("navBack", "정상 작동")
         }
 
         binding.btnHomeCateAddSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             Log.d("navSave", "정상 작동")
+        }
+
+        binding.btnHomeTimeEditDelete.setOnClickListener {
+            //다이얼로그
+            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_delete, null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialogView)
+                .create()
+
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+
+            mDialogView.findViewById<Button>(R.id.btn_home_dialog_back_no).setOnClickListener {
+                mBuilder.dismiss()
+            }
+            mDialogView.findViewById<ImageButton>(R.id.btn_home_dialog_back_yes).setOnClickListener {
+
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                mBuilder.dismiss()
+            }
+
         }
 
         colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
