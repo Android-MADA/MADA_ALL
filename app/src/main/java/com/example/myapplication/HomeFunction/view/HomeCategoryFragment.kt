@@ -54,10 +54,19 @@ class HomeCategoryFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 
+        val bundle = Bundle()
+
+
         categoryAdapter.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
+            override fun onClick(v: View, position: Int, dataSet: sampleCategoryData) {
                 //페이지 이동 + 데이터 전달
-                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
+                bundle.putStringArrayList("key", arrayListOf(
+                    dataSet.name,
+                    dataSet.icon.toString(),
+                    dataSet.color.toString()
+                ))
+                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
+
             }
         })
 

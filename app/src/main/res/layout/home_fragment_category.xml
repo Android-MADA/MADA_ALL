@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/btn_home_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="106dp"
+            android:layout_height="42dp"
             android:paddingHorizontal="40dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:src="@drawable/ic_home_cate_add"
