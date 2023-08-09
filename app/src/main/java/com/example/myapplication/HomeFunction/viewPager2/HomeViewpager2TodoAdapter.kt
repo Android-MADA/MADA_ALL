@@ -1,9 +1,12 @@
 package com.example.myapplication.HomeFunction.viewPager2
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -11,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +29,6 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
         val todoMenu : TextView
         val editLayout : LinearLayout
         val edtTodo : EditText
-        val edtSave : ImageView
         val todoLayout : ConstraintLayout
 
         init {
@@ -34,7 +37,6 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
             todoMenu = view.findViewById(R.id.tv_home_todo_edit)
             editLayout = view.findViewById(R.id.layout_viewpager_todo_edit)
             edtTodo = view.findViewById(R.id.edt_home_viewpager2_todo_edit)
-            edtSave = view.findViewById(R.id.iv_home_viewpager_todo_save_edit)
             todoLayout = view.findViewById(R.id.layout_viewpager_todo)
         }
     }
@@ -75,19 +77,30 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
             }
             popup.show()
         }
-        holder.edtSave.setOnClickListener {
-            //데이터 수정 반영
-            dataSet[position].todoName = holder.edtTodo.text.toString()
-            //edt 업애고 이전 투두 복구
-            holder.todoLayout.isVisible = true
-            holder.edtTodo.text.clear()
-            holder.editLayout.isGone = true
-            notifyDataSetChanged()
-        }
+
         holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             dataSet[position].done = buttonView.isChecked
             Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].done}")
             notifyDataSetChanged()
+        }
+
+        holder.edtTodo.setOnKeyListener { view, keyCode, event ->
+            // Enter Key Action
+            if (event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                //데이터 수정 반영
+                dataSet[position].todoName = holder.edtTodo.text.toString()
+                //edt 업애고 이전 투두 복구
+                holder.todoLayout.isVisible = true
+                holder.edtTodo.text.clear()
+                holder.editLayout.isGone = true
+                notifyDataSetChanged()
+
+                true
+            }
+
+            false
         }
     }
 

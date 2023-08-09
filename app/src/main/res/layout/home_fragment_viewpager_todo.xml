@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".HomeFunction.view.viewpager2.HomeViewpagerTodoFragment"
+        tools:context=".HomeFunction.view.HomeViewpagerTodoFragment"
         >
 
         <androidx.recyclerview.widget.RecyclerView
