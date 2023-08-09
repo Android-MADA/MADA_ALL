@@ -18,7 +18,7 @@
             android:id="@+id/iv_repeat_todo"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/home_checkbox"
+            android:background="@drawable/home_checkbox1"
             android:button="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
