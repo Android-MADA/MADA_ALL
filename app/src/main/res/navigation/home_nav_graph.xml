@@ -124,20 +124,4 @@
             android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
             app:destination="@id/fragHome" />
     </fragment>
-    <dialog
-        android:id="@+id/homeCustomBackDialog"
-        android:name="com.example.myapplication.HomeFunction.HomeCustomBackDialog"
-        android:label="HomeCustomBackDialog" >
-        <action
-            android:id="@+id/action_homeCustomBackDialog_to_homeCategoryFragment"
-            app:destination="@id/homeCategoryFragment" />
-    </dialog>
-    <dialog
-        android:id="@+id/homeCustomDeleteDialog"
-        android:name="com.example.myapplication.HomeFunction.HomeCustomDeleteDialog"
-        android:label="HomeCustomDeleteDialog" >
-        <action
-            android:id="@+id/action_homeCustomDeleteDialog_to_homeCategoryFragment"
-            app:destination="@id/homeCategoryFragment" />
-    </dialog>
 </navigation>

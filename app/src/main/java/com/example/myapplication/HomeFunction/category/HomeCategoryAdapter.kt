@@ -39,7 +39,7 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<sampleCategoryData>) :
         holder.categoryImageView.setImageResource(dataSet[position].icon)
 
         holder.categoryLayout.setOnClickListener {
-            itemClickListener.onClick(it, position)
+            itemClickListener.onClick(it, position, dataSet[position])
         }
     }
 
@@ -50,7 +50,7 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<sampleCategoryData>) :
 
     // (2) 리스너 인터페이스
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int)
+        fun onClick(v: View, position: Int, dataSet: sampleCategoryData)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
