@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.view.viewpager2
+package com.example.myapplication.HomeFunction.view
 
 import android.os.Bundle
 import android.util.Log

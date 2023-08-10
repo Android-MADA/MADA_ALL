@@ -2,14 +2,10 @@ package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
-import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,20 +16,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Fragment.FragCalendar
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
-import androidx.navigation.fragment.findNavController
 
 class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<FragCalendar.CalendarDATA?>>)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {

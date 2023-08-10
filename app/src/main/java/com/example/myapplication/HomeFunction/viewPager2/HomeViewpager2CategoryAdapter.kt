@@ -1,5 +1,6 @@
 package com.example.myapplication.HomeFunction.viewPager2
 
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,9 +72,17 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
                 holder.todoAdd.isGone = true
             }
         }
-        //sample btn click listener
-        holder.itemView.findViewById<ImageView>(R.id.iv_repeat_todo_save).setOnClickListener {
-            itemClickListener.onClick(it, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
+
+        holder.edtTodo.setOnKeyListener { view, keyCode, event ->
+            // Enter Key Action
+            if (event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                itemClickListener.onClick(view, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
+                true
+            }
+
+            false
         }
 }
     interface OnItemClickListener {
