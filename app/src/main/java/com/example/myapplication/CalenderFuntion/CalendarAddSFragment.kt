@@ -13,6 +13,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -125,9 +126,19 @@ class CalendarAddSFragment : Fragment() {
                     true
                 }
                 else -> false
-            }
-        }
 
+            }
+
+        }
+        val contentInsetEnd = resources.getDimensionPixelSize(R.dimen.toolbar_overflow_offset) // Set your desired offset value
+        val contentInsetStart = binding.toolbarCalendar.contentInsetStart
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarCalendar) { _, insets ->
+            binding.toolbarCalendar.setContentInsetsRelative(
+                contentInsetStart,
+                contentInsetEnd + insets.systemGestureInsets.bottom
+            )
+            insets
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
