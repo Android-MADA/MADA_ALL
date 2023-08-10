@@ -1,5 +1,6 @@
 package com.example.myapplication.Fragment
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.example.myapplication.MyFuction.MyListItem
 import com.example.myapplication.MyFuction.MyNoticeActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
+import com.example.myapplication.MyFuction.MyProfileNickActivity
+import com.example.myapplication.MyFuction.MyRecordDayActivity
 import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.Splash2Activity
@@ -31,7 +34,8 @@ class FragMy : Fragment() {
         binding = FragMyBinding.inflate(inflater, container, false)
 
         binding.myRecordBtn.setOnClickListener{
-            Toast.makeText(this.context, "[내 기록 확인하기]", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), MyRecordDayActivity::class.java)
+            startActivity(intent)
         }
 
         // 리스트
