@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation

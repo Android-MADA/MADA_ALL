@@ -1,25 +1,19 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
-import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
 import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -27,7 +21,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 

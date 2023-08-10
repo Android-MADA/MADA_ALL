@@ -25,7 +25,8 @@
                 android:id="@+id/iv_home_cate_add_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/home_baseline_arrow_back_ios_24"/>
+                android:src="@drawable/home_baseline_arrow_back_ios_24"
+                android:layout_marginEnd="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,7 +114,7 @@
                     android:background="#ffffff"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    />
+                    app:tint="@color/sub3" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:visibility="gone"
@@ -176,19 +177,23 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:visibility="gone"
             android:id="@+id/btn_home_time_edit_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="삭제하기"
             android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:backgroundTint="#F0768C"
+            android:background="@drawable/home_dialog_background"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="33dp"
+            android:paddingVertical="18dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

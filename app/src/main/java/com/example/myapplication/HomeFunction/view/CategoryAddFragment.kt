@@ -1,7 +1,10 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +12,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.HomeFunction.HomeBackCustomDialog
+import com.example.myapplication.HomeFunction.HomeCustomDialogListener
+import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
 import com.example.myapplication.R
@@ -22,7 +30,7 @@ import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.example.myapplication.hideBottomNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class CategoryAddFragment : Fragment() {
+class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var binding : HomeFragmentCategoryAddBinding
 
@@ -31,6 +39,8 @@ class CategoryAddFragment : Fragment() {
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
     private var bottomFlag = true
+    private lateinit var backDialog : HomeBackCustomDialog
+    private lateinit var deleteDialog : HomeDeleteCustomDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,18 @@ class CategoryAddFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         hideBottomNavigation(bottomFlag, activity)
+
+        if(arguments != null){
+            //데이터 뿌리기
+            val argsArray = requireArguments().getStringArrayList("key")
+            binding.ivHomeCateIcon.setImageResource(argsArray!![1].toInt())
+            binding.edtHomeCategoryName.setText(argsArray!![0])
+            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(argsArray!![2].toInt())
+            // 수정버튼 활성화
+            binding.btnHomeCateAddSave.text = "수정"
+            //삭제버튼 활성화
+            binding.btnHomeTimeEditDelete.isVisible = true
+        }
         return binding.root
     }
 
@@ -62,13 +84,20 @@ class CategoryAddFragment : Fragment() {
         })
 
         binding.ivHomeCateAddBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            //다이얼로그
+            customBackDialog()
+
             Log.d("navBack", "정상 작동")
         }
 
         binding.btnHomeCateAddSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            //서버 patch
             Log.d("navSave", "정상 작동")
+        }
+
+        binding.btnHomeTimeEditDelete.setOnClickListener {
+            customDeleteDialog()
         }
 
         colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
@@ -111,6 +140,7 @@ class CategoryAddFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.btnHomeTimeEditDelete.isGone = true
     }
 
     private fun initArrayList(){
@@ -152,6 +182,26 @@ class CategoryAddFragment : Fragment() {
             cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
 
         }
+    }
+
+    private fun customBackDialog(){
+        backDialog = HomeBackCustomDialog(requireActivity(), this)
+        backDialog.show()
+    }
+
+    private fun customDeleteDialog(){
+        deleteDialog = HomeDeleteCustomDialog(requireActivity(), this)
+        deleteDialog.show()
+    }
+
+    // 커스텀 다이얼로그에서 버튼 클릭 시
+    override fun onYesButtonClicked(dialog : Dialog) {
+        Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        dialog.dismiss()
+    }
+
+    override fun onNoButtonClicked(dialog : Dialog) {
+        dialog.dismiss()
     }
 
 }
