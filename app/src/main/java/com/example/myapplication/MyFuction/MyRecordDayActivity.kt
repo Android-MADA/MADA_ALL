@@ -13,5 +13,9 @@ class MyRecordDayActivity : AppCompatActivity() {
         binding = MyRecordDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+
     }
 }
