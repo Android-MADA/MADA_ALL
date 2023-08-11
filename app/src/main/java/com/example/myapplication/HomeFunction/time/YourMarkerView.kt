@@ -6,8 +6,12 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.HomeFunction.view.HomeTimetableFragment
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.github.mikephil.charting.components.MarkerView
@@ -22,12 +26,13 @@ class YourMarkerView(context: Context, layoutResource: Int, private val pieChart
     private val memo: TextView = findViewById(R.id.textLabel2)
     private val time: TextView = findViewById(R.id.textLabel3)
     private val color: ImageView = findViewById(R.id.background1)
-
+    private val back: ImageView = findViewById(R.id.background2)
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
         e?.let {
             val pieEntry = e as PieEntry
             val label = pieEntry.label
             if (label.toString() != "999") {
+
                 title.text = pieChartDataArray[label.toInt()].title
                 memo.text = pieChartDataArray[label.toInt()].memo
                 val startH = pieChartDataArray[label.toInt()].startHour
@@ -54,6 +59,7 @@ class YourMarkerView(context: Context, layoutResource: Int, private val pieChart
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
         if (visibility == VISIBLE) {
             // 가시성이 VISIBLE인 경우에만 마커를 그립니다.
+
             super.draw(canvas, posX, posY)
         }
     }

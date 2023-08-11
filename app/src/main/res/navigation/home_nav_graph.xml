@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
             app:destination="@id/homeRepeatTodoFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_timeAddFragment"
+            app:destination="@id/timeAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragCalendar"
@@ -32,6 +35,9 @@
         <action
             android:id="@+id/action_fragCalendar_to_calendarAddDday"
             app:destination="@id/calendarAddDday" />
+        <action
+            android:id="@+id/action_fragCalendar_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
     </fragment>
     <fragment
         android:id="@+id/calendarAdd"

@@ -4,17 +4,13 @@
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
-
-
-    <style name="ThemeOverlay.MaterialComponents.TimePicker" parent="@android:style/Widget.DatePicker">
-        <item name="colorControlNormal">#74FFFFFF</item>
-    </style>
     
     <style name="floatingHome" parent="Widget.Design.FloatingActionButton">
         <item name = "android:foreground">
             @drawable/home_time_add_background
         </item>
     </style>
+    <style name="ChipTheme" parent="Theme.MaterialComponents.Light.NoActionBar"></style>
 
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyApp.SmallComponent</item>
@@ -62,4 +58,13 @@
 
     </style>
 
+    <style name="ThemeOverlay.MyTheme" parent="ThemeOverlay.AppCompat.Light">
+        <!-- set background color -->
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <!-- set text color -->
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@drawable/calendar_menu_style</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">60dp</item>
+    </style>
 </resources>

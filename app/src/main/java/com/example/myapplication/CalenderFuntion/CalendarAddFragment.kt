@@ -12,7 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.CheckBox
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -258,6 +261,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
+            chip1.setChipBackgroundColorResource(R.color.sub5)
+            chip2.setChipBackgroundColorResource(R.color.white)
+            chip3.setChipBackgroundColorResource(R.color.white)
+            chip4.setChipBackgroundColorResource(R.color.white)
+            chip5.setChipBackgroundColorResource(R.color.white)
             chip2.isChecked = false
             chip3.isChecked = false
             chip4.isChecked = false
@@ -265,6 +273,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
+            chip1.setChipBackgroundColorResource(R.color.white)
+            chip2.setChipBackgroundColorResource(R.color.sub5)
+            chip3.setChipBackgroundColorResource(R.color.white)
+            chip4.setChipBackgroundColorResource(R.color.white)
+            chip5.setChipBackgroundColorResource(R.color.white)
             chip1.isChecked = false
             chip3.isChecked = false
             chip4.isChecked = false
@@ -272,6 +285,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
+            chip1.setChipBackgroundColorResource(R.color.white)
+            chip2.setChipBackgroundColorResource(R.color.white)
+            chip3.setChipBackgroundColorResource(R.color.sub5)
+            chip4.setChipBackgroundColorResource(R.color.white)
+            chip5.setChipBackgroundColorResource(R.color.white)
             chip2.isChecked = false
             chip1.isChecked = false
             chip4.isChecked = false
@@ -279,6 +297,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
+            chip1.setChipBackgroundColorResource(R.color.white)
+            chip2.setChipBackgroundColorResource(R.color.white)
+            chip3.setChipBackgroundColorResource(R.color.white)
+            chip4.setChipBackgroundColorResource(R.color.sub5)
+            chip5.setChipBackgroundColorResource(R.color.white)
             chip2.isChecked = false
             chip3.isChecked = false
             chip1.isChecked = false
@@ -286,6 +309,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
+            chip1.setChipBackgroundColorResource(R.color.white)
+            chip2.setChipBackgroundColorResource(R.color.white)
+            chip3.setChipBackgroundColorResource(R.color.white)
+            chip4.setChipBackgroundColorResource(R.color.white)
+            chip5.setChipBackgroundColorResource(R.color.sub5)
             chip2.isChecked = false
             chip3.isChecked = false
             chip4.isChecked = false
@@ -310,14 +338,6 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
 
-                val displayMetrics = DisplayMetrics()
-                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-                val deviceWidth = displayMetrics.widthPixels
-
-                val desiredRatio = 0.8f
-                val desiredWidth = (deviceWidth * desiredRatio).toInt()
-                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
                 val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
@@ -332,8 +352,101 @@ class CalendarAddFragment : Fragment() {
             }
 
         }
+        val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
+            FragCalendar.CalendarDATA(
+                "2023-7-21", "2023-7-21", "2023-8-31", "", "",
+                "#FFE7EB", "", 'Y', "방학", -1, true, "방학이 끝나간다...","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                "2023-7-2", "2023-7-2", "2023-9-2", "", "",
+                "#E1E9F5", "", 'Y', "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                    "2023-7-1", "2023-7-1", "2023-11-27", "", "",
+            "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어","CAL"
+        )
+        )
         binding.button.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+            if(binding.checkBox.isChecked&&datasDday.size==3) {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_change, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+                val deviceWidth = displayMetrics.widthPixels
+
+                val desiredRatio = 0.8f
+                val desiredWidth = (deviceWidth * desiredRatio).toInt()
+                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                val display = requireActivity().windowManager.defaultDisplay
+                val checkBox1 = mDialogView.findViewById<CheckBox>(R.id.checkBox1)
+                val checkBox2 =mDialogView.findViewById<CheckBox>(R.id.checkBox2)
+                val checkBox3 =mDialogView.findViewById<CheckBox>(R.id.checkBox3)
+
+                for (i in 0 until 3) {
+                    val color = datasDday[i].color
+                    val imageResource = when (color) {
+                        "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
+                        "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
+                        "#F5EED1" -> R.drawable.calendar_ddayyellow_smallbackground
+                        else -> R.drawable.calendar_dday_plus
+                    }
+                    when (i) {
+                        0 -> {
+                            mDialogView.findViewById<ImageView>(R.id.image1).setImageResource(imageResource)
+                            mDialogView.findViewById<TextView>(R.id.textDday1).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                            mDialogView.findViewById<TextView>(R.id.textTitle1).text = datasDday[i].title
+                        }
+                        1 -> {
+                            mDialogView.findViewById<ImageView>(R.id.image2).setImageResource(imageResource)
+                            mDialogView.findViewById<TextView>(R.id.textDday2).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                            mDialogView.findViewById<TextView>(R.id.textTitle2).text = datasDday[i].title
+                        }
+                        2 -> {
+                            mDialogView.findViewById<ImageView>(R.id.image3).setImageResource(imageResource)
+                            mDialogView.findViewById<TextView>(R.id.textDday3).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                            mDialogView.findViewById<TextView>(R.id.textTitle3).text = datasDday[i].title
+                        }
+                    }
+                }
+                checkBox1.setOnClickListener {
+                    checkBox2.isChecked = false
+                    checkBox3.isChecked = false
+                }
+                checkBox2.setOnClickListener {
+                    checkBox1.isChecked = false
+                    checkBox3.isChecked = false
+                }
+                checkBox3.setOnClickListener {
+                    checkBox2.isChecked = false
+                    checkBox1.isChecked = false
+                }
+                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    if(!checkBox1.isChecked&&!checkBox2.isChecked&&!checkBox3.isChecked) {
+                        mDialogView.findViewById<TextView>(R.id.textInfo).text = "대체할 디데이를 선택해야 합니다"
+                    } else {
+                        //데이터 넣기
+                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                        mBuilder.dismiss()
+                    }
+
+                })
+            } else {
+                //데이터 등록
+                Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+            }
+
         }
 
     }
@@ -389,5 +502,12 @@ class CalendarAddFragment : Fragment() {
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
+    }
+    fun daysRemainingToDate(targetDate: String): Int {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val today = LocalDate.now()
+        val target = LocalDate.parse(targetDate, dateFormatter)
+        val daysRemaining = target.toEpochDay() - today.toEpochDay()
+        return daysRemaining.toInt()
     }
 }
