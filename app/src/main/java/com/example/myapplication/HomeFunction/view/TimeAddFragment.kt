@@ -1,10 +1,8 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.isGone
@@ -22,12 +19,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
+import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
 import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.time.LocalDate
 
 class TimeAddFragment : Fragment() {
 
@@ -100,7 +100,8 @@ class TimeAddFragment : Fragment() {
             btnDelete.isVisible = true
 
             textTitle.setText(recievedPieData.title)
-            ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
+            ivColor.imageTintList =  ColorStateList.valueOf(Color.parseColor(recievedPieData.colorCode))
+            //ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
             colorSelector.isGone = true
 
             times[0].text = convertTo12HourFormat(recievedPieData.startHour,recievedPieData.startMin)
@@ -292,6 +293,43 @@ class TimeAddFragment : Fragment() {
         btnDelete.setOnClickListener {
             //데이터 삭제 해야함
             findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        }
+        val today = LocalDate.now().dayOfMonth
+
+
+        val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
+            FragCalendar.CalendarDATA(
+                "2023-7-2", "2023-7-2", "2023-7-6", "", "",
+                "#2AA1B7", "반복 안함", 'N', "데이터분석기초 기말고사", -1, true, "","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                "2023-7-21", "2023-7-21", "2023-8-5", "", "",
+                "#89A9D9", "매일", 'N', "방학", -1, true, "","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                "2023-7-13", "2023-7-13", "2023-7-15", "", "",
+                "#2AA1B7", "매주", 'N', "이건 무슨 일정일까", -1, true, "","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
+                "#F8D141", "매월", 'N', "기말 강의평가 기간", -1, false, "메모 ","CAL"
+            ),
+            FragCalendar.CalendarDATA(
+                "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
+                "#F8D141", "매월", 'N', "친구랑 약속", 0, false, "메모 ","TODO"
+            )
+        )
+
+        val adapter = HomeScheduleAndTodoAdapter(datas,today,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
+        var manager: RecyclerView.LayoutManager = GridLayoutManager(view.context,1)
+        binding.homeTimeTodoList.layoutManager = manager
+        binding.homeTimeTodoList.adapter = adapter
+
+        binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                binding.homeTimeTodoListView.visibility = View.VISIBLE
+            } else
+                binding.homeTimeTodoListView.visibility = View.GONE
         }
     }
 

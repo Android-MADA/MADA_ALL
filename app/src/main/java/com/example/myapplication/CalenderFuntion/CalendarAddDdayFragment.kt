@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddDdayBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -46,22 +48,23 @@ class CalendarAddDdayFragment : Fragment() {
         val ddayValue = arguments?.getBoolean("dday", false)
         val today: LocalDate = LocalDate.now()
         val dayOfWeekKorean = today.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
-        dayString = "  ${today.monthValue}월 ${today.dayOfMonth}일 (${dayOfWeekKorean})  "
-        binding.preScheldule.text = dayString
-        binding.nextScheldule.text = dayString
+        dayString = "${today.year}-${today.monthValue}-${today.dayOfMonth}"
 
+        val num = arguments?.getInt("num")
+        if(num!=null) {
+            binding.textTitle.setText(arguments?.getString("title"))
+            binding.preScheldule.text  = convertToDateKoreanFormat(arguments?.getString("startDate") ?: dayString)
+            binding.nextScheldule.text = convertToDateKoreanFormat(arguments?.getString("endDate") ?: dayString)
+            binding.textDday.text = "D - "+(arguments?.getInt("dday") ?:"0").toString()
+            binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#E1E9F5"), PorterDuff.Mode.SRC_IN)
+            binding.layoutColorSelector.visibility = View.GONE
+            binding.textMemo.setText(arguments?.getString("memo"))
+        }
         binding.cal.visibility= View.GONE
 
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
 
-        ddayValue?.let {
-            if (it) {
-                binding.ddayLayout.visibility = View.GONE
-            } else {
-                // Do something else if 'ddayValue' is false
-            }
-        }
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
@@ -75,6 +78,10 @@ class CalendarAddDdayFragment : Fragment() {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
             binding.layoutColorSelector.visibility = View.GONE
         }
+        binding.calendarColor.setOnClickListener {
+            binding.layoutColorSelector.visibility = View.VISIBLE
+        }
+        /*
         binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked) {
                 binding.textDday.visibility= View.VISIBLE
@@ -82,7 +89,7 @@ class CalendarAddDdayFragment : Fragment() {
                 binding.textDday.visibility= View.GONE
             }
 
-        }
+        }*/
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
@@ -112,27 +119,7 @@ class CalendarAddDdayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backButton.setOnClickListener {
-            //뭐가 있다면
-            if(binding.textTitle.text.toString() != "" || !binding.checkBox.isChecked || binding.preScheldule.text.toString() != dayString ||
-                binding.nextScheldule.text.toString() != dayString  || binding.textMemo.text.toString()!="") {
-                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
-                val mBuilder = AlertDialog.Builder(requireContext())
-                    .setView(mDialogView)
-                    .create()
-                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                mBuilder.show()
-                val display = requireActivity().windowManager.defaultDisplay
-                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
-                    mBuilder.dismiss()
-                })
-                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                    Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
-                    mBuilder.dismiss()
-                })
-            } else {
-                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
-            }
+            Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
         }
         binding.addBtn.setOnClickListener {
             //데이터 추가 코드
@@ -182,5 +169,12 @@ class CalendarAddDdayFragment : Fragment() {
     private fun yearMonthFromDate(date : LocalDate) :String{
         var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
         return date.format(formatter)
+    }
+    fun convertToDateKoreanFormat(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
     }
 }
