@@ -60,7 +60,7 @@ interface OnBackgroundImageChangeListener {
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener {
     lateinit var binding: FragCustomBinding
-    private lateinit var tabLayout: TabLayout
+    private lateinit var customtabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
     private var selectedColorButtonInfo: ButtonInfo? = null
@@ -105,6 +105,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
 
+
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
         val itemFragment = custom_item()
@@ -132,34 +133,28 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
 
-        val viewPager = binding.CustomBottomSheetViewPager
-        val adapter = CustomBottomSheetViewPager(this)
-        viewPager.adapter = adapter
+        val tabTitles = listOf("색깔", "의상", "소품", "배경") // 각 탭의 이름 목록
 
-        // TabLayoutMediator를 사용하여 TabLayout과 ViewPager2 연결
         TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
-            // 각 탭의 텍스트 설정
-            tab.text = when (position) {
-                0 -> "색깔"
-                1 -> "의상"
-                2 -> "소품"
-                else -> "배경"
+            tab.text = tabTitles[position] // 각 탭의 이름 설정
+
+            // 탭 선택 시 해당 프래그먼트로 화면 전환
+            tab.view.setOnClickListener {
+                val fragment = when (position) {
+                    0 -> colorFragment
+                    1 -> clothFragment
+                    2 -> itemFragment
+                    3 -> backgroundFragment
+                    else -> null
+                }
+
+                fragment?.let {
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.CustomBottomSheetTable, it)
+                        .commit()
+                }
             }
         }.attach()
-
-        // ViewPager2의 페이지 변경 리스너 설정
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                val transaction =  childFragmentManager.beginTransaction()
-                when (position) {
-                    0 -> transaction.replace(R.id.CustomBottomSheetTable, colorFragment)
-                    1 -> transaction.replace(R.id.CustomBottomSheetTable, clothFragment)
-                    2 -> transaction.replace(R.id.CustomBottomSheetTable, itemFragment)
-                    3 -> transaction.replace(R.id.CustomBottomSheetTable, backgroundFragment)
-                }
-                transaction.commit()
-            }
-        })
 
         /*
 
