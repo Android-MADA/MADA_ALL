@@ -133,27 +133,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
 
-        val tabTitles = listOf("색깔", "의상", "소품", "배경") // 각 탭의 이름 목록
+        val tabTitles = listOf("색깔", "의상", "소품", "배경")
 
         TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
-            tab.text = tabTitles[position] // 각 탭의 이름 설정
-
-            // 탭 선택 시 해당 프래그먼트로 화면 전환
-            tab.view.setOnClickListener {
-                val fragment = when (position) {
-                    0 -> colorFragment
-                    1 -> clothFragment
-                    2 -> itemFragment
-                    3 -> backgroundFragment
-                    else -> null
-                }
-
-                fragment?.let {
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, it)
-                        .commit()
-                }
-            }
+            tab.text = tabTitles[position]
         }.attach()
 
         /*
