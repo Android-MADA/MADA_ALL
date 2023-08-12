@@ -93,35 +93,35 @@
                     android:layout_height="match_parent"
                     app:tabGravity="fill"
                     android:background="@drawable/custom_radius"
+                    app:tabIndicatorColor="#000000"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabTextAppearance="@style/CustomTabTextAppearance"
                     app:tabMode="fixed">
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="색깔"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                         />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="의상"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                        />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="소품"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                        />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="배경"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                         />
                 </com.google.android.material.tabs.TabLayout>
 
             </LinearLayout>

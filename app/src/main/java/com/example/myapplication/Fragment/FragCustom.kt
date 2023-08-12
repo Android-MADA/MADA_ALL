@@ -132,39 +132,34 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
 
-        TabLayoutMediator(customtabLayout, viewPager) {tab, position ->
-            val inflater1: LayoutInflater = layoutInflater
-            var pos = tab.position
-            when (pos) {
-                0 -> {
-                    tab.setText("색깔")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, colorFragment)
-                        .commit()
-                }
+        val viewPager = binding.CustomBottomSheetViewPager
+        val adapter = CustomBottomSheetViewPager(this)
+        viewPager.adapter = adapter
 
-                1 -> {
-                    tab.setText("의상")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, clothFragment)
-                        .commit()
-                }
-
-                2 -> {
-                    tab.setText("소품")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, itemFragment)
-                        .commit()
-                }
-
-                3 -> {
-                    tab.setText("배경")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, backgroundFragment)
-                        .commit()
-                }
+        // TabLayoutMediator를 사용하여 TabLayout과 ViewPager2 연결
+        TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
+            // 각 탭의 텍스트 설정
+            tab.text = when (position) {
+                0 -> "색깔"
+                1 -> "의상"
+                2 -> "소품"
+                else -> "배경"
             }
         }.attach()
+
+        // ViewPager2의 페이지 변경 리스너 설정
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                val transaction =  childFragmentManager.beginTransaction()
+                when (position) {
+                    0 -> transaction.replace(R.id.CustomBottomSheetTable, colorFragment)
+                    1 -> transaction.replace(R.id.CustomBottomSheetTable, clothFragment)
+                    2 -> transaction.replace(R.id.CustomBottomSheetTable, itemFragment)
+                    3 -> transaction.replace(R.id.CustomBottomSheetTable, backgroundFragment)
+                }
+                transaction.commit()
+            }
+        })
 
         /*
 
