@@ -9,9 +9,9 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class HomeCateIconAdapter(private val dataList : ArrayList<Drawable>) : RecyclerView.Adapter<HomeCateIconAdapter.viewHolder>(){
+class HomeCateIconAdapter(private val dataList : ArrayList<String>) : RecyclerView.Adapter<HomeCateIconAdapter.viewHolder>(){
 
-    var selectedIcon : Drawable = R.drawable.ic_home_cate_study.toDrawable()
+    var selectedIcon : String = R.drawable.ic_home_cate_study.toString()
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -28,7 +28,7 @@ class HomeCateIconAdapter(private val dataList : ArrayList<Drawable>) : Recycler
     }
 
     override fun onBindViewHolder(holder: HomeCateIconAdapter.viewHolder, position: Int) {
-        holder.categoryIcon.setImageDrawable(dataList[position])
+        holder.categoryIcon.setImageResource(dataList[position].toInt())
         holder.categoryIcon.setOnClickListener {
             itemClickListener.onClick(it, position)
         }

@@ -5,8 +5,10 @@ import java.time.LocalDateTime
 
 data class Category(
     val id: Int,
-    val categoryName: String,
-    val color: String,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    var categoryName: String,
+    var color: String,
+    val icon_id : Icon
 )
+
+//val createdAt: LocalDateTime,
+//val updatedAt: LocalDateTime

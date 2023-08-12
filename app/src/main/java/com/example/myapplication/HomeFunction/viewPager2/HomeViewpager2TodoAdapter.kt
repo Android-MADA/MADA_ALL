@@ -69,6 +69,7 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
         //menu창 누르면 메뉴창 오픈, 각 메뉴 별로 행동 설정
         holder.tvTodo.text = dataSet[position].todoName
         holder.todoCheckBox.isChecked = dataSet[position].done
+
         holder.todoMenu.setOnClickListener {
             val popup = PopupMenu(holder.itemView.context, it)
             popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
@@ -78,13 +79,10 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
                     holder.editLayout.isVisible = true
                     holder.todoLayout.isGone = true
                     holder.edtTodo.setText(dataSet[position].todoName)
-
-                    itemClickListener.onClick(it, position)
                 }
                 else{
                     itemClickListener.onClick(it, position)
                     dataSet.removeAt(position)
-                    notifyDataSetChanged()
                     Log.d("todoDelete", "삭제하기")
                 }
                 true
@@ -95,13 +93,12 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
         holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             dataSet[position].done = buttonView.isChecked
             Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].done}")
-            notifyDataSetChanged()
+            itemClickListener.onClick(buttonView, position)
         }
 
         holder.edtTodo.setOnKeyListener { view, keyCode, event ->
             // Enter Key Action
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_ENTER
+            if (keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 //데이터 수정 반영
                 dataSet[position].todoName = holder.edtTodo.text.toString()
@@ -109,7 +106,7 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
                 holder.todoLayout.isVisible = true
                 holder.edtTodo.text.clear()
                 holder.editLayout.isGone = true
-                notifyDataSetChanged()
+                itemClickListener.onClick(view, position)
 
                 true
             }
@@ -128,8 +125,3 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<SampleHomeTodoDa
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : HomeViewpager2TodoAdapter.OnItemClickListener
 }
-
-//checkbox 처리 -> value 바뀌면 db 변경
-//tv dataset에서 가져오서 뿌리고
-// ... 버튼 처리 -> 수정하기 :  edt 등장, db 수정
-//             -> 삭제하기 : 삭제하고 db 수정
