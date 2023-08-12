@@ -47,14 +47,17 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
+
         todoAdapter = HomeViewpager2TodoAdapter(dataSet[position].todoList)
         todoAdapter.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                //edt, btn 노출 with text
-                //cb, tx, menu visibility gone
+                holder.todoRv.post {
+                    notifyDataSetChanged()
+                }
             }
 
         })
+
         holder.cateIcon.setImageResource(dataSet[position].icon)
         holder.cateTv.text = dataSet[position].cateName
         holder.todoRv.apply {

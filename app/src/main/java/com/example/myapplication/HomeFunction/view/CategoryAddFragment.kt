@@ -17,6 +17,7 @@ import android.widget.Button
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +26,7 @@ import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.example.myapplication.hideBottomNavigation
@@ -33,14 +35,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var binding : HomeFragmentCategoryAddBinding
+    private val viewModel : HomeViewModel by activityViewModels()
 
-    val cateIconArray = ArrayList<Drawable>()
-    val cateColorArray = ArrayList<Int>()
+    val cateIconArray = ArrayList<String>()
+    val cateColorArray = ArrayList<String>()
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
     private var bottomFlag = true
     private lateinit var backDialog : HomeBackCustomDialog
     private lateinit var deleteDialog : HomeDeleteCustomDialog
+    private lateinit var argsArray : java.util.ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +61,16 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         if(arguments != null){
             //데이터 뿌리기
-            val argsArray = requireArguments().getStringArrayList("key")
-            binding.ivHomeCateIcon.setImageResource(argsArray!![1].toInt())
+            argsArray = requireArguments().getStringArrayList("key")!!
+            binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
             binding.edtHomeCategoryName.setText(argsArray!![0])
-            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(argsArray!![2].toInt())
+            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             // 수정버튼 활성화
             binding.btnHomeCateAddSave.text = "수정"
             //삭제버튼 활성화
             binding.btnHomeTimeEditDelete.isVisible = true
+
+
         }
         return binding.root
     }
@@ -78,8 +84,19 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         iconAdapter.setItemClickListener(object: HomeCateIconAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                binding.ivHomeCateIcon.setImageDrawable(cateIconArray[position])
+                binding.ivHomeCateIcon.setImageResource(cateIconArray[position].toInt())
                 binding.rvHomeCateIcon.isGone = true
+                iconAdapter.selectedIcon = cateIconArray[position]
+
+            }
+        })
+
+        colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(cateColorArray[position]))
+                binding.rvHomeCateColor.isGone = true
+                colorAdapter.selecetedColor = cateColorArray[position].toString()
+                Log.d("addCateColor", cateColorArray[position].toString())
             }
         })
 
@@ -93,19 +110,14 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         binding.btnHomeCateAddSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             //서버 patch
+            //데이터 변경
+            viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
             Log.d("navSave", "정상 작동")
         }
 
         binding.btnHomeTimeEditDelete.setOnClickListener {
             customDeleteDialog()
         }
-
-        colorAdapter.setItemClickListener(object: HomeCateColorAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-                binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(cateColorArray[position])
-                binding.rvHomeCateColor.isGone = true
-            }
-        })
 
         var iconRecyclerList = binding.rvHomeCateIcon.apply {
             setHasFixedSize(true)
@@ -145,42 +157,41 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     private fun initArrayList(){
         with(cateIconArray){
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_meal1))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_meal2))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_chat1))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_health))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_phone))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_rest))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_heart))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_study))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_laptop))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_music))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_lightup))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_lightout))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_pen))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_burn))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_plan))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_work))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_mic))
-            cateIconArray.add(resources.getDrawable(R.drawable.ic_home_cate_sony))
+            cateIconArray.add(R.drawable.ic_home_cate_meal1.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_meal2.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_chat1.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_health.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_phone.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_rest.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_heart.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_study.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_laptop.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_music.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_lightup.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_lightout.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_pen.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_burn.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_plan.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_work.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_mic.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_sony.toString())
         }
     }
 
     private fun initColorArray(){
         with(cateColorArray){
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
-            cateColorArray.add(Color.parseColor("#FDA4B4"))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
-            cateColorArray.add(Color.parseColor("#D4ECF1"))
-            cateColorArray.add(Color.parseColor("#7FC7D4"))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
-            cateColorArray.add(Color.parseColor("#FDF3CF"))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
-            cateColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
-
+            cateColorArray.add("#E1E9F5")
+            cateColorArray.add("#89A9D9")
+            cateColorArray.add("#486DA3")
+            cateColorArray.add("#FFE7EB")
+            cateColorArray.add("#FDA4B4")
+            cateColorArray.add("#F0768C")
+            cateColorArray.add("#D4ECF1")
+            cateColorArray.add("#7FC7D4")
+            cateColorArray.add("#2AA1B7")
+            cateColorArray.add("#FDF3CF")
+            cateColorArray.add("#F8D141")
+            cateColorArray.add("#405059")
         }
     }
 
@@ -195,8 +206,11 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     }
 
     // 커스텀 다이얼로그에서 버튼 클릭 시
-    override fun onYesButtonClicked(dialog : Dialog) {
+    override fun onYesButtonClicked(dialog : Dialog, flag : String) {
         Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        if(flag == "delete"){
+            viewModel.removeCate(argsArray!![4].toInt())
+        }
         dialog.dismiss()
     }
 

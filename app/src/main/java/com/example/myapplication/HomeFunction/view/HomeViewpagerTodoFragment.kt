@@ -40,6 +40,13 @@ class HomeViewpagerTodoFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_viewpager_todo, container, false)
 
         //rv 연결
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val cateAdapter = HomeViewpager2CategoryAdapter(cateList)
 
         cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
@@ -51,15 +58,17 @@ class HomeViewpagerTodoFragment : Fragment() {
                 layout: LinearLayout
             ) {
                 if(edt.text.toString() != ""){
-                        when(cate){
+                    when(cate){
                         cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData("약속",edt.text.toString(), false))}
                         cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData("운동",edt.text.toString(), false))}
                         cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData("공부",edt.text.toString(),  false))}
                         else -> {}
-                        }
-                        cateAdapter!!.notifyDataSetChanged()
-                        Log.d("edt", cateList[0].todoList.toString())
                     }
+                    binding.rvHomeCategory.post {
+                        cateAdapter!!.notifyDataSetChanged()
+                    }
+                    Log.d("edt", cateList[0].todoList.toString())
+                }
                 edt.text.clear()
                 layout.isGone = true
             }
@@ -67,8 +76,9 @@ class HomeViewpagerTodoFragment : Fragment() {
         binding.rvHomeCategory.adapter = cateAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
 
-        return binding.root
     }
+
+
 
     companion object {
 

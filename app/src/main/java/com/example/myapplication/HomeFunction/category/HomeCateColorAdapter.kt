@@ -1,6 +1,7 @@
 package com.example.myapplication.HomeFunction.category
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class HomeCateColorAdapter(private val dataList : ArrayList<Int>) : RecyclerView.Adapter<HomeCateColorAdapter.viewHolder>() {
+class HomeCateColorAdapter(private val dataList : ArrayList<String>) : RecyclerView.Adapter<HomeCateColorAdapter.viewHolder>() {
+
+    var selecetedColor = "#89A9D9"
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view){
         val categoryColor : ImageView
@@ -28,7 +31,8 @@ class HomeCateColorAdapter(private val dataList : ArrayList<Int>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.categoryColor.imageTintList = ColorStateList.valueOf(dataList[position])
+        holder.categoryColor.imageTintList = ColorStateList.valueOf(Color.parseColor(dataList[position]))
+
         holder.categoryColor.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
