@@ -3,8 +3,8 @@
     <item
         android:id="@+id/calendar_eidt"
         android:title="수정하기"
-        />
 
+        />
     <item
         android:id="@+id/calendar_delete"
         android:title="삭제하기"

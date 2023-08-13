@@ -13,6 +13,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -79,8 +80,11 @@ class CalendarAddSFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
         }
         binding.toolbarCalendar.inflateMenu(R.menu.calendar_edit_menu)
+       // binding.toolbarCalendar.setBackgroundResource(R.drawable.calendar_menu_image)
         binding.toolbarCalendar.setOnMenuItemClickListener {
+
             when(it.itemId){
+
                 R.id.calendar_eidt -> {
                     val bundle = Bundle()
                     bundle.putString("title", arguments?.getString("title"))
@@ -91,6 +95,7 @@ class CalendarAddSFragment : Fragment() {
                     bundle.putString("cycle", arguments?.getString("cycle"))
                     bundle.putString("memo", arguments?.getString("memo"))
                     bundle.putString("color", arguments?.getString("color"))
+                    bundle.putBoolean("edit", true)
                     Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
                     true
                 }
@@ -124,9 +129,19 @@ class CalendarAddSFragment : Fragment() {
                     true
                 }
                 else -> false
-            }
-        }
 
+            }
+
+        }
+        val contentInsetEnd = resources.getDimensionPixelSize(R.dimen.toolbar_overflow_offset) // Set your desired offset value
+        val contentInsetStart = binding.toolbarCalendar.contentInsetStart
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarCalendar) { _, insets ->
+            binding.toolbarCalendar.setContentInsetsRelative(
+                contentInsetStart,
+                contentInsetEnd + insets.systemGestureInsets.bottom
+            )
+            insets
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -13,5 +13,9 @@ class MySetActivity : AppCompatActivity() {
         binding = MySetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+
     }
 }

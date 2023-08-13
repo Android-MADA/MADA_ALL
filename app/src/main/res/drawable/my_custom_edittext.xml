@@ -2,15 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">\
-            <solid android:color="@color/grey1" />
+            <solid android:color="@color/black" />
         </shape>
     </item>
     <!--밑줄-->
     <item
-        android:top="-2dp"
-        android:bottom="2dp"
-        android:start="-2dp"
-        android:end="-2dp">
+        android:top="-1dp"
+        android:bottom="1dp"
+        android:start="-1dp"
+        android:end="-1dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white"/>
         </shape>
