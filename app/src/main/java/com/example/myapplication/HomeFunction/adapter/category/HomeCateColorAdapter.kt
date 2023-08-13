@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.category
+package com.example.myapplication.HomeFunction.adapter.category
 
 import android.content.res.ColorStateList
 import android.graphics.Color

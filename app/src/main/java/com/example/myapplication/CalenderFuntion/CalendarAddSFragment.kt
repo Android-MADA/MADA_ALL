@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.example.myapplication.databinding.CalendarAddSBinding

@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.viewPager2.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
@@ -26,10 +27,12 @@ class FragHome : Fragment() {
 
     lateinit var binding: HomeFragmentBinding
     private var myAdapter : HomeViewPagerAdapter? = null
+    private val viewModel : HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel.classifyTodo()
+        Log.d("classify", viewModel.cateTodoList.value.toString())
     }
 
 
