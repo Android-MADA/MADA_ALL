@@ -15,7 +15,7 @@
             android:layout_width="700dp"
             android:layout_height="700dp"
             android:layout_gravity="top|center"
-            android:src="@drawable/back_brid">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageView
@@ -32,7 +32,7 @@
             android:layout_height="400dp"
             android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/set_astronauts">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageView
@@ -41,7 +41,7 @@
             android:layout_height="400dp"
             android:layout_marginTop="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/hat_bee">
+            android:src="@drawable/custom_empty">
         </ImageView>
 
         <ImageButton
@@ -93,39 +93,35 @@
                     android:layout_height="match_parent"
                     app:tabGravity="fill"
                     android:background="@drawable/custom_radius"
+                    app:tabIndicatorColor="#000000"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabTextAppearance="@style/CustomTabTextAppearance"
                     app:tabMode="fixed">
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#00FF0000"
                         android:text="색깔"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                         />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#00FF0000"
                         android:text="의상"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                        />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#00FF0000"
                         android:text="소품"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                        />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#00FF0000"
                         android:text="배경"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                         />
                 </com.google.android.material.tabs.TabLayout>
 
             </LinearLayout>
@@ -142,12 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-                <ScrollView
-                    android:id="@+id/CustomScrollView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                </ScrollView>
             </FrameLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
-import com.example.myapplication.Fragment.OnImageChangeListener
+import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
@@ -20,13 +20,13 @@ class custom_color : Fragment() {
     private var selectedButton: ImageButton? = null
 
 
-    private var imageChangeListener: OnImageChangeListener? = null
+    private var imageChangeListener: OnColorImageChangeListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 부모 프래그먼트로 캐스팅하여 인터페이스 객체를 가져옴
-        if (parentFragment is OnImageChangeListener) {
-            imageChangeListener = parentFragment as? OnImageChangeListener
+        if (parentFragment is OnColorImageChangeListener) {
+            imageChangeListener = parentFragment as? OnColorImageChangeListener
             // imageChangeListener = context
         } else {
             throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
@@ -126,7 +126,7 @@ class custom_color : Fragment() {
             R.id.btn_color_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
             R.id.btn_color_blue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyb)
             R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
-            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
+            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdybp)
             R.id.btn_color_green -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyg)
             R.id.btn_color_orange -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyo)
             R.id.btn_color_pink -> ButtonInfo(clickedButton.id, R.drawable.c_ramdypn)
@@ -135,7 +135,7 @@ class custom_color : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        imageChangeListener?.onButtonSelected(buttonInfo)
+        imageChangeListener?.onColorButtonSelected(buttonInfo)
     }
 
 
