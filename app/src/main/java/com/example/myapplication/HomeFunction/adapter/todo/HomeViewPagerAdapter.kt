@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.viewPager2
+package com.example.myapplication.HomeFunction.adapter.todo
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

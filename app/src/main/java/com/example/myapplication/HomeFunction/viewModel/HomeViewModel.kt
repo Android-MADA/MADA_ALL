@@ -35,22 +35,40 @@ class HomeViewModel : ViewModel() {
         get() = _todoList
 
     //반복 투두 리스트
-    private val _repeatTodoList = MutableLiveData<ArrayList<Todo>>(
-        arrayListOf()
+    private val _repeatTodoList = MutableLiveData<ArrayList<ArrayList<Todo>>>(
+        arrayListOf(
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
+
+        )
     )
-    val repeatTodoList: LiveData<ArrayList<Todo>>
+    val repeatTodoList: LiveData<ArrayList<ArrayList<Todo>>>
         get() = _repeatTodoList
 
     //스케쥴 리스트 -> 추후 작성
     //timetable title -> 추후 작성
 
     //날짜
+    //2023-08-13
     private val _homeDate = MutableLiveData<LocalDate>(LocalDate.now())
     val homeDate: LiveData<LocalDate>
         get() = _homeDate
 
     //투두 개수
-    private val _todoNum = MutableLiveData<Int>(categoryList.value?.size)
+    private val _todoNum = MutableLiveData<Int>(0)
     val todoNum: LiveData<Int>
         get() = _todoNum
 
@@ -92,21 +110,49 @@ class HomeViewModel : ViewModel() {
         //adpter에는 cateTodoList.value[position] 넣기
 
         if(todoList.value?.isEmpty() != true){
+            var completeNum = 0
             for(i in todoList.value!!){
                 for(j in 0..size!!){
                     if(i.categoryId.id == categoryList.value!![j].id){
                         _cateTodoList.value?.get(j)!!.add(i)
+                        if(i.complete){
+                            completeNum++
+                        }
+                    }
+                }
+            }
+            _todoNum.value = todoList.value!!.size
+            _completeTodoNum.value = completeNum
+
+
+        }
+
+    }
+
+    fun classifyRepeatTodo(){
+        if(todoList.value?.isEmpty() != true){
+            for(i in todoList.value!!){
+                for(j in 0..size!!){
+                    if(i.categoryId.id == categoryList.value!![j].id && i.repeat == "day"){
+                        _repeatTodoList.value?.get(j)!!.add(i)
                     }
                 }
             }
         }
-
-
     }
 
     //completeTodoNum 반영 함수
-    fun updateCompleteTodo() {
-        //complete 개수 변경
+    fun updateCompleteTodo(flag : Boolean) {
+        if(flag){
+            _completeTodoNum.value!!.plus(1)
+        }
+        else {
+            _completeTodoNum.value!!.minus(1)
+        }
+    }
+
+    fun updateTodoNum(){
+        _todoNum.value = todoList.value!!.size
     }
 
     fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
@@ -151,6 +197,32 @@ class HomeViewModel : ViewModel() {
     //todo삭제
     fun deleteTodo(){
 
+    }
+
+    //repeatTodo 추가
+    fun addRepeatTodo(position : Int, todo : Todo){
+        _repeatTodoList!!.value!![position].add(todo)
+    }
+
+    //repeatTodo 삭제
+    fun deleteRepeatTodo() {
+
+    }
+
+    //date 변경
+    fun changeDate(year : Int, month : Int, dayOfWeek : Int){
+        var monthString : String = month.toString()
+        var dayString = dayOfWeek.toString()
+
+        if(month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8 || month == 9){
+            monthString = "0${month}"
+        }
+        if(dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9){
+            dayString = "0${dayOfWeek}"
+        }
+
+        _homeDate.value = LocalDate.parse("${year}-${monthString}-${dayString}")
+        Log.d("date변환", _homeDate.toString())
     }
 
 
