@@ -60,7 +60,7 @@ interface OnBackgroundImageChangeListener {
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener {
     lateinit var binding: FragCustomBinding
-    private lateinit var tabLayout: TabLayout
+    private lateinit var customtabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private var tabCurrentIdx = 0
     private var selectedColorButtonInfo: ButtonInfo? = null
@@ -105,6 +105,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
 
+
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
         val itemFragment = custom_item()
@@ -132,38 +133,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
 
-        TabLayoutMediator(customtabLayout, viewPager) {tab, position ->
-            val inflater1: LayoutInflater = layoutInflater
-            var pos = tab.position
-            when (pos) {
-                0 -> {
-                    tab.setText("색깔")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, colorFragment)
-                        .commit()
-                }
+        val tabTitles = listOf("색깔", "의상", "소품", "배경")
 
-                1 -> {
-                    tab.setText("의상")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, clothFragment)
-                        .commit()
-                }
-
-                2 -> {
-                    tab.setText("소품")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, itemFragment)
-                        .commit()
-                }
-
-                3 -> {
-                    tab.setText("배경")
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.CustomBottomSheetTable, backgroundFragment)
-                        .commit()
-                }
-            }
+        TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
         }.attach()
 
         /*
