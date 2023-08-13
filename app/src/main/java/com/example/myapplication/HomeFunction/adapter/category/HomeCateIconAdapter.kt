@@ -1,11 +1,9 @@
-package com.example.myapplication.HomeFunction.category
+package com.example.myapplication.HomeFunction.adapter.category
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
@@ -22,12 +20,12 @@ class HomeCateIconAdapter(private val dataList : ArrayList<String>) : RecyclerVi
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCateIconAdapter.viewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_cate_icon_list, parent, false)
         return viewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeCateIconAdapter.viewHolder, position: Int) {
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
         holder.categoryIcon.setImageResource(dataList[position].toInt())
         holder.categoryIcon.setOnClickListener {
             itemClickListener.onClick(it, position)

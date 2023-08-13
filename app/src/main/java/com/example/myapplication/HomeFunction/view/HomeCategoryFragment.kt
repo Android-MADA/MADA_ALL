@@ -1,30 +1,22 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewDebug.FlagToString
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
-import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
+import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeCategoryFragment : Fragment() {
 

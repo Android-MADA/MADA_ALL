@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.category
+package com.example.myapplication.HomeFunction.adapter.category
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
@@ -28,12 +27,12 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<Category>) : RecyclerV
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCategoryAdapter.viewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_edit_category_list, parent, false)
         return viewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeCategoryAdapter.viewHolder, position: Int) {
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
         val mGradientDrawable : GradientDrawable = holder.categoryLayout.background as GradientDrawable
         mGradientDrawable.setStroke(6, Color.parseColor(dataSet[position].color))

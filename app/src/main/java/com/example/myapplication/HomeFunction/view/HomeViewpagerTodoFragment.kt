@@ -10,27 +10,29 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
 import com.example.myapplication.HomeFunction.viewPager2.SampleHomeTodoData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
+import java.time.LocalDate
 
 
 class HomeViewpagerTodoFragment : Fragment() {
 
     lateinit var binding : HomeFragmentViewpagerTodoBinding
-    val cateList = ArrayList<SampleHomeCateData>()
-    var todo1List = ArrayList<SampleHomeTodoData>()
-    private var todo2List = ArrayList<SampleHomeTodoData>()
-    private var todo3List = ArrayList<SampleHomeTodoData>()
+    private val viewModel : HomeViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initArrayList()
-        Log.d("array", cateList.toString())
+        Log.d("array", viewModel.categoryList.value.toString())
     }
 
     override fun onCreateView(
@@ -38,47 +40,50 @@ class HomeViewpagerTodoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_viewpager_todo, container, false)
-
-        //rv 연결
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cateAdapter = HomeViewpager2CategoryAdapter(cateList)
+        if(viewModel.categoryList.value?.isNotEmpty() == true){
 
-        cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
-            override fun onClick(
-                v: View,
-                position: Int,
-                cate: String,
-                edt : EditText,
-                layout: LinearLayout
-            ) {
-                if(edt.text.toString() != ""){
-                    when(cate){
-                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData("약속",edt.text.toString(), false))}
-                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData("운동",edt.text.toString(), false))}
-                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData("공부",edt.text.toString(),  false))}
-                        else -> {}
+            val cateAdapter = HomeViewpager2CategoryAdapter(viewModel.categoryList.value!!)
+            cateAdapter.todoDataSet = viewModel._cateTodoList.value
+
+            cateAdapter?.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
+                override fun onClick(
+                    v: View,
+                    position: Int,
+                    cate: String,
+                    edt : EditText,
+                    layout: LinearLayout
+                ) {
+                    if(edt.text.toString() != ""){
+                        var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
+                        viewModel.addTodo(position, todo)
+                        Log.d("addTodo", viewModel.cateTodoList!!.value!![position].toString())
+                        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+                            Log.d("viewmodelObserver", "데이터 이동 확인")
+                            cateAdapter.todoDataSet = viewModel._cateTodoList.value
+                            Log.d("viewmodelObserver", cateAdapter.todoDataSet.toString())
+                            //cateAdapter!!.todoAdapter?.notifyDataSetChanged()
+                        })
+                        binding.rvHomeCategory.post {
+                            cateAdapter!!.notifyDataSetChanged()
+                        }
                     }
-                    binding.rvHomeCategory.post {
-                        cateAdapter!!.notifyDataSetChanged()
-                    }
-                    Log.d("edt", cateList[0].todoList.toString())
+                    edt.text.clear()
+                    layout.isGone = true
                 }
-                edt.text.clear()
-                layout.isGone = true
-            }
-        })
-        binding.rvHomeCategory.adapter = cateAdapter
-        binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            })
 
+            binding.rvHomeCategory.adapter = cateAdapter
+            binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+
+
+        }
     }
-
-
 
     companion object {
 
@@ -87,26 +92,4 @@ class HomeViewpagerTodoFragment : Fragment() {
             HomeViewpagerTodoFragment()
     }
 
-    fun initArrayList(){
-        // cate1 todo init
-        with(todo1List){
-            this.add(SampleHomeTodoData("약속","친구랑 저녁 약속!", false))
-            this.add(SampleHomeTodoData("약속","스터디 회의", true))
-        }
-        // cate2 todo init
-        with(todo2List){
-            this.add(SampleHomeTodoData("운동","런데이 하기", false))
-        }
-        //cate3 todo init
-        with(todo3List){
-            this.add(SampleHomeTodoData("공부","서점에 전공 책 사러 가기", false))
-            this.add(SampleHomeTodoData("공부","과제 제출하기", false))
-        }
-        // total array init
-        with(cateList){
-            this.add(SampleHomeCateData(R.drawable.ic_home_cate_plan, "약속", todo1List))
-            this.add(SampleHomeCateData(R.drawable.ic_home_cate_health, "운동", todo2List))
-            this.add(SampleHomeCateData(R.drawable.ic_home_cate_study, "공부", todo3List))
-        }
-    }
 }

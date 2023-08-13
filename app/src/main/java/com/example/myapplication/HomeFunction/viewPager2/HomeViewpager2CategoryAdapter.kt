@@ -12,12 +12,15 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCateData> ) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
+class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category>) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
 
+    var todoDataSet : ArrayList<ArrayList<Todo>>? = null
+    var todoAdapter : HomeViewpager2TodoAdapter? = null
 
-    lateinit var todoAdapter : HomeViewpager2TodoAdapter
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val cateIcon : ImageView
@@ -43,28 +46,38 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return cateDataSet.size
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
-        todoAdapter = HomeViewpager2TodoAdapter(dataSet[position].todoList)
-        todoAdapter.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-                holder.todoRv.post {
-                    notifyDataSetChanged()
+        if(todoDataSet != null){
+            if(todoDataSet!![position].isNotEmpty()){
+                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position])
+                todoAdapter!!.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
+                    override fun onClick(v: View, position: Int) {
+                        holder.todoRv.post {
+                            notifyDataSetChanged()
+                        }
+                    }
+
+                })
+                holder.todoRv.apply {
+                    adapter = todoAdapter
+                    layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+                    setHasFixedSize(true)
                 }
             }
-
-        })
-
-        holder.cateIcon.setImageResource(dataSet[position].icon)
-        holder.cateTv.text = dataSet[position].cateName
-        holder.todoRv.apply {
-            adapter = todoAdapter
-            layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-            setHasFixedSize(true)
         }
+
+        //todolist가 empty인지 확인하고
+        //todolist가 각 position에 대하여 empty인지 확인하고
+        //empty이면 adapter 연결 x
+
+
+        holder.cateIcon.setImageResource(cateDataSet[position].icon_id.name.toInt())
+        holder.cateTv.text = cateDataSet[position].categoryName
+
         //클릭 리스너
         holder.addBtn.setOnClickListener{
             //toggle 식으로 다시 누르면 사라짐..?
@@ -81,7 +94,7 @@ class HomeViewpager2CategoryAdapter(private val dataSet : ArrayList<SampleHomeCa
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
+                itemClickListener.onClick(view, position, cateDataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
                 true
             }
 

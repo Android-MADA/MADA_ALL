@@ -4,11 +4,13 @@ import java.time.LocalDate
 
 data class Todo(
     val date : LocalDate,
-    val categoryId : ArrayList<Category>,
-    val todoName : String,
-    val complete : Boolean,
+    var categoryId : Category,
+    var todoName : String,
+    var complete : Boolean,
     val repeat : String,
-    val repeatWeek : String?,
-    val startRepeatDate : String?,
-    val endRepeatDate : String?
+
 )
+
+//val repeatWeek : String?,
+//val startRepeatDate : String?,
+//val endRepeatDate : String?

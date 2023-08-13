@@ -1,36 +1,29 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
-import com.example.myapplication.HomeFunction.category.HomeCateColorAdapter
-import com.example.myapplication.HomeFunction.category.HomeCateIconAdapter
+import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
+import com.example.myapplication.HomeFunction.adapter.category.HomeCateIconAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.example.myapplication.hideBottomNavigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
@@ -111,8 +104,12 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             //서버 patch
             //데이터 변경
-            viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
-            Log.d("navSave", "정상 작동")
+            if(binding.btnHomeCateAddSave.text == "수정"){
+                viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+            }
+            else {
+                viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
+            }
         }
 
         binding.btnHomeTimeEditDelete.setOnClickListener {
@@ -210,6 +207,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         if(flag == "delete"){
             viewModel.removeCate(argsArray!![4].toInt())
+
         }
         dialog.dismiss()
     }
