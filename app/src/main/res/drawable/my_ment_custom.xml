@@ -1,6 +1,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 배경 이미지 -->
-    <item android:drawable="@drawable/my_ment" />
 
     <!-- 둥근 네모 모서리 -->
     <item>
