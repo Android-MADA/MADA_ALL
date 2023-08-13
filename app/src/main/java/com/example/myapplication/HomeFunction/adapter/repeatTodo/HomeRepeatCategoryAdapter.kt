@@ -1,5 +1,6 @@
-package com.example.myapplication.HomeFunction.repeatTodo
+package com.example.myapplication.HomeFunction.adapter.repeatTodo
 
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,15 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
+import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<SampleHomeCateData> ) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
+class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
 
-
-    lateinit var todoAdapter : HomeRepeatTodoAdapter
+    var repeatDataSet : ArrayList<ArrayList<Todo>>? = null
+    var repeatAdapter : HomeRepeatTodoAdapter? = null
+    var completeNum = 0
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -48,24 +51,34 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<SampleHomeCateDa
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        todoAdapter = HomeRepeatTodoAdapter(dataSet[position].todoList)
-        todoAdapter.setItemClickListener(object : HomeRepeatTodoAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-                //edt, btn 노출 with text
-                //cb, tx, menu visibility gone
-            }
 
-        })
-        holder.cateIcon.setImageResource(dataSet[position].icon)
-        holder.cateTv.text = dataSet[position].cateName
-        holder.todoRv.apply {
-            adapter = todoAdapter
-            layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-            setHasFixedSize(true)
+
+
+        if(repeatDataSet != null){
+            if(repeatDataSet!![position].isNotEmpty()){
+                repeatAdapter = HomeRepeatTodoAdapter(repeatDataSet!![position], completeNum)
+                repeatAdapter!!.setItemClickListener(object :
+                    HomeRepeatTodoAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        holder.todoRv.post {
+                            notifyDataSetChanged()
+                        }
+                    }
+
+                })
+                holder.todoRv.apply {
+                    adapter = repeatAdapter
+                    layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+                    setHasFixedSize(true)
+                }
+            }
         }
+
+        holder.cateIcon.setImageResource(dataSet[position].icon_id.name.toInt())
+        holder.cateTv.text = dataSet[position].categoryName
+
         //클릭 리스너
         holder.addBtn.setOnClickListener{
-            //toggle 식으로 다시 누르면 사라짐..?
             if(holder.todoAdd.isGone){
                 holder.todoAdd.isVisible = true
             }
@@ -74,17 +87,25 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<SampleHomeCateDa
             }
         }
         //sample btn click listener
-        holder.itemView.findViewById<ImageView>(R.id.iv_repeat_todo_save).setOnClickListener {
-            itemClickListener.onClick(it, position, dataSet[position].cateName, holder.edtTodo, holder.todoAdd)
+        holder.edtTodo.setOnKeyListener { view, keyCode, event ->
+            // Enter Key Action
+            if (event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                true
+            }
+
+            false
         }
     }
     interface OnItemClickListener {
         fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
-    fun setItemClickListener(onItemClickListener: HomeRepeatCategoryAdapter.OnItemClickListener) {
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
     // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : HomeRepeatCategoryAdapter.OnItemClickListener
+    private lateinit var itemClickListener : OnItemClickListener
 }

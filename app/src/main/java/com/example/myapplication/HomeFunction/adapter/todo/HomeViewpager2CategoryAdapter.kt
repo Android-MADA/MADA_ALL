@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.viewPager2
+package com.example.myapplication.HomeFunction.adapter.todo
 
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -20,6 +20,7 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
 
     var todoDataSet : ArrayList<ArrayList<Todo>>? = null
     var todoAdapter : HomeViewpager2TodoAdapter? = null
+    var completeNum = 0
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -53,8 +54,9 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
 
         if(todoDataSet != null){
             if(todoDataSet!![position].isNotEmpty()){
-                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position])
-                todoAdapter!!.setItemClickListener(object : HomeViewpager2TodoAdapter.OnItemClickListener{
+                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position], completeNum)
+                todoAdapter!!.setItemClickListener(object :
+                    HomeViewpager2TodoAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
                         holder.todoRv.post {
                             notifyDataSetChanged()
@@ -80,7 +82,6 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
-            //toggle 식으로 다시 누르면 사라짐..?
             if(holder.todoAdd.isGone){
                 holder.todoAdd.isVisible = true
             }
@@ -105,9 +106,9 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
         fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
-    fun setItemClickListener(onItemClickListener: HomeViewpager2CategoryAdapter.OnItemClickListener) {
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
     // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : HomeViewpager2CategoryAdapter.OnItemClickListener
+    private lateinit var itemClickListener : OnItemClickListener
 }

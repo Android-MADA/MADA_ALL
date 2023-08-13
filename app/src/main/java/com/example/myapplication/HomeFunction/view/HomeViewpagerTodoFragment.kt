@@ -13,12 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeTodoData
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
 import java.time.LocalDate
@@ -50,8 +47,9 @@ class HomeViewpagerTodoFragment : Fragment() {
 
             val cateAdapter = HomeViewpager2CategoryAdapter(viewModel.categoryList.value!!)
             cateAdapter.todoDataSet = viewModel._cateTodoList.value
+            cateAdapter.completeNum = viewModel.completeTodoNum.value!!
 
-            cateAdapter?.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
+            cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
                 override fun onClick(
                     v: View,
                     position: Int,
@@ -67,7 +65,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                             Log.d("viewmodelObserver", "데이터 이동 확인")
                             cateAdapter.todoDataSet = viewModel._cateTodoList.value
                             Log.d("viewmodelObserver", cateAdapter.todoDataSet.toString())
-                            //cateAdapter!!.todoAdapter?.notifyDataSetChanged()
+                            viewModel.updateTodoNum()
                         })
                         binding.rvHomeCategory.post {
                             cateAdapter!!.notifyDataSetChanged()
