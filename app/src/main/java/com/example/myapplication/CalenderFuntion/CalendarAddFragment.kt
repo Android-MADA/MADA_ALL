@@ -40,6 +40,16 @@ class CalendarAddFragment : Fragment() {
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     var scheduleSelect = 0
     var dayString : String = ""
+
+    var title = ""
+    var preSchedule = "2023-6-1"
+    var nextSchedule = "2023-6-1"
+    var preClock = "  오전 10:00  "
+    var nextClock = "  오전 11:00  "
+    var cycle = "반복 안함"
+    var memo = ""
+    var color = "#89A9D9"
+    var edit = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,15 +61,18 @@ class CalendarAddFragment : Fragment() {
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
         val bundle = arguments
-        val title = bundle?.getString("title") ?: ""
-        val preSchedule = bundle?.getString("preSchedule") ?: "2023-6-1"
-        val nextSchedule = bundle?.getString("nextSchedule") ?: "2023-6-1"
-        val preClock = bundle?.getString("preClock") ?: "  오전 10:00  "
-        val nextClock = bundle?.getString("nextClock") ?: "  오전 11:00  "
-        val cycle = bundle?.getString("cycle") ?: "반복 안함"
-        val memo = bundle?.getString("memo") ?: ""
-        val color = bundle?.getString("color") ?:"#89A9D9"
+        title = bundle?.getString("title") ?: ""
+        preSchedule = bundle?.getString("preSchedule") ?: "2023-6-1"
+        nextSchedule = bundle?.getString("nextSchedule") ?: "2023-6-1"
+        preClock = bundle?.getString("preClock") ?: "  오전 10:00  "
+        nextClock = bundle?.getString("nextClock") ?: "  오전 11:00  "
+        cycle = bundle?.getString("cycle") ?: "반복 안함"
+        memo = bundle?.getString("memo") ?: ""
+        color = bundle?.getString("color") ?:"#89A9D9"
+        edit = bundle?.getBoolean("edit")?: false
 
+        if(edit)
+            binding.submitBtn.text = "수정"
         binding.textTitle.setText(title)
         binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
         binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule)
@@ -337,8 +350,9 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
-
-
+                if(edit) {
+                    mDialogView.findViewById<TextView>(R.id.textTitle).text = "수정하지 않고 나가시겠습니가?"
+                }
                 val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
                     mBuilder.dismiss()
@@ -366,7 +380,7 @@ class CalendarAddFragment : Fragment() {
             "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어","CAL"
         )
         )
-        binding.button.setOnClickListener {
+        binding.submitBtn.setOnClickListener {
             if(binding.checkBox.isChecked&&datasDday.size==3) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_change, null)
                 val mBuilder = AlertDialog.Builder(requireContext())

@@ -61,7 +61,7 @@ class FragCalendar : Fragment(){
 
     )
 
-    val calendarDayArray = Array(42) {""}
+    var calendarDayArray = Array(43) {""}
     @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -364,12 +364,22 @@ class FragCalendar : Fragment(){
 
         monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
         var i = 0
-        while(i<42) {
+        while(i<43) {
             val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
             val date = dateFormat.parse(monthCalendar.time.toString())
             calendarDayArray[i++] = SimpleDateFormat("yyyy-M-d", Locale.ENGLISH).format(date)
             dayList.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH,1)
+        }
+        if(true) {      //월요일 부터 시작이라면
+            dayList.removeAt(0)
+            for (i in 0 until calendarDayArray.size - 1) {
+                calendarDayArray[i] = calendarDayArray[i + 1]
+
+            }
+            val textView = binding.textSun
+            binding.textYoil.removeView(binding.textSun)
+            binding.textYoil.addView(textView)
         }
         return dayList
     }

@@ -127,7 +127,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
     }
 
     override fun getItemCount(): Int {
-        return dayList.size
+        return 42
     }
 
 }
