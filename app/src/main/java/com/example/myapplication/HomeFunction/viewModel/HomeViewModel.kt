@@ -189,9 +189,38 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    //새로운 투두 상단 표시 flag
+    private var _todoTopFlag = MutableLiveData<Boolean>(true)
+    val todoTopFlag : LiveData<Boolean>
+        get() = _todoTopFlag
+
     //todo추가
-    fun addTodo(position : Int, todo : Todo){
-        _cateTodoList!!.value!![position].add(todo)
+    fun addTodo(position : Int, todo : Todo, flag : Boolean){
+        if(flag){
+            _cateTodoList!!.value!![position].add(0, todo)
+        }
+        else {
+            _cateTodoList!!.value!![position].add(todo)
+        }
+
+    }
+
+    //flag에 따른 todo정렬
+    fun arrangeTodo() {
+        //catetodo 가져와서 각 array마다 complete 확인해서 변경...?
+        if(cateTodoList.value?.isEmpty() != true){
+            for(i in cateTodoList.value!!){
+                if(i.isNotEmpty()){
+                    for(j in 0..i.size!!.minus(1)){
+                        if(i[j].complete){
+                            var todoMove = i[j]
+                            i.removeAt(j)
+                            i.add(todoMove)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //todo삭제
@@ -223,6 +252,21 @@ class HomeViewModel : ViewModel() {
 
         _homeDate.value = LocalDate.parse("${year}-${monthString}-${dayString}")
         Log.d("date변환", _homeDate.toString())
+    }
+
+    //calendarview 시작 요일
+    private var _startDay = MutableLiveData<Int>(1)
+    val startDay : LiveData<Int>
+        get() = _startDay
+
+    //calendarView 시작 요일 변경
+    fun changeStartDay(flag : Boolean){
+        if(flag){
+            _startDay.value = 2
+        }
+        else {
+            _startDay.value = 1
+        }
     }
 
 

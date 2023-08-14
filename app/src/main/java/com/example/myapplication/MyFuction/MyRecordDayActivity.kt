@@ -3,7 +3,7 @@ package com.example.myapplication.MyFuction
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.myapplication.Fragment.FragHome
-import com.example.myapplication.HomeFunction.viewPager2.HomeViewPagerAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.databinding.MyRecordDayBinding
 

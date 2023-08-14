@@ -48,6 +48,18 @@ class HomeViewpagerTodoFragment : Fragment() {
             val cateAdapter = HomeViewpager2CategoryAdapter(viewModel.categoryList.value!!)
             cateAdapter.todoDataSet = viewModel._cateTodoList.value
             cateAdapter.completeNum = viewModel.completeTodoNum.value!!
+            cateAdapter.arrangeFlag = viewModel.todoTopFlag.value!!
+
+            //완료 투두 맨 뒤로 보내기
+            viewModel.todoTopFlag.observe(viewLifecycleOwner, Observer {
+                if(viewModel.todoTopFlag.value!!){
+                    viewModel.arrangeTodo()
+                    binding.rvHomeCategory.post {
+                        cateAdapter!!.notifyDataSetChanged()
+                    }
+                }
+                else { }
+            })
 
             cateAdapter.setItemClickListener(object : HomeViewpager2CategoryAdapter.OnItemClickListener{
                 override fun onClick(
@@ -59,7 +71,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                 ) {
                     if(edt.text.toString() != ""){
                         var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
-                        viewModel.addTodo(position, todo)
+                        viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
                         Log.d("addTodo", viewModel.cateTodoList!!.value!![position].toString())
                         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                             Log.d("viewmodelObserver", "데이터 이동 확인")

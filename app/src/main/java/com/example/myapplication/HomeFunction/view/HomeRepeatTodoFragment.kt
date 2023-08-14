@@ -70,7 +70,7 @@ class HomeRepeatTodoFragment : Fragment() {
                         var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "day")
 
                         viewModel.addRepeatTodo(position, todo)
-                        viewModel.addTodo(position, todo)
+                        viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
                         viewModel.updateTodoNum()
 
                         Log.d("addRepeatTodo", viewModel.repeatTodoList!!.value!![position].toString())
