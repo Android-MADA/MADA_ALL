@@ -27,7 +27,6 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("viewmodel Category", viewModel.categoryList.value.toString())
 
     }
 
@@ -74,9 +73,6 @@ class HomeCategoryFragment : Fragment() {
         binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
 
-        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
-            categoryAdapter?.notifyDataSetChanged()
-        })
     }
 
     override fun onDestroyView() {

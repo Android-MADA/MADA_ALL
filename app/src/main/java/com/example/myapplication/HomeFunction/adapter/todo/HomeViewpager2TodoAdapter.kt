@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var completeNum : Int, var arrange : Boolean) : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
+class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
 
+    lateinit var dataSet : ArrayList<Todo>
+    var completeFlag = false
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val todoCheckBox : CheckBox
@@ -89,9 +91,6 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                         dataSet.removeAt(position)
                         Log.d("todoDelete", "삭제하기")
                         notifyDataSetChanged()
-                        if(holder.todoCheckBox.isChecked){
-                            completeNum--
-                        }
                     }
                     true
                 }
@@ -102,16 +101,14 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                 dataSet[position].complete = buttonView.isChecked
 
                 if(isChecked){
-                    completeNum++
-                    if(arrange){
+                    if(completeFlag){
                         var todoMove = dataSet[position]
                         dataSet.removeAt(position)
                         dataSet.add(todoMove)
                     }
                 }
                 else {
-                    completeNum--
-                    if(arrange){
+                    if(completeFlag){
                         var todoMove = dataSet[position]
                         dataSet.removeAt(position)
                         dataSet.add(0, todoMove)
@@ -134,6 +131,7 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                     holder.edtTodo.text.clear()
                     holder.editLayout.isGone = true
                     itemClickListener.onClick(view, position)
+                    notifyDataSetChanged()
 
                     true
                 }

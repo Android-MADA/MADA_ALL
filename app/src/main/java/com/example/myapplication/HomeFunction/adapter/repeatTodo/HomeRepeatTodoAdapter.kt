@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, private var completeNum : Int) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
+class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, var catetodoSet : ArrayList<Todo> ) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -62,10 +62,10 @@ class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, private var 
                     }
                     else{
                         itemClickListener.onClick(it, position)
+                        catetodoSet.remove(dataSet[position])
                         dataSet.removeAt(position)
-                        if(dataSet[position].complete){
-                            completeNum--
-                        }
+
+                        //근데 같은 이름이면 어떡하져
                         Log.d("todoDelete", "삭제하기")
                         notifyDataSetChanged()
                     }
@@ -80,6 +80,7 @@ class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, private var 
                 ) {
                     //데이터 수정 반영
                     dataSet[position].todoName = holder.edtTodo.text.toString()
+                    //catetodo에도 반영 필요 -> 그냥 서버에서 받아와..?
                     //edt 업애고 이전 투두 복구
                     holder.todoLayout.isVisible = true
                     holder.edtTodo.text.clear()

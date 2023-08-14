@@ -34,6 +34,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     val cateColorArray = ArrayList<String>()
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
+
     private var bottomFlag = true
     private lateinit var backDialog : HomeBackCustomDialog
     private lateinit var deleteDialog : HomeDeleteCustomDialog
@@ -110,9 +111,11 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             //데이터 변경
             if(binding.btnHomeCateAddSave.text == "수정"){
                 viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+                //서버 전송
             }
             else {
                 viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
+                //서버 전송
             }
         }
 
@@ -211,7 +214,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         if(flag == "delete"){
             viewModel.removeCate(argsArray!![4].toInt())
-
+            //카테고리, 카테고리에 해당하는 todo 삭제 후에 서버 전송
         }
         dialog.dismiss()
     }

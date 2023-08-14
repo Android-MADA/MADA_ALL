@@ -35,7 +35,7 @@ class HomeViewModel : ViewModel() {
         get() = _todoList
 
     //반복 투두 리스트
-    private val _repeatTodoList = MutableLiveData<ArrayList<ArrayList<Todo>>>(
+    var _repeatTodoList = MutableLiveData<ArrayList<ArrayList<Todo>>>(
         arrayListOf(
             arrayListOf(),
             arrayListOf(),
@@ -123,8 +123,6 @@ class HomeViewModel : ViewModel() {
             }
             _todoNum.value = todoList.value!!.size
             _completeTodoNum.value = completeNum
-
-
         }
 
     }
@@ -142,17 +140,41 @@ class HomeViewModel : ViewModel() {
     }
 
     //completeTodoNum 반영 함수
-    fun updateCompleteTodo(flag : Boolean) {
-        if(flag){
-            _completeTodoNum.value!!.plus(1)
+    fun updateCompleteTodo() {
+        if(cateTodoList.value?.isEmpty() != true){
+            var completeNum = 0
+            for(i in cateTodoList.value!!){
+                if(i.isNotEmpty()){
+                    for(j in 0..i.size!!.minus(1)){
+                        if(i[j].complete){
+                            completeNum++
+                        }
+                    }
+                }
+            }
+            _completeTodoNum.value = completeNum
         }
         else {
-            _completeTodoNum.value!!.minus(1)
+            _completeTodoNum.value = 0
         }
     }
 
     fun updateTodoNum(){
-        _todoNum.value = todoList.value!!.size
+
+        if(cateTodoList.value?.isEmpty() != true){
+            var todoNum = 0
+            for(i in cateTodoList.value!!){
+                if(i.isNotEmpty()){
+                    for(j in 0..i.size!!.minus(1)){
+                            todoNum++
+                    }
+                }
+            }
+            _todoNum.value = todoNum
+        }
+        else{
+            _todoNum.value = 0
+        }
     }
 
     fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
@@ -194,6 +216,10 @@ class HomeViewModel : ViewModel() {
     val todoTopFlag : LiveData<Boolean>
         get() = _todoTopFlag
 
+    fun changeTopFlag(flag : Boolean){
+        _todoTopFlag.value = flag
+    }
+
     //todo추가
     fun addTodo(position : Int, todo : Todo, flag : Boolean){
         if(flag){
@@ -204,6 +230,10 @@ class HomeViewModel : ViewModel() {
         }
 
     }
+
+    private var _completeBottomFlag = MutableLiveData<Boolean>(true)
+    val completeBottomFlag : LiveData<Boolean>
+        get() = _completeBottomFlag
 
     //flag에 따른 todo정렬
     fun arrangeTodo() {
@@ -251,7 +281,6 @@ class HomeViewModel : ViewModel() {
         }
 
         _homeDate.value = LocalDate.parse("${year}-${monthString}-${dayString}")
-        Log.d("date변환", _homeDate.toString())
     }
 
     //calendarview 시작 요일

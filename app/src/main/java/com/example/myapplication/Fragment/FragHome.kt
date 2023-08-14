@@ -28,9 +28,6 @@ class FragHome : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel.classifyTodo()
         Log.d("classify", viewModel.cateTodoList.value.toString())
-        Log.d("date확인", viewModel.homeDate.value.toString())
-        Log.d("todoNum", viewModel.todoNum.value.toString())
-        Log.d("completeNum", viewModel.completeTodoNum.value.toString())
     }
 
 
@@ -41,32 +38,28 @@ class FragHome : Fragment() {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
-        binding.progressBar.max = viewModel.todoNum.value!!
-        binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
-        binding.progressBar.progress = viewModel.completeTodoNum.value!!
-        binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-
-
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
-
-        //date clicklistener -> 추가 예정
-        binding.tvHomeCalendar.setOnClickListener {
-
-        }
 
         //viewpager 연결, indicator 연결
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
-
         homeIndicator.setViewPager(homeViewPager)
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val calendarLayout = binding.layoutCalendarviewHome
+        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
+        binding.progressBar.max = viewModel.todoNum.value!!
+        binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
+        binding.progressBar.progress = viewModel.completeTodoNum.value!!
+        binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
+
+        //actinobar 설정
         binding.toolbarHome.inflateMenu(R.menu.home_menu)
         binding.toolbarHome.setOnMenuItemClickListener {
             when(it.itemId){
@@ -86,47 +79,40 @@ class FragHome : Fragment() {
             }
         }
 
-        val calendarLayout = binding.layoutCalendarviewHome
-
-        var date = viewModel.homeDate.value!!
+        //달력은 현재 날짜로 세팅
         var dateCalendar = Calendar.getInstance()
-        dateCalendar.set(date.year, (date.monthValue-1), date.dayOfMonth)
-        val currentDay = findDayOfWeek(date.year, (date.monthValue -1), date.dayOfMonth, dateCalendar)
-
-        binding.tvHomeCalendar.text = "${date.monthValue}월 ${date.dayOfMonth}일 ${currentDay}"
+        dateCalendar.set(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue-1), viewModel.homeDate.value!!.dayOfMonth)
+        val currentDay = findDayOfWeek(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue -1), viewModel.homeDate.value!!.dayOfMonth, dateCalendar)
+        binding.tvHomeCalendar.text = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
 
         //날짜 텍스트 클릭 시
         binding.tvHomeCalendar.setOnClickListener {
-            if(calendarLayout.isVisible){
-                calendarLayout.isGone = true
-                Log.d("gone", "gone 작동")
-            }
-            else {
-                calendarLayout.isVisible = true
-                Log.d("visible", "visible 작동")
-            }
+            if(calendarLayout.isVisible) {calendarLayout.isGone = true}
+            else {calendarLayout.isVisible = true}
         }
 
-        //달력은 현재 날짜로 세팅
         // 클릭 시 텍스트 변환
-        var selected : Calendar = Calendar.getInstance()
-
         binding.calendarviewHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            selected.set(year, month, dayOfMonth)
-            var calendarDay = findDayOfWeek(year, month, dayOfMonth, selected)
+            dateCalendar.set(year, month, dayOfMonth)
+            var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
-
             viewModel.changeDate(year, (month +1), dayOfMonth)
-
-            viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-                //서버에서 todo, time 데이터 받아와서 livedata에 넣기
-            // todo complete, todo num 변경하기
-            })
-
         }
 
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            //서버에서 category 새로 받아오기(date)
+            //서버에서 Tood 새로 받아오기(date)
+            //서버에서 ment 새로 받아오기(date)
+            Log.d("date변경", binding.tvHomeCalendar.text.toString())
+        })
 
+        viewModel.todoList.observe(viewLifecycleOwner, Observer {
+            //todoNum 업데이트
+            //completeNum 업데이트
+        })
+
+        //date를 통해서 todo가 변경되었을 때 실행
         viewModel.todoNum.observe(viewLifecycleOwner, Observer {
             binding.tvHomeProgressMax.text = viewModel.todoNum.value.toString()
             binding.progressBar.max = viewModel.todoNum.value!!
@@ -137,11 +123,18 @@ class FragHome : Fragment() {
             binding.progressBar.progress = viewModel.completeTodoNum.value!!
         })
 
-        //calendarview 시작 요일 변경
-        viewModel.startDay.observe(viewLifecycleOwner, Observer {
-            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-        })
 
+        //calendarview 시작 요일 변경 -> flag만 변경시키고 뿌리는 부분에서 처리
+//        viewModel.startDay.observe(viewLifecycleOwner, Observer {
+//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
+//        })
+//
+//        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+//            viewModel.updateTodoNum()
+//            viewModel.updateCompleteTodo()
+//            Log.d("todoNum", viewModel.todoNum.value.toString())
+//            Log.d("completeNum", viewModel.completeTodoNum.value.toString())
+//        })
 
     }
 
@@ -158,7 +151,5 @@ class FragHome : Fragment() {
             }
         return dayOfWeek
     }
-
-
 
 }
