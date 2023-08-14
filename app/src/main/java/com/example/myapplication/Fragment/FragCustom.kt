@@ -18,11 +18,13 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.R
 import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
@@ -69,6 +71,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
     private var custom_save = false
     private var button_temdata : selectedButtonInfo? = null
+    private val viewModel: CustomViewModel by viewModels()
 
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
@@ -77,21 +80,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         var selectedBackgroundButtonInfo: ButtonInfo?
     )
 
-
-
-    data class USER_POSSESSION_ITEM(
-        var user_id : BigInteger,
-        var item_id : Int,
-        var wearing : Char
-
-    )
-
-    data class MISSION(
-        var id : Int,
-        var item_id : Int,
-        var wearing : Char
-
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,23 +99,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val itemFragment = custom_item()
         val backgroundFragment = custom_background()
 
-        if(custom_save == true){
-            button_temdata?.selectedColorButtonInfo?.let { colorButtonInfo ->
-                onColorButtonSelected(colorButtonInfo)
-            }
+        val savedData = viewModel.getSavedButtonInfo()
+        if (savedData != null) {
+            selectedColorButtonInfo = savedData.selectedColorButtonInfo
+            selectedClothButtonInfo = savedData.selectedClothButtonInfo
+            selectedItemButtonInfo = savedData.selectedItemButtonInfo
+            selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
 
-            button_temdata?.selectedClothButtonInfo?.let { clothButtonInfo ->
-                onClothButtonSelected(clothButtonInfo)
-            }
-
-            button_temdata?.selectedItemButtonInfo?.let { itemButtonInfo ->
-                onItemButtonSelected(itemButtonInfo)
-            }
-
-            button_temdata?.selectedBackgroundButtonInfo?.let { backgroundButtonInfo ->
-                onBackgroundButtonSelected(backgroundButtonInfo)
-            }
+            binding.customRamdi.setImageResource(selectedColorButtonInfo?.selectedImageResource ?: 0)
+            binding.imgCustomCloth.setImageResource(selectedClothButtonInfo?.selectedImageResource ?: 0)
+            binding.imgCustomItem.setImageResource(selectedItemButtonInfo?.selectedImageResource ?: 0)
+            binding.imgCustomBackground.setImageResource(selectedBackgroundButtonInfo?.selectedImageResource ?: 0)
         }
+
 
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
@@ -138,46 +122,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
-
-        /*
-
-        customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val inflater1: LayoutInflater = layoutInflater
-                var pos = tab.position
-                when (pos) {
-                    0 -> {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.CustomBottomSheetTable, colorFragment)
-                            .commit()
-                    }
-                    1 -> {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.CustomBottomSheetTable, clothFragment)
-                            .commit()
-                    }
-                    2 -> {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.CustomBottomSheetTable, itemFragment)
-                            .commit()
-                    }
-                    3 -> {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.CustomBottomSheetTable, backgroundFragment)
-                            .commit()
-                    }
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                // do nothing
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-                // do nothing
-            }
-        }) */
-
 
 
         var width = 500
@@ -233,10 +177,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
 
-        binding.btnCustomSave.setOnClickListener{
+        binding.btnCustomSave.setOnClickListener {
             custom_save = true
-            button_temdata = getSelectedButtonInfo()
+            viewModel.saveButtonInfo(getSelectedButtonInfo())
         }
+
 
         binding.btnCustomReset.setOnClickListener{
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
@@ -246,8 +191,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         }
-
-
 
 
         return view
