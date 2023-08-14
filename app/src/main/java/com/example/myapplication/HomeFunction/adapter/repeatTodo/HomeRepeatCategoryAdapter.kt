@@ -20,7 +20,7 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : Re
 
     var repeatDataSet : ArrayList<ArrayList<Todo>>? = null
     var repeatAdapter : HomeRepeatTodoAdapter? = null
-    var completeNum = 0
+    var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -56,7 +56,7 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : Re
 
         if(repeatDataSet != null){
             if(repeatDataSet!![position].isNotEmpty()){
-                repeatAdapter = HomeRepeatTodoAdapter(repeatDataSet!![position], completeNum)
+                repeatAdapter = HomeRepeatTodoAdapter(repeatDataSet!![position], cateTodoSet!![position])
                 repeatAdapter!!.setItemClickListener(object :
                     HomeRepeatTodoAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
