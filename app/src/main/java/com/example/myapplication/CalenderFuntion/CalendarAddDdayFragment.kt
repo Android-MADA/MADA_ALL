@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -68,18 +69,18 @@ class CalendarAddDdayFragment : Fragment() {
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelector.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelector.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelector.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor.setOnClickListener {
-            binding.layoutColorSelector.visibility = View.VISIBLE
+            toggleLayout(true,binding.layoutColorSelector)
         }
         /*
         binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -176,5 +177,13 @@ class CalendarAddDdayFragment : Fragment() {
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
+    }
+    private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
+        if (isExpanded) {
+            ToggleAnimation.expand(layoutExpand)
+        } else {
+            ToggleAnimation.collapse(layoutExpand)
+        }
+        return isExpanded
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment
 import com.example.myapplication.CalenderFuntion.CalendarUtil
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.OnItemListener
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
@@ -29,7 +31,18 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.lang.Integer.min
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,24 +55,6 @@ class FragCalendar : Fragment(){
     var preStartToEnd : sche = sche(0, 0, 0, 0)
     var nextStartToEnd : sche = sche(0, 0, 0, 0)
 
-    data class CalendarDATA(
-        val startDate: String,
-        var startDate2: String,
-        val endDate: String,
-        val startTime : String,
-        val endTime : String,
-        val color: String,
-        val repeat: String,
-        val dDay: Char,
-        val title: String,
-       //val createAt: String,
-        //val updateAt: String
-        var floor : Int,
-        val duration : Boolean,
-        val memo : String,
-        val what : String       //종류
-
-    )
 
     var calendarDayArray = Array(43) {""}
     @RequiresApi(Build.VERSION_CODES.O)
@@ -92,6 +87,18 @@ class FragCalendar : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val url = "https://virtserver.swaggerhub.com/gkswjdgml001/homeAPI/1.0.0/api/home/todo/0/2023-07-06"
+
+        // 코루틴을 활용하여 네트워킹 수행
+        GlobalScope.launch(Dispatchers.IO) {
+            val json = fetchDataFromUrl(url)
+            withContext(Dispatchers.Main) {
+                // UI 업데이트나 JSON 데이터 처리를 수행할 수 있습니다.
+                // 이 예시에서는 JSON 데이터를 출력해보겠습니다.
+                Log.d("d",json.toString())
+            }
+        }
 
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
             CalendarDATA("2023-7-21","2023-7-21","2023-8-31","","",
@@ -290,6 +297,24 @@ class FragCalendar : Fragment(){
 
 
     }
+
+    private fun fetchDataFromUrl(urlString: String): JSONObject {
+        val url = URL(urlString)
+        val connection = url.openConnection() as HttpURLConnection
+        try {
+            val bufferedReader = BufferedReader(InputStreamReader(connection.inputStream))
+            val response = StringBuilder()
+            var inputLine: String?
+            while (bufferedReader.readLine().also { inputLine = it } != null) {
+                response.append(inputLine)
+            }
+            bufferedReader.close()
+            return JSONObject(response.toString())
+        } finally {
+            connection.disconnect()
+        }
+    }
+
     fun daysRemainingToDate(targetDate: String): Int {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
         val today = LocalDate.now()

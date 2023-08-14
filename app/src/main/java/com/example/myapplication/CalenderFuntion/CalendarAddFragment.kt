@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
@@ -58,6 +60,12 @@ class CalendarAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
+
+
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
         val bundle = arguments
@@ -94,42 +102,42 @@ class CalendarAddFragment : Fragment() {
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor4.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor5.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor6.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor7.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor8.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor9.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor.setOnClickListener {
-            binding.layoutColorSelectors.visibility = View.VISIBLE
+            toggleLayout(true,binding.layoutColorSelectors)
         }
 
         binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -367,15 +375,15 @@ class CalendarAddFragment : Fragment() {
 
         }
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-21", "2023-7-21", "2023-8-31", "", "",
                 "#FFE7EB", "", 'Y', "방학", -1, true, "방학이 끝나간다...","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-2", "2023-7-2", "2023-9-2", "", "",
                 "#E1E9F5", "", 'Y', "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                     "2023-7-1", "2023-7-1", "2023-11-27", "", "",
             "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어","CAL"
         )
@@ -524,4 +532,13 @@ class CalendarAddFragment : Fragment() {
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
     }
+    private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
+        if (isExpanded) {
+            ToggleAnimation.expand(layoutExpand)
+        } else {
+            ToggleAnimation.collapse(layoutExpand)
+        }
+        return isExpanded
+    }
+
 }
