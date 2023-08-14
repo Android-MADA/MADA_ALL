@@ -45,6 +45,7 @@ class FragHome : Fragment() {
         binding.progressBar.max = viewModel.todoNum.value!!
         binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
         binding.progressBar.progress = viewModel.completeTodoNum.value!!
+        binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
 
 
         val homeViewPager = binding.homeViewpager2
@@ -135,6 +136,12 @@ class FragHome : Fragment() {
             binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
             binding.progressBar.progress = viewModel.completeTodoNum.value!!
         })
+
+        //calendarview 시작 요일 변경
+        viewModel.startDay.observe(viewLifecycleOwner, Observer {
+            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
+        })
+
 
     }
 

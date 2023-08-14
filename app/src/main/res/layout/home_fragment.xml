@@ -191,6 +191,7 @@
                 android:layout_height="310dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/home_calendarview_background"
+                android:firstDayOfWeek=""
                 android:theme="@style/CreateProfileTheme" />
         </FrameLayout>
 

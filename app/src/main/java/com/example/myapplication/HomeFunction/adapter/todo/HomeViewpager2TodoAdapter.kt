@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var completeNum : Int) : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
+class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var completeNum : Int, var arrange : Boolean) : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -103,9 +103,20 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
 
                 if(isChecked){
                     completeNum++
+                    if(arrange){
+                        var todoMove = dataSet[position]
+                        dataSet.removeAt(position)
+                        dataSet.add(todoMove)
+                    }
                 }
                 else {
                     completeNum--
+                    if(arrange){
+                        var todoMove = dataSet[position]
+                        dataSet.removeAt(position)
+                        dataSet.add(0, todoMove)
+                    }
+
                 }
 
                 Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].complete}")

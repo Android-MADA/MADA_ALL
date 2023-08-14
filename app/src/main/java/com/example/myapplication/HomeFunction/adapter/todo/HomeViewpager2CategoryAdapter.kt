@@ -21,6 +21,7 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
     var todoDataSet : ArrayList<ArrayList<Todo>>? = null
     var todoAdapter : HomeViewpager2TodoAdapter? = null
     var completeNum = 0
+    var arrangeFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -54,7 +55,7 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
 
         if(todoDataSet != null){
             if(todoDataSet!![position].isNotEmpty()){
-                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position], completeNum)
+                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position], completeNum, arrangeFlag)
                 todoAdapter!!.setItemClickListener(object :
                     HomeViewpager2TodoAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {

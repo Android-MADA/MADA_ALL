@@ -65,6 +65,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
 
         }
+        else {
+            colorAdapter.selecetedColor = "#89A9D9"
+            iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
+        }
         return binding.root
     }
 
