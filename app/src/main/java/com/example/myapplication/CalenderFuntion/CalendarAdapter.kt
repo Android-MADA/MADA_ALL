@@ -19,13 +19,14 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<FragCalendar.CalendarDATA?>>)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
