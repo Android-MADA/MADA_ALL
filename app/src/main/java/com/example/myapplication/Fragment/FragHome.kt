@@ -8,15 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.navigation.NavController
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
-import com.example.myapplication.HomeFunction.viewPager2.HomeViewpager2CategoryAdapter
-import com.example.myapplication.HomeFunction.viewPager2.HomeViewPagerAdapter
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeTodoData
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
 import java.time.LocalDate
@@ -26,10 +22,15 @@ class FragHome : Fragment() {
 
     lateinit var binding: HomeFragmentBinding
     private var myAdapter : HomeViewPagerAdapter? = null
+    private val viewModel : HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel.classifyTodo()
+        Log.d("classify", viewModel.cateTodoList.value.toString())
+        Log.d("date확인", viewModel.homeDate.value.toString())
+        Log.d("todoNum", viewModel.todoNum.value.toString())
+        Log.d("completeNum", viewModel.completeTodoNum.value.toString())
     }
 
 
@@ -39,6 +40,12 @@ class FragHome : Fragment() {
     ): View? {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
+        binding.progressBar.max = viewModel.todoNum.value!!
+        binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
+        binding.progressBar.progress = viewModel.completeTodoNum.value!!
+
 
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
@@ -78,10 +85,9 @@ class FragHome : Fragment() {
             }
         }
 
-        val calendarHome = binding.calendarviewHome
         val calendarLayout = binding.layoutCalendarviewHome
 
-        var date = LocalDate.now()
+        var date = viewModel.homeDate.value!!
         var dateCalendar = Calendar.getInstance()
         dateCalendar.set(date.year, (date.monthValue-1), date.dayOfMonth)
         val currentDay = findDayOfWeek(date.year, (date.monthValue -1), date.dayOfMonth, dateCalendar)
@@ -109,7 +115,26 @@ class FragHome : Fragment() {
             var calendarDay = findDayOfWeek(year, month, dayOfMonth, selected)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
+
+            viewModel.changeDate(year, (month +1), dayOfMonth)
+
+            viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+                //서버에서 todo, time 데이터 받아와서 livedata에 넣기
+            // todo complete, todo num 변경하기
+            })
+
         }
+
+
+        viewModel.todoNum.observe(viewLifecycleOwner, Observer {
+            binding.tvHomeProgressMax.text = viewModel.todoNum.value.toString()
+            binding.progressBar.max = viewModel.todoNum.value!!
+        })
+
+        viewModel.completeTodoNum.observe(viewLifecycleOwner, Observer {
+            binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
+            binding.progressBar.progress = viewModel.completeTodoNum.value!!
+        })
 
     }
 

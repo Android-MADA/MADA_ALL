@@ -9,32 +9,29 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFunction.repeatTodo.HomeRepeatCategoryAdapter
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeCateData
-import com.example.myapplication.HomeFunction.viewPager2.SampleHomeTodoData
+import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentRepeatTodoBinding
 import com.example.myapplication.hideBottomNavigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.time.LocalDate
 
 class HomeRepeatTodoFragment : Fragment() {
 
     lateinit var binding : HomeFragmentRepeatTodoBinding
     private var bottomFlag = true
-
-    private val cateList = ArrayList<SampleHomeCateData>()
-    private var todo1List = ArrayList<SampleHomeTodoData>()
-    private var todo2List = ArrayList<SampleHomeTodoData>()
-    private var todo3List = ArrayList<SampleHomeTodoData>()
+    private val viewModel : HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initArrayList()
+        viewModel.classifyRepeatTodo()
+        Log.d("Repeatarray", viewModel.repeatTodoList.value.toString())
     }
 
     override fun onCreateView(
@@ -54,61 +51,52 @@ class HomeRepeatTodoFragment : Fragment() {
             bottomFlag = false
         }
 
-        //rv연결
-        val cateAdapter = HomeRepeatCategoryAdapter(cateList)
+        if(viewModel.categoryList.value?.isNotEmpty() == true){
+            //rv연결
+            val cateAdapter = HomeRepeatCategoryAdapter(viewModel.categoryList.value!!)
+            cateAdapter.repeatDataSet = viewModel.repeatTodoList.value
+            cateAdapter.completeNum = viewModel.completeTodoNum.value!!
 
-        cateAdapter.setItemClickListener(object : HomeRepeatCategoryAdapter.OnItemClickListener{
-            override fun onClick(
-                v: View,
-                position: Int,
-                cate: String,
-                edt : EditText,
-                layout: LinearLayout
-            ) {
-                if(edt.text.toString() != ""){
-                    when(cate){
-                        cateList[0].cateName -> {cateList[0].todoList.add(SampleHomeTodoData("약속",edt.text.toString(), false))}
-                        cateList[1].cateName -> {cateList[1].todoList.add(SampleHomeTodoData("운동",edt.text.toString(), false))}
-                        cateList[2].cateName -> {cateList[2].todoList.add(SampleHomeTodoData("공부",edt.text.toString(),  false))}
-                        else -> {}
+            cateAdapter.setItemClickListener(object : HomeRepeatCategoryAdapter.OnItemClickListener{
+                override fun onClick(
+                    v: View,
+                    position: Int,
+                    cate: String,
+                    edt : EditText,
+                    layout: LinearLayout
+                ) {
+                    if(edt.text.toString() != ""){
+
+                        var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "day")
+
+                        viewModel.addRepeatTodo(position, todo)
+                        viewModel.addTodo(position, todo)
+                        viewModel.updateTodoNum()
+
+                        Log.d("addRepeatTodo", viewModel.repeatTodoList!!.value!![position].toString())
+
+                        viewModel.repeatTodoList.observe(viewLifecycleOwner, Observer {
+                            Log.d("viewmodelObserver-Repeat", "데이터 이동 확인")
+                            cateAdapter.repeatDataSet = viewModel.repeatTodoList.value
+                            Log.d("viewmodelObserver-Repeat", cateAdapter.repeatDataSet.toString())
+                        })
+
+                        binding.rvHomeRepeatTodo.post {
+                            cateAdapter!!.notifyDataSetChanged()
+                        }
                     }
-                    cateAdapter!!.notifyDataSetChanged()
-                    Log.d("edt", cateList[0].todoList.toString())
+                    edt.text.clear()
+                    layout.isGone = true
                 }
-                edt.text.clear()
-                layout.isGone = true
-            }
-        })
+            })
 
-        binding.rvHomeRepeatTodo.adapter = cateAdapter
-        binding.rvHomeRepeatTodo.layoutManager = LinearLayoutManager(this.activity)
+            binding.rvHomeRepeatTodo.adapter = cateAdapter
+            binding.rvHomeRepeatTodo.layoutManager = LinearLayoutManager(this.activity)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
-    }
-
-    fun initArrayList(){
-        // cate1 todo init
-        with(todo1List){
-            this.add(SampleHomeTodoData("약속","친구랑 저녁 약속!", false))
-            this.add(SampleHomeTodoData("약속","스터디 회의", true))
-        }
-        // cate2 todo init
-        with(todo2List){
-            this.add(SampleHomeTodoData("운동","런데이 하기", false))
-        }
-        //cate3 todo init
-        with(todo3List){
-            this.add(SampleHomeTodoData("공부","서점에 전공 책 사러 가기", false))
-            this.add(SampleHomeTodoData("공부","과제 제출하기", false))
-        }
-        // total array init
-        with(cateList){
-            this.add(SampleHomeCateData(com.example.myapplication.R.drawable.ic_home_cate_plan, "약속", todo1List))
-            this.add(SampleHomeCateData(com.example.myapplication.R.drawable.ic_home_cate_health, "운동", todo2List))
-            this.add(SampleHomeCateData(com.example.myapplication.R.drawable.ic_home_cate_study, "공부", todo3List))
-        }
     }
 }

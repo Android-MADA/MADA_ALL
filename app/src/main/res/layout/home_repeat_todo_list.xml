@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="15dp">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_repeat_todo"
         android:layout_width="match_parent"
@@ -44,7 +45,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="24dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,17 +71,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
             android:text="수정"
             android:textSize="14sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="41dp"
+            android:singleLine="true"
+            android:imeOptions="actionGo"
             />
-        <ImageView
-            android:id="@+id/iv_repeat_todo_save_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_check_24"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="24dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

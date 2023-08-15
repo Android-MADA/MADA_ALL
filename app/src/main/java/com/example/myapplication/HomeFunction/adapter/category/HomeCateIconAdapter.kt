@@ -1,17 +1,15 @@
-package com.example.myapplication.HomeFunction.category
+package com.example.myapplication.HomeFunction.adapter.category
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class HomeCateIconAdapter(private val dataList : ArrayList<Drawable>) : RecyclerView.Adapter<HomeCateIconAdapter.viewHolder>(){
+class HomeCateIconAdapter(private val dataList : ArrayList<String>) : RecyclerView.Adapter<HomeCateIconAdapter.viewHolder>(){
 
-    var selectedIcon : Drawable = R.drawable.ic_home_cate_study.toDrawable()
+    var selectedIcon : String = R.drawable.ic_home_cate_study.toString()
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -22,13 +20,13 @@ class HomeCateIconAdapter(private val dataList : ArrayList<Drawable>) : Recycler
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCateIconAdapter.viewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_cate_icon_list, parent, false)
         return viewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeCateIconAdapter.viewHolder, position: Int) {
-        holder.categoryIcon.setImageDrawable(dataList[position])
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        holder.categoryIcon.setImageResource(dataList[position].toInt())
         holder.categoryIcon.setOnClickListener {
             itemClickListener.onClick(it, position)
         }

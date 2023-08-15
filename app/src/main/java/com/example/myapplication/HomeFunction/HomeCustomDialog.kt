@@ -29,7 +29,7 @@ class HomeBackCustomDialog(context: Context, private val listener: HomeCustomDia
                 listener.onNoButtonClicked(this@HomeBackCustomDialog)
             }
             btnHomeDialogBackYes.setOnClickListener {
-                listener.onYesButtonClicked(this@HomeBackCustomDialog)
+                listener.onYesButtonClicked(this@HomeBackCustomDialog, "back")
             }
         }
     }
@@ -53,7 +53,7 @@ class HomeDeleteCustomDialog(context: Context, private val listener: HomeCustomD
                 listener.onNoButtonClicked(this@HomeDeleteCustomDialog)
             }
             btnHomeDialogBackYes.setOnClickListener {
-                listener.onYesButtonClicked(this@HomeDeleteCustomDialog)
+                listener.onYesButtonClicked(this@HomeDeleteCustomDialog, "delete")
             }
         }
     }

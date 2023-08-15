@@ -102,6 +102,7 @@
                     android:layout_marginHorizontal="16dp">
 
                     <TextView
+                        android:id="@+id/tv_home_progress_complete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5"
@@ -111,6 +112,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_home_progress_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="10"
