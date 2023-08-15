@@ -17,4 +17,6 @@ data class CalendarDATA(
     val memo : String,
     val what : String       //종류
 
-)
+) {
+
+}
