@@ -59,6 +59,14 @@ class FragHome : Fragment() {
         binding.progressBar.progress = viewModel.completeTodoNum.value!!
         binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
 
+        //달력은 현재 날짜로 세팅
+        var dateCalendar = Calendar.getInstance()
+        dateCalendar.set(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue-1), viewModel.homeDate.value!!.dayOfMonth)
+        var currentDay = findDayOfWeek(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue -1), viewModel.homeDate.value!!.dayOfMonth, dateCalendar)
+        binding.tvHomeCalendar.text = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
+
+        binding.tvHomeSentence.text = homeMent(currentDay)
+
         //actinobar 설정
         binding.toolbarHome.inflateMenu(R.menu.home_menu)
         binding.toolbarHome.setOnMenuItemClickListener {
@@ -79,11 +87,6 @@ class FragHome : Fragment() {
             }
         }
 
-        //달력은 현재 날짜로 세팅
-        var dateCalendar = Calendar.getInstance()
-        dateCalendar.set(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue-1), viewModel.homeDate.value!!.dayOfMonth)
-        val currentDay = findDayOfWeek(viewModel.homeDate.value!!.year, (viewModel.homeDate.value!!.monthValue -1), viewModel.homeDate.value!!.dayOfMonth, dateCalendar)
-        binding.tvHomeCalendar.text = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
 
         //날짜 텍스트 클릭 시
         binding.tvHomeCalendar.setOnClickListener {
@@ -98,6 +101,7 @@ class FragHome : Fragment() {
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
             viewModel.changeDate(year, (month +1), dayOfMonth)
+            binding.tvHomeSentence.text = homeMent(calendarDay)
         }
 
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
@@ -150,6 +154,19 @@ class FragHome : Fragment() {
                 else -> "토요일"
             }
         return dayOfWeek
+    }
+
+    private fun homeMent(day : String) : String {
+        var homeMent = when(day){
+            "월요일" -> "월요일 입니다."
+            "화요일" -> "화요일 입니다."
+            "수요일" -> "수요일 입니다."
+            "목요일" -> "목요일 입니다."
+            "금요일" -> "금요일 입니다."
+            "토요일" -> "토요일 입니다."
+            else -> "일요일 입니다."
+        }
+        return homeMent
     }
 
 }
