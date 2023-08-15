@@ -184,8 +184,6 @@ class HomeTimetableFragment : Fragment() {
 
         //edt처리
 
-        //pie chart 추가
-
 
     }
 
@@ -201,8 +199,6 @@ class HomeTimetableFragment : Fragment() {
             for(data in pieChartDataArray) {
                 sampleTimeArray.add(SampleTimeData(data.title, Color.parseColor(data.colorCode)))
             }
-            //sampleTimeArray.add(SampleTimeData("잠", resources.getColor(R.color.sub2), "오전 10:30", "오전 11:00", "2023-07-20"))
-            //sampleTimeArray.add(SampleTimeData("오전수업", Color.parseColor("#FDA4B4"), "오전 10:00", "오전 10:30", "2023-07-20"))
         }
     }
 

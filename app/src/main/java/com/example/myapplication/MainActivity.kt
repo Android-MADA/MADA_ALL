@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,16 +18,19 @@ import com.example.myapplication.Fragment.FragCustom
 import com.example.myapplication.Fragment.FragDaily
 import com.example.myapplication.Fragment.FragHome
 import com.example.myapplication.Fragment.FragMy
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
 
+    lateinit var binding: ActivityMainBinding
+    lateinit var viewModel : HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_con) as NavHostFragment

@@ -1,5 +1,6 @@
-package com.example.myapplication.HomeFunction.category
+package com.example.myapplication.HomeFunction.adapter.category
 
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
 
-class HomeCategoryAdapter(private val dataSet : ArrayList<sampleCategoryData>) : RecyclerView.Adapter<HomeCategoryAdapter.viewHolder>() {
+class HomeCategoryAdapter(private val dataSet : ArrayList<Category>) : RecyclerView.Adapter<HomeCategoryAdapter.viewHolder>() {
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -25,18 +27,18 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<sampleCategoryData>) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCategoryAdapter.viewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_edit_category_list, parent, false)
         return viewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeCategoryAdapter.viewHolder, position: Int) {
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
         val mGradientDrawable : GradientDrawable = holder.categoryLayout.background as GradientDrawable
-        mGradientDrawable.setStroke(6, dataSet[position].color)
+        mGradientDrawable.setStroke(6, Color.parseColor(dataSet[position].color))
 
-        holder.categoryTextView.text = dataSet[position].name
-        holder.categoryImageView.setImageResource(dataSet[position].icon)
+        holder.categoryTextView.text = dataSet[position].categoryName
+        holder.categoryImageView.setImageResource(dataSet[position].icon_id.name.toInt())
 
         holder.categoryLayout.setOnClickListener {
             itemClickListener.onClick(it, position, dataSet[position])
@@ -50,7 +52,7 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<sampleCategoryData>) :
 
     // (2) 리스너 인터페이스
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, dataSet: sampleCategoryData)
+        fun onClick(v: View, position: Int, dataSet: Category)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
