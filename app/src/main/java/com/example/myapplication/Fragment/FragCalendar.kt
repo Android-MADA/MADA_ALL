@@ -1,7 +1,6 @@
 package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -13,32 +12,34 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
-import com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.CalenderFuntion.OnItemListener
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.Integer.min
 import java.net.HttpURLConnection
@@ -55,6 +56,7 @@ class FragCalendar : Fragment(){
     var preStartToEnd : sche = sche(0, 0, 0, 0)
     var nextStartToEnd : sche = sche(0, 0, 0, 0)
 
+    private val viewModel: CustomViewModel by viewModels()      //쥐새끼
 
     var calendarDayArray = Array(43) {""}
     @RequiresApi(Build.VERSION_CODES.O)
@@ -88,17 +90,72 @@ class FragCalendar : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val url = "https://virtserver.swaggerhub.com/gkswjdgml001/homeAPI/1.0.0/api/home/todo/0/2023-07-06"
+        val savedData = viewModel.getSavedButtonInfo()
 
-        // 코루틴을 활용하여 네트워킹 수행
-        GlobalScope.launch(Dispatchers.IO) {
-            val json = fetchDataFromUrl(url)
-            withContext(Dispatchers.Main) {
-                // UI 업데이트나 JSON 데이터 처리를 수행할 수 있습니다.
-                // 이 예시에서는 JSON 데이터를 출력해보겠습니다.
-                Log.d("d",json.toString())
+        val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjA5MjQ0OCwiZXhwIjoxNjkyMTI4NDQ4fQ.H9X0jEZVqG9FMzwhDh8I05ov6KRVlGfI8C5bXUwoEWB1lrcQQZzVC9shykYX2_4r-IL51KBhA45Qru0zLf5YhA"
+        val month = "8"
+        val tmp = CalendarData2("이건 되었나???","2023-08-09","2023-08-23","red","N","N","제발되라!!!!!!!!")
+        val call1 = service.addCal(token,tmp.toJson())
+        Log.d("000",tmp.toJson())
+        call1.enqueue(object : Callback<ResponseSample> {
+            override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("status",responseBody.status.toString())
+                        Log.d("success",responseBody.success.toString())
+                        Log.d("message",responseBody.message.toString())
+                    }else
+                        Log.d("777","777")
+
+                } else {
+                    Log.d("666","itemType: ${response.code()} ")
+                    Log.d("666","itemType: ${response.message()} ")
+                }
             }
-        }
+
+            override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+
+        Log.d("555","555")
+        val call2 = service.monthCalRequest(token,month)
+        Log.d("000","000")
+
+        call2.enqueue(object : Callback<CalendarDatas> {
+            override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                // 각각의 작업을 처리하는 로직을 여기에 작성하세요.
+                                Log.d("111","datas: ${data.calendarName}")
+                                // ...
+                            }
+                        } else {
+                            Log.d("2222","Request was not successful. Message: hi")
+                        }
+                    } else {
+                        Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    Log.d("333","itemType: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+
+        Log.d("555","555")
+
 
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
             CalendarDATA("2023-7-21","2023-7-21","2023-8-31","","",
