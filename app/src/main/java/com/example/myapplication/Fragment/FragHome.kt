@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.R
@@ -45,6 +46,9 @@ class FragHome : Fragment() {
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
+
+        viewModel.updateTodoNum()
+        viewModel.updateCompleteTodo()
 
         return view
     }
@@ -109,11 +113,15 @@ class FragHome : Fragment() {
             //서버에서 Tood 새로 받아오기(date)
             //서버에서 ment 새로 받아오기(date)
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
+            viewModel.updateCateTodoList()
         })
+
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             //todoNum 업데이트
             //completeNum 업데이트
+            viewModel.updateTodoNum()
+            viewModel.updateCompleteTodo()
         })
 
         //date를 통해서 todo가 변경되었을 때 실행
@@ -126,19 +134,6 @@ class FragHome : Fragment() {
             binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
             binding.progressBar.progress = viewModel.completeTodoNum.value!!
         })
-
-
-        //calendarview 시작 요일 변경 -> flag만 변경시키고 뿌리는 부분에서 처리
-//        viewModel.startDay.observe(viewLifecycleOwner, Observer {
-//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//        })
-//
-//        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-//            viewModel.updateTodoNum()
-//            viewModel.updateCompleteTodo()
-//            Log.d("todoNum", viewModel.todoNum.value.toString())
-//            Log.d("completeNum", viewModel.completeTodoNum.value.toString())
-//        })
 
     }
 

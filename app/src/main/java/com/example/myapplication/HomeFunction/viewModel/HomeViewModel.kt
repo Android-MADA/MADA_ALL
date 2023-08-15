@@ -139,43 +139,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    //completeTodoNum 반영 함수
-    fun updateCompleteTodo() {
-        if(cateTodoList.value?.isEmpty() != true){
-            var completeNum = 0
-            for(i in cateTodoList.value!!){
-                if(i.isNotEmpty()){
-                    for(j in 0..i.size!!.minus(1)){
-                        if(i[j].complete){
-                            completeNum++
-                        }
-                    }
-                }
-            }
-            _completeTodoNum.value = completeNum
-        }
-        else {
-            _completeTodoNum.value = 0
-        }
-    }
 
-    fun updateTodoNum(){
-
-        if(cateTodoList.value?.isEmpty() != true){
-            var todoNum = 0
-            for(i in cateTodoList.value!!){
-                if(i.isNotEmpty()){
-                    for(j in 0..i.size!!.minus(1)){
-                            todoNum++
-                    }
-                }
-            }
-            _todoNum.value = todoNum
-        }
-        else{
-            _todoNum.value = 0
-        }
-    }
 
     fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
         with(_categoryList.value){
@@ -297,6 +261,70 @@ class HomeViewModel : ViewModel() {
             _startDay.value = 1
         }
     }
+
+    var _test = "22"
+
+    private val __test = MutableLiveData<String>(_test)
+    val test : LiveData<String>
+        get() = __test
+
+    fun updateTest(){
+        __test.value = _test
+    }
+
+    var todoCateList : ArrayList<ArrayList<Todo>>? = _cateTodoList.value
+
+    fun updateCateTodoList(){
+        _cateTodoList.value = todoCateList
+        _todoNum.value = todoNumber
+        _completeTodoNum.value = completeNumber
+    }
+
+
+
+    var todoNumber : Int? = _todoNum.value
+    var completeNumber : Int? = _completeTodoNum.value
+
+    //completeTodoNum 반영 함수
+    fun updateCompleteTodo() {
+        if(cateTodoList.value?.isEmpty() != true){
+            completeNumber = 0
+            for(i in cateTodoList.value!!){
+                if(i.isNotEmpty()){
+                    for(j in 0..i.size!!.minus(1)){
+                        if(i[j].complete){
+                            completeNumber = completeNumber!! + 1
+                        }
+                    }
+                }
+            }
+            _completeTodoNum.value = completeNumber
+        }
+        else {
+            _completeTodoNum.value = 0
+        }
+    }
+
+    fun updateTodoNum(){
+
+        if(cateTodoList.value?.isEmpty() != true){
+            todoNumber = 0
+            for(i in cateTodoList.value!!){
+                if(i.isNotEmpty()){
+                    for(j in 0..i.size!!.minus(1)){
+                        todoNumber = todoNumber!! + 1
+                    }
+                }
+            }
+            _todoNum.value = todoNumber
+        }
+        else{
+            _todoNum.value = 0
+        }
+    }
+
+
+
 
 
 

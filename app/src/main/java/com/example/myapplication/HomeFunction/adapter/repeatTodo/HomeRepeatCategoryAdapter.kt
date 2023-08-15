@@ -84,30 +84,34 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
         //클릭 리스너
         holder.addBtn.setOnClickListener{
             //repeatAdd로 이동(cateId, 넘기기)
+            if(holder.todoAdd.isGone){
+                holder.todoAdd.isVisible = true
+            }
+            else { holder.todoAdd.isGone = true }
 
-            val bundle = Bundle()
-
-            bundle.putStringArrayList("keyAdd", arrayListOf(
-                dataSet[position].id.toString(),
-                dataSet[position].categoryName,
-                dataSet[position].color,
-                dataSet[position].icon_id
-            ))
-
-            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+//            val bundle = Bundle()
+//
+//            bundle.putStringArrayList("keyAdd", arrayListOf(
+//                dataSet[position].id.toString(),
+//                dataSet[position].categoryName,
+//                dataSet[position].color,
+//                dataSet[position].icon_id
+//            ))
+//
+//            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
         }
         //sample btn click listener
-//        holder.edtTodo.setOnKeyListener { view, keyCode, event ->
-//            // Enter Key Action
-//            if (event.action == KeyEvent.ACTION_DOWN
-//                && keyCode == KeyEvent.KEYCODE_ENTER
-//            ) {
-//                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
-//                true
-//            }
-//
-//            false
-//        }
+        holder.edtTodo.setOnKeyListener { view, keyCode, event ->
+            // Enter Key Action
+            if (event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                true
+            }
+
+            false
+        }
     }
     interface OnItemClickListener {
         fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
@@ -119,8 +123,4 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
 
-    fun updateDataset(dataSet : ArrayList<ArrayList<Todo>>){
-        //cateadapter dataSet 업데이트
-        //notify
-    }
 }
