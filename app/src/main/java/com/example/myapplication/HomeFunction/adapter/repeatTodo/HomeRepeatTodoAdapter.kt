@@ -1,5 +1,6 @@
 package com.example.myapplication.HomeFunction.adapter.repeatTodo
 
+import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -13,11 +14,16 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
 import com.example.myapplication.R
 
-class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, var catetodoSet : ArrayList<Todo> ) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
+class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
+
+    lateinit var dataSet : ArrayList<Todo>
+    var topFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -55,48 +61,53 @@ class HomeRepeatTodoAdapter (private var dataSet : ArrayList<Todo>, var catetodo
                 popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
                     if(item.itemId == R.id.home_todo_edit) {
-                        Log.d("todoEdit", "수정하기")
-                        holder.editLayout.isVisible = true
-                        holder.todoLayout.isGone = true
-                        holder.edtTodo.setText(dataSet[position].todoName)
+                        Log.d("repeatTodoedit", "edit 요청")
+                        //todoId 같이 보내기
+                        val bundle = Bundle()
+
+                        bundle.putStringArrayList("keyEdit", arrayListOf(
+                            //dataSet[position].id.toString(),
+                            dataSet[position].todoName,
+                            dataSet[position].repeat,
+//                            dataSet[position].repeatWeek,
+//                            dataSet[position].startRepeatDate,
+//                            dataSet[position].endRepeatDate
+                        ))
+                        Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
                     }
                     else{
-                        itemClickListener.onClick(it, position)
-                        catetodoSet.remove(dataSet[position])
                         dataSet.removeAt(position)
-
-                        //근데 같은 이름이면 어떡하져
-                        Log.d("todoDelete", "삭제하기")
                         notifyDataSetChanged()
+                        //서버 전송
                     }
                     true
                 }
                 popup.show()
             }
 
-            holder.edtTodo.setOnKeyListener { view, keyCode, event ->
-                // Enter Key Action
-                if (keyCode == KeyEvent.KEYCODE_ENTER
-                ) {
-                    //데이터 수정 반영
-                    dataSet[position].todoName = holder.edtTodo.text.toString()
-                    //catetodo에도 반영 필요 -> 그냥 서버에서 받아와..?
-                    //edt 업애고 이전 투두 복구
-                    holder.todoLayout.isVisible = true
-                    holder.edtTodo.text.clear()
-                    holder.editLayout.isGone = true
-                    itemClickListener.onClick(view, position)
-
-                    true
-                }
-
-                false
-            }
+//            holder.edtTodo.setOnKeyListener { view, keyCode, event ->
+//                // Enter Key Action
+//                if (keyCode == KeyEvent.KEYCODE_ENTER
+//                ) {
+//                    //데이터 수정 반영
+//                    dataSet[position].todoName = holder.edtTodo.text.toString()
+//                    //catetodo에도 반영 필요 -> 그냥 서버에서 받아와..?
+//                    //edt 업애고 이전 투두 복구
+//                    holder.todoLayout.isVisible = true
+//                    holder.edtTodo.text.clear()
+//                    holder.editLayout.isGone = true
+//                    itemClickListener.onClick(view, position, dataSet)
+//
+//                    true
+//                }
+//
+//                false
+//            }
         }
     }
 
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int)
+        fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
