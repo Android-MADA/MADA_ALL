@@ -1,9 +1,14 @@
 package com.example.myapplication.HomeFunction.api
 
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.HomeFunction.Model.ScheduleList
+import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface HomeApi {
 
@@ -29,7 +34,8 @@ interface HomeApi {
 
     //시간표 조회
     @GET("/api/home/time/date/{date}")
-    fun getTimetable()
+    fun getTimetable(@Header("Authorization") token : String?, @Path("date") date : String
+    ): Call<ScheduleList>
 
     //시간표 추가
     @POST("/api/home/time")

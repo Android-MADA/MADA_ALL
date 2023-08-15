@@ -8,7 +8,7 @@ data class CalendarDATA(
     val endTime : String,
     val color: String,
     val repeat: String,
-    val dDay: Char,
+    val dDay: String,
     val title: String,
     //val createAt: String,
     //val updateAt: String
