@@ -5,8 +5,10 @@ import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -27,13 +29,19 @@ interface RetrofitServiceCalendar {
 
 
 
+    @PATCH("/api/calender/eidt/{Id}")
+    fun editCal(@Header("Authorization") token: String?, @Path("Id") id : String
+    ) : Call<ResponseSample>
+    @DELETE("/api/calender/eidt/{Id}")
+    fun deleteCal(@Header("Authorization") token: String?, @Path("Id") id : String
+    ) : Call<ResponseSample>
+    @GET("/api/calender/date/{Date}")
+    fun getDday(@Header("Authorization") token : String?, @Path("Date") date : String
+    ) : Call<CalendarDatas>
+    @GET("/api/calender/date")
+    fun getAllDday(@Header("Authorization") token : String?
+    ) : Call<CalendarDatas>
 
-
-
-
-
-
-    //앚직 처리중
     @GET("/api/custom/")
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
