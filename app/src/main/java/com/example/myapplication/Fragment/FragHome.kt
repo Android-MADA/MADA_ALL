@@ -107,7 +107,7 @@ class FragHome : Fragment() {
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
         })
 
-        viewModel.todoList.observe(viewLifecycleOwner, Observer {
+        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             //todoNum 업데이트
             //completeNum 업데이트
         })

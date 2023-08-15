@@ -76,7 +76,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
-        holder.cateIcon.setImageResource(dataSet[position].icon_id.name.toInt())
+        holder.cateIcon.setImageResource(dataSet[position].icon_id.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너

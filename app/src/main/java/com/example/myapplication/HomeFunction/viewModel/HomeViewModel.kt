@@ -180,7 +180,7 @@ class HomeViewModel : ViewModel() {
     fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
         with(_categoryList.value){
             this?.add(
-                Category(id, cateName, color, Icon(iconId, iconName))
+                Category(id, cateName, color, iconName)
             )
         }
         //서버 POST
@@ -190,7 +190,7 @@ class HomeViewModel : ViewModel() {
     fun editCate(position : Int, name : String, color : String, iconName : String){
         _categoryList.value!![position].categoryName = name
         _categoryList.value!![position].color = color
-        _categoryList.value!![position].icon_id.name = iconName
+        _categoryList.value!![position].icon_id = iconName
 
         //서버 PATCH
     }
