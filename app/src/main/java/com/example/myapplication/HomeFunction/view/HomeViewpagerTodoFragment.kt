@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isGone
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.R
@@ -25,8 +27,6 @@ class HomeViewpagerTodoFragment : Fragment() {
 
     lateinit var binding: HomeFragmentViewpagerTodoBinding
     private val viewModel: HomeViewModel by activityViewModels()
-    private var cateAdapter: HomeViewpager2CategoryAdapter? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +49,14 @@ class HomeViewpagerTodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.categoryList.value?.isNotEmpty() == true) {
+            //rv연결
+            val cateAdapter = HomeViewpager2CategoryAdapter()
+            cateAdapter.dataSet = viewModel.categoryList.value!!
+            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
+            cateAdapter.topFlag = viewModel.todoTopFlag.value!!
+            cateAdapter.viewModel = viewModel
 
-            cateAdapter = HomeViewpager2CategoryAdapter()
-            cateAdapter!!.dataSet = viewModel.categoryList.value!!
-            cateAdapter!!.todoDataSet = viewModel._cateTodoList.value
-            cateAdapter!!.completeFlag = viewModel.completeBottomFlag.value!!
-            cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
-
-            cateAdapter!!.setItemClickListener(object :
+            cateAdapter.setItemClickListener(object :
                 HomeViewpager2CategoryAdapter.OnItemClickListener {
                 override fun onClick(
                     v: View,
@@ -66,21 +66,27 @@ class HomeViewpagerTodoFragment : Fragment() {
                     layout: LinearLayout
                 ) {
                     if (edt.text.toString() != "") {
-                        var todo = Todo(viewModel.homeDate.value!!, viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
+
+                        var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "day")
                         viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
-                    //서버에 데이터 보내서 catetodo 새로 받아오기
+
+                        //서버 전송(POST)
+
                         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                            Log.d("viewpagerepeatTodo", "catetodo변경 확인")
-                            Log.d("viewpagerepeatTodo2", viewModel.cateTodoList!!.value!!.toString())
-                            cateAdapter!!.dataSet = viewModel.categoryList.value!!
-//                cateAdapter!!.todoDataSet = viewModel._cateTodoList.value
-//                binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
+
+                            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
+                            binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
+                            Log.d("viewpagerTodo", "catetodo변경 확인")
+                            viewModel.updateCompleteTodo()
+                            viewModel.updateTodoNum()
                         })
+
                     }
                     edt.text.clear()
                     layout.isGone = true
                 }
             })
+
             binding.rvHomeCategory.adapter = cateAdapter
             binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
         }
@@ -94,7 +100,6 @@ class HomeViewpagerTodoFragment : Fragment() {
 //                binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
 //            }
             Log.d("viewpagerepeatTodo", "catetodo변경 확인")
-            Log.d("viewpagerepeatTodo2", viewModel.cateTodoList!!.value!!.toString())
         })
 
     }

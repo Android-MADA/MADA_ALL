@@ -14,15 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
 class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
 
     lateinit var dataSet : ArrayList<Category>
-    var todoDataSet : ArrayList<ArrayList<Todo>>? = null
-    var todoAdapter : HomeViewpager2TodoAdapter? = null
-    var completeFlag = false
+    var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
+    var repeatAdapter : HomeViewpager2TodoAdapter? = null
     var topFlag = false
+    var viewModel : HomeViewModel? = null
+    //var completeFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -54,23 +57,24 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
-        if(todoDataSet != null){
+        if(cateTodoSet != null){
+            if(cateTodoSet!![position].isNotEmpty()){
 
-            if(todoDataSet!![position].isNotEmpty()){
+                repeatAdapter = HomeViewpager2TodoAdapter()
+                repeatAdapter!!.dataSet = cateTodoSet!![position]
+                repeatAdapter!!.topFlag = topFlag
 
-                todoAdapter = HomeViewpager2TodoAdapter()
-                todoAdapter!!.dataSet = todoDataSet!![position]
-                todoAdapter!!.completeFlag = completeFlag
-
-                todoAdapter!!.setItemClickListener(object :
+                repeatAdapter!!.setItemClickListener(object :
                     HomeViewpager2TodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int) {
-                        holder.todoRv.post { notifyDataSetChanged() }
+                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
+                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
+                        viewModel!!.updateCompleteTodo()
+                        viewModel!!.updateTodoNum()
                     }
-                })
 
+                })
                 holder.todoRv.apply {
-                    adapter = todoAdapter
+                    adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
                     setHasFixedSize(true)
                 }
@@ -81,7 +85,9 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
-            if(holder.todoAdd.isGone){ holder.todoAdd.isVisible = true }
+            if(holder.todoAdd.isGone){
+                holder.todoAdd.isVisible = true
+            }
             else { holder.todoAdd.isGone = true }
         }
 
@@ -93,6 +99,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
                 true
             }
+
             false
         }
 }
