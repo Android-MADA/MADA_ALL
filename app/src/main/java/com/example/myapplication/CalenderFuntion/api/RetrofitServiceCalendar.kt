@@ -6,6 +6,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -40,6 +41,7 @@ interface RetrofitServiceCalendar {
     @GET("/api/calender/date/{Date}")
     fun getDday(@Header("Authorization") token : String?, @Path("Date") date : String
     ) : Call<CalendarDatas>
+
     @GET("/api/calender/date")
     fun getAllDday(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
@@ -48,6 +50,6 @@ interface RetrofitServiceCalendar {
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
 
-    @GET("http://localhost:8080/oauth2/authorization/naver")
-    fun login() : Call<CharacterResponse>
+    @GET("/oauth2/authorization/naver")
+    fun login() : Call<Void>
 }

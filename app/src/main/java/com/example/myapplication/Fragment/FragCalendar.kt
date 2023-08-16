@@ -68,7 +68,7 @@ class FragCalendar : Fragment(){
 
 
 
-    var calendarDayArray = Array(43) {""}
+
     @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +80,7 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        loGin()
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         binding = FragCalendarBinding.inflate(inflater, container, false)
@@ -320,7 +321,8 @@ class FragCalendar : Fragment(){
         formatter = DateTimeFormatter.ofPattern("yyyy년")
         binding.textYear.text = CalendarUtil.selectedDate.format(formatter)
 
-        val dayList = dayInMonthArray(startMon)
+        var calendarDayArray = Array(43) {""}
+        val dayList = dayInMonthArray(startMon,calendarDayArray)
 
         //임시 데이터 정보 받아오기
                                                                        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 년도랑 월 받아와야함
@@ -364,7 +366,7 @@ class FragCalendar : Fragment(){
         binding.calendar.adapter = adapter
     }
 
-    private fun dayInMonthArray(startMon : Boolean) : ArrayList<Date> {
+    private fun dayInMonthArray(startMon : Boolean, calendarDayArray : Array<String>) : ArrayList<Date> {
         var dayList = ArrayList<Date>()
         var monthCalendar = calendar.clone() as Calendar
 
@@ -415,7 +417,7 @@ class FragCalendar : Fragment(){
     private fun getMonthDataArray(month : String,year : String, arrays : ArrayList<CalendarDATA>) {
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
         val call2 = service.monthCalRequest(token,year,month)
-        var startMon = true
+        var startMon = false
         call2.enqueue(object : Callback<CalendarDatas> {
             override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
                 if (response.isSuccessful) {
@@ -436,25 +438,25 @@ class FragCalendar : Fragment(){
                                 } else {
                                     arrays.add(tmp)
                                 }
-
-
-                                Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo}")
+                                //Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo}")
 
                                 // ...
                             }
                         } else {
-                           Log.d("2222","Request was not successful. Message: hi")
+                           //Log.d("2222","Request was not successful. Message: hi")
                         }
-                        setMonthView(arrays,startMon)
+
                     } else {
                         //Log.d("222","Request was not successful. Message: hi")
                     }
                 } else {
                    // Log.d("333","itemType: ${response.code()}")
                 }
+                setMonthView(arrays,startMon)
             }
             override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
                 //Log.d("444","itemType: ${t.message}")
+                setMonthView(arrays,startMon)
             }
         })
     }
@@ -488,6 +490,11 @@ class FragCalendar : Fragment(){
         })
     }
     private fun getCustomChar() {
+        val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE3MTQ1NywiZXhwIjoxNjkyMjA3NDU3fQ.qt1hfpsN8E1qoN71m7VobnmhkmLNv6y_i23ULkNbYDBDYYJTqsDpY3MLbhvBA6yzb1N5gJ_sjlDh7LpvS0DyTA"
+
         val call2 = service.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
@@ -497,23 +504,42 @@ class FragCalendar : Fragment(){
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for (data in datas) {
-                                //arrays.add(data)                                                //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@이거 수정해야함
-                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //arrays.add(data)
+                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
                                 // ...
                             }
                         } else {
-                            Log.d("2221","${response.code()}")
+                            //Log.d("2221","${response.code()}")
                         }
                     } else {
-                        Log.d("222","Request was not successful. Message: hi")
+                        //Log.d("222","Request was not successful. Message: hi")
                     }
                 } else {
-                    Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
+                //Log.d("444","itemType: ${t.message}")
             }
         })
+    }
+    private fun loGin() {
+        val call = service.login()
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call2: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    //Log.d("header","itemType: ${response.headers().getDate("Authorization")}")
+                    //Log.d("body","itemType: ${response.body()}")
+                } else {
+
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+
+        })
+
     }
 }

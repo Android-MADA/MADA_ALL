@@ -132,7 +132,10 @@ class custom_color : Fragment() {
             R.id.btn_color_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
             R.id.btn_color_blue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyb)
             R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
-            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdybp)
+            R.id.btn_color_bluepurple -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.c_ramdybp
+            )
             R.id.btn_color_green -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyg)
             R.id.btn_color_orange -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyo)
             R.id.btn_color_pink -> ButtonInfo(clickedButton.id, R.drawable.c_ramdypn)

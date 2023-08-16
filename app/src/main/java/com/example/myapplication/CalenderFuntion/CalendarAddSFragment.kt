@@ -69,8 +69,9 @@ class CalendarAddSFragment : Fragment() {
         val cycle = arguments?.getString("cycle")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
+
         token = arguments?.getString("Token")?: ""
-        //데이터 받아서 로드하기
+
         binding.title.text = title
         binding.calendarColor.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
@@ -184,7 +185,7 @@ class CalendarAddSFragment : Fragment() {
         return outputFormat.format(date)
     }
     private fun deleteCalendar(id : Int) {
-        val call1 = service.deleteCal(token,id)
+        val call1 = service.deleteCal(token,8)
         call1.enqueue(object : Callback<AddCalendarData> {
             override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
                 Log.d("123","${response.code()}")
