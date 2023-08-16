@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
@@ -61,11 +62,12 @@ class CalendarAddFragment : Fragment() {
     var color = "#89A9D9"
     var edit = false
 
+    var curColor ="#89A9D9"
+    var curDday ="N"
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjA5MjQ0OCwiZXhwIjoxNjkyMTI4NDQ4fQ.H9X0jEZVqG9FMzwhDh8I05ov6KRVlGfI8C5bXUwoEWB1lrcQQZzVC9shykYX2_4r-IL51KBhA45Qru0zLf5YhA"
-
+    lateinit var token : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,11 +76,6 @@ class CalendarAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-
-
-
 
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
@@ -92,12 +89,20 @@ class CalendarAddFragment : Fragment() {
         memo = bundle?.getString("memo") ?: ""
         color = bundle?.getString("color") ?:"#89A9D9"
         edit = bundle?.getBoolean("edit")?: false
+        token = bundle?.getString("Token")?: ""
+        val today = bundle?.getString("Today")?: null
+        Log.d("aaa",today.toString())
+
 
         if(edit)
             binding.submitBtn.text = "수정"
         binding.textTitle.setText(title)
         binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
         binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule)
+        if(today!=null) {
+            binding.preScheldule.text = today
+            binding.nextScheldule.text = today
+        }
         binding.preScheldule2.text = preClock
         binding.nextScheldule2.text = nextClock
         binding.cyclebtn.text = cycle
@@ -116,38 +121,47 @@ class CalendarAddFragment : Fragment() {
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            curColor ="#E1E9F5"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
+            curColor ="#89A9D9"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
+            curColor ="#2AA1B7"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor4.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
+            curColor ="#F8D141"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor5.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
+            curColor ="#FFE7EB"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor6.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
+            curColor ="#F0768C"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor7.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            curColor ="#E1E9F5"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor8.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
+            curColor ="#FFE7EB"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor9.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
+            curColor ="#F5EED1"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor.setOnClickListener {
@@ -160,12 +174,14 @@ class CalendarAddFragment : Fragment() {
                 binding.clockAndCycle.visibility = View.GONE
                 binding.layoutColorSelector2.visibility = View.VISIBLE
                 binding.layoutColorSelector1.visibility = View.GONE
+                curDday = "Y"
             } else {
                 binding.textDday.visibility= View.GONE
                 binding.clockAndCycle.visibility = View.VISIBLE
 
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
+                curDday = "N"
             }
 
         }
@@ -479,8 +495,20 @@ class CalendarAddFragment : Fragment() {
 
                 })
             } else {
-                //addCalendar(CalendarData2())                                                              @@@@@@@@@@@@@@@@@@@@@@@@@@ 정보 추가해야함
-                Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                if(binding.submitBtn.text =="등록") {
+                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormatReverse(binding.preScheldule.text.toString()),convertToDateKoreanFormatReverse(binding.nextScheldule.text.toString()),
+                        binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+
+                    Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                } else if(binding.submitBtn.text =="수정"){
+                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormatReverse(binding.preScheldule.text.toString()),convertToDateKoreanFormatReverse(binding.nextScheldule.text.toString()),
+                        binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+
+                    Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                } else {
+
+                }
+
             }
 
         }
@@ -539,6 +567,13 @@ class CalendarAddFragment : Fragment() {
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+    fun convertToDateKoreanFormatReverse(dateString: String): String {
+        val inputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
     fun daysRemainingToDate(targetDate: String): Int {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
         val today = LocalDate.now()
@@ -555,7 +590,8 @@ class CalendarAddFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,data.toJson())
+        val tmp = AddCalendarData(data)
+        val call1 = service.addCal(token,tmp)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
@@ -565,7 +601,7 @@ class CalendarAddFragment : Fragment() {
                         Log.d("success",responseBody.success.toString())
                         Log.d("message",responseBody.message.toString())
                     }else
-                        Log.d("777","777")
+                        Log.d("777","${response.code()}")
 
                 } else {
                     Log.d("666","itemType: ${response.code()} ")
@@ -574,6 +610,28 @@ class CalendarAddFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+    private fun eidtCalendar(data : CalendarData2,id : Int) {
+        val call1 = service.editCal(token,id)
+        call1.enqueue(object : Callback<AddCalendarData> {
+            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("status",responseBody.datas.name.toString())
+                    }else
+                        Log.d("777","${response.code()}")
+
+                } else {
+                    Log.d("666","itemType: ${response.code()} ")
+                    Log.d("666","itemType: ${response.message()} ")
+                }
+            }
+
+            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
             }
         })

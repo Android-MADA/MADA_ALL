@@ -1,5 +1,7 @@
 package com.example.myapplication.CalenderFuntion.api
 
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
@@ -11,6 +13,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitServiceCalendar {
 
@@ -19,22 +22,21 @@ interface RetrofitServiceCalendar {
     fun allCalRequest(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
 
-    @GET("/api/calender/{Month}")
-    fun monthCalRequest(@Header("Authorization") token : String?, @Path("Month") month : String
+    @GET("/api/calender/")
+    fun monthCalRequest(@Header("Authorization") token : String?, @Query("Year") year: String, @Query("Month") month: String
     ) : Call<CalendarDatas>
 
     @POST("/api/calender/add")
-    fun addCal(@Header("Authorization") token: String?, @Body data: String
+    fun addCal(@Header("Authorization") token: String?, @Body data: AddCalendarData
     ) : Call<ResponseSample>
 
+    @PATCH("/api/calender/edit/{id}")
+    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int
+    ) : Call<AddCalendarData>
+    @DELETE("/api/calender/edit/{id}")
+    fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int
+    ) : Call<AddCalendarData>
 
-
-    @PATCH("/api/calender/eidt/{Id}")
-    fun editCal(@Header("Authorization") token: String?, @Path("Id") id : String
-    ) : Call<ResponseSample>
-    @DELETE("/api/calender/eidt/{Id}")
-    fun deleteCal(@Header("Authorization") token: String?, @Path("Id") id : String
-    ) : Call<ResponseSample>
     @GET("/api/calender/date/{Date}")
     fun getDday(@Header("Authorization") token : String?, @Path("Date") date : String
     ) : Call<CalendarDatas>
