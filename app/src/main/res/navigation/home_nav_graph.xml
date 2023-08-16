@@ -123,5 +123,16 @@
         <action
             android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
             app:destination="@id/fragHome" />
+        <action
+            android:id="@+id/action_homeRepeatTodoFragment_to_repeatTodoAddFragment"
+            app:destination="@id/repeatTodoAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repeatTodoAddFragment"
+        android:name="com.example.myapplication.HomeFunction.view.RepeatTodoAddFragment"
+        android:label="RepeatTodoAddFragment" >
+        <action
+            android:id="@+id/action_repeatTodoAddFragment_to_homeRepeatTodoFragment"
+            app:destination="@id/homeRepeatTodoFragment" />
     </fragment>
 </navigation>

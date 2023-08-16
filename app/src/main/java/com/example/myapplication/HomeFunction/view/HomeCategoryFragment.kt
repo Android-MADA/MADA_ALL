@@ -27,7 +27,6 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("viewmodel Category", viewModel.categoryList.value.toString())
 
     }
 
@@ -60,9 +59,9 @@ class HomeCategoryFragment : Fragment() {
             override fun onClick(v: View, position: Int, dataSet: Category) {
                 //페이지 이동 + 데이터 전달
                 bundle.putStringArrayList("key", arrayListOf(
+                    dataSet.id.toString(),
                     dataSet.categoryName,
-                    dataSet.icon_id.id,
-                    dataSet.icon_id.name,
+                    dataSet.icon_id,
                     dataSet.color,
                     position.toString()
                 ))
@@ -74,15 +73,9 @@ class HomeCategoryFragment : Fragment() {
         binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
 
-        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
-            categoryAdapter?.notifyDataSetChanged()
-        })
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
     }
-
-
 }

@@ -34,6 +34,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     val cateColorArray = ArrayList<String>()
     val iconAdapter = HomeCateIconAdapter(cateIconArray)
     val colorAdapter = HomeCateColorAdapter(cateColorArray)
+
     private var bottomFlag = true
     private lateinit var backDialog : HomeBackCustomDialog
     private lateinit var deleteDialog : HomeDeleteCustomDialog
@@ -52,24 +53,30 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         if(arguments != null){
             //데이터 뿌리기
             argsArray = requireArguments().getStringArrayList("key")!!
             binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
-            binding.edtHomeCategoryName.setText(argsArray!![0])
+            binding.edtHomeCategoryName.setText(argsArray!![1])
             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             // 수정버튼 활성화
             binding.btnHomeCateAddSave.text = "수정"
             //삭제버튼 활성화
             binding.btnHomeTimeEditDelete.isVisible = true
 
-
         }
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        else {
+            colorAdapter.selecetedColor = "#89A9D9"
+            iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
+        }
 
         val iconListManager = GridLayoutManager(this.activity, 6)
         val colorListManager = GridLayoutManager(this.activity, 6)
@@ -88,27 +95,26 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             override fun onClick(v: View, position: Int) {
                 binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(cateColorArray[position]))
                 binding.rvHomeCateColor.isGone = true
-                colorAdapter.selecetedColor = cateColorArray[position].toString()
-                Log.d("addCateColor", cateColorArray[position].toString())
+                colorAdapter.selecetedColor = cateColorArray[position]
             }
         })
 
         binding.ivHomeCateAddBack.setOnClickListener {
             //다이얼로그
             customBackDialog()
-
-            Log.d("navBack", "정상 작동")
         }
 
         binding.btnHomeCateAddSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            //서버 patch
+
             //데이터 변경
             if(binding.btnHomeCateAddSave.text == "수정"){
                 viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+                //서버 전송(PATCH)
             }
             else {
                 viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
+                //서버 전송(POST)
             }
         }
 
@@ -207,7 +213,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         if(flag == "delete"){
             viewModel.removeCate(argsArray!![4].toInt())
-
+            //카테고리, 카테고리에 해당하는 todo 삭제 서버 전송(DELETE, id)
         }
         dialog.dismiss()
     }
