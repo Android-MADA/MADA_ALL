@@ -24,21 +24,21 @@ import java.time.LocalDate
 
 class HomeRepeatTodoFragment : Fragment() {
 
-    lateinit var binding : HomeFragmentRepeatTodoBinding
+    lateinit var binding: HomeFragmentRepeatTodoBinding
     private var bottomFlag = true
-    private val viewModel : HomeViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.classifyRepeatTodo()
-        Log.d("Repeatarray", viewModel.repeatTodoList.value.toString())
+        //repeatTodo가져오기
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_repeat_todo, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.home_fragment_repeat_todo, container, false)
         hideBottomNavigation(bottomFlag, activity)
         return binding.root
     }
@@ -47,43 +47,41 @@ class HomeRepeatTodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ivHomeRepeatBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
             bottomFlag = false
         }
 
-        if(viewModel.categoryList.value?.isNotEmpty() == true){
+        if (viewModel.categoryList.value?.isNotEmpty() == true) {
             //rv연결
-            val cateAdapter = HomeRepeatCategoryAdapter(viewModel.categoryList.value!!)
-            cateAdapter.repeatDataSet = viewModel.repeatTodoList.value
-            cateAdapter.completeNum = viewModel.completeTodoNum.value!!
+            val cateAdapter = HomeRepeatCategoryAdapter(view)
+            cateAdapter.dataSet = viewModel.categoryList.value!!
+            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
+            cateAdapter.topFlag = viewModel.todoTopFlag.value!!
 
-            cateAdapter.setItemClickListener(object : HomeRepeatCategoryAdapter.OnItemClickListener{
+            cateAdapter.setItemClickListener(object :
+                HomeRepeatCategoryAdapter.OnItemClickListener {
                 override fun onClick(
                     v: View,
                     position: Int,
                     cate: String,
-                    edt : EditText,
+                    edt: EditText,
                     layout: LinearLayout
                 ) {
-                    if(edt.text.toString() != ""){
+                    if (edt.text.toString() != "") {
 
-                        var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "day")
+                        var todo = Todo(1, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                        viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
-                        viewModel.addRepeatTodo(position, todo)
-                        viewModel.addTodo(position, todo)
-                        viewModel.updateTodoNum()
+                        //서버 전송(POST)
 
-                        Log.d("addRepeatTodo", viewModel.repeatTodoList!!.value!![position].toString())
+                        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
 
-                        viewModel.repeatTodoList.observe(viewLifecycleOwner, Observer {
-                            Log.d("viewmodelObserver-Repeat", "데이터 이동 확인")
-                            cateAdapter.repeatDataSet = viewModel.repeatTodoList.value
-                            Log.d("viewmodelObserver-Repeat", cateAdapter.repeatDataSet.toString())
+                            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
+                            binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
+                            Log.d("repeatTodo", "catetodo변경 확인")
                         })
 
-                        binding.rvHomeRepeatTodo.post {
-                            cateAdapter!!.notifyDataSetChanged()
-                        }
                     }
                     edt.text.clear()
                     layout.isGone = true

@@ -16,11 +16,12 @@ import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
+class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
 
-    var repeatDataSet : ArrayList<ArrayList<Todo>>? = null
+    lateinit var dataSet : ArrayList<Category>
+    var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
     var repeatAdapter : HomeRepeatTodoAdapter? = null
-    var completeNum = 0
+    var topFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -54,15 +55,16 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : Re
 
 
 
-        if(repeatDataSet != null){
-            if(repeatDataSet!![position].isNotEmpty()){
-                repeatAdapter = HomeRepeatTodoAdapter(repeatDataSet!![position], completeNum)
+        if(cateTodoSet != null){
+            if(cateTodoSet!![position].isNotEmpty()){
+
+                repeatAdapter = HomeRepeatTodoAdapter(view)
+                repeatAdapter!!.dataSet = cateTodoSet!![position]
+                repeatAdapter!!.topFlag = topFlag
+
                 repeatAdapter!!.setItemClickListener(object :
                     HomeRepeatTodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int) {
-                        holder.todoRv.post {
-                            notifyDataSetChanged()
-                        }
+                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
                     }
 
                 })
@@ -74,17 +76,27 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : Re
             }
         }
 
-        holder.cateIcon.setImageResource(dataSet[position].icon_id.name.toInt())
+        holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
+            //repeatAdd로 이동(cateId, 넘기기)
             if(holder.todoAdd.isGone){
                 holder.todoAdd.isVisible = true
             }
-            else {
-                holder.todoAdd.isGone = true
-            }
+            else { holder.todoAdd.isGone = true }
+
+//            val bundle = Bundle()
+//
+//            bundle.putStringArrayList("keyAdd", arrayListOf(
+//                dataSet[position].id.toString(),
+//                dataSet[position].categoryName,
+//                dataSet[position].color,
+//                dataSet[position].icon_id
+//            ))
+//
+//            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
         }
         //sample btn click listener
         holder.edtTodo.setOnKeyListener { view, keyCode, event ->
@@ -108,4 +120,5 @@ class HomeRepeatCategoryAdapter(private val dataSet : ArrayList<Category> ) : Re
     }
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
+
 }
