@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="font">#232323</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="main">#89A9D9</color>
@@ -8,12 +9,13 @@
     <color name="grey2">#F5F5F5</color>
     <color name="grey3">#A6A6A6</color>
     <color name="grey4">#F0F0F0</color>
-    <color name="sub4">#486DA3</color>
-    <color name="font">#232323</color>
-    <color name="sub5">#E1E9F5</color>
-    <color name="sub6">#FFE7EB</color>
-    <color name="sub3">#F0768C</color>
     <color name="sub1">#F8D141</color>
     <color name="sub2">#405059</color>
+    <color name="sub3">#F0768C</color>
+    <color name="sub4">#486DA3</color>
+    <color name="sub5">#E1E9F5</color>
+    <color name="sub6">#FFE7EB</color>
+
+
 
 </resources>

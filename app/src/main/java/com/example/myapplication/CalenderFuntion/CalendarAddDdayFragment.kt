@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -201,7 +202,8 @@ class CalendarAddDdayFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,data.toJson())
+        val tmp = AddCalendarData(data)
+        val call1 = service.addCal(token,tmp)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {

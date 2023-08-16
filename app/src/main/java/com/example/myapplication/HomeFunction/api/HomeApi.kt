@@ -1,8 +1,10 @@
 package com.example.myapplication.HomeFunction.api
 
-import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -39,7 +41,8 @@ interface HomeApi {
 
     //시간표 추가
     @POST("/api/home/time")
-    fun addTime()
+    fun addTime(@Header("Authorization") token : String?, @Body data: Schedule
+    ): Call<ScheduleResponse>
 
     //시간표 수정
     @PATCH("/api/home/time/scheduleId/{scheduleId}")
@@ -47,7 +50,9 @@ interface HomeApi {
 
     //시간표 삭제
     @DELETE("/api/home/time/scheduleId/{scheduleId}")
-    fun deleteTime()
+    fun deleteTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int
+    ): Call<ScheduleResponse>
+
 
     //카테고리 조회
     @GET("/api/home/category")

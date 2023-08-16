@@ -126,6 +126,7 @@
                 app:layout_constraintRight_toRightOf="@+id/progressbar"
                 app:layout_constraintBottom_toBottomOf="@id/progressbar"/>
             <com.github.mikephil.charting.charts.PieChart
+
                 android:id="@+id/chart"
                 android:layout_width="350dp"
                 android:layout_height="350dp"

@@ -26,7 +26,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>,private val token : String)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -108,6 +108,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
                 val bundle = Bundle()
                 bundle.putString("preSchedule", "$iYear-$iMonth-$iDay-")
                 bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay-")
+                bundle.putString("Token",token)
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 mBuilder.dismiss()
             })
