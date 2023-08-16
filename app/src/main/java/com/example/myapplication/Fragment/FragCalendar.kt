@@ -1,35 +1,50 @@
 package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
-import com.example.myapplication.CalenderFuntion.CalendarAddDdayFragment
 import com.example.myapplication.CalenderFuntion.CalendarUtil
-import com.example.myapplication.CalenderFuntion.OnItemListener
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.lang.Integer.min
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,24 +57,15 @@ class FragCalendar : Fragment(){
     var preStartToEnd : sche = sche(0, 0, 0, 0)
     var nextStartToEnd : sche = sche(0, 0, 0, 0)
 
-    data class CalendarDATA(
-        val startDate: String,
-        var startDate2: String,
-        val endDate: String,
-        val startTime : String,
-        val endTime : String,
-        val color: String,
-        val repeat: String,
-        val dDay: Char,
-        val title: String,
-       //val createAt: String,
-        //val updateAt: String
-        var floor : Int,
-        val duration : Boolean,
-        val memo : String,
-        val what : String       //종류
+    private val viewModel: CustomViewModel by viewModels()      //쥐새끼
 
-    )
+
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCalendar::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjEwNzM5NywiZXhwIjoxNjkyMTQzMzk3fQ.ZXkNM79NgsSDkDTKaQYaUm7j5RLV1umRhTi3d7gKPwcoixibe-2dSmtIQetu8k6K7mcA76x58bflQdRz1nzm1g"
+
+
 
     var calendarDayArray = Array(43) {""}
     @RequiresApi(Build.VERSION_CODES.O)
@@ -76,16 +82,20 @@ class FragCalendar : Fragment(){
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         binding = FragCalendarBinding.inflate(inflater, container, false)
-        setMonthView()
+        val datas = ArrayList<CalendarDATA>()
+        var formatter = DateTimeFormatter.ofPattern("M")
+        Log.d("dsadasdasdasdasd","${Calendar.MONTH+1}")
+        getMonthDataArray(CalendarUtil.selectedDate.format(formatter),datas)
+
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
-            setMonthView()
+            getMonthDataArray(CalendarUtil.selectedDate.format(formatter),datas)
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
-            setMonthView()
+            getMonthDataArray(CalendarUtil.selectedDate.format(formatter),datas)
         }
         return binding.root
     }
@@ -93,16 +103,15 @@ class FragCalendar : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
-            CalendarDATA("2023-7-21","2023-7-21","2023-8-31","","",
-                "#FFE7EB","",'Y',"방학",-1,true,"방학이 끝나간다...","CAL"),
-            CalendarDATA("2023-7-2","2023-7-2","2023-9-2","","",
-                "#E1E9F5","",'Y',"UMC 데모데이",-1,true,"메모는 여기에 뜨게 하면 될것 같습니다!","CAL")
+        val savedData = viewModel.getSavedButtonInfo()
 
-        )
+        getCustomChar()
 
-        for (i in 0 until min(datasDday.size, 3)) {
-            val color = datasDday[i].color
+        val ddayDatas = ArrayList<CalendarDATA>()
+        getDdayDataArray(ddayDatas)
+
+        for (i in 0 until min(ddayDatas.size, 3)) {
+            val color = ddayDatas[i].color
             val imageResource = when (color) {
                 "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
                 "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
@@ -112,33 +121,33 @@ class FragCalendar : Fragment(){
             when (i) {
                 0 -> {
                     binding.dday1.setImageResource(imageResource)
-                    binding.dday1Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                    binding.dday1TextInfo.text = datasDday[i].title
+                    binding.dday1Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
+                    binding.dday1TextInfo.text = ddayDatas[i].title
                 }
                 1 -> {
                     binding.dday2.setImageResource(imageResource)
-                    binding.dday2Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                    binding.dday2TextInfo.text = datasDday[i].title
+                    binding.dday2Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
+                    binding.dday2TextInfo.text = ddayDatas[i].title
                 }
                 2 -> {
                     binding.dday3.setImageResource(imageResource)
-                    binding.dday3Text.text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                    binding.dday3TextInfo.text = datasDday[i].title
+                    binding.dday3Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
+                    binding.dday3TextInfo.text = ddayDatas[i].title
                 }
             }
         }
         binding.dday1.setOnClickListener {
-            if(datasDday.size>=1) {
+            if(ddayDatas.size>=1) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                if(datasDday[0].color == "#E1E9F5") {
+                if(ddayDatas[0].color == "#E1E9F5") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-                } else if(datasDday[0].color == "#FFE7EB") {
+                } else if(ddayDatas[0].color == "#FFE7EB") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                } else if(datasDday[0].color == "#F5EED1"){
+                } else if(ddayDatas[0].color == "#F5EED1"){
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                 }
-                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[0].title
-                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[0].endDate)
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[0].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[0].endDate)
                 mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday1Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -149,12 +158,12 @@ class FragCalendar : Fragment(){
 
                 mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putString("title",datasDday[0].title)
-                    bundle.putString("startDate",datasDday[0].startDate)
-                    bundle.putString("endDate",datasDday[0].endDate)
-                    bundle.putString("memo",datasDday[0].memo)
-                    bundle.putString("color",datasDday[0].color)
-                    bundle.putInt("dday",daysRemainingToDate(datasDday[0].endDate))
+                    bundle.putString("title",ddayDatas[0].title)
+                    bundle.putString("startDate",ddayDatas[0].startDate)
+                    bundle.putString("endDate",ddayDatas[0].endDate)
+                    bundle.putString("memo",ddayDatas[0].memo)
+                    bundle.putString("color",ddayDatas[0].color)
+                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[0].endDate))
                     Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
                     mBuilder.dismiss()
                 }
@@ -181,17 +190,17 @@ class FragCalendar : Fragment(){
         }
         binding.dday2.setOnClickListener {
 
-            if(datasDday.size>=2) {
+            if(ddayDatas.size>=2) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                if(datasDday[1].color == "#E1E9F5") {
+                if(ddayDatas[1].color == "#E1E9F5") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-                } else if(datasDday[1].color == "#F0768C") {
+                } else if(ddayDatas[1].color == "#F0768C") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                } else if(datasDday[1].color == "#F5EED1"){
+                } else if(ddayDatas[1].color == "#F5EED1"){
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                 }
-                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[1].title
-                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[1].endDate)
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[1].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[1].endDate)
                 mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday2Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -201,12 +210,12 @@ class FragCalendar : Fragment(){
                 mBuilder.show()
                 mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putString("title",datasDday[1].title)
-                    bundle.putString("startDate",datasDday[1].startDate)
-                    bundle.putString("endDate",datasDday[1].endDate)
-                    bundle.putString("memo",datasDday[1].memo)
-                    bundle.putString("color",datasDday[1].color)
-                    bundle.putInt("dday",daysRemainingToDate(datasDday[1].endDate))
+                    bundle.putString("title",ddayDatas[1].title)
+                    bundle.putString("startDate",ddayDatas[1].startDate)
+                    bundle.putString("endDate",ddayDatas[1].endDate)
+                    bundle.putString("memo",ddayDatas[1].memo)
+                    bundle.putString("color",ddayDatas[1].color)
+                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[1].endDate))
                     Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
                     mBuilder.dismiss()
                 }
@@ -231,17 +240,17 @@ class FragCalendar : Fragment(){
 
         }
         binding.dday3.setOnClickListener {
-            if(datasDday.size==3) {
+            if(ddayDatas.size==3) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                if(datasDday[2].color == "#E1E9F5") {
+                if(ddayDatas[2].color == "#E1E9F5") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-                } else if(datasDday[2].color == "#F0768C") {
+                } else if(ddayDatas[2].color == "#F0768C") {
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                } else if(datasDday[2].color == "#F5EED1"){
+                } else if(ddayDatas[2].color == "#F5EED1"){
                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                 }
-                mDialogView.findViewById<TextView>(R.id.textTitle).text = datasDday[2].title
-                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(datasDday[2].endDate)
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[2].title
+                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[2].endDate)
                 mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday3Text.text.toString()
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -251,12 +260,12 @@ class FragCalendar : Fragment(){
                 mBuilder.show()
                 mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putString("title",datasDday[2].title)
-                    bundle.putString("startDate",datasDday[2].startDate)
-                    bundle.putString("endDate",datasDday[2].endDate)
-                    bundle.putString("memo",datasDday[2].memo)
-                    bundle.putString("color",datasDday[2].color)
-                    bundle.putInt("dday",daysRemainingToDate(datasDday[2].endDate))
+                    bundle.putString("title",ddayDatas[2].title)
+                    bundle.putString("startDate",ddayDatas[2].startDate)
+                    bundle.putString("endDate",ddayDatas[2].endDate)
+                    bundle.putString("memo",ddayDatas[2].memo)
+                    bundle.putString("color",ddayDatas[2].color)
+                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[2].endDate))
                     Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
                     mBuilder.dismiss()
                 }
@@ -290,6 +299,8 @@ class FragCalendar : Fragment(){
 
 
     }
+
+
     fun daysRemainingToDate(targetDate: String): Int {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
         val today = LocalDate.now()
@@ -297,27 +308,20 @@ class FragCalendar : Fragment(){
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
     }
-    private fun setMonthView() {
+    private fun setMonthView(datas : ArrayList<CalendarDATA>) {
+        Log.d("dsa","dsad")
         val dataArray = Array<ArrayList<CalendarDATA?>>(42) { ArrayList() }
 
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        binding.textMonth.text = CalendarUtil.selectedDate.format(formatter)
+        var formatter = DateTimeFormatter.ofPattern("M")
+        binding.textMonth.text = CalendarUtil.selectedDate.format(formatter)+"월"
         formatter = DateTimeFormatter.ofPattern("yyyy년")
         binding.textYear.text = CalendarUtil.selectedDate.format(formatter)
 
         val dayList = dayInMonthArray()
 
         //임시 데이터 정보 받아오기
-        val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-            CalendarDATA("2023-7-2","2023-7-2","2023-7-6","","",
-                "#2AA1B7","반복 안함",'N',"데이터분석기초 기말고사",-1,true,"","CAL"),
-            CalendarDATA("2023-7-21","2023-7-21","2023-8-5","","",
-                "#89A9D9","매일",'N',"방학",-1,true,"","CAL"),
-            CalendarDATA("2023-7-13","2023-7-13","2023-7-15","","",
-                "#2AA1B7","매주",'N',"이건 무슨 일정일까",-1,true,"","CAL"),
-            CalendarDATA("2023-7-6","2023-7-6","2023-7-6","12:00","13:30",
-                "#F8D141","매월",'N',"기말 강의평가 기간",-1,false,"메모 ","CAL")
-        )
+                                                                       //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 년도랑 월 받아와야함
+        Log.d("dfgdfasgdfg","2412452154")
         val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
         for(data in datas) {
             if(data!=null) {
@@ -348,6 +352,8 @@ class FragCalendar : Fragment(){
                 }
 
 
+            } else {
+
             }
         }
         val adapter = CalendarAdapter(dayList,dataArray)
@@ -355,6 +361,7 @@ class FragCalendar : Fragment(){
         binding.calendar.layoutManager = manager
         binding.calendar.adapter = adapter
     }
+
     private fun dayInMonthArray() : ArrayList<Date> {
         var dayList = ArrayList<Date>()
         var monthCalendar = calendar.clone() as Calendar
@@ -394,5 +401,106 @@ class FragCalendar : Fragment(){
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+    fun convertToDate2(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
 
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
+    private fun getMonthDataArray(month : String, arrays : ArrayList<CalendarDATA>) {
+        val call2 = service.monthCalRequest(token,month)
+        call2.enqueue(object : Callback<CalendarDatas> {
+            override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                val dura : Boolean
+                                if(data.start_date==data.end_date) dura = false
+                                else dura = true
+                                val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                    "10:00","11:00","${data.color}","${data.repeat}","${data.d_day}","${data.calender_name}",
+                                    -1,dura,"${data.memo}","CAL")
+                                arrays.add(tmp)
+                                setMonthView(arrays)
+                                Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo}")
+
+                                // ...
+                            }
+                        } else {
+                           Log.d("2222","Request was not successful. Message: hi")
+                        }
+                    } else {
+                        //Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                   // Log.d("333","itemType: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+    private fun getDdayDataArray(arrays : ArrayList<CalendarDATA>) {
+        val call2 = service.getAllDday(token)
+        call2.enqueue(object : Callback<CalendarDatas> {
+            override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                //arrays.add(data)                                                //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@이거 수정해야함
+                                //Log.d("111","datas: ${data.calendarName}")
+                                // ...
+                            }
+                        } else {
+                            //Log.d("2222","Request was not successful. Message: hi")
+                        }
+                    } else {
+                        //Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    //Log.d("333","itemType: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+    private fun getCustomChar() {
+        val call2 = service.characterRequest(token)
+        call2.enqueue(object : Callback<CharacterResponse> {
+            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                //arrays.add(data)                                                //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@이거 수정해야함
+                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                // ...
+                            }
+                        } else {
+                            Log.d("2221","${response.code()}")
+                        }
+                    } else {
+                        Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 }

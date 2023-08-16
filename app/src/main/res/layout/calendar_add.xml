@@ -201,12 +201,12 @@
 
             </LinearLayout>
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:layout_marginVertical="15dp"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -438,8 +438,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="15dp"/>
+                android:layout_marginVertical="15dp"/>
 
             <LinearLayout
                 android:id="@+id/clockAndCycle"
@@ -616,7 +615,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_marginVertical="15dp"
                     android:background="?android:attr/listDivider" />
 
@@ -743,7 +741,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_marginVertical="15dp"
                     android:background="?android:attr/listDivider" />
             </LinearLayout>
