@@ -490,11 +490,6 @@ class FragCalendar : Fragment(){
         })
     }
     private fun getCustomChar() {
-        val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        val service = retrofit.create(RetrofitServiceCalendar::class.java)
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE3MTQ1NywiZXhwIjoxNjkyMjA3NDU3fQ.qt1hfpsN8E1qoN71m7VobnmhkmLNv6y_i23ULkNbYDBDYYJTqsDpY3MLbhvBA6yzb1N5gJ_sjlDh7LpvS0DyTA"
-
         val call2 = service.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
