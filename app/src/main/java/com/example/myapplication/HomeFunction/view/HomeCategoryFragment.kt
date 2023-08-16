@@ -1,35 +1,33 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewDebug.FlagToString
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
-import com.example.myapplication.HomeFunction.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
+import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeCategoryFragment : Fragment() {
 
     lateinit var binding : HomeFragmentCategoryBinding
-    val sampleCategoryArray = ArrayList<sampleCategoryData>()
-    val categoryAdapter = HomeCategoryAdapter(sampleCategoryArray)
+    private val viewModel : HomeViewModel by activityViewModels()
+
     private var bottomFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initArrayList()
+        Log.d("viewmodel Category", viewModel.categoryList.value.toString())
 
     }
 
@@ -45,6 +43,8 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val categoryAdapter = viewModel.categoryList.value?.let { HomeCategoryAdapter(it) }
+
         binding.ivHomeCategoryBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
             bottomFlag = false
@@ -54,15 +54,29 @@ class HomeCategoryFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 
-        categoryAdapter.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
+        val bundle = Bundle()
+
+        categoryAdapter?.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int, dataSet: Category) {
                 //페이지 이동 + 데이터 전달
-                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
+                bundle.putStringArrayList("key", arrayListOf(
+                    dataSet.categoryName,
+                    dataSet.icon_id.id,
+                    dataSet.icon_id.name,
+                    dataSet.color,
+                    position.toString()
+                ))
+                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
+
             }
         })
 
         binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+
+        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
+            categoryAdapter?.notifyDataSetChanged()
+        })
     }
 
     override fun onDestroyView() {
@@ -70,16 +84,5 @@ class HomeCategoryFragment : Fragment() {
         hideBottomNavigation(bottomFlag, activity)
     }
 
-
-
-    private fun initArrayList(){
-        with(sampleCategoryArray){
-            sampleCategoryArray.add(sampleCategoryData( R.drawable.ic_home_cate_study, "공부", resources.getColor(R.color.sub5)))
-            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_plan, "약속", Color.parseColor("#F0768C")))
-            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "잠", resources.getColor(R.color.point_main)))
-            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "친구만나기", Color.parseColor("#F8D141")))
-            sampleCategoryArray.add(sampleCategoryData(R.drawable.ic_home_cate_study, "휴대폰", Color.parseColor("#486DA3")))
-        }
-    }
 
 }

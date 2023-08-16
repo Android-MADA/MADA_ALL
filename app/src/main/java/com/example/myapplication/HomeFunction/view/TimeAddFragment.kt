@@ -20,10 +20,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
@@ -298,25 +298,25 @@ class TimeAddFragment : Fragment() {
 
 
         val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-2", "2023-7-2", "2023-7-6", "", "",
-                "#2AA1B7", "반복 안함", 'N', "데이터분석기초 기말고사", -1, true, "","CAL"
+                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-21", "2023-7-21", "2023-8-5", "", "",
-                "#89A9D9", "매일", 'N', "방학", -1, true, "","CAL"
+                "#89A9D9", "매일", "N", "방학", -1, true, "","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-13", "2023-7-13", "2023-7-15", "", "",
-                "#2AA1B7", "매주", 'N', "이건 무슨 일정일까", -1, true, "","CAL"
+                "#2AA1B7", "매주", "N", "이건 무슨 일정일까", -1, true, "","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
-                "#F8D141", "매월", 'N', "기말 강의평가 기간", -1, false, "메모 ","CAL"
+                "#F8D141", "매월", "N", "기말 강의평가 기간", -1, false, "메모 ","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
-                "#F8D141", "매월", 'N', "친구랑 약속", 0, false, "메모 ","TODO"
+                "#F8D141", "매월", "N", "친구랑 약속", 0, false, "메모 ","TODO"
             )
         )
 

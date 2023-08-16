@@ -1,25 +1,25 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomCircleBarView
+import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
-import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
 import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -27,7 +27,11 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Calendar
 
 
@@ -38,8 +42,14 @@ class HomeTimetableFragment : Fragment() {
     val timeAdapter = HomeTimeAdapter(sampleTimeArray)
     private var bottomFlag = true
 
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(HomeApi::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjA5MjQ0OCwiZXhwIjoxNjkyMTI4NDQ4fQ.H9X0jEZVqG9FMzwhDh8I05ov6KRVlGfI8C5bXUwoEWB1lrcQQZzVC9shykYX2_4r-IL51KBhA45Qru0zLf5YhA"
+
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
+    /*
     val pieChartDataArray = arrayOf(        //임시 데이터
         HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0,"TIME"),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
         HomeViewpagerTimetableFragment.PieChartData("제목2", "메모2", 1, 0, 6, 0, "#516773", 1,"TIME"),
@@ -49,12 +59,10 @@ class HomeTimetableFragment : Fragment() {
         HomeViewpagerTimetableFragment.PieChartData("제목6", "메모6", 14, 30, 16, 30, "#52B6C9", 5,"TIME"),
         HomeViewpagerTimetableFragment.PieChartData("제목7", "메모7", 16, 30, 18, 0, "#FCE79A", 6,"TIME"),
         HomeViewpagerTimetableFragment.PieChartData("제목8", "메모8", 20, 0, 22, 0, "#486DA3", 7,"TIME")
-    )
-
-
+    )*/
+    var dataArray= ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initArrayList()
     }
 
     override fun onCreateView(
@@ -71,6 +79,10 @@ class HomeTimetableFragment : Fragment() {
         val minute = currentTime.get(Calendar.MINUTE)
         val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
         customCircleBarView.setProgress(progressPercentage.toInt())
+
+        val pieChartDataArray = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
+        dataArray = pieChartDataArray
+        getTimeDatas("2023-08-15",pieChartDataArray)
 
         //Pi Chart
         var chart = binding.chart
@@ -172,7 +184,7 @@ class HomeTimetableFragment : Fragment() {
 
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
-            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+            bundle.putSerializable("pieChartDataArray", dataArray)
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
 
 
@@ -191,8 +203,6 @@ class HomeTimetableFragment : Fragment() {
 
         //edt처리
 
-        //pie chart 추가
-
 
     }
 
@@ -200,19 +210,57 @@ class HomeTimetableFragment : Fragment() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
     }
-
-
-    //HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0)
-    private fun initArrayList(){
-        with(sampleTimeArray){
-            for(data in pieChartDataArray) {
-                sampleTimeArray.add(SampleTimeData(data.title, Color.parseColor(data.colorCode)))
+    fun extractTime(timeString: String,hourOrMin : Boolean): Int {
+        val timeParts = timeString.split(":")
+        if (timeParts.size == 3) {
+            try {
+                val hour = timeParts[0].toInt()
+                val minute = timeParts[1].toInt()
+                if(hourOrMin)
+                    return hour
+                else
+                    return minute
+            } catch (e: NumberFormatException) {
+                // 숫자로 변환할 수 없는 경우 또는 잘못된 형식인 경우
+                return 0
             }
-            //sampleTimeArray.add(SampleTimeData("잠", resources.getColor(R.color.sub2), "오전 10:30", "오전 11:00", "2023-07-20"))
-            //sampleTimeArray.add(SampleTimeData("오전수업", Color.parseColor("#FDA4B4"), "오전 10:00", "오전 10:30", "2023-07-20"))
         }
+        return 0
     }
 
+    //HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0)
+    private fun getTimeDatas(date : String, arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
+        val call = service.getTimetable(token,date)
+        call.enqueue(object : Callback<ScheduleList> {
+            override fun onResponse(call2: Call<ScheduleList>, response: Response<ScheduleList>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            var i = 0
+                            for (data in datas) {
+                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
+                                    extractTime(data.endTime,true),extractTime(data.endTime,false),data.color,i++)
+                                arrays.add(tmp)                                                //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@이거 수정해야함
+                                //Log.d("111","datas: ${data.calendarName}")
+                                // ...
+                            }
+                        } else {
+                            Log.d("2222","Request was not successful. Message: hi")
+                        }
+                    } else {
+                        Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    Log.d("333","itemType: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<ScheduleList>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 
 }
 

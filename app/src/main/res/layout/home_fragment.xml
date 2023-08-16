@@ -64,8 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-
-                android:layout_marginHorizontal="36dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/home_progeaabar_background"
@@ -103,6 +102,7 @@
                     android:layout_marginHorizontal="16dp">
 
                     <TextView
+                        android:id="@+id/tv_home_progress_complete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5"
@@ -112,6 +112,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_home_progress_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="10"

@@ -17,13 +17,19 @@ class MyWithdraw1Activity : AppCompatActivity() {
         binding = MyWithdraw1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.myWithdrawBtn.setOnClickListener {
-            isButtonClicked = !isButtonClicked
-            binding.myWithdrawBtn.setBackgroundResource(R.drawable.my_withdrwaw_btn_ok)
-
-            val intent = Intent(this, Splash2Activity::class.java)
-            startActivity(intent)
+        binding.backBtn.setOnClickListener {
             finish()
+        }
+
+        binding.myWithdrawBtn.setOnClickListener {
+            if(binding.checkBox.isChecked){
+                isButtonClicked = !isButtonClicked
+                binding.myWithdrawBtn.setBackgroundResource(R.drawable.my_withdrwaw_btn_ok)
+
+                val intent = Intent(this, Splash2Activity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }

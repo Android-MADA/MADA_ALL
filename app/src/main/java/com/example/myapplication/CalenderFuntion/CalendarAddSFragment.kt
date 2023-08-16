@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.HomeFunction.category.sampleCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.example.myapplication.databinding.CalendarAddSBinding
@@ -81,8 +80,11 @@ class CalendarAddSFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
         }
         binding.toolbarCalendar.inflateMenu(R.menu.calendar_edit_menu)
+       // binding.toolbarCalendar.setBackgroundResource(R.drawable.calendar_menu_image)
         binding.toolbarCalendar.setOnMenuItemClickListener {
+
             when(it.itemId){
+
                 R.id.calendar_eidt -> {
                     val bundle = Bundle()
                     bundle.putString("title", arguments?.getString("title"))
@@ -93,6 +95,7 @@ class CalendarAddSFragment : Fragment() {
                     bundle.putString("cycle", arguments?.getString("cycle"))
                     bundle.putString("memo", arguments?.getString("memo"))
                     bundle.putString("color", arguments?.getString("color"))
+                    bundle.putBoolean("edit", true)
                     Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
                     true
                 }

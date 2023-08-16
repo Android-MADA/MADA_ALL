@@ -1,28 +1,22 @@
 package com.example.myapplication.HomeFunction.time
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.CalendarScheduleAdapter
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.Fragment.FragCalendar
-import com.example.myapplication.HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
-class HomeScheduleAndTodoAdapter(private val dataArray: Array<FragCalendar.CalendarDATA>,private  val today : Int, private val editTextTitle : EditText,
-                                        private val textPreClock : TextView,  private val textNextClock : TextView,private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class HomeScheduleAndTodoAdapter(private val dataArray: Array<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
+                                 private val textPreClock : TextView, private val textNextClock : TextView, private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
     companion object {
