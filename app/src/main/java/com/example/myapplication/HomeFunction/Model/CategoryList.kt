@@ -1,8 +1,10 @@
 package com.example.myapplication.HomeFunction.Model
 
+import com.google.gson.annotations.SerializedName
+
 data class CategoryList(
-    val status: Int,
-    val success: Boolean,
-    val message: String,
-    val data: ArrayList<Category>
+    @SerializedName("status") val status: Int,
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("message") val message: String,
+    @SerializedName("data") val data: ArrayList<Category>
 )
