@@ -1,20 +1,37 @@
 package com.example.myapplication.Fragment
 
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.CustomViewModel
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.R
+import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
 import com.example.myapplication.custom_color
+import com.example.myapplication.custom_item
 import com.example.myapplication.databinding.CustomBackgroundBinding
 import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.CustomColorBinding
@@ -27,6 +44,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.lang.Math.log
 import java.math.BigInteger
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -66,10 +85,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var clothFragment: custom_cloth? = null
     private var adapter: CustomBottomSheetViewPager? = null
 
-    private lateinit var preColor : ImageButton
-    private lateinit var preCloth : ImageButton
-    private lateinit var preItem : ImageButton
-    private lateinit var preBackground : ImageButton
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE4NzU1MywiZXhwIjoxNjkyMjIzNTUzfQ.QEHXjyLoMJMjFEIGEbKS_2RmsGQrb6i80U31rQOCDMHWBCyJkRcA-ET92S0XA5iAQSHJ6NXLr5_TGpoELZepHg"
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
         var selectedClothButtonInfo: ButtonInfo?,
@@ -94,7 +113,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
-
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
             selectedItemButtonInfo = savedData.selectedItemButtonInfo
@@ -187,17 +205,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.btnCustomReset.setOnClickListener {
             val colorbtninfo = ButtonInfo(R.id.btn_color_basic, R.drawable.c_ramdi)
             selectedColorButtonInfo = colorbtninfo
-            val clothbtninfo = ButtonInfo(
-                R.id.btn_cloth_basic,
-                R.drawable.custom_empty
-            )
+            val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, R.drawable.custom_empty)
             selectedClothButtonInfo = clothbtninfo
             val itembtninfo = ButtonInfo(R.id.btn_item_basic, R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
-            val backgroundbtninfo = ButtonInfo(
-                R.id.btn_back_basic,
-                R.drawable.custom_empty
-            )
+            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, R.drawable.custom_empty)
             selectedBackgroundButtonInfo = backgroundbtninfo
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
@@ -227,28 +239,24 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
         custom_save = false
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
-        //preColor = colorbuttonInfo.selectedButton
         selectedColorButtonInfo = colorbuttonInfo
     }
 
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
-        //preCloth = clothbuttonInfo.selectedButton
         selectedClothButtonInfo = clothbuttonInfo
     }
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
-        //preItem = itembuttonInfo.selectedButton
         selectedItemButtonInfo = itembuttonInfo
     }
 
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
-        //preBackground = backgroundbuttonInfo.selectedButton
         selectedBackgroundButtonInfo = backgroundbuttonInfo
     }
 
