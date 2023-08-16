@@ -22,9 +22,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.CustomViewModel
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.R
 import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
@@ -42,6 +44,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.lang.Math.log
 import java.math.BigInteger
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -81,6 +85,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var clothFragment: custom_cloth? = null
     private var adapter: CustomBottomSheetViewPager? = null
 
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE4NzU1MywiZXhwIjoxNjkyMjIzNTUzfQ.QEHXjyLoMJMjFEIGEbKS_2RmsGQrb6i80U31rQOCDMHWBCyJkRcA-ET92S0XA5iAQSHJ6NXLr5_TGpoELZepHg"
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
         var selectedClothButtonInfo: ButtonInfo?,
