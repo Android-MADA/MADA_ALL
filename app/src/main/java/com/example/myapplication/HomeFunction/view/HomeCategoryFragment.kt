@@ -1,14 +1,12 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.Category
@@ -36,6 +34,11 @@ class HomeCategoryFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
         hideBottomNavigation(bottomFlag, activity)
+
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
+        //viewModel.getCategory(token)
+
+
         return binding.root
     }
 
@@ -61,7 +64,7 @@ class HomeCategoryFragment : Fragment() {
                 bundle.putStringArrayList("key", arrayListOf(
                     dataSet.id.toString(),
                     dataSet.categoryName,
-                    dataSet.icon_id,
+                    dataSet.iconId.toString(),
                     dataSet.color,
                     position.toString()
                 ))

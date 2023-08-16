@@ -11,11 +11,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.util.Calendar
 
@@ -46,6 +53,22 @@ class FragHome : Fragment() {
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
+
+        //서버연결 시작
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+        api.getCategory(token).enqueue(object : Callback<CategoryList>{
+            override fun onResponse(call: Call<CategoryList>, response: Response<CategoryList>) {
+                Log.d("서버 통신", response.body().toString())
+            }
+
+            override fun onFailure(call: Call<CategoryList>, t: Throwable) {
+                Log.d("서버 통신", "실패")
+            }
+
+        })
+
+        //서버 연결 끝
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()
