@@ -14,7 +14,7 @@ import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
 
-class custom_cloth : Fragment() {
+class custom_cloth() : Fragment() {
     lateinit var binding: CustomClothBinding
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
@@ -88,7 +88,9 @@ class custom_cloth : Fragment() {
             selectedButton = clickedButton
         }
     }
-
+    public fun resetCloth() {
+        selectedButton?.setImageResource(getUnselectedImageResource(selectedButton!!))
+    }
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
@@ -133,11 +135,23 @@ class custom_cloth : Fragment() {
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, R.drawable.set_movie)
             R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, R.drawable.set_caffk)
             R.id.btn_cloth_v -> ButtonInfo(clickedButton.id, R.drawable.set_v)
-            R.id.btn_cloth_astronauts -> ButtonInfo(clickedButton.id, R.drawable.set_astronauts)
+            R.id.btn_cloth_astronauts -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_astronauts,
+            )
             R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, R.drawable.set_zzim)
-            R.id.btn_cloth_hanbokF -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokf)
-            R.id.btn_cloth_hanbokM -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokm)
-            R.id.btn_cloth_snowman -> ButtonInfo(clickedButton.id, R.drawable.set_snowman)
+            R.id.btn_cloth_hanbokF -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_hanbokf
+            )
+            R.id.btn_cloth_hanbokM -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_hanbokm
+            )
+            R.id.btn_cloth_snowman -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_snowman
+            )
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 

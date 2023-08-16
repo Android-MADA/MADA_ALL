@@ -118,7 +118,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             if(calendarDataArray[position].isEmpty()) {
 
             } else {
-                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder)
+                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder,token)
                 var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
