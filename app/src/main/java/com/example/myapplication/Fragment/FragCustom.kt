@@ -59,8 +59,12 @@ interface OnBackgroundImageChangeListener {
     fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
+interface OnResetButtonClickListener {
+    fun onResetButtonClicked()
+}
 
-class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener {
+
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
     private lateinit var customtabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
@@ -70,8 +74,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var selectedItemButtonInfo: ButtonInfo? = null
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
     private var custom_save = false
-    private var button_temdata : selectedButtonInfo? = null
+    private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
+
+    private var colorFragment: custom_color? = null
+    private var clothFragment: custom_cloth? = null
+    private var adapter: CustomBottomSheetViewPager? = null
 
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
@@ -94,10 +102,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         viewPager = binding.CustomBottomSheetViewPager
 
 
-        val colorFragment = custom_color()
-        val clothFragment = custom_cloth()
-        val itemFragment = custom_item()
-        val backgroundFragment = custom_background()
 
         val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
@@ -106,22 +110,33 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             selectedItemButtonInfo = savedData.selectedItemButtonInfo
             selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
 
-            binding.customRamdi.setImageResource(selectedColorButtonInfo?.selectedImageResource ?: 0)
-            binding.imgCustomCloth.setImageResource(selectedClothButtonInfo?.selectedImageResource ?: 0)
-            binding.imgCustomItem.setImageResource(selectedItemButtonInfo?.selectedImageResource ?: 0)
-            binding.imgCustomBackground.setImageResource(selectedBackgroundButtonInfo?.selectedImageResource ?: 0)
+            binding.customRamdi.setImageResource(
+                selectedColorButtonInfo?.selectedImageResource ?: 0
+            )
+            binding.imgCustomCloth.setImageResource(
+                selectedClothButtonInfo?.selectedImageResource ?: 0
+            )
+            binding.imgCustomItem.setImageResource(
+                selectedItemButtonInfo?.selectedImageResource ?: 0
+            )
+            binding.imgCustomBackground.setImageResource(
+                selectedBackgroundButtonInfo?.selectedImageResource ?: 0
+            )
         }
 
 
-        val fragmentManager: FragmentManager = childFragmentManager
+        /*val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.commit()
+        fragmentTransaction.commit()*/
+        adapter = CustomBottomSheetViewPager(this)
+        binding.CustomBottomSheetViewPager.adapter = adapter
 
         val tabTitles = listOf("색깔", "의상", "소품", "배경")
 
         TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
+
 
 
         var width = 500
@@ -151,31 +166,53 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // 바텀시트 상태 변화를 감지하는 메서드
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width*(1-slideOffset)+700).toInt()
-                customRamdi_layoutParams.height = (height*(1-slideOffset)+700).toInt()
+                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width*(1-slideOffset)+700).toInt()
-                imgCustomCloth_layoutParams.height = (height*(1-slideOffset)+700).toInt()
+                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width*(1-slideOffset)+700).toInt()
-                imgCustomItem_layoutParams.height = (height*(1-slideOffset)+700).toInt()
+                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width*(1-slideOffset)+1500).toInt()
-                imgCustomBackground_layoutParams.height = (height*(1-slideOffset)+1500).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
+                imgCustomBackground_layoutParams.height =
+                    (height * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
             }
         })
+
+        binding.btnCustomReset.setOnClickListener {
+            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, R.drawable.c_ramdi)
+            selectedColorButtonInfo = colorbtninfo
+            val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, R.drawable.custom_empty)
+            selectedClothButtonInfo = clothbtninfo
+            val itembtninfo = ButtonInfo(R.id.btn_item_basic, R.drawable.custom_empty)
+            selectedItemButtonInfo = itembtninfo
+            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, R.drawable.custom_empty)
+            selectedBackgroundButtonInfo = backgroundbtninfo
+            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
+            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
+            onResetButtonClicked()
+
+
+        }
+
+
 
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
@@ -183,19 +220,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
 
 
-        binding.btnCustomReset.setOnClickListener{
-            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
-            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
 
-
-        }
 
 
         return view
     }
-
 
 
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
@@ -204,16 +233,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
     }
+
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
         selectedClothButtonInfo = clothbuttonInfo
     }
+
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
     }
+
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
@@ -237,23 +269,30 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         fun getSelectedBackgroundButtonInfo(): ButtonInfo? {
             return selectedBackgroundButtonInfo
         }
+
         val temdata = selectedButtonInfo(
             getSelectedColorButtonInfo(),
             getSelectedClothButtonInfo(),
             getSelectedItemButtonInfo(),
-            getSelectedBackgroundButtonInfo())
+            getSelectedBackgroundButtonInfo()
+        )
 
         return temdata
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
+    }
+
+    override fun onResetButtonClicked() {
+        Log.d("FragCustom", "onResetButtonClicked()")
+        val colorFragment = (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(0) as? custom_color
+        colorFragment?.resetButtonColor()
+        //clothFragment?.resetButtonImage()
+        //itemFragment?.resetButtonImage()
+        //backgroundFragment?.resetButtonImage()
     }
 }
 

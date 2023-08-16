@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.Fragment.OnColorImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
@@ -21,6 +23,7 @@ class custom_color : Fragment() {
 
 
     private var imageChangeListener: OnColorImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,6 +73,9 @@ class custom_color : Fragment() {
             onImageButtonClick(binding.btnColorYellow)
             onColorButtonClick(it as ImageButton)}
 
+
+
+
         return binding.root
     }
 
@@ -106,7 +112,7 @@ class custom_color : Fragment() {
     }
 
 
-    private fun getUnselectedImageResource(button: ImageButton): Int {
+    fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_color_basic -> R.drawable.color_basic
             R.id.btn_color_blue -> R.drawable.color_blue
@@ -137,6 +143,21 @@ class custom_color : Fragment() {
 
         imageChangeListener?.onColorButtonSelected(buttonInfo)
     }
+
+    fun resetButtonColor() {
+        Log.d("CustomColorFragment", "resetButtonImage() called")
+        binding.btnColorBasic.setImageResource(R.drawable.color_basic)
+        binding.btnColorBlue.setImageResource(R.drawable.color_blue)
+        binding.btnColorRblue.setImageResource(R.drawable.color_rblue)
+        binding.btnColorBluepurple.setImageResource(R.drawable.color_bluepurple)
+        binding.btnColorGreen.setImageResource(R.drawable.color_green)
+        binding.btnColorOrange.setImageResource(R.drawable.color_orange)
+        binding.btnColorPink.setImageResource(R.drawable.color_pink)
+        binding.btnColorPurple.setImageResource(R.drawable.color_purple)
+        binding.btnColorYellow.setImageResource(R.drawable.color_yellow)
+    }
+
+
 
 
 
