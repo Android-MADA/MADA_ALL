@@ -177,20 +177,28 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
 
+        binding.btnCustomReset.setOnClickListener{
+            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, R.drawable.c_ramdi)
+            selectedColorButtonInfo = colorbtninfo
+            val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, R.drawable.custom_empty)
+            selectedClothButtonInfo = clothbtninfo
+            val itembtninfo = ButtonInfo(R.id.btn_item_basic, R.drawable.custom_empty)
+            selectedItemButtonInfo = itembtninfo
+            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, R.drawable.custom_empty)
+            selectedBackgroundButtonInfo = backgroundbtninfo
+            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
+            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
+            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
+        }
+
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
         }
 
 
-        binding.btnCustomReset.setOnClickListener{
-            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
-            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
 
-
-        }
 
 
         return view
