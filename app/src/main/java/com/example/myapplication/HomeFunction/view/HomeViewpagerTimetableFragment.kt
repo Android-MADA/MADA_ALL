@@ -17,7 +17,16 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.io.Serializable
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Calendar
 
 class HomeViewpagerTimetableFragment : Fragment() {
@@ -31,8 +40,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val endHour: Int,
         val endMin: Int,
         val colorCode: String,
-        val divisionNumber: Int,
-        val what : String
+        val divisionNumber: Int
     ) : Serializable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,16 +62,29 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         customCircleBarView.setProgress(progressPercentage.toInt())
         //파이차트
+
+        val url = "your_json_url_here"
+
+        // 코루틴을 활용하여 네트워킹 수행
+        GlobalScope.launch(Dispatchers.IO) {
+            val json = fetchDataFromUrl(url)
+            withContext(Dispatchers.Main) {
+                // UI 업데이트나 JSON 데이터 처리를 수행할 수 있습니다.
+                // 이 예시에서는 JSON 데이터를 출력해보겠습니다.
+                println(json.toString())
+            }
+        }
+
         var chart = binding.chart
         val pieChartDataArray = arrayOf(        //임시 데이터
-            PieChartData("제목1", "메모1", 0,0,1,0, "#486DA3",0,"TIME"),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
-            PieChartData("제목2", "메모2", 1,0,6,0, "#516773",1,"TIME"),
-            PieChartData("제목3", "메모3", 9,0,12,0, "#FDA4B4",2,"TIME"),
-            PieChartData("제목4", "메모4", 12,0,13,30, "#52B6C9",3,"TIME"),
-            PieChartData("제목5", "메모5", 13,30,14,30, "#516773",4,"TIME"),
-            PieChartData("제목6", "메모6", 14,30,16,30, "#52B6C9",5,"TIME"),
-            PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6,"TIME"),
-            PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7,"TIME")
+            PieChartData("제목1", "메모1", 0,0,1,0, "#486DA3",0,),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
+            PieChartData("제목2", "메모2", 1,0,6,0, "#516773",1),
+            PieChartData("제목3", "메모3", 9,0,12,0, "#FDA4B4",2),
+            PieChartData("제목4", "메모4", 12,0,13,30, "#52B6C9",3),
+            PieChartData("제목5", "메모5", 13,30,14,30, "#516773",4),
+            PieChartData("제목6", "메모6", 14,30,16,30, "#52B6C9",5),
+            PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6),
+            PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7)
         )
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             binding.none.visibility = View.VISIBLE
@@ -161,5 +182,21 @@ class HomeViewpagerTimetableFragment : Fragment() {
         @JvmStatic
         fun newInstance() =
             HomeViewpagerTimetableFragment()
+    }
+    private fun fetchDataFromUrl(urlString: String): JSONObject {
+        val url = URL(urlString)
+        val connection = url.openConnection() as HttpURLConnection
+        try {
+            val bufferedReader = BufferedReader(InputStreamReader(connection.inputStream))
+            val response = StringBuilder()
+            var inputLine: String?
+            while (bufferedReader.readLine().also { inputLine = it } != null) {
+                response.append(inputLine)
+            }
+            bufferedReader.close()
+            return JSONObject(response.toString())
+        } finally {
+            connection.disconnect()
+        }
     }
 }

@@ -4,5 +4,5 @@ data class ScheduleList(
     val status: Int,
     val success: Boolean,
     val message: String,
-    val data: ArrayList<Schedule>
+    val datas: ArrayList<Schedule>
 )

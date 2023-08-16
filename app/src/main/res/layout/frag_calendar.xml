@@ -339,7 +339,7 @@
                 </LinearLayout>
                 <ImageView
                     android:layout_weight="1"
-                    android:id="@+id/dday_char"
+                    android:id="@+id/calendar_ramdi"
                     android:padding="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

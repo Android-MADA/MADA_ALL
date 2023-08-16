@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -22,10 +23,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -50,6 +60,12 @@ class CalendarAddFragment : Fragment() {
     var memo = ""
     var color = "#89A9D9"
     var edit = false
+
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCalendar::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjA5MjQ0OCwiZXhwIjoxNjkyMTI4NDQ4fQ.H9X0jEZVqG9FMzwhDh8I05ov6KRVlGfI8C5bXUwoEWB1lrcQQZzVC9shykYX2_4r-IL51KBhA45Qru0zLf5YhA"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,6 +74,12 @@ class CalendarAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
+
+
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
         val bundle = arguments
@@ -94,42 +116,42 @@ class CalendarAddFragment : Fragment() {
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor4.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor5.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor6.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor7.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor8.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor9.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelectors.visibility = View.GONE
+            toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor.setOnClickListener {
-            binding.layoutColorSelectors.visibility = View.VISIBLE
+            toggleLayout(true,binding.layoutColorSelectors)
         }
 
         binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -367,17 +389,17 @@ class CalendarAddFragment : Fragment() {
 
         }
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-21", "2023-7-21", "2023-8-31", "", "",
-                "#FFE7EB", "", 'Y', "방학", -1, true, "방학이 끝나간다...","CAL"
+                "#FFE7EB", "", "Y", "방학", -1, true, "방학이 끝나간다...","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                 "2023-7-2", "2023-7-2", "2023-9-2", "", "",
-                "#E1E9F5", "", 'Y', "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!","CAL"
+                "#E1E9F5", "", "Y", "UMC 데모데이", -1, true, "메모는 여기에 뜨게 하면 될것 같습니다!","CAL"
             ),
-            FragCalendar.CalendarDATA(
+            CalendarDATA(
                     "2023-7-1", "2023-7-1", "2023-11-27", "", "",
-            "#F5EED1", "", 'Y', "생일 ", -1, true, "이날을 기다리고 있어","CAL"
+            "#F5EED1", "", "Y", "생일 ", -1, true, "이날을 기다리고 있어","CAL"
         )
         )
         binding.submitBtn.setOnClickListener {
@@ -450,14 +472,14 @@ class CalendarAddFragment : Fragment() {
                     if(!checkBox1.isChecked&&!checkBox2.isChecked&&!checkBox3.isChecked) {
                         mDialogView.findViewById<TextView>(R.id.textInfo).text = "대체할 디데이를 선택해야 합니다"
                     } else {
-                        //데이터 넣기
+                        //addCalendar(CalendarData2())                                                      @@@@@@@@@@@@@@@@@@@@@@정보 추가해야함
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                         mBuilder.dismiss()
                     }
 
                 })
             } else {
-                //데이터 등록
+                //addCalendar(CalendarData2())                                                              @@@@@@@@@@@@@@@@@@@@@@@@@@ 정보 추가해야함
                 Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
             }
 
@@ -524,4 +546,37 @@ class CalendarAddFragment : Fragment() {
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
     }
+    private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
+        if (isExpanded) {
+            ToggleAnimation.expand(layoutExpand)
+        } else {
+            ToggleAnimation.collapse(layoutExpand)
+        }
+        return isExpanded
+    }
+    private fun addCalendar(data : CalendarData2) {
+        val call1 = service.addCal(token,data.toJson())
+        call1.enqueue(object : Callback<ResponseSample> {
+            override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("status",responseBody.status.toString())
+                        Log.d("success",responseBody.success.toString())
+                        Log.d("message",responseBody.message.toString())
+                    }else
+                        Log.d("777","777")
+
+                } else {
+                    Log.d("666","itemType: ${response.code()} ")
+                    Log.d("666","itemType: ${response.message()} ")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+
 }
