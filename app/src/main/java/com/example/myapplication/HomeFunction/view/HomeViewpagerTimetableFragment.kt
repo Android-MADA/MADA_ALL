@@ -133,12 +133,13 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val pieData = PieData(pieDataSet)
 
 
+        val range = chart.width/80f
 
         chart.apply {
             data = pieData
             isRotationEnabled = false                               //드래그로 회전 x
             isDrawHoleEnabled = false                               //중간 홀 그리기 x
-            setExtraOffsets(25f,25f,25f,25f)    //크기 조절
+            setExtraOffsets(range,range,range,range)    //크기 조절
             setUsePercentValues(false)
             setEntryLabelColor(Color.BLACK)
             marker = marker_
@@ -156,7 +157,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     if (label == "999") {
                         pieDataSet.selectionShift = 1f //하이라이트 크기
                     } else {
-                        pieDataSet.selectionShift = 30f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+                        pieDataSet.selectionShift = 60f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
                     }
                     lastSelectedEntry = label.toInt()
                 }
@@ -170,8 +171,8 @@ class HomeViewpagerTimetableFragment : Fragment() {
             }
         })
 
-        binding.noneBtn.setOnClickListener {
-
+        binding.chart.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment)
         }
 
         return binding.root

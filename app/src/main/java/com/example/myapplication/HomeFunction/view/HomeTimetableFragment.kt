@@ -243,13 +243,13 @@ class HomeTimetableFragment : Fragment() {
 
         val pieData = PieData(pieDataSet)
 
-
+        val range = chart.width/80f
 
         chart.apply {
             data = pieData
             isRotationEnabled = false                               //드래그로 회전 x
             isDrawHoleEnabled = false                               //중간 홀 그리기 x
-            setExtraOffsets(25f,25f,25f,25f)    //크기 조절
+            setExtraOffsets(range,range,range,range)    //크기 조절
             setUsePercentValues(false)
             setEntryLabelColor(Color.BLACK)
             setDrawEntryLabels(false) //라벨 끄기

@@ -305,7 +305,7 @@ class TimeAddFragment : Fragment() {
                     "${curH[1]}:${curM[1]}:00",binding.edtHomeScheduleMemo.text.toString())
                 Log.d("time","${curH[0]}:${curM[0]}:00 ${curH[1]}:${curM[1]}:00")
                 addTimeDatas(tmp)
-                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+
                 //만약 수정 상태라면 해당 데이터 수정 해야함!!!
                 //등록 상태라면 데이터 등록
 
@@ -402,6 +402,7 @@ class TimeAddFragment : Fragment() {
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
+                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
