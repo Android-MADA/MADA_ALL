@@ -1,11 +1,10 @@
 package com.example.myapplication.HomeFunction.Model
 
-import java.time.LocalDate
-import java.time.LocalDateTime
+import com.google.gson.annotations.SerializedName
 
 data class Category(
-    val id: Int,
-    var categoryName: String,
-    var color: String,
-    var icon_id : String
+    @SerializedName("id") val id: Int,
+    @SerializedName("categoryName") var categoryName: String,
+    @SerializedName("color") var color: String,
+    @SerializedName("iconId") var iconId : Int
 )

@@ -1,22 +1,48 @@
 package com.example.myapplication.HomeFunction.viewModel
 
-import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.Icon
+import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
 import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.R
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import retrofit2.create
 import java.time.LocalDate
 
 class HomeViewModel : ViewModel() {
 
-//            Category(2, "약속", "#F0768C", Icon("1", R.drawable.ic_home_cate_plan.toString())),
-//            Category(2, "약속", "#F0768C", Icon("1", R.drawable.ic_home_cate_plan.toString())),
-//            Category(3, "잠", "#2AA1B7", Icon("1", R.drawable.ic_home_cate_study.toString())),
-//            Category(4, "친구만나기", "#F8D141", Icon("1", R.drawable.ic_home_cate_study.toString()))
+    //서버 연결
+    private val retrofitInstance  = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+    var userToken  = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
+//    fun getCategory(token : String?) = viewModelScope.launch {
+//        val category = retrofitInstance.getCategory(token)
+//        Log.d("HomeViewModel 카테고리 값 확인", category.toString())
+//        //_categoryList.value = category.data
+//    }
+
+    fun patchCategory(token: String?, categoryId : Int, data : PatchRequestCategory) = viewModelScope.launch {
+        val response = retrofitInstance.editCategory(token, categoryId, data)
+        Log.d("카테고리 patch", response.message)
+    }
+
+    fun postCategory(token: String?, data : PatchRequestCategory) = viewModelScope.launch {
+        val response = retrofitInstance.addCategory(token, data)
+        Log.d("카테고리 patch", response.message)
+    }
+
+    fun deleteCategory(token : String?,categoryId : Int) = viewModelScope.launch {
+        val response = retrofitInstance.deleteCategory(token, categoryId)
+        Log.d("카테고리 delete", response.message)
+    }
 
     //카테고리 리스트
     private val _categoryList = MutableLiveData<ArrayList<Category>>(
@@ -141,7 +167,7 @@ class HomeViewModel : ViewModel() {
 
 
 
-    fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
+    fun addCate(id : Int, cateName : String, color : String, iconName : Int, iconId : String){
         with(_categoryList.value){
             this?.add(
                 Category(id, cateName, color, iconName)
@@ -154,7 +180,7 @@ class HomeViewModel : ViewModel() {
     fun editCate(position : Int, name : String, color : String, iconName : String){
         _categoryList.value!![position].categoryName = name
         _categoryList.value!![position].color = color
-        _categoryList.value!![position].icon_id = iconName
+        _categoryList.value!![position].iconId = iconName.toInt()
 
         //서버 PATCH
     }

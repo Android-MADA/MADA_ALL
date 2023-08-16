@@ -67,7 +67,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "day")
+                        var todo = Todo(2, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
                         viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                         //서버 전송(POST)

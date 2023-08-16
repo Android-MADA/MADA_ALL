@@ -1,6 +1,5 @@
 package com.example.myapplication.HomeFunction.adapter.repeatTodo
 
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
@@ -78,7 +76,7 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
             }
         }
 
-        holder.cateIcon.setImageResource(dataSet[position].icon_id.toInt())
+        holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너

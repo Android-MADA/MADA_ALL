@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
+import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateIconAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -109,12 +110,14 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
             //데이터 변경
             if(binding.btnHomeCateAddSave.text == "수정"){
-                viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+                //viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
                 //서버 전송(PATCH)
+                viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
             }
             else {
-                viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
+                //viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
                 //서버 전송(POST)
+                viewModel.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
             }
         }
 
@@ -210,11 +213,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog : Dialog, flag : String) {
-        Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+
         if(flag == "delete"){
-            viewModel.removeCate(argsArray!![4].toInt())
+            //viewModel.removeCate(argsArray!![4].toInt())
             //카테고리, 카테고리에 해당하는 todo 삭제 서버 전송(DELETE, id)
+            viewModel.deleteCategory(viewModel.userToken, (argsArray!![0].toInt()))
         }
+        Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         dialog.dismiss()
     }
 

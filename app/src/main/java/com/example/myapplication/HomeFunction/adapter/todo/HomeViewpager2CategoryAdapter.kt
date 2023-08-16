@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
@@ -80,7 +79,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
-        holder.cateIcon.setImageResource(dataSet[position].icon_id.toInt())
+        holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너
