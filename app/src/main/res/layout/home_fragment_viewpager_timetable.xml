@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFunction.view.viewpager2.HomeViewpagerTimetableFragment">
+    tools:context=".HomeFunction.view.HomeViewpagerTimetableFragment">
 
     <TextView
         app:layout_constraintLeft_toLeftOf="parent"

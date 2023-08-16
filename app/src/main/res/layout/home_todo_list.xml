@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="13dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +18,7 @@
             android:id="@+id/iv_repeat_todo"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/home_checkbox"
+            android:background="@drawable/home_checkbox1"
             android:button="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +44,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="24dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,17 +70,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
             android:text="수정"
             android:textSize="14sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="41dp"
+            android:singleLine="true"
+            android:imeOptions="actionGo"
             />
-        <ImageView
-            android:id="@+id/iv_home_viewpager_todo_save_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_check_24"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="24dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
