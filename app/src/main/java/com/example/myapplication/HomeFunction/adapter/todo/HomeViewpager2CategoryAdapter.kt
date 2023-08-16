@@ -14,13 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
-class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category>) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
+class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
 
-    var todoDataSet : ArrayList<ArrayList<Todo>>? = null
-    var todoAdapter : HomeViewpager2TodoAdapter? = null
-    var completeNum = 0
+    lateinit var dataSet : ArrayList<Category>
+    var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
+    var repeatAdapter : HomeViewpager2TodoAdapter? = null
+    var topFlag = false
+    var viewModel : HomeViewModel? = null
+    //var completeFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -47,47 +52,43 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
     }
 
     override fun getItemCount(): Int {
-        return cateDataSet.size
+        return dataSet.size
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
-        if(todoDataSet != null){
-            if(todoDataSet!![position].isNotEmpty()){
-                todoAdapter = HomeViewpager2TodoAdapter(todoDataSet!![position], completeNum)
-                todoAdapter!!.setItemClickListener(object :
+        if(cateTodoSet != null){
+            if(cateTodoSet!![position].isNotEmpty()){
+
+                repeatAdapter = HomeViewpager2TodoAdapter()
+                repeatAdapter!!.dataSet = cateTodoSet!![position]
+                repeatAdapter!!.topFlag = topFlag
+
+                repeatAdapter!!.setItemClickListener(object :
                     HomeViewpager2TodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int) {
-                        holder.todoRv.post {
-                            notifyDataSetChanged()
-                        }
+                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
+                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
+                        viewModel!!.updateCompleteTodo()
+                        viewModel!!.updateTodoNum()
                     }
 
                 })
                 holder.todoRv.apply {
-                    adapter = todoAdapter
+                    adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
                     setHasFixedSize(true)
                 }
             }
         }
-
-        //todolist가 empty인지 확인하고
-        //todolist가 각 position에 대하여 empty인지 확인하고
-        //empty이면 adapter 연결 x
-
-
-        holder.cateIcon.setImageResource(cateDataSet[position].icon_id.name.toInt())
-        holder.cateTv.text = cateDataSet[position].categoryName
+        holder.cateIcon.setImageResource(dataSet[position].icon_id.toInt())
+        holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
             if(holder.todoAdd.isGone){
                 holder.todoAdd.isVisible = true
             }
-            else {
-                holder.todoAdd.isGone = true
-            }
+            else { holder.todoAdd.isGone = true }
         }
 
         holder.edtTodo.setOnKeyListener { view, keyCode, event ->
@@ -95,7 +96,7 @@ class HomeViewpager2CategoryAdapter(private val cateDataSet : ArrayList<Category
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, cateDataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
                 true
             }
 

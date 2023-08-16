@@ -18,7 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 
-class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var completeNum : Int) : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
+class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
+
+    lateinit var dataSet : ArrayList<Todo>
+    var topFlag = false
+    var completeFlag = false
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -70,9 +74,6 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
             //menu창 누르면 메뉴창 오픈, 각 메뉴 별로 행동 설정
             holder.tvTodo.text = dataSet[position].todoName
             holder.todoCheckBox.isChecked = dataSet[position].complete
-            if(dataSet[position].repeat == "day"){
-                holder.todoMenu.isInvisible = true
-            }
 
             holder.todoMenu.setOnClickListener {
                 val popup = PopupMenu(holder.itemView.context, it)
@@ -85,13 +86,8 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                         holder.edtTodo.setText(dataSet[position].todoName)
                     }
                     else{
-                        itemClickListener.onClick(it, position)
                         dataSet.removeAt(position)
-                        Log.d("todoDelete", "삭제하기")
                         notifyDataSetChanged()
-                        if(holder.todoCheckBox.isChecked){
-                            completeNum--
-                        }
                     }
                     true
                 }
@@ -102,14 +98,23 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                 dataSet[position].complete = buttonView.isChecked
 
                 if(isChecked){
-                    completeNum++
+                    if(completeFlag){
+                        var todoMove = dataSet[position]
+                        dataSet.removeAt(position)
+                        dataSet.add(todoMove)
+                    }
                 }
                 else {
-                    completeNum--
+                    if(completeFlag){
+                        var todoMove = dataSet[position]
+                        dataSet.removeAt(position)
+                        dataSet.add(0, todoMove)
+                    }
+
                 }
 
                 Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].complete}")
-                itemClickListener.onClick(buttonView, position)
+                itemClickListener.onClick(buttonView, position, dataSet)
             }
 
             holder.edtTodo.setOnKeyListener { view, keyCode, event ->
@@ -122,8 +127,7 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
                     holder.todoLayout.isVisible = true
                     holder.edtTodo.text.clear()
                     holder.editLayout.isGone = true
-                    itemClickListener.onClick(view, position)
-
+                    itemClickListener.onClick(view, position, dataSet)
                     true
                 }
 
@@ -133,7 +137,7 @@ class HomeViewpager2TodoAdapter(private var dataSet : ArrayList<Todo>, var compl
     }
 
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int)
+        fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
