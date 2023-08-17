@@ -24,6 +24,7 @@ class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<Hom
 
     lateinit var dataSet : ArrayList<Todo>
     var topFlag = false
+    var cateIndex = 0
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -69,6 +70,8 @@ class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<Hom
                             //dataSet[position].id.toString(),
                             dataSet[position].todoName,
                             dataSet[position].repeat,
+                            cateIndex.toString(),
+                            position.toString()
 //                            dataSet[position].repeatWeek,
 //                            dataSet[position].startRepeatDate,
 //                            dataSet[position].endRepeatDate

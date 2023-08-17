@@ -110,14 +110,16 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
             //데이터 변경
             if(binding.btnHomeCateAddSave.text == "수정"){
-                //viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+                viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
                 //서버 전송(PATCH)
-                viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
+                //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
+
+                //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
             }
             else {
-                //viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon, "1")
+                viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt())
                 //서버 전송(POST)
-                viewModel.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
+                //viewModel.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
             }
         }
 
@@ -215,9 +217,9 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onYesButtonClicked(dialog : Dialog, flag : String) {
 
         if(flag == "delete"){
-            //viewModel.removeCate(argsArray!![4].toInt())
+            viewModel.removeCate(argsArray!![4].toInt())
             //카테고리, 카테고리에 해당하는 todo 삭제 서버 전송(DELETE, id)
-            viewModel.deleteCategory(viewModel.userToken, (argsArray!![0].toInt()))
+            //viewModel.deleteCategory(viewModel.userToken, (argsArray!![0].toInt()))
         }
         Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         dialog.dismiss()

@@ -70,7 +70,8 @@ class HomeRepeatTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(1, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                        var todo = Todo(viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
+                        //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
                         viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                         //서버 전송(POST)

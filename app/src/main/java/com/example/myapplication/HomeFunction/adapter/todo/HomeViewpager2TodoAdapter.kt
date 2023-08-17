@@ -16,6 +16,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
 class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
@@ -23,6 +24,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
     lateinit var dataSet : ArrayList<Todo>
     var topFlag = false
     var completeFlag = false
+    var viewModel : HomeViewModel? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -88,6 +90,9 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                     else{
                         dataSet.removeAt(position)
                         notifyDataSetChanged()
+                        viewModel!!.updateCompleteTodo()
+                        viewModel!!.updateTodoNum()
+                        //서버 전송
                     }
                     true
                 }
@@ -128,6 +133,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                     holder.edtTodo.text.clear()
                     holder.editLayout.isGone = true
                     itemClickListener.onClick(view, position, dataSet)
+                    notifyDataSetChanged()
                     true
                 }
 

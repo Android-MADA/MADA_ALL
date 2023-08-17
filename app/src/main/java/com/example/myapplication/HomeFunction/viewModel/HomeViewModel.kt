@@ -22,12 +22,15 @@ class HomeViewModel : ViewModel() {
     //서버 연결
     private val retrofitInstance  = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-    var userToken  = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
-//    fun getCategory(token : String?) = viewModelScope.launch {
-//        val category = retrofitInstance.getCategory(token)
-//        Log.d("HomeViewModel 카테고리 값 확인", category.toString())
-//        //_categoryList.value = category.data
-//    }
+
+    var userToken  = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
+
+    fun getCategory(token : String?) = viewModelScope.launch {
+        val category = retrofitInstance.getCategory(token)
+        Log.d("HomeViewModel 카테고리 값 확인", category.toString())
+        //서버에서 받은 카테고리 데이터를 livedata에 넣기
+    // _categoryList.value = category.data
+    }
 
     fun patchCategory(token: String?, categoryId : Int, data : PatchRequestCategory) = viewModelScope.launch {
         val response = retrofitInstance.editCategory(token, categoryId, data)
@@ -36,7 +39,7 @@ class HomeViewModel : ViewModel() {
 
     fun postCategory(token: String?, data : PatchRequestCategory) = viewModelScope.launch {
         val response = retrofitInstance.addCategory(token, data)
-        Log.d("카테고리 patch", response.message)
+        Log.d("카테고리 patch", response.toString())
     }
 
     fun deleteCategory(token : String?,categoryId : Int) = viewModelScope.launch {
@@ -129,48 +132,49 @@ class HomeViewModel : ViewModel() {
         get() = _cateTodoList
 
     var size = categoryList.value?.size?.minus(1)
-    fun classifyTodo() {
-        //todo 리스트에서 cateName으로 각각 가져오기
-        //position별로 대응되도록 작성
-        //카테고리 삭제 시 todo list도 전체 삭제
-        //adpter에는 cateTodoList.value[position] 넣기
+//    fun classifyTodo() {
+//        //todo 리스트에서 cateName으로 각각 가져오기
+//        //position별로 대응되도록 작성
+//        //카테고리 삭제 시 todo list도 전체 삭제
+//        //adpter에는 cateTodoList.value[position] 넣기
+//
+//        if(todoList.value?.isEmpty() != true){
+//            var completeNum = 0
+//            for(i in todoList.value!!){
+//                for(j in 0..size!!){
+//                    if(i.categoryId.id == categoryList.value!![j].id){
+//                        _cateTodoList.value?.get(j)!!.add(i)
+//                        if(i.complete){
+//                            completeNum++
+//                        }
+//                    }
+//                }
+//            }
+//            _todoNum.value = todoList.value!!.size
+//            _completeTodoNum.value = completeNum
+//        }
+//
+//    }
 
-        if(todoList.value?.isEmpty() != true){
-            var completeNum = 0
-            for(i in todoList.value!!){
-                for(j in 0..size!!){
-                    if(i.categoryId.id == categoryList.value!![j].id){
-                        _cateTodoList.value?.get(j)!!.add(i)
-                        if(i.complete){
-                            completeNum++
-                        }
-                    }
-                }
-            }
-            _todoNum.value = todoList.value!!.size
-            _completeTodoNum.value = completeNum
-        }
-
-    }
-
-    fun classifyRepeatTodo(){
-        if(todoList.value?.isEmpty() != true){
-            for(i in todoList.value!!){
-                for(j in 0..size!!){
-                    if(i.categoryId.id == categoryList.value!![j].id && i.repeat == "day"){
-                        _repeatTodoList.value?.get(j)!!.add(i)
-                    }
-                }
-            }
-        }
-    }
+//    fun classifyRepeatTodo(){
+//        if(todoList.value?.isEmpty() != true){
+//            for(i in todoList.value!!){
+//                for(j in 0..size!!){
+//                    if(i.categoryId.id == categoryList.value!![j].id && i.repeat == "day"){
+//                        _repeatTodoList.value?.get(j)!!.add(i)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
 
-    fun addCate(id : Int, cateName : String, color : String, iconName : Int, iconId : String){
+    fun addCate(id : Int, cateName : String, color : String, iconName : Int){
         with(_categoryList.value){
             this?.add(
-                Category(id, cateName, color, iconName)
+                //Category(id, cateName, color, iconName)
+                Category(id, cateName, color)
             )
         }
         //서버 POST
@@ -180,7 +184,7 @@ class HomeViewModel : ViewModel() {
     fun editCate(position : Int, name : String, color : String, iconName : String){
         _categoryList.value!![position].categoryName = name
         _categoryList.value!![position].color = color
-        _categoryList.value!![position].iconId = iconName.toInt()
+        //_categoryList.value!![position].iconId = iconName.toInt()
 
         //서버 PATCH
     }
@@ -197,7 +201,11 @@ class HomeViewModel : ViewModel() {
     }
 
     //todo수정
-    fun editTodo(){
+    fun editTodo(cateIndex : Int, position : Int, todoName : String, start : LocalDate?, end : LocalDate?, repeat : String){
+        _cateTodoList.value!![cateIndex][position].todoName = todoName
+        _cateTodoList.value!![cateIndex][position].repeat = repeat
+        //_cateTodoList.value!![cateIndex][position].start = start
+        //_cateTodoList.value!![cateIndex][position].end = end
 
     }
 
@@ -244,8 +252,8 @@ class HomeViewModel : ViewModel() {
     }
 
     //todo삭제
-    fun deleteTodo(){
-
+    fun deleteTodo(cateIndex : Int, position : Int){
+        _cateTodoList.value!![cateIndex].removeAt(position)
     }
 
     //repeatTodo 추가
