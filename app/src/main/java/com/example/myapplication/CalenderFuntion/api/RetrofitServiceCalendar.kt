@@ -17,12 +17,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetrofitServiceCalendar {
-
-
     @GET("/api/calendar/")
     fun allCalRequest(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
-
     @GET("/api/calendar/")
     fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: String, @Query("month") month: String
     ) : Call<CalendarDatas>

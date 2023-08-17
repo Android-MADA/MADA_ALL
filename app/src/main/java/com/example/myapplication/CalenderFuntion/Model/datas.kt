@@ -2,16 +2,23 @@ package com.example.myapplication.CalenderFuntion.Model
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+
 data class CalendarData2(
     @SerializedName("calendarName") val name : String,
     @SerializedName("startDate") val start_date: String,
     @SerializedName("endDate") val end_date: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("dday") val d_day: String,
-    @SerializedName("memo") val memo: String
-
-)
+    @SerializedName("d_day") val d_day: String,
+    @SerializedName("memo") val memo: String,
+    @SerializedName("startTime") val start_time: String,
+    @SerializedName("endTime") val end_time: String
+){
+    fun toJson(): String {
+        val gson = Gson()
+        return gson.toJson(this)
+    }
+}
 data class CalendarDataId(
     @SerializedName("calendarName") val name : String,
     @SerializedName("startDate") val start_date: String,
@@ -20,10 +27,9 @@ data class CalendarDataId(
     @SerializedName("endTime") val end_time: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("dday") val d_day: String,
+    @SerializedName("d_day") val d_day: String,
     @SerializedName("memo") val memo: String,
     @SerializedName("id") val id: Int
-
 ) {
 }
 data class AddCalendarData (
