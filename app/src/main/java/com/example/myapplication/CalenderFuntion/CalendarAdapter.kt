@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -106,10 +107,14 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val bundle = Bundle()
-                bundle.putString("preSchedule", "$iYear-$iMonth-$iDay-")
-                bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay-")
+                bundle.putString("preSchedule", "$iYear-$iMonth-$iDay")
+                bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay")
                 bundle.putString("Token",token)
-                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
+                if(mDialogView.findViewById<TextView>(R.id.textTitle).text.toString()=="")
+                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
+                else {
+                    // 등록
+                }
                 mBuilder.dismiss()
             })
 

@@ -213,7 +213,7 @@ class HomeTimetableFragment : Fragment() {
                 } else {
                     val noScheduleDuration = start - tmp
                     entries.add(PieEntry(noScheduleDuration.toFloat(), "999"))      // 스케줄 없는 시간
-                    colorsItems.add(Color.parseColor("#FFFFFF"))
+                    colorsItems.add(Color.parseColor("#F0F0F0"))
                     entries.add(PieEntry((end-start).toFloat(), data.divisionNumber.toString()))
                     colorsItems.add(Color.parseColor(data.colorCode))
                     tmp = end
@@ -227,7 +227,7 @@ class HomeTimetableFragment : Fragment() {
             val h = 23 - pieChartDataArray[pieChartDataArray.size-1].endHour
             val m = 60 - pieChartDataArray[pieChartDataArray.size-1].endMin
             entries.add(PieEntry((h*60+m).toFloat(), "999"))
-            colorsItems.add(Color.parseColor("#FFFFFF"))
+            colorsItems.add(Color.parseColor("#F0F0F0"))
         }
         // 왼쪽 아래 설명 제거
         val legend = chart.legend
