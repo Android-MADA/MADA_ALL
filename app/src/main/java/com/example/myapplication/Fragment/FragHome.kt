@@ -35,8 +35,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //viewModel.classifyTodo()
-        Log.d("classify", viewModel.cateTodoList.value.toString())
+
     }
 
 
@@ -46,6 +45,10 @@ class FragHome : Fragment() {
     ): View? {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        //서버에서 cateogry, todo받아오기
+
+
 
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
@@ -59,31 +62,24 @@ class FragHome : Fragment() {
         val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        //viewModel.getCategory(viewModel.userToken)
-
-        api.getCategory(token).enqueue(object : Callback<CategoryList>{
-            override fun onResponse(call: Call<CategoryList>, response: Response<CategoryList>) {
-                Log.d("서버 통신", response.toString())
+        viewModel.getCategory(viewModel.userToken)
+        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
+        api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
+            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                Log.d("getTodo", response.isSuccessful.toString())
             }
 
-            override fun onFailure(call: Call<CategoryList>, t: Throwable) {
-                Log.d("서버 통신", "실패")
+            override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                Log.d("getTodo", "todoGet 실패")
             }
 
         })
-
-//        api.getAllTodo(token, LocalDate.parse("2023-08-16")).enqueue(object : Callback<TodoList>{
-//            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-//                Log.d("서버 todo 통신", response.toString())
-//            }
-//
-//            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-//                Log.d("서버 todo 통신", "실패")
-//            }
-//
-//        })
-
-        //서버 연결 끝
+        viewModel.todoList.observe(viewLifecycleOwner, Observer {
+            viewModel.classifyTodo()
+            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+                Log.d("FragHome 서버", viewModel.cateTodoList.toString())
+            })
+        })
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()

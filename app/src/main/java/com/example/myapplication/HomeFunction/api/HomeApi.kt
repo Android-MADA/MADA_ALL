@@ -23,10 +23,10 @@ interface HomeApi {
 
     //todo조회
     @GET("/api/home/todo/date/{date}")
-    suspend fun getAllTodo(
+    fun getAllTodo(
         @Header("Autorization") token: String?,
-        @Path("date") date: LocalDate
-    ): TodoList
+        @Path("date") date: String
+    ): Call<TodoList>
 
     //todo추가
     @POST("/api/home/todo")
@@ -70,9 +70,9 @@ interface HomeApi {
 
     //카테고리 조회 -> 확인 완
     @GET("/api/home/category")
-    fun getCategory(
+    suspend fun getCategory(
         @Header("Authorization") token : String?
-    ): Call<CategoryList>
+    ): CategoryList
 
     //카테고리 추가
     @POST("/api/home/category")

@@ -1,18 +1,24 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
@@ -21,6 +27,7 @@ class HomeCategoryFragment : Fragment() {
 
     lateinit var binding : HomeFragmentCategoryBinding
     private val viewModel : HomeViewModel by activityViewModels()
+    var cateAdapter: HomeCategoryAdapter? = null
 
     private var bottomFlag = true
 
@@ -44,7 +51,36 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categoryAdapter = viewModel.categoryList.value?.let { HomeCategoryAdapter(it) }
+        val bundle = Bundle()
+
+
+        viewModel.getCategory(viewModel.userToken)
+
+        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
+            if (viewModel.categoryList.value?.isNotEmpty() == true) {
+                //rv연결
+                cateAdapter = HomeCategoryAdapter()
+                cateAdapter!!.dataSet = viewModel.categoryList.value!!
+
+                cateAdapter!!.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
+                    override fun onClick(v: View, position: Int, dataSet: Category) {
+                        //페이지 이동 + 데이터 전달
+                        bundle.putStringArrayList("key", arrayListOf(
+                            //dataSet.id.toString(),
+                            dataSet.categoryName,
+                            //dataSet.iconId.toString(),
+                            dataSet.color,
+                            position.toString()
+                        ))
+                        Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
+
+                    }
+                })
+
+                binding.rvHomeCategory.adapter = cateAdapter
+                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            }
+        })
 
         binding.ivHomeCategoryBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
@@ -55,29 +91,32 @@ class HomeCategoryFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 
-        val bundle = Bundle()
 
-        categoryAdapter?.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int, dataSet: Category) {
-                //페이지 이동 + 데이터 전달
-                bundle.putStringArrayList("key", arrayListOf(
-                    //dataSet.id.toString(),
-                    dataSet.categoryName,
-                    //dataSet.iconId.toString(),
-                    dataSet.color,
-                    position.toString()
-                ))
-                Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
 
-            }
-        })
+        if (viewModel.categoryList.value?.isNotEmpty() == true) {
+            //rv연결
+            cateAdapter = HomeCategoryAdapter()
+            cateAdapter!!.dataSet = viewModel.categoryList.value!!
 
-        binding.rvHomeCategory.adapter = categoryAdapter
-        binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            cateAdapter!!.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
+                override fun onClick(v: View, position: Int, dataSet: Category) {
+                    //페이지 이동 + 데이터 전달
+                    bundle.putStringArrayList("key", arrayListOf(
+                        //dataSet.id.toString(),
+                        dataSet.categoryName,
+                        //dataSet.iconId.toString(),
+                        dataSet.color,
+                        position.toString()
+                    ))
+                    Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
 
-        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
-            categoryAdapter?.notifyDataSetChanged()
-        })
+                }
+            })
+
+            binding.rvHomeCategory.adapter = cateAdapter
+            binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+        }
+        //
 
     }
     override fun onDestroyView() {

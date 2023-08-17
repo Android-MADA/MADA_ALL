@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,10 @@ class RepeatTodoAddFragment : Fragment() {
 
         val argsArrayAdd = requireArguments().getStringArrayList("keyAdd")
         val argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
+        //0 todo
+        //1 repeat
+        //2 cateIndex
+        //3 position(todo)
 
         if(argsArrayAdd != null){
             binding.btnHomeRepeatAddSave.text = "등록"
@@ -76,6 +81,7 @@ class RepeatTodoAddFragment : Fragment() {
             if(binding.btnHomeRepeatAddSave.text == "삭제"){
                 //수정 사항 서버 전송
                 viewModel.editTodo(argsArrayEdit!![2].toInt(), argsArrayEdit!![3].toInt(), binding.edtHomeCategoryName.text.toString(), null, null, "N")
+                Log.d("repeatEdit", viewModel.cateTodoList.value.toString())
 
             }
             Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)

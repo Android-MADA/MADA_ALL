@@ -6,5 +6,5 @@ data class CategoryList(
     @SerializedName("status") val status: Int,
     @SerializedName("success") val success: Boolean,
     @SerializedName("message") val message: String,
-    @SerializedName("data") val data: List<Category>
+    @SerializedName("data") val data: ArrayList<Category>
 )

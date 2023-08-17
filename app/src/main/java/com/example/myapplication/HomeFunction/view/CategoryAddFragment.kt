@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -61,12 +62,15 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         if(arguments != null){
             //데이터 뿌리기
             argsArray = requireArguments().getStringArrayList("key")!!
-            binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
-            binding.edtHomeCategoryName.setText(argsArray!![1])
-            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
+//            binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
+//            binding.edtHomeCategoryName.setText(argsArray!![1])
+//            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
+            binding.edtHomeCategoryName.setText(argsArray!![0])
+            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![1]))
             // 수정버튼 활성화
             binding.btnHomeCateAddSave.text = "수정"
             //삭제버튼 활성화
@@ -106,20 +110,27 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         binding.btnHomeCateAddSave.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
 
-            //데이터 변경
-            if(binding.btnHomeCateAddSave.text == "수정"){
-                viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
-                //서버 전송(PATCH)
-                //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
 
-                //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
+            if(binding.edtHomeCategoryName.text.isBlank()){
+                Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
-                viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt())
-                //서버 전송(POST)
-                //viewModel.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
+                //데이터 변경
+                if(binding.btnHomeCateAddSave.text == "수정"){
+                    //viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
+                    //서버 전송(PATCH)
+                    //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
+                    //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
+
+                    Log.d("cateEdit", "확인")}
+                else {
+                    //viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt())
+                    //서버 전송(POST)
+                    Log.d("cateAdd", "확인")
+                    viewModel.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
+                }
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             }
         }
 
