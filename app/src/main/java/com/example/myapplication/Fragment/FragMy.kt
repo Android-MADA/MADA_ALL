@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MyFuction.MyListAdapter
 import com.example.myapplication.MyFuction.MyListItem
+import com.example.myapplication.MyFuction.MyLogoutPopupActivity
 import com.example.myapplication.MyFuction.MyNoticeActivity
+import com.example.myapplication.MyFuction.MyNoticeSetActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
-import com.example.myapplication.MyFuction.MyProfileNickActivity
 import com.example.myapplication.MyFuction.MyRecordDayActivity
 import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
@@ -42,10 +43,10 @@ class FragMy : Fragment() {
         val MyList = arrayListOf(
             MyListItem("프로필 편집",  MyProfileActivity::class.java),
             MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림", null),
+            MyListItem("알림", MyNoticeSetActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", Splash2Activity::class.java),
+            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 

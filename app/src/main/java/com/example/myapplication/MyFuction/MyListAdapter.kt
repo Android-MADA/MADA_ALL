@@ -39,4 +39,3 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
 
     }
 }
-
