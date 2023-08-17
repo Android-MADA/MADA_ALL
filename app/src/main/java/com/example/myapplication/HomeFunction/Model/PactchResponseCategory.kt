@@ -3,6 +3,6 @@ package com.example.myapplication.HomeFunction.Model
 import com.google.gson.annotations.SerializedName
 
 data class PactchResponseCategory(
-    @SerializedName("success") val success : Boolean,
-    @SerializedName("message") val message : String
+    @SerializedName("data") val data: Category
+    //@SerializedName("categoryName") val categoryName : String
 )

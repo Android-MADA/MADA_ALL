@@ -119,6 +119,13 @@ class HomeCategoryFragment : Fragment() {
         //
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCategory(viewModel.userToken)
+        cateAdapter?.notifyDataSetChanged()
+
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)

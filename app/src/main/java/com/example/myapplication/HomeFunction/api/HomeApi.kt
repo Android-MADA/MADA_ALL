@@ -1,12 +1,14 @@
 package com.example.myapplication.HomeFunction.api
 
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -21,11 +23,11 @@ import java.time.LocalDate
 
 interface HomeApi {
 
-    //todo조회
+    //todo조회 -> 확인 완
     @GET("/api/home/todo/date/{date}")
     fun getAllTodo(
-        @Header("Autorization") token: String?,
-        @Path("date") date: String
+        @Header("Authorization") token: String?,
+        @Path("date", encoded = true) date: String
     ): Call<TodoList>
 
     //todo추가
@@ -72,19 +74,26 @@ interface HomeApi {
     @GET("/api/home/category")
     suspend fun getCategory(
         @Header("Authorization") token : String?
-    ): CategoryList
+    ): Response<CategoryList>
 
     //카테고리 추가
     @POST("/api/home/category")
     suspend fun addCategory(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token : String?,
         @Body data : PatchRequestCategory
-        ): PactchResponseCategory
+    ): PactchResponseCategory
+
+    // 카테고리 추가(2) -> 확인 완
+    @POST("/api/home/category")
+    fun postCategory(
+        @Header("Authorization") token : String?,
+        @Body data : PatchRequestCategory
+    ): Call<PactchResponseCategory>
 
     //카테고리 수정
     @PATCH("/api/home/category/{categoryId}")
     suspend fun editCategory(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
         @Path("categoryId") categoryId: Int,
         @Body data : PatchRequestCategory
     ): PactchResponseCategory
@@ -92,7 +101,7 @@ interface HomeApi {
     //카테고리 삭제
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
         @Path("categoryId") categoryId: Int
     ): PactchResponseCategory
 
