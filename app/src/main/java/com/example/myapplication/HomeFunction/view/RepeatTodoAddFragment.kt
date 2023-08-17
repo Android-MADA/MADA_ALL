@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRepeatTodoAddBinding
@@ -49,6 +51,10 @@ class RepeatTodoAddFragment : Fragment() {
 
         val argsArrayAdd = requireArguments().getStringArrayList("keyAdd")
         val argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
+        //0 todo
+        //1 repeat
+        //2 cateIndex
+        //3 position(todo)
 
         if(argsArrayAdd != null){
             binding.btnHomeRepeatAddSave.text = "등록"
@@ -74,6 +80,8 @@ class RepeatTodoAddFragment : Fragment() {
         binding.ivHomeRepeatAddBack.setOnClickListener {
             if(binding.btnHomeRepeatAddSave.text == "삭제"){
                 //수정 사항 서버 전송
+                viewModel.editTodo(argsArrayEdit!![2].toInt(), argsArrayEdit!![3].toInt(), binding.edtHomeCategoryName.text.toString(), null, null, "N")
+                Log.d("repeatEdit", viewModel.cateTodoList.value.toString())
 
             }
             Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
@@ -152,10 +160,14 @@ class RepeatTodoAddFragment : Fragment() {
                 if(binding.btnHomeRepeatAddSave.text == "삭제"){
                     //삭제 서버 전송
                     //id = argsEdit으로 조합
+                    viewModel.deleteTodo(argsArrayEdit!![2].toInt(), argsArrayEdit!![3].toInt())
                 }
                 else {
                     //add 서버 전송
                     //category = argsAdd로 조합
+                    var todo = Todo(viewModel.categoryList!!.value!![argsArrayEdit!![2].toInt()], binding.edtHomeCategoryName.text.toString(), false, "N")
+                    //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                    viewModel.addTodo(argsArrayEdit!![2].toInt(), todo, viewModel.todoTopFlag.value!!)
                 }
                 Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
             }

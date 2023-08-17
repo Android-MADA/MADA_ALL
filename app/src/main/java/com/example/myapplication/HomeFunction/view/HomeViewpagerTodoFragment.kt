@@ -27,7 +27,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
     lateinit var binding: HomeFragmentViewpagerTodoBinding
     private val viewModel: HomeViewModel by activityViewModels()
-
+    var cateAdapter: HomeViewpager2CategoryAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -50,13 +50,13 @@ class HomeViewpagerTodoFragment : Fragment() {
 
         if (viewModel.categoryList.value?.isNotEmpty() == true) {
             //rv연결
-            val cateAdapter = HomeViewpager2CategoryAdapter()
-            cateAdapter.dataSet = viewModel.categoryList.value!!
-            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
-            cateAdapter.topFlag = viewModel.todoTopFlag.value!!
-            cateAdapter.viewModel = viewModel
+            cateAdapter = HomeViewpager2CategoryAdapter()
+            cateAdapter!!.dataSet = viewModel.categoryList.value!!
+            cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
+            cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
+            cateAdapter!!.viewModel = viewModel
 
-            cateAdapter.setItemClickListener(object :
+            cateAdapter!!.setItemClickListener(object :
                 HomeViewpager2CategoryAdapter.OnItemClickListener {
                 override fun onClick(
                     v: View,
@@ -67,16 +67,25 @@ class HomeViewpagerTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(2, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                        var todo = Todo(
+                            viewModel.categoryList!!.value!![position],
+                            edt.text.toString(),
+                            false,
+                            "N"
+                        )
+                        //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
                         viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                         //서버 전송(POST)
 
                         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
 
-                            cateAdapter.cateTodoSet = viewModel.cateTodoList.value
+                            cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
                             binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
-                            Log.d("viewpagerTodo", "catetodo변경 확인")
+                            Log.d(
+                                "viewpagerTodo",
+                                "catetodo변경 확인 ${viewModel.cateTodoList.toString()}"
+                            )
                             viewModel.updateCompleteTodo()
                             viewModel.updateTodoNum()
                         })
@@ -101,6 +110,62 @@ class HomeViewpagerTodoFragment : Fragment() {
 //            }
             Log.d("viewpagerepeatTodo", "catetodo변경 확인")
         })
+        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
+
+            if (viewModel.categoryList.value?.isNotEmpty() == true) {
+                //rv연결
+                cateAdapter = HomeViewpager2CategoryAdapter()
+                cateAdapter!!.dataSet = viewModel.categoryList.value!!
+                cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
+                cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
+                cateAdapter!!.viewModel = viewModel
+
+                cateAdapter!!.setItemClickListener(object :
+                    HomeViewpager2CategoryAdapter.OnItemClickListener {
+                    override fun onClick(
+                        v: View,
+                        position: Int,
+                        cate: String,
+                        edt: EditText,
+                        layout: LinearLayout
+                    ) {
+                        if (edt.text.toString() != "") {
+
+                            var todo = Todo(
+                                viewModel.categoryList!!.value!![position],
+                                edt.text.toString(),
+                                false,
+                                "N"
+                            )
+                            //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                            viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
+
+                            //서버 전송(POST)
+
+                            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+
+                                cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
+                                binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
+                                Log.d(
+                                    "viewpagerTodo",
+                                    "catetodo변경 확인 ${viewModel.cateTodoList.toString()}"
+                                )
+                                viewModel.updateCompleteTodo()
+                                viewModel.updateTodoNum()
+                            })
+
+                        }
+                        edt.text.clear()
+                        layout.isGone = true
+                    }
+                })
+
+                binding.rvHomeCategory.adapter = cateAdapter
+                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            }
+                Log.d("viewpagerCate", cateAdapter?.dataSet.toString())
+        })
+
 
     }
 

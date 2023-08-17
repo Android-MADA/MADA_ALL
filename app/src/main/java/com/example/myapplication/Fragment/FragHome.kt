@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -34,8 +35,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.classifyTodo()
-        Log.d("classify", viewModel.cateTodoList.value.toString())
+
     }
 
 
@@ -46,6 +46,10 @@ class FragHome : Fragment() {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        //서버에서 cateogry, todo받아오기
+
+
+
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
 
@@ -55,20 +59,27 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-        api.getCategory(token).enqueue(object : Callback<CategoryList>{
-            override fun onResponse(call: Call<CategoryList>, response: Response<CategoryList>) {
-                Log.d("서버 통신", response.body().toString())
+
+        viewModel.getCategory(viewModel.userToken)
+        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
+        api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
+            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                Log.d("getTodo", response.isSuccessful.toString())
             }
 
-            override fun onFailure(call: Call<CategoryList>, t: Throwable) {
-                Log.d("서버 통신", "실패")
+            override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                Log.d("getTodo", "todoGet 실패")
             }
 
         })
-
-        //서버 연결 끝
+        viewModel.todoList.observe(viewLifecycleOwner, Observer {
+            viewModel.classifyTodo()
+            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+                Log.d("FragHome 서버", viewModel.cateTodoList.toString())
+            })
+        })
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()
@@ -135,6 +146,7 @@ class FragHome : Fragment() {
             //서버에서 category 새로 받아오기(date)
             //서버에서 Tood 새로 받아오기(date)
             //서버에서 ment 새로 받아오기(date)
+
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
             viewModel.updateCateTodoList()
         })
