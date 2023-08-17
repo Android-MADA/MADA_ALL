@@ -61,6 +61,7 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
                 repeatAdapter = HomeRepeatTodoAdapter(view)
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
+                repeatAdapter!!.cateIndex = position
 
                 repeatAdapter!!.setItemClickListener(object :
                     HomeRepeatTodoAdapter.OnItemClickListener {
@@ -76,7 +77,7 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
             }
         }
 
-        holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
+        //holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너

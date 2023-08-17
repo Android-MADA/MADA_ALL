@@ -5,10 +5,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
-import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
-import com.example.myapplication.HomeFunction.Model.ScheduleResponse
-import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
 import retrofit2.http.Body
@@ -26,11 +23,11 @@ import java.time.LocalDate
 interface HomeApi {
 
     //todo조회
-    @GET("api/home/todo/date/{date}")
+    @GET("/api/home/todo/date/{date}")
     fun getAllTodo(
         @Header("Autorization") token: String?,
-        @Path("date") date: String
-    ): Call<TodoList>
+        @Path("date") date: LocalDate
+    ): TodoList
 
     //todo추가
     @POST("/api/home/todo")
@@ -78,11 +75,11 @@ interface HomeApi {
     ): Call<ScheduleResponse>
 
 
-    //카테고리 조회
+    //카테고리 조회 -> 확인 완
     @GET("/api/home/category")
-    fun getCategory(
+    suspend fun getCategory(
         @Header("Authorization") token : String?
-    ): Call<CategoryList>
+    ): CategoryList
 
     //카테고리 추가
     @POST("/api/home/category")

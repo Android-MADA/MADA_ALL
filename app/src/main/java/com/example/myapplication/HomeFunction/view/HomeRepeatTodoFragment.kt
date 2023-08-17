@@ -30,7 +30,11 @@ class HomeRepeatTodoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //repeatTodo가져오기
+
+
+
+
+
     }
 
     override fun onCreateView(
@@ -40,6 +44,15 @@ class HomeRepeatTodoFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.home_fragment_repeat_todo, container, false)
         hideBottomNavigation(bottomFlag, activity)
+
+        //서버에서 cateogry, todo받아오기
+
+        viewModel.todoList.observe(viewLifecycleOwner, Observer {
+            viewModel.classifyTodo()
+            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+                Log.d("repeatTodo 서버", viewModel.cateTodoList.value.toString())
+            })
+        })
         return binding.root
     }
 
@@ -70,8 +83,9 @@ class HomeRepeatTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(1, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
-                        viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
+                        var todo = Todo(viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
+                        //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                        viewModel.addTodo(position, todo, false)
 
                         //서버 전송(POST)
 
@@ -80,6 +94,8 @@ class HomeRepeatTodoFragment : Fragment() {
                             cateAdapter.cateTodoSet = viewModel.cateTodoList.value
                             binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
                             Log.d("repeatTodo", "catetodo변경 확인")
+                            Log.d("Repeat1", cateAdapter.cateTodoSet.toString())
+                            Log.d("repeat", viewModel.cateTodoList.value.toString())
                         })
 
                     }
