@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class custom_color : Fragment() {
@@ -43,6 +47,7 @@ class custom_color : Fragment() {
     ): View? {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
+        getCustomItemCheck("color")
 
 
         binding.btnColorBasic.setOnClickListener{
@@ -158,6 +163,25 @@ class custom_color : Fragment() {
         binding.btnColorPink.setImageResource(R.drawable.color_pink)
         binding.btnColorPurple.setImageResource(R.drawable.color_purple)
         binding.btnColorYellow.setImageResource(R.drawable.color_yellow)
+    }
+
+    fun getCustomItemCheck(itemType: String) {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    Log.d("response", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                } else {
+                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
     }
 
 
