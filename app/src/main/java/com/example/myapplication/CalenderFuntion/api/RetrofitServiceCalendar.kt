@@ -31,7 +31,7 @@ interface RetrofitServiceCalendar {
 
     //안해봄
     @POST("/api/calendar/add")
-    fun addCal(@Header("Authorization") token: String?, @Body data: AddCalendarData
+    fun addCal(@Header("Authorization") token: String?, @Body data: CalendarData2
     ) : Call<ResponseSample>
 
 

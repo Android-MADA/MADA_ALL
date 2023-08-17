@@ -14,8 +14,8 @@ data class calendarList(
     @SerializedName("endTime") val endTime : String
 )
 data class data(
-    @SerializedName("calendarList") val calendarList : calendarList,
-    @SerializedName("todoList") val todoList : todoList
+    @SerializedName("calendarList") val calendarList : ArrayList<calendarList>,
+    @SerializedName("todoList") val todoList : ArrayList<todoList>
 )
 data class ScheduleTodoCalList(
     @SerializedName("data") val datas : data

@@ -9,7 +9,7 @@ data class CalendarData2(
     @SerializedName("endDate") val end_date: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("d_day") val d_day: String,
+    @SerializedName("dday") val d_day: String,
     @SerializedName("memo") val memo: String,
     @SerializedName("startTime") val start_time: String,
     @SerializedName("endTime") val end_time: String
@@ -27,7 +27,7 @@ data class CalendarDataId(
     @SerializedName("endTime") val end_time: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("d_day") val d_day: String,
+    @SerializedName("dday") val d_day: String,
     @SerializedName("memo") val memo: String,
     @SerializedName("id") val id: Int
 ) {
@@ -36,7 +36,10 @@ data class AddCalendarData (
     @SerializedName("data") val datas: CalendarData2
 
 ) {
-
+    fun toJson(): String {
+        val gson = Gson()
+        return gson.toJson(this)
+    }
 }
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,

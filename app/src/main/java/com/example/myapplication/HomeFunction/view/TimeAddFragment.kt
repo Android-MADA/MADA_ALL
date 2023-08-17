@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
+import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
+import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
@@ -440,6 +442,7 @@ class TimeAddFragment : Fragment() {
             }
         })
     }
+
     private fun editTimeData(id : Int,data : ScheduleAdd) {
         val call = service.editTime(token, id,data)
         call.enqueue(object : Callback<ScheduleResponse> {
@@ -458,6 +461,46 @@ class TimeAddFragment : Fragment() {
                 }
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+
+    }
+    // CalendarDATA(
+    //                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
+    //                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
+    //            ),
+    private fun getTodoCalDatas(date : String) {
+        val call = service.getCalendarTodo(token,date)
+        val arrays = ArrayList<CalendarDATA>()
+        call.enqueue(object : Callback<ScheduleTodoCalList> {
+            override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for(data in datas.todoList) {
+                                //arrays.add(CalendarDATA("","","","","",
+                                 //                   "","","",data.todoName,data.iconId,false,"","TODO",7))
+                            }
+                            for(data in datas.calendarList) {
+                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                    data.color,"","",data.CalendarName,1,false,"","CAL",7))
+                            }
+                        } else {
+
+                            Log.d("2222","Request was not successful. Message: hi")
+                        }
+                    } else {
+                        Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    Log.d("333","itemType: ${response.code()} ${response.message()}")
+                    Log.d("333213",response.errorBody()?.string()!!)
+                }
+            }
+            override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
             }
         })
