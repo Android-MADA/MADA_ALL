@@ -2,9 +2,8 @@ package com.example.myapplication.CalenderFuntion.Model
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-
 data class CalendarData2(
-    @SerializedName("calenderName") val name : String,
+    @SerializedName("calendarName") val name : String,
     @SerializedName("startDate") val start_date: String,
     @SerializedName("endDate") val end_date: String,
     @SerializedName("color") val color: String,
@@ -12,11 +11,20 @@ data class CalendarData2(
     @SerializedName("dday") val d_day: String,
     @SerializedName("memo") val memo: String
 
+)
+data class CalendarDataId(
+    @SerializedName("calendarName") val name : String,
+    @SerializedName("startDate") val start_date: String,
+    @SerializedName("endDate") val end_date: String,
+    @SerializedName("startTime") val start_time: String,
+    @SerializedName("endTime") val end_time: String,
+    @SerializedName("color") val color: String,
+    @SerializedName("repeat") val repeat: String,
+    @SerializedName("dday") val d_day: String,
+    @SerializedName("memo") val memo: String,
+    @SerializedName("id") val id: Int
+
 ) {
-    fun toJson(): String {
-        val gson = Gson()
-        return gson.toJson(this)
-    }
 }
 data class AddCalendarData (
     @SerializedName("data") val datas: CalendarData2
@@ -26,7 +34,7 @@ data class AddCalendarData (
 }
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,
-    @SerializedName("data") val datas: List<CalendarData2> // 생성자, getter, setter 등의 메서드를 정의해주세요.
+    @SerializedName("data") val datas: List<CalendarDataId> // 생성자, getter, setter 등의 메서드를 정의해주세요.
 
 ) {
 

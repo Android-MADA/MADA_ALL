@@ -5,6 +5,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.TodoList
@@ -60,7 +61,7 @@ interface HomeApi {
 
     //시간표 추가
     @POST("/api/home/time")
-    fun addTime(@Header("Authorization") token : String?, @Body data: Schedule
+    fun addTime(@Header("Authorization") token : String?, @Body data: ScheduleAdd
     ): Call<ScheduleResponse>
 
     //시간표 수정

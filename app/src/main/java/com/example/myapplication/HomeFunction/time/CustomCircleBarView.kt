@@ -28,9 +28,6 @@ class CustomCircleBarView : View {
 
         val centerX = width / 2.toFloat()
         val centerY = height / 2.toFloat()
-        Log.d("xy","${width} ${height}")
-
-        Log.d("xy"," ${smallXY}")
         val radius = smallXY/2 - smallXY / 30.toFloat()// 반지름 크기 (원의 크기 조절)
         val rectLeft = centerX - radius
         val rectTop = centerY - radius

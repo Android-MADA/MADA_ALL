@@ -411,6 +411,8 @@ class CalendarAddFragment : Fragment() {
             }
 
         }
+        val datasDday = ArrayList<CalendarDATA>()
+        /*
         val datasDday = arrayOf(        //임시 데이터, 끝나는 날짜 순서대로 정렬해야함
             CalendarDATA(
                 "2023-7-21", "2023-7-21", "2023-8-31", "", "",
@@ -423,8 +425,10 @@ class CalendarAddFragment : Fragment() {
             CalendarDATA(
                     "2023-7-1", "2023-7-1", "2023-11-27", "", "",
             "#F5EED1", "", "Y", "생일 ", -1, true, "이날을 기다리고 있어","CAL"
+            )
         )
-        )
+         */
+
         binding.submitBtn.setOnClickListener {
             if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
@@ -561,7 +565,7 @@ class CalendarAddFragment : Fragment() {
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else if(binding.submitBtn.text =="수정"){
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString()) )
 
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else {
