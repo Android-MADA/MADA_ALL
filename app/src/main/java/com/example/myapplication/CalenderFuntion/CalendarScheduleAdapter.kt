@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,6 +93,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
                     bundle.putString("memo",item.memo)
                 bundle.putString("color",item.color)
                 bundle.putString("Token",token)
+                bundle.putInt("id",item.id)
                 Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
                 parentDialog.dismiss()
 
