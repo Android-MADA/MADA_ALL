@@ -66,6 +66,7 @@ class CalendarAddFragment : Fragment() {
 
     var curColor ="#89A9D9"
     var curDday ="N"
+    var curRepeat = "No"
 
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -316,6 +317,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
+            curRepeat = "No"
             chip1.setChipBackgroundColorResource(R.color.sub5)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -328,6 +330,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
+            curRepeat = "Day"
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.sub5)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -340,6 +343,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
+            curRepeat = "Week"
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.sub5)
@@ -352,6 +356,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
+            curRepeat = "Month"
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -364,6 +369,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
+            curRepeat = "Year"
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -557,14 +563,14 @@ class CalendarAddFragment : Fragment() {
                 else {
                     if(binding.submitBtn.text =="등록") {
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                            curColor,binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString(),
+                            curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                             timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else if(binding.submitBtn.text =="수정"){
                         //dasdasd
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                            curColor,binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString(),
+                            curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                             timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
@@ -697,9 +703,9 @@ class CalendarAddFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,AddCalendarData(data))
+        val call1 = service.addCal(token,(data))
         Log.d("token",token)
-        Log.d("data",data.toJson())
+        Log.d("data",AddCalendarData(data).toJson())
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {

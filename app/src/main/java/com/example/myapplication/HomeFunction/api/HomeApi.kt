@@ -5,7 +5,10 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.Model.ScheduleResponse
+import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
 import retrofit2.http.Body
@@ -26,8 +29,8 @@ interface HomeApi {
     @GET("/api/home/todo/date/{date}")
     fun getAllTodo(
         @Header("Autorization") token: String?,
-        @Path("date") date: LocalDate
-    ): TodoList
+        @Path("date") date: String
+    ): Call<TodoList>
 
     //todo추가
     @POST("/api/home/todo")
@@ -49,7 +52,7 @@ interface HomeApi {
 
     //시간표 추가 시 일정 및 todo조회
     @GET("/api/home/time/search/date/{date}")
-    suspend fun getCalendarTodo(
+    fun getCalendarTodo(
         @Header("Authorization") token : String?, @Path("date") date : String
     ) :Call<ScheduleTodoCalList>
 
