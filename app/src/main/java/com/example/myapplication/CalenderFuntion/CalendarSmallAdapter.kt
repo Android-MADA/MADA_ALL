@@ -1,6 +1,7 @@
 package com.example.myapplication.CalenderFuntion
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,16 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import java.lang.StringBuilder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 
 class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal : LinearLayout,
-                           private val preNexttext: TextView, private val ddaytext : TextView)
+                           private val preNexttext: TextView, private val ddaytext : TextView,
+                           private var stringText : TextView)
+
     : RecyclerView.Adapter<CalendarSmallAdapter.ItemViewHolder>() {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -50,6 +54,8 @@ class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal
         }
 
         holder.itemView.setOnClickListener {
+            stringText.text = "${iYear}-${iMonth}-${iDay}"
+            Log.d("string2",stringText.toString())
             preNexttext.text ="  ${iMonth}월 ${iDay}일 (${weekdays[position%7]})  "
 
             ddaytext.text ="D - ${daysRemainingToDate("${iYear}-${iMonth}-${iDay}")}"

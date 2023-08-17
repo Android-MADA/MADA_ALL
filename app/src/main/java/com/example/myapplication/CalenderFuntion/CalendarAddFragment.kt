@@ -37,6 +37,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -50,11 +51,12 @@ class CalendarAddFragment : Fragment() {
     lateinit var binding: CalendarAddBinding
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
     var scheduleSelect = 0
+
     var dayString : String = ""
 
     var title = ""
-    var preSchedule = "2023-6-1"
-    var nextSchedule = "2023-6-1"
+    lateinit var preSchedule : TextView
+    lateinit var nextSchedule : TextView
     var preClock = "  오전 10:00  "
     var nextClock = "  오전 11:00  "
     var cycle = "반복 안함"
@@ -64,13 +66,16 @@ class CalendarAddFragment : Fragment() {
 
     var curColor ="#89A9D9"
     var curDday ="N"
+
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
     lateinit var token : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        preSchedule = TextView(requireContext())
+        nextSchedule = TextView(requireContext())
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,8 +86,8 @@ class CalendarAddFragment : Fragment() {
         hideBootomNavigation(true)
         val bundle = arguments
         title = bundle?.getString("title") ?: ""
-        preSchedule = bundle?.getString("preSchedule") ?: "2023-6-1"
-        nextSchedule = bundle?.getString("nextSchedule") ?: "2023-6-1"
+        preSchedule.text = (bundle?.getString("preSchedule") ?: "2023-6-1")
+        nextSchedule.text = (bundle?.getString("nextSchedule") ?: "2023-6-1")
         preClock = bundle?.getString("preClock") ?: "  오전 10:00  "
         nextClock = bundle?.getString("nextClock") ?: "  오전 11:00  "
         cycle = bundle?.getString("cycle") ?: "반복 안함"
@@ -97,11 +102,13 @@ class CalendarAddFragment : Fragment() {
         if(edit)
             binding.submitBtn.text = "수정"
         binding.textTitle.setText(title)
-        binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
-        binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule)
+        binding.preScheldule.text = convertToDateKoreanFormat(preSchedule.text.toString())
+        binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule.text.toString())
         if(today!=null) {
-            binding.preScheldule.text = today
-            binding.nextScheldule.text = today
+            preSchedule.text = today
+            nextSchedule.text = today
+            binding.preScheldule.text = convertToDateKoreanFormat(today)
+            binding.nextScheldule.text = convertToDateKoreanFormat(today)
         }
         binding.preScheldule2.text = preClock
         binding.nextScheldule2.text = nextClock
@@ -419,8 +426,8 @@ class CalendarAddFragment : Fragment() {
         )
         )
         binding.submitBtn.setOnClickListener {
-            if(binding.checkBox.isChecked&&datasDday.size==3) {
-                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_change, null)
+            if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())) {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
                     .create()
@@ -429,87 +436,141 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
 
-                val displayMetrics = DisplayMetrics()
-                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-                val deviceWidth = displayMetrics.widthPixels
-
-                val desiredRatio = 0.8f
-                val desiredWidth = (deviceWidth * desiredRatio).toInt()
-                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 날짜를 입력해 주십시오"
                 val display = requireActivity().windowManager.defaultDisplay
-                val checkBox1 = mDialogView.findViewById<CheckBox>(R.id.checkBox1)
-                val checkBox2 =mDialogView.findViewById<CheckBox>(R.id.checkBox2)
-                val checkBox3 =mDialogView.findViewById<CheckBox>(R.id.checkBox3)
-
-                for (i in 0 until 3) {
-                    val color = datasDday[i].color
-                    val imageResource = when (color) {
-                        "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
-                        "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
-                        "#F5EED1" -> R.drawable.calendar_ddayyellow_smallbackground
-                        else -> R.drawable.calendar_dday_plus
-                    }
-                    when (i) {
-                        0 -> {
-                            mDialogView.findViewById<ImageView>(R.id.image1).setImageResource(imageResource)
-                            mDialogView.findViewById<TextView>(R.id.textDday1).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                            mDialogView.findViewById<TextView>(R.id.textTitle1).text = datasDday[i].title
-                        }
-                        1 -> {
-                            mDialogView.findViewById<ImageView>(R.id.image2).setImageResource(imageResource)
-                            mDialogView.findViewById<TextView>(R.id.textDday2).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                            mDialogView.findViewById<TextView>(R.id.textTitle2).text = datasDday[i].title
-                        }
-                        2 -> {
-                            mDialogView.findViewById<ImageView>(R.id.image3).setImageResource(imageResource)
-                            mDialogView.findViewById<TextView>(R.id.textDday3).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
-                            mDialogView.findViewById<TextView>(R.id.textTitle3).text = datasDday[i].title
-                        }
-                    }
-                }
-                checkBox1.setOnClickListener {
-                    checkBox2.isChecked = false
-                    checkBox3.isChecked = false
-                }
-                checkBox2.setOnClickListener {
-                    checkBox1.isChecked = false
-                    checkBox3.isChecked = false
-                }
-                checkBox3.setOnClickListener {
-                    checkBox2.isChecked = false
-                    checkBox1.isChecked = false
-                }
-                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
                     mBuilder.dismiss()
                 })
+            } else if(compareTimes(binding.preScheldule2.text.toString(),binding.nextScheldule2.text.toString())) {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 시간을 입력해 주십시오"
+                val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                    if(!checkBox1.isChecked&&!checkBox2.isChecked&&!checkBox3.isChecked) {
-                        mDialogView.findViewById<TextView>(R.id.textInfo).text = "대체할 디데이를 선택해야 합니다"
-                    } else {
-                        //addCalendar(CalendarData2())                                                      @@@@@@@@@@@@@@@@@@@@@@정보 추가해야함
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                    mBuilder.dismiss()
+                })
+            }
+            else {
+                if(binding.checkBox.isChecked&&datasDday.size==3) {
+                    val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_change, null)
+                    val mBuilder = AlertDialog.Builder(requireContext())
+                        .setView(mDialogView)
+                        .create()
+
+                    mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                    mBuilder.show()
+
+                    val displayMetrics = DisplayMetrics()
+                    requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+                    val deviceWidth = displayMetrics.widthPixels
+
+                    val desiredRatio = 0.8f
+                    val desiredWidth = (deviceWidth * desiredRatio).toInt()
+                    mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                    val display = requireActivity().windowManager.defaultDisplay
+                    val checkBox1 = mDialogView.findViewById<CheckBox>(R.id.checkBox1)
+                    val checkBox2 =mDialogView.findViewById<CheckBox>(R.id.checkBox2)
+                    val checkBox3 =mDialogView.findViewById<CheckBox>(R.id.checkBox3)
+
+                    for (i in 0 until 3) {
+                        val color = datasDday[i].color
+                        val imageResource = when (color) {
+                            "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
+                            "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
+                            "#F5EED1" -> R.drawable.calendar_ddayyellow_smallbackground
+                            else -> R.drawable.calendar_dday_plus
+                        }
+                        when (i) {
+                            0 -> {
+                                mDialogView.findViewById<ImageView>(R.id.image1).setImageResource(imageResource)
+                                mDialogView.findViewById<TextView>(R.id.textDday1).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                                mDialogView.findViewById<TextView>(R.id.textTitle1).text = datasDday[i].title
+                            }
+                            1 -> {
+                                mDialogView.findViewById<ImageView>(R.id.image2).setImageResource(imageResource)
+                                mDialogView.findViewById<TextView>(R.id.textDday2).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                                mDialogView.findViewById<TextView>(R.id.textTitle2).text = datasDday[i].title
+                            }
+                            2 -> {
+                                mDialogView.findViewById<ImageView>(R.id.image3).setImageResource(imageResource)
+                                mDialogView.findViewById<TextView>(R.id.textDday3).text = "D-${daysRemainingToDate(datasDday[i].endDate)}"
+                                mDialogView.findViewById<TextView>(R.id.textTitle3).text = datasDday[i].title
+                            }
+                        }
+                    }
+                    checkBox1.setOnClickListener {
+                        checkBox2.isChecked = false
+                        checkBox3.isChecked = false
+                    }
+                    checkBox2.setOnClickListener {
+                        checkBox1.isChecked = false
+                        checkBox3.isChecked = false
+                    }
+                    checkBox3.setOnClickListener {
+                        checkBox2.isChecked = false
+                        checkBox1.isChecked = false
+                    }
+                    mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
                         mBuilder.dismiss()
+                    })
+                    mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                        if(!checkBox1.isChecked&&!checkBox2.isChecked&&!checkBox3.isChecked) {
+                            mDialogView.findViewById<TextView>(R.id.textInfo).text = "대체할 디데이를 선택해야 합니다"
+                        } else {
+                            //addCalendar(CalendarData2())                                                      @@@@@@@@@@@@@@@@@@@@@@정보 추가해야함
+                            Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                            mBuilder.dismiss()
+                        }
+
+                    })
+                } else if(binding.checkBox.isChecked) {
+                    if(binding.textDday.text=="D - 0") {
+                        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
+                        val mBuilder = AlertDialog.Builder(requireContext())
+                            .setView(mDialogView)
+                            .create()
+
+                        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                        mBuilder.show()
+
+                        mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 날짜를 입력해 주십시오"
+                        val display = requireActivity().windowManager.defaultDisplay
+                        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                            mBuilder.dismiss()
+                        })
+                    } else {
+                        //dday 추가
+                    }
+                }
+                else {
+                    if(binding.submitBtn.text =="등록") {
+                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+
+                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                    } else if(binding.submitBtn.text =="수정"){
+                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+
+                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+                    } else {
+
                     }
 
-                })
-            } else {
-                if(binding.submitBtn.text =="등록") {
-                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormatReverse(binding.preScheldule.text.toString()),convertToDateKoreanFormatReverse(binding.nextScheldule.text.toString()),
-                        binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
-
-                    Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
-                } else if(binding.submitBtn.text =="수정"){
-                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormatReverse(binding.preScheldule.text.toString()),convertToDateKoreanFormatReverse(binding.nextScheldule.text.toString()),
-                        binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
-
-                    Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
-                } else {
-
                 }
-
             }
+
 
         }
 
@@ -533,9 +594,9 @@ class CalendarAddFragment : Fragment() {
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
         val adapter: CalendarSmallAdapter = if (preNext == -1) {
-            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule,binding.textBlank)
+            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule,binding.textBlank,preSchedule)
         } else {
-            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule,binding.textDday)
+            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule,binding.textDday,nextSchedule)
         }
 
 
@@ -556,20 +617,9 @@ class CalendarAddFragment : Fragment() {
         }
         return dayList
     }
-    private fun yearMonthFromDate(date : LocalDate) :String{
-        var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
-        return date.format(formatter)
-    }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
         val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
-
-        val date = inputFormat.parse(dateString)
-        return outputFormat.format(date)
-    }
-    fun convertToDateKoreanFormatReverse(dateString: String): String {
-        val inputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
@@ -580,6 +630,48 @@ class CalendarAddFragment : Fragment() {
         val target = LocalDate.parse(targetDate, dateFormatter)
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
+    }
+    fun convertToDateKoreanFormat2(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
+    fun compareDates(date1: String, date2: String): Boolean {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val localDate1 = LocalDate.parse(date1, formatter)
+        val localDate2 = LocalDate.parse(date2, formatter)
+        Log.d("string",date1)
+        Log.d("string",date2)
+        return if (localDate1.isBefore(localDate2)) {
+            true
+        } else {
+            false
+        }
+    }
+    fun compareTimes(time1: String, time2: String): Boolean {
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault()) // 수정된 형식
+        val calendar1 = Calendar.getInstance()
+        val calendar2 = Calendar.getInstance()
+
+        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM")
+        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM")
+
+        calendar1.time = inputFormat.parse(time1Modified)
+        calendar2.time = inputFormat.parse(time2Modified)
+
+        val hour1 = calendar1.get(Calendar.HOUR_OF_DAY)
+        val minute1 = calendar1.get(Calendar.MINUTE)
+
+        val hour2 = calendar2.get(Calendar.HOUR_OF_DAY)
+        val minute2 = calendar2.get(Calendar.MINUTE)
+
+        if (hour1 > hour2 || (hour1 == hour2 && minute1 > minute2)) {
+            return true
+        } else {
+            return false
+        }
     }
     private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
         if (isExpanded) {
