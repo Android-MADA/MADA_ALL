@@ -62,11 +62,12 @@ class FragHome : Fragment() {
         val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        viewModel.getCategory(viewModel.userToken)
+        //viewModel.getCategory(viewModel.userToken)
         //viewModel.getTodo(viewModel.userToken, "2023-08-16")
-        api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
+        api.getAllTodo(viewModel.userToken, "2023-08-16").enqueue(object :Callback<TodoList>{
             override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
                 Log.d("getTodo", response.isSuccessful.toString())
+                Log.d("getTodo", response.body().toString())
             }
 
             override fun onFailure(call: Call<TodoList>, t: Throwable) {
