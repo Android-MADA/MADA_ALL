@@ -36,16 +36,19 @@ interface RetrofitServiceCalendar {
 
 
     @PATCH("/api/calendar/edit/{id}")
-    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int
-    ) : Call<AddCalendarData>
+    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarData2
+    ) : Call<CalendarData2>
+    @GET("/api/calendar/dday")
+    fun getAllDday(@Header("Authorization") token : String?
+    ) : Call<CalendarDatas>
+
+
 
     @GET("/api/calendar/date/{date}")           //최 후순위
     fun getDday(@Header("Authorization") token : String?, @Path("date") date : String
     ) : Call<CalendarDatas>
 
-    @GET("/api/calendar/dday")
-    fun getAllDday(@Header("Authorization") token : String?
-    ) : Call<CalendarDatas>
+
 
 
     @GET("/api/custom/")

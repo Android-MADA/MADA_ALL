@@ -21,6 +21,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
@@ -67,6 +68,7 @@ class CalendarAddFragment : Fragment() {
     var curColor ="#89A9D9"
     var curDday ="N"
     var curRepeat = "No"
+    var id2 : Int = 0
 
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -96,6 +98,7 @@ class CalendarAddFragment : Fragment() {
         color = bundle?.getString("color") ?:"#89A9D9"
         edit = bundle?.getBoolean("edit")?: false
         token = bundle?.getString("Token")?: ""
+        id2 = bundle?.getInt("id")?: -1
         val today = bundle?.getString("Today")?: null
         if(edit)
             binding.submitBtn.text = "수정"
@@ -566,14 +569,13 @@ class CalendarAddFragment : Fragment() {
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                             timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else if(binding.submitBtn.text =="수정"){
                         //dasdasd
-                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                        eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
-                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ),id2 )
 
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+
                     } else {
 
                     }
@@ -703,24 +705,22 @@ class CalendarAddFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,(data))
+        val call1 = service.addCal(token,data)
         Log.d("token",token)
-        Log.d("data",AddCalendarData(data).toJson())
+        Log.d("data",(data).toJson())
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         Log.d("status",responseBody.status.toString())
-                        Log.d("success",responseBody.success.toString())
-                        Log.d("message",responseBody.message.toString())
                     }else
                         Log.d("777","${response.code()}")
 
                 } else {
                     Log.d("666","itemType: ${response.code()} ")
-                    Log.d("666","itemType: ${response.message()} ")
                 }
+                findNavController().navigate(R.id.action_calendarAdd_to_fragCalendar)
             }
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
@@ -729,24 +729,25 @@ class CalendarAddFragment : Fragment() {
         })
     }
     private fun eidtCalendar(data : CalendarData2,id : Int) {
-        val call1 = service.editCal(token,id)
-        call1.enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+        val call1 = service.editCal(token,id,data)
+        call1.enqueue(object : Callback<CalendarData2> {
+            override fun onResponse(call: Call<CalendarData2>, response: Response<CalendarData2>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         //Log.d("status",responseBody.data.name.toString())
                     }else
-                        Log.d("777","${response.code()}")
+                        Log.d("eidt","${response.code()}")
 
                 } else {
-                    Log.d("666","itemType: ${response.code()} ")
-                    Log.d("666","itemType: ${response.message()} ")
+                    Log.d("eidt","itemType: ${response.code()} ")
+                    Log.d("eidt","itemType: ${response.message()} ")
                 }
+                findNavController().navigate(R.id.action_calendarAdd_to_fragCalendar)
             }
 
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
+            override fun onFailure(call: Call<CalendarData2>, t: Throwable) {
+                Log.d("eidt","itemType: ${t.message}")
             }
         })
     }
