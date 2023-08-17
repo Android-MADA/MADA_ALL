@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<CalendarDATA?>, private val today: Int
-                              , private val parentView : View, private val parentDialog : AlertDialog) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+                              , private val parentView : View, private val parentDialog : AlertDialog,private val token : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
     companion object {
@@ -91,6 +91,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
                 if(item.memo!="")
                     bundle.putString("memo",item.memo)
                 bundle.putString("color",item.color)
+                bundle.putString("Token",token)
                 Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
                 parentDialog.dismiss()
 

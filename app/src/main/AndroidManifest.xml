@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- 인터넷 접근권한 -->
+    <uses-permission
+        android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -28,10 +31,13 @@
             android:name=".Splash2Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup1"
+            android:name=".MyFuction.MySignup1Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup2"
+            android:name=".MyFuction.MySignup2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.MyWebviewActivity"
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyNoticeActivity"
@@ -51,6 +57,9 @@
             android:name=".MyFuction.MySetActivity"
             android:exported="false" />
         <activity
+            android:name=".MyFuction.MyNoticeSetActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyFuction.MyProfileNickActivity"
             android:exported="false" />
         <activity
@@ -68,8 +77,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".CalenderFuntion.CalendarAddFragment"/>
-        <activity android:name=".CalenderFuntion.CalendarAddDdayFragment"/>
+        <activity android:name=".CalenderFuntion.CalendarAddFragment" />
+        <activity android:name=".CalenderFuntion.CalendarAddDdayFragment" />
     </application>
 
 </manifest>

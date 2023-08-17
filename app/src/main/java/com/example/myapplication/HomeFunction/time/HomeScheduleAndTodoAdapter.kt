@@ -136,8 +136,9 @@ class HomeScheduleAndTodoAdapter(private val dataArray: Array<CalendarDATA>, pri
         val parts = timeString.split(":")
         val hour = parts[0].toInt()
         val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else hour
-        val ampm = if (hour > 12) "오전" else "오후"
+        val convertedHour = if (hour > 12) hour - 12 else if(hour >0) hour else 12
+        val ampm = if (hour > 12&&hour<24) "오후" else if(hour <12 && hour>0) "오전" else if(hour ==12) "오후" else "오전"
+
         return "  $ampm $convertedHour:$minute  "
     }
 

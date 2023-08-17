@@ -224,7 +224,7 @@
                             android:layout_marginHorizontal="30dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/calendar_ddayblue_smallbackground" />
+                            android:src="@drawable/calendar_dday_plus" />
 
                         <TextView
                             android:id="@+id/dday1_text"

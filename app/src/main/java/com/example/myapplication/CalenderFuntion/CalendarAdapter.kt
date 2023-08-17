@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>,private val token : String)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -106,9 +107,14 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[position%7] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val bundle = Bundle()
-                bundle.putString("preSchedule", "$iYear-$iMonth-$iDay-")
-                bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay-")
-                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
+                bundle.putString("preSchedule", "$iYear-$iMonth-$iDay")
+                bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay")
+                bundle.putString("Token",token)
+                if(mDialogView.findViewById<TextView>(R.id.textTitle).text.toString()=="")
+                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
+                else {
+                    // 등록
+                }
                 mBuilder.dismiss()
             })
 
@@ -117,7 +123,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             if(calendarDataArray[position].isEmpty()) {
 
             } else {
-                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder)
+                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder,token)
                 var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter

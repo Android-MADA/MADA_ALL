@@ -1,22 +1,55 @@
 package com.example.myapplication.HomeFunction.viewModel
 
-import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.Icon
+import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
 import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.R
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HomeViewModel : ViewModel() {
 
-//            Category(2, "약속", "#F0768C", Icon("1", R.drawable.ic_home_cate_plan.toString())),
-//            Category(2, "약속", "#F0768C", Icon("1", R.drawable.ic_home_cate_plan.toString())),
-//            Category(3, "잠", "#2AA1B7", Icon("1", R.drawable.ic_home_cate_study.toString())),
-//            Category(4, "친구만나기", "#F8D141", Icon("1", R.drawable.ic_home_cate_study.toString()))
+    //서버 연결
+    private val retrofitInstance = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+
+    var userToken =
+        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTQ3MCwiZXhwIjoxNjkyMzAxNDcwfQ.MWbq5nOl5aLuyU3fBQhH2KOktG5YB1Wzn9UHSwcQTAfcdicFjH-kCPVvIahSByHDe_Ixb3Uz4KpChZy-YjpxmQ"
+
+    fun getCategory(token: String?) = viewModelScope.launch {
+        val category = retrofitInstance.getCategory(token)
+        Log.d("HomeViewModel 카테고리 값 확인", category.toString())
+        //서버에서 받은 카테고리 데이터를 livedata에 넣기
+        _categoryList.value = category.data
+        Log.d("viewmodel 값 넣기", _categoryList.value.toString())
+    }
+
+//    fun getTodo(token : String?, date : String) = viewModelScope.launch {
+//        val todo = retrofitInstance.getAllTodo(token, date)
+//        Log.d("HomeViewModel todo 값 확인", todo.toString())
+//    }
+
+    fun patchCategory(token: String?, categoryId: Int, data: PatchRequestCategory) =
+        viewModelScope.launch {
+            val response = retrofitInstance.editCategory(token, categoryId, data)
+            Log.d("카테고리 patch", response.message)
+        }
+
+    fun postCategory(token: String?, data: PatchRequestCategory) = viewModelScope.launch {
+        val response = retrofitInstance.addCategory(token, data)
+        Log.d("카테고리 patch", response.toString())
+    }
+
+    fun deleteCategory(token: String?, categoryId: Int) = viewModelScope.launch {
+        val response = retrofitInstance.deleteCategory(token, categoryId)
+        Log.d("카테고리 delete", response.message)
+    }
 
     //카테고리 리스트
     private val _categoryList = MutableLiveData<ArrayList<Category>>(
@@ -29,34 +62,10 @@ class HomeViewModel : ViewModel() {
     //투두 리스트
     private val _todoList = MutableLiveData<ArrayList<Todo>>(
         //서버 GET
-    arrayListOf()
+        arrayListOf()
     )
     val todoList: LiveData<ArrayList<Todo>>
         get() = _todoList
-
-    //반복 투두 리스트
-    private val _repeatTodoList = MutableLiveData<ArrayList<ArrayList<Todo>>>(
-        arrayListOf(
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-
-        )
-    )
-    val repeatTodoList: LiveData<ArrayList<ArrayList<Todo>>>
-        get() = _repeatTodoList
 
     //스케쥴 리스트 -> 추후 작성
     //timetable title -> 추후 작성
@@ -108,76 +117,63 @@ class HomeViewModel : ViewModel() {
         //position별로 대응되도록 작성
         //카테고리 삭제 시 todo list도 전체 삭제
         //adpter에는 cateTodoList.value[position] 넣기
+        _cateTodoList.value = arrayListOf(
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
 
-        if(todoList.value?.isEmpty() != true){
+        )
+
+        if (todoList.value?.isEmpty() != true) {
             var completeNum = 0
-            for(i in todoList.value!!){
-                for(j in 0..size!!){
-                    if(i.categoryId.id == categoryList.value!![j].id){
+            for (i in todoList.value!!) {
+                for (j in 0..size!!) {
+                    if (i.category.id == categoryList.value!![j].id) {
                         _cateTodoList.value?.get(j)!!.add(i)
-                        if(i.complete){
-                            completeNum++
-                        }
-                    }
-                }
-            }
-            _todoNum.value = todoList.value!!.size
-            _completeTodoNum.value = completeNum
-
-
-        }
-
-    }
-
-    fun classifyRepeatTodo(){
-        if(todoList.value?.isEmpty() != true){
-            for(i in todoList.value!!){
-                for(j in 0..size!!){
-                    if(i.categoryId.id == categoryList.value!![j].id && i.repeat == "day"){
-                        _repeatTodoList.value?.get(j)!!.add(i)
                     }
                 }
             }
         }
+
     }
 
-    //completeTodoNum 반영 함수
-    fun updateCompleteTodo(flag : Boolean) {
-        if(flag){
-            _completeTodoNum.value!!.plus(1)
-        }
-        else {
-            _completeTodoNum.value!!.minus(1)
-        }
-    }
 
-    fun updateTodoNum(){
-        _todoNum.value = todoList.value!!.size
-    }
-
-    fun addCate(id : Int, cateName : String, color : String, iconName : String, iconId : String){
-        with(_categoryList.value){
+    fun addCate(id: Int, cateName: String, color: String, iconName: Int) {
+        with(_categoryList.value) {
             this?.add(
-                Category(id, cateName, color, Icon(iconId, iconName))
+                //Category(id, cateName, color, iconName)
+                Category(id, cateName, color)
             )
         }
         //서버 POST
     }
 
     //cate 수정
-    fun editCate(position : Int, name : String, color : String, iconName : String){
+    fun editCate(position: Int, name: String, color: String, iconName: String) {
         _categoryList.value!![position].categoryName = name
         _categoryList.value!![position].color = color
-        _categoryList.value!![position].icon_id.name = iconName
+        //_categoryList.value!![position].iconId = iconName.toInt()
 
         //서버 PATCH
     }
 
     //cate 삭제
-    fun removeCate(position : Int){
+    fun removeCate(position: Int) {
         _categoryList.value!!.removeAt(position)
-        if(_cateTodoList.value != null){
-            if(_cateTodoList.value!![position].isNotEmpty()){
+        if (_cateTodoList.value != null) {
+            if (_cateTodoList.value!![position].isNotEmpty()) {
                 _cateTodoList.value!![position].clear()
             }
         }
@@ -185,46 +181,157 @@ class HomeViewModel : ViewModel() {
     }
 
     //todo수정
-    fun editTodo(){
+    fun editTodo(
+        cateIndex: Int,
+        position: Int,
+        todoName: String,
+        start: LocalDate?,
+        end: LocalDate?,
+        repeat: String
+    ) {
+        _cateTodoList.value!![cateIndex][position].todoName = todoName
+        _cateTodoList.value!![cateIndex][position].repeat = repeat
+        //_cateTodoList.value!![cateIndex][position].start = start
+        //_cateTodoList.value!![cateIndex][position].end = end
 
+    }
+
+    //새로운 투두 상단 표시 flag
+    private var _todoTopFlag = MutableLiveData<Boolean>(true)
+    val todoTopFlag: LiveData<Boolean>
+        get() = _todoTopFlag
+
+    fun changeTopFlag(flag: Boolean) {
+        _todoTopFlag.value = flag
     }
 
     //todo추가
-    fun addTodo(position : Int, todo : Todo){
+    fun addTodo(position: Int, todo: Todo, flag: Boolean) {
+//        if(flag){
+//            _cateTodoList!!.value!![position].add(0, todo)
+//        }
+//        else {
+//            _cateTodoList!!.value!![position].add(todo)
+//        }
+
         _cateTodoList!!.value!![position].add(todo)
+
+    }
+
+    private var _completeBottomFlag = MutableLiveData<Boolean>(true)
+    val completeBottomFlag: LiveData<Boolean>
+        get() = _completeBottomFlag
+
+    //flag에 따른 todo정렬
+    fun arrangeTodo() {
+        //catetodo 가져와서 각 array마다 complete 확인해서 변경...?
+        if (cateTodoList.value?.isEmpty() != true) {
+            for (i in cateTodoList.value!!) {
+                if (i.isNotEmpty()) {
+                    for (j in 0..i.size!!.minus(1)) {
+                        if (i[j].complete) {
+                            var todoMove = i[j]
+                            i.removeAt(j)
+                            i.add(todoMove)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //todo삭제
-    fun deleteTodo(){
-
+    fun deleteTodo(cateIndex: Int, position: Int) {
+        _cateTodoList.value!![cateIndex].removeAt(position)
     }
 
-    //repeatTodo 추가
-    fun addRepeatTodo(position : Int, todo : Todo){
-        _repeatTodoList!!.value!![position].add(todo)
-    }
-
-    //repeatTodo 삭제
-    fun deleteRepeatTodo() {
-
-    }
 
     //date 변경
-    fun changeDate(year : Int, month : Int, dayOfWeek : Int){
-        var monthString : String = month.toString()
+    fun changeDate(year: Int, month: Int, dayOfWeek: Int) {
+        var monthString: String = month.toString()
         var dayString = dayOfWeek.toString()
 
-        if(month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8 || month == 9){
+        if (month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8 || month == 9) {
             monthString = "0${month}"
         }
-        if(dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9){
+        if (dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9) {
             dayString = "0${dayOfWeek}"
         }
 
         _homeDate.value = LocalDate.parse("${year}-${monthString}-${dayString}")
-        Log.d("date변환", _homeDate.toString())
     }
 
+    //calendarview 시작 요일
+    private var _startDay = MutableLiveData<Int>(1)
+    val startDay: LiveData<Int>
+        get() = _startDay
+
+    //calendarView 시작 요일 변경
+    fun changeStartDay(flag: Boolean) {
+        if (flag) {
+            _startDay.value = 2
+        } else {
+            _startDay.value = 1
+        }
+    }
+
+    var _test = "22"
+
+    private val __test = MutableLiveData<String>(_test)
+    val test: LiveData<String>
+        get() = __test
+
+    fun updateTest() {
+        __test.value = _test
+    }
+
+    var todoCateList: ArrayList<ArrayList<Todo>>? = _cateTodoList.value
+
+    fun updateCateTodoList() {
+        _cateTodoList.value = todoCateList
+        _todoNum.value = todoNumber
+        _completeTodoNum.value = completeNumber
+    }
+
+
+    var todoNumber: Int? = _todoNum.value
+    var completeNumber: Int? = _completeTodoNum.value
+
+    //completeTodoNum 반영 함수
+    fun updateCompleteTodo() {
+        if (cateTodoList.value?.isEmpty() != true) {
+            completeNumber = 0
+            for (i in cateTodoList.value!!) {
+                if (i.isNotEmpty()) {
+                    for (j in 0..i.size!!.minus(1)) {
+                        if (i[j].complete) {
+                            completeNumber = completeNumber!! + 1
+                        }
+                    }
+                }
+            }
+            _completeTodoNum.value = completeNumber
+        } else {
+            _completeTodoNum.value = 0
+        }
+    }
+
+    fun updateTodoNum() {
+
+        if (cateTodoList.value?.isEmpty() != true) {
+            todoNumber = 0
+            for (i in cateTodoList.value!!) {
+                if (i.isNotEmpty()) {
+                    for (j in 0..i.size!!.minus(1)) {
+                        todoNumber = todoNumber!! + 1
+                    }
+                }
+            }
+            _todoNum.value = todoNumber
+        } else {
+            _todoNum.value = 0
+        }
+    }
 
 
 }

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
 
-class HomeCategoryAdapter(private val dataSet : ArrayList<Category>) : RecyclerView.Adapter<HomeCategoryAdapter.viewHolder>() {
-
+class HomeCategoryAdapter() : RecyclerView.Adapter<HomeCategoryAdapter.viewHolder>() {
+    lateinit var dataSet : ArrayList<Category>
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val categoryLayout : LinearLayout
@@ -38,7 +38,7 @@ class HomeCategoryAdapter(private val dataSet : ArrayList<Category>) : RecyclerV
         mGradientDrawable.setStroke(6, Color.parseColor(dataSet[position].color))
 
         holder.categoryTextView.text = dataSet[position].categoryName
-        holder.categoryImageView.setImageResource(dataSet[position].icon_id.name.toInt())
+        //holder.categoryImageView.setImageResource(dataSet[position].iconId.toInt())
 
         holder.categoryLayout.setOnClickListener {
             itemClickListener.onClick(it, position, dataSet[position])

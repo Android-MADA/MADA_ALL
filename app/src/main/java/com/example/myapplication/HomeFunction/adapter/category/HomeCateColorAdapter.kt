@@ -11,7 +11,7 @@ import com.example.myapplication.R
 
 class HomeCateColorAdapter(private val dataList : ArrayList<String>) : RecyclerView.Adapter<HomeCateColorAdapter.viewHolder>() {
 
-    var selecetedColor = "#89A9D9"
+    var selecetedColor = "#F0768C"
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view){
         val categoryColor : ImageView

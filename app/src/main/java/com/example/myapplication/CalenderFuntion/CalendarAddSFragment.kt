@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +21,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.example.myapplication.databinding.CalendarAddSBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -34,6 +44,12 @@ import java.util.Locale
 
 class CalendarAddSFragment : Fragment() {
     lateinit var binding: CalendarAddSBinding
+
+
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCalendar::class.java)
+    lateinit var token : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,7 +69,9 @@ class CalendarAddSFragment : Fragment() {
         val cycle = arguments?.getString("cycle")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
-        //데이터 받아서 로드하기
+
+        token = arguments?.getString("Token")?: ""
+
         binding.title.text = title
         binding.calendarColor.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
@@ -123,6 +141,8 @@ class CalendarAddSFragment : Fragment() {
                         mBuilder.dismiss()
                     })
                     mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+
+                        deleteCalendar(11)     //아이디
                         Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
                         mBuilder.dismiss()
                     })
@@ -164,7 +184,29 @@ class CalendarAddSFragment : Fragment() {
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+    private fun deleteCalendar(id : Int) {
+        val call1 = service.deleteCal(token,8)
+        call1.enqueue(object : Callback<AddCalendarData> {
+            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                Log.d("123","${response.code()}")
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("status",responseBody.datas.name.toString())
+                    }else
+                        Log.d("777","${response.code()}")
 
+                } else {
+                    Log.d("666","itemType: ${response.code()} ")
+                    Log.d("666","itemType: ${response.message()} ")
+                }
+            }
+
+            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 
 
 

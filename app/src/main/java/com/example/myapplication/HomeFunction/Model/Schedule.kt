@@ -1,14 +1,21 @@
 package com.example.myapplication.HomeFunction.Model
 
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import java.sql.Time
 import java.time.LocalDate
 
 data class Schedule(
-    val date: String,
-    val scheduleName: String,
-    val color: String,
-    //time 변수형 수정 필요
-    val startTime: String,
-    val endTime: String,
-    val memo: String
-)
+    @SerializedName("id") val id: Int,
+    @SerializedName("date") val date: String,
+    @SerializedName("scheduleName") val scheduleName: String,
+    @SerializedName("color") val color: String,
+    @SerializedName("startTime") val startTime: String,
+    @SerializedName("endTime") val endTime: String,
+    @SerializedName("memo") val memo: String
+) {
+    fun toJson(): String {
+        val gson = Gson()
+        return gson.toJson(this)
+    }
+}
