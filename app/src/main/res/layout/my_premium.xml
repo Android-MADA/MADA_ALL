@@ -87,6 +87,7 @@
         android:layout_marginTop="32dp"
         android:gravity="center|start"
         android:orientation="vertical"
+        android:background="@drawable/my_premium_custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18">
