@@ -48,6 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.activity.OnBackPressedCallback
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
 import retrofit2.Call
 import retrofit2.Callback
@@ -122,6 +123,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
         getCustomPrint()
+
 
 
 
@@ -332,6 +334,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
     }
+
+
 
 }
 

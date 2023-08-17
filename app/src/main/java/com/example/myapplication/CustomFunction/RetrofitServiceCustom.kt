@@ -25,7 +25,7 @@ interface RetrofitServiceCustom {
 
     @GET("/api/custom/item/{item_type}")
     fun customItemCheck(@Header("Content-Type") token : String?, @Path("item_type") item_type : String
-    ) : Callback<customItemCheckDATA>
+    ) : Call<customItemCheckDATA>
 
     @PATCH("/api/custom/{item_type}/{userid}/change")
     fun customItemChange(@Header("Content-Type") token : String?
