@@ -68,7 +68,7 @@ class CalendarAddSFragment : Fragment() {
         val nextSchedule = arguments?.getString("nextSchedule") ?:"2023-6-1"
         val preClock = arguments?.getString("preClock")
         val nextClock = arguments?.getString("nextClock")
-        val cycle = arguments?.getString("cycle")
+        val cycle = processInput(arguments?.getString("cycle")?:"반복 안함")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
         id2 = arguments?.getInt("id")?: -1
@@ -118,6 +118,7 @@ class CalendarAddSFragment : Fragment() {
                     bundle.putString("color", arguments?.getString("color"))
                     bundle.putBoolean("edit", true)
                     bundle.putInt("id",id2)
+                    bundle.putString("Token",token)
                     Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
                     true
                 }
@@ -177,6 +178,15 @@ class CalendarAddSFragment : Fragment() {
         }
         else {
             bottomNavigation?.isVisible = true
+        }
+    }
+    fun processInput(input: String): String {
+        return when (input) {
+            "Day" -> "매일"
+            "Week" -> "매일"
+            "Month" -> "매일"
+            "Year" -> "매일"
+            else -> "반복 안함"
         }
     }
     fun convertToDateKoreanFormat(dateString: String): String {
