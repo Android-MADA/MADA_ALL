@@ -25,10 +25,13 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
         val itemData = MyList[position]
         holder.item.text = itemData.item
 
-        holder.itemView.setOnClickListener {
+        holder.item.setOnClickListener {
+            if(holder.item.text == "로그아웃"){
+                // 팝업
+            }
             val targetActivity = itemData.targetActivity
             val intent = Intent(holder.itemView.context, targetActivity)
-            // 다음 액티비티로 넘길 데이터가 있다면 아래와 같이 추가합니다.
+            // 다음 액티비티로 넘길 데이터가 있다면 아래와 같이 추가
             // intent.putExtra("key", value)
             holder.itemView.context.startActivity(intent)
         }
