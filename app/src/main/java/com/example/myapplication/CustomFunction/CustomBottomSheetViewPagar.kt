@@ -29,10 +29,10 @@ class  CustomBottomSheetViewPager (fragment : FragCustom) : FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> custom_color()
-            1 -> custom_cloth()
-            2 -> custom_item()
-            else -> custom_background()
+            0 -> custom_color
+            1 -> custom_cloth
+            2 -> custom_item
+            else -> custom_background
         }
     }
 
