@@ -94,7 +94,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI0OTc2MSwiZXhwIjoxNjkyMjg1NzYxfQ.Zxf7ULa4hNRvhGZZofmHyWyZ3x2XNHd9MFQBgYztgMIjWm8d4BTMjwlrVe4kOy_OQnR6Uxpq6a6dAN1lrySndA"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
         var selectedClothButtonInfo: ButtonInfo?,
