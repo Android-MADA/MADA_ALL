@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.Fragment.OnBackgroundImageChangeListener
 import com.example.myapplication.Fragment.OnClothImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomBackgroundBinding
 
 class custom_background : Fragment() {
@@ -17,6 +19,7 @@ class custom_background : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnBackgroundImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -134,5 +137,21 @@ class custom_background : Fragment() {
         }
 
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
+    }
+    fun resetButtonBackground() {
+        binding.btnBackBasic.setImageResource(R.drawable.custom_null)
+        binding.btnBackBridS.setImageResource(R.drawable.back_brid_s_1)
+        binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
+        binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)
+        binding.btnBackNormalS.setImageResource(R.drawable.back_normal_s_1)
+        binding.btnBackStoreS.setImageResource(R.drawable.back_store_s_1)
+        binding.btnBackZzimS.setImageResource(R.drawable.back_zzim_s_1)
+        binding.btnBackUniS.setImageResource(R.drawable.back_uni_s_1)
+        binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
+        binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
+
+
+
+
     }
 }

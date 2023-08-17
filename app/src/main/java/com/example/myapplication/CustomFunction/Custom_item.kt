@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomItemBinding
 
 class custom_item : Fragment() {
@@ -17,6 +19,7 @@ class custom_item : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnItemImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -182,6 +185,27 @@ class custom_item : Fragment() {
         }
 
         imageChangeListener?.onItemButtonSelected(buttonInfo)
+    }
+
+    fun resetButtonItem() {
+        binding.btnItemBasic.setImageResource(R.drawable.custom_null)
+        binding.btnItemGlassNormal.setImageResource(R.drawable.gh_normal_s)
+        binding.btnItemHatBer.setImageResource(R.drawable.hat_ber_s)
+        binding.btnItemHatGrad.setImageResource(R.drawable.hat_grad_s)
+        binding.btnItemGlass8bit.setImageResource(R.drawable.g_8bit_s)
+        binding.btnItemGlassWoig.setImageResource(R.drawable.g_woig_s)
+        binding.btnItemHatIpod.setImageResource(R.drawable.hat_ipod_s)
+        binding.btnItemGlassSunR.setImageResource(R.drawable.g_sunr_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.g_sunb_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_flower_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_v_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_dinof_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_sheep_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.bag_e_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.bag_luck_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_heart_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.hat_bee_s)
+        binding.btnItemGlassSunB.setImageResource(R.drawable.heads_s)
     }
 
 }
