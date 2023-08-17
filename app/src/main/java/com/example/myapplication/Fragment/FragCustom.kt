@@ -74,9 +74,7 @@ interface OnResetButtonClickListener {
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
-    private lateinit var customtabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
-    private var tabCurrentIdx = 0
     private var selectedColorButtonInfo: ButtonInfo? = null
     private var selectedClothButtonInfo: ButtonInfo? = null
     private var selectedItemButtonInfo: ButtonInfo? = null
@@ -87,6 +85,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private var colorFragment: custom_color? = null
     private var clothFragment: custom_cloth? = null
+    private var backgroundFragment: custom_background? = null
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var changesMade = false

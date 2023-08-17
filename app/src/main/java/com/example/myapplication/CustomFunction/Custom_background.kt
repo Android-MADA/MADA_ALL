@@ -150,8 +150,5 @@ class custom_background : Fragment() {
         binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
         binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
 
-
-
-
     }
 }
