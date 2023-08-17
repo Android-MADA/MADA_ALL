@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/splach2_character">
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/kakaoBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -75,7 +75,7 @@
             app:srcCompat="@drawable/my_ic_kakao" />
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/naverBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -83,7 +83,7 @@
             app:srcCompat="@drawable/my_ic_naver" />
 
         <ImageButton
-            android:id="@+id/imageButton8"
+            android:id="@+id/googleBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

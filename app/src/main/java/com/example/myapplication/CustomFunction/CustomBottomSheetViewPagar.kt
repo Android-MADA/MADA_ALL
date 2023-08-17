@@ -14,12 +14,10 @@ import java.lang.reflect.Field
 
 class  CustomBottomSheetViewPager (fragment : FragCustom) : FragmentStateAdapter(fragment){
     override fun getItemCount(): Int = 4
-
     val custom_color  = custom_color()
     val custom_cloth  = custom_cloth()
     val custom_item  = custom_item()
     val custom_background  = custom_background()
-
     private val registeredFragments = mutableMapOf<Int, Fragment>(
         0 to custom_color,
         1 to custom_cloth,
