@@ -3,6 +3,7 @@ package com.example.myapplication.CustomFunction
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.Fragment.FragCustom
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -20,11 +21,11 @@ interface RetrofitServiceCustom {
 
     @GET("/api/custom/")
     fun customPrint(@Header("Content-Type") token : String?
-    ) : Call<customPrintDATA>
+    ) : Callback<customPrintDATA>
 
     @GET("/api/custom/item/{item_type}")
     fun customItemCheck(@Header("Content-Type") token : String?, @Path("item_type") item_type : String
-    ) : Call<customItemCheckDATA>
+    ) : Callback<customItemCheckDATA>
 
     @PATCH("/api/custom/{item_type}/{userid}/change")
     fun customItemChange(@Header("Content-Type") token : String?
@@ -32,7 +33,7 @@ interface RetrofitServiceCustom {
 
     @POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Content-Type") token : String?, @Path("item_id") item_id : Long
-    ) : Call<ResponseSample>
+    ) : Callback<ResponseSample>
 
 
 
