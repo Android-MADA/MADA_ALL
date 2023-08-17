@@ -93,9 +93,10 @@ class CalendarAddFragment : Fragment() {
         nextSchedule.text = (bundle?.getString("nextSchedule") ?: "2023-6-1")
         preClock = bundle?.getString("preClock") ?: "  오전 10:00  "
         nextClock = bundle?.getString("nextClock") ?: "  오전 11:00  "
-        cycle = bundle?.getString("cycle") ?: "반복 안함"
+        cycle = processInput(bundle?.getString("cycle") ?: "No")
         memo = bundle?.getString("memo") ?: ""
         color = bundle?.getString("color") ?:"#89A9D9"
+        curColor = color
         edit = bundle?.getBoolean("edit")?: false
         token = bundle?.getString("Token")?: ""
         id2 = bundle?.getInt("id")?: -1
@@ -704,6 +705,15 @@ class CalendarAddFragment : Fragment() {
         }
         return isExpanded
     }
+    fun processInput(input: String): String {
+        return when (input) {
+            "Day" -> "매일"
+            "Week" -> "매일"
+            "Month" -> "매일"
+            "Year" -> "매일"
+            else -> "반복 안함"
+        }
+    }
     private fun addCalendar(data : CalendarData2) {
         val call1 = service.addCal(token,data)
         Log.d("token",token)
@@ -741,7 +751,7 @@ class CalendarAddFragment : Fragment() {
 
                 } else {
                     Log.d("eidt","itemType: ${response.code()} ")
-                    Log.d("eidt","itemType: ${response.message()} ")
+                    Log.d("eidt","itemType: ${token} ")
                 }
                 findNavController().navigate(R.id.action_calendarAdd_to_fragCalendar)
             }

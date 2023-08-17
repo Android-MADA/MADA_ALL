@@ -49,8 +49,6 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE1OTAzNiwiZXhwIjoxNjkyMTk1MDM2fQ.ymm4YwjLcsFOxtvKbz_ygKc3tNREpBFtsdFxcaOSB2WNzbxMx281BXQQomvn3kAU8tPJ34RcqzSeoA54vd57ug"
-
     var today ="2023-08-16"
     var curColor = "#89A9D9"
     val curA = arrayOf<Boolean>(
@@ -62,6 +60,7 @@ class TimeAddFragment : Fragment() {
     val curM = arrayOf<String>(
         "00","00"
     )
+    lateinit var token : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -346,30 +345,19 @@ class TimeAddFragment : Fragment() {
             delTimeDatas(id)
 
         }
-
-
-        val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-            CalendarDATA(
-                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
-                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
-            ),
-            CalendarDATA(
-                "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
-                "#F8D141", "매월", "N", "친구랑 약속", 0, false, "메모 ","TODO",7
-            )
-        )
-
-        if(datas.size>0) {
-            val adapter = HomeScheduleAndTodoAdapter(datas,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
-            var manager: RecyclerView.LayoutManager = GridLayoutManager(view.context,1)
-            binding.homeTimeTodoList.layoutManager = manager
-            binding.homeTimeTodoList.adapter = adapter
-        }
-
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
             binding.homeFragmentTimeAddLayout.requestFocus()
         }
+
+        val datas = ArrayList<CalendarDATA>()
+        getTodoCalDatas(today,datas)
+
+
+
+
+
+
         binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 binding.homeTimeTodoListView.visibility = View.VISIBLE
@@ -470,9 +458,8 @@ class TimeAddFragment : Fragment() {
     //                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
     //                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
     //            ),
-    private fun getTodoCalDatas(date : String) {
+    private fun getTodoCalDatas(date : String,arrays: ArrayList<CalendarDATA>) {
         val call = service.getCalendarTodo(token,date)
-        val arrays = ArrayList<CalendarDATA>()
         call.enqueue(object : Callback<ScheduleTodoCalList> {
             override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
                 if (response.isSuccessful) {
@@ -481,13 +468,21 @@ class TimeAddFragment : Fragment() {
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for(data in datas.todoList) {
-                                //arrays.add(CalendarDATA("","","","","",
-                                 //                   "","","",data.todoName,data.iconId,false,"","TODO",7))
+                                arrays.add(CalendarDATA("","","","","",
+                                                    "","","",data.todoName,1,false,"","TODO",7))
                             }
+
                             for(data in datas.calendarList) {
-                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
+                                //arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                //    data.color,"","",data.CalendarName,1,false,"","CAL",7))
+                                arrays.add(CalendarDATA("","","","10:00:00","11:00:00",
                                     data.color,"","",data.CalendarName,1,false,"","CAL",7))
                             }
+                            val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
+                            var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
+                            binding.homeTimeTodoList.layoutManager = manager
+                            binding.homeTimeTodoList.adapter = adapter
                         } else {
 
                             Log.d("2222","Request was not successful. Message: hi")

@@ -76,7 +76,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".CalenderFuntion.CalendarAddFragment" />
         <activity android:name=".CalenderFuntion.CalendarAddDdayFragment" />
     </application>

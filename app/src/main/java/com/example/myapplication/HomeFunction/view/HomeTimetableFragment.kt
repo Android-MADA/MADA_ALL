@@ -42,7 +42,7 @@ class HomeTimetableFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI0NDUwNywiZXhwIjoxNjkyMjgwNTA3fQ.KkWJxLA5crR0veWisTYv0C-6VVs_vwS4Sf8pWrdQCq589rhfeJZqyM4GQJxKZnJVcmsIe3pd-Jo-zOh2QUYd_A"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI3MjUwNSwiZXhwIjoxNjkyMzA4NTA1fQ.apeTQJDYZrA-g2PsQ_UIrg5zZDJaOWldYVbFW8hR5QsYbcjtDSrNyx1ihAUl8qTmtlrXhXJdO3Uq2lwkA--w2w"
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
