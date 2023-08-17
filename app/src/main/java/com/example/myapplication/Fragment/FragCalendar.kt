@@ -65,7 +65,7 @@ class FragCalendar : Fragment(){
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5OTA0MiwiZXhwIjoxNjkyMjM1MDQyfQ.jqA1Offjzmek45cSBqoLksKWUJiO2jIEgwnq6A0L2VtSPq9855WR_d0rlRRggdiJKsAUuujkaq5Nj4Zs7LaRuA"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI0NDUwNywiZXhwIjoxNjkyMjgwNTA3fQ.KkWJxLA5crR0veWisTYv0C-6VVs_vwS4Sf8pWrdQCq589rhfeJZqyM4GQJxKZnJVcmsIe3pd-Jo-zOh2QUYd_A"
 
 
 
@@ -446,13 +446,14 @@ class FragCalendar : Fragment(){
                                 else dura = true
                                 val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
                                     "10:00","11:00","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                    -1,dura,"${data.memo}","CAL")
+                                    -1,dura,"${data.memo}","CAL",data.id)
                                 if(dura) {
                                     arrays.add(0,tmp)
                                 } else {
                                     arrays.add(tmp)
                                 }
-                                Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo}")
+                                Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo} ${data.id}")
+                                Log.d("111","datas: ${data.start_time} ${data.end_time}")
                             }
                         } else {
                            Log.d("2222","Request was not successful.")

@@ -13,7 +13,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 
-class YourMarkerView(context: Context, layoutResource: Int, private val pieChartDataArray: Array<HomeViewpagerTimetableFragment.PieChartData>) : MarkerView(context, layoutResource) {
+class YourMarkerView(context: Context, layoutResource: Int, private val pieChartDataArray: ArrayList<HomeViewpagerTimetableFragment.PieChartData>) : MarkerView(context, layoutResource) {
 
     private val title: TextView = findViewById(R.id.textLabel1)
     private val memo: TextView = findViewById(R.id.textLabel2)

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.HomeFunction.Model.Schedule
+import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
@@ -46,7 +47,7 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE1OTAzNiwiZXhwIjoxNjkyMTk1MDM2fQ.ymm4YwjLcsFOxtvKbz_ygKc3tNREpBFtsdFxcaOSB2WNzbxMx281BXQQomvn3kAU8tPJ34RcqzSeoA54vd57ug"
+    var token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE1OTAzNiwiZXhwIjoxNjkyMTk1MDM2fQ.ymm4YwjLcsFOxtvKbz_ygKc3tNREpBFtsdFxcaOSB2WNzbxMx281BXQQomvn3kAU8tPJ34RcqzSeoA54vd57ug"
 
     var today ="2023-08-16"
     var curColor = "#89A9D9"
@@ -59,6 +60,7 @@ class TimeAddFragment : Fragment() {
     val curM = arrayOf<String>(
         "00","00"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initColorArray()
@@ -97,11 +99,12 @@ class TimeAddFragment : Fragment() {
 
         val btnBack = binding.ivHomeAddTimeBack
         // 데이터 받기
-        val receivedData = arguments?.getSerializable("pieChartDataArray") as?  Array<HomeViewpagerTimetableFragment.PieChartData>?: null
+        val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<HomeViewpagerTimetableFragment.PieChartData>?: null
+        Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
         today = arguments?.getString("today")?: "2023-06-01"
-
-
+        token= arguments?.getString("Token")?: ""
+        var id = 0
 
         if(recievedPieData != null) {
             btnSubmit.text = "수정"
@@ -114,6 +117,7 @@ class TimeAddFragment : Fragment() {
 
             times[0].text = convertTo12HourFormat(recievedPieData.startHour,recievedPieData.startMin)
             times[1].text = convertTo12HourFormat(recievedPieData.endHour,recievedPieData.endMin)
+            id = recievedPieData.id
             textMemo.setText(recievedPieData.memo)
         }
 
@@ -285,7 +289,7 @@ class TimeAddFragment : Fragment() {
                 }
                 Log.d("receivedData", "!null")
             } else {
-
+                Log.d("receivedData", "null!")
             }
             if (check) {         //이상 x
                 if(curA[0]&&curH[0].toInt()==12)
@@ -301,7 +305,7 @@ class TimeAddFragment : Fragment() {
                     curH[1] = "24"
                 else if(curA[1])
                     curH[1] = (curH[1].toInt() + 12).toString()
-                val tmp = Schedule(today,binding.edtHomeCategoryName.text.toString(),curColor,"${curH[0]}:${curM[0]}:00",
+                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,"${curH[0]}:${curM[0]}:00",
                     "${curH[1]}:${curM[1]}:00",binding.edtHomeScheduleMemo.text.toString())
                 Log.d("time","${curH[0]}:${curM[0]}:00 ${curH[1]}:${curM[1]}:00")
                 addTimeDatas(tmp)
@@ -332,25 +336,24 @@ class TimeAddFragment : Fragment() {
                 .navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
         btnDelete.setOnClickListener {
-            delTimeDatas()
+            delTimeDatas(id)
 
         }
-        val today = LocalDate.now().dayOfMonth
 
 
         val datas = arrayOf(        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
             CalendarDATA(
                 "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
-                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL"
+                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
             ),
             CalendarDATA(
                 "2023-7-6", "2023-7-6", "2023-7-6", "12:00", "13:30",
-                "#F8D141", "매월", "N", "친구랑 약속", 0, false, "메모 ","TODO"
+                "#F8D141", "매월", "N", "친구랑 약속", 0, false, "메모 ","TODO",7
             )
         )
 
         if(datas.size>0) {
-            val adapter = HomeScheduleAndTodoAdapter(datas,today,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
+            val adapter = HomeScheduleAndTodoAdapter(datas,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
             var manager: RecyclerView.LayoutManager = GridLayoutManager(view.context,1)
             binding.homeTimeTodoList.layoutManager = manager
             binding.homeTimeTodoList.adapter = adapter
@@ -386,7 +389,7 @@ class TimeAddFragment : Fragment() {
 
         }
     }
-    private fun addTimeDatas(data : Schedule) {
+    private fun addTimeDatas(data : ScheduleAdd) {
         val call = service.addTime(token,data)
         Log.d("data",data.toJson())
         call.enqueue(object : Callback<ScheduleResponse> {
@@ -409,8 +412,8 @@ class TimeAddFragment : Fragment() {
             }
         })
     }
-    private fun delTimeDatas() {
-        val call = service.deleteTime(token, 14)
+    private fun delTimeDatas(id : Int) {
+        val call = service.deleteTime(token, id)
 
         call.enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {

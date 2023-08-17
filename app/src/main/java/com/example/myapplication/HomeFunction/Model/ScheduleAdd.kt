@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName
 import java.sql.Time
 import java.time.LocalDate
 
-data class Schedule(
-    @SerializedName("id") val id: Int,
+data class ScheduleAdd(
     @SerializedName("date") val date: String,
     @SerializedName("scheduleName") val scheduleName: String,
     @SerializedName("color") val color: String,

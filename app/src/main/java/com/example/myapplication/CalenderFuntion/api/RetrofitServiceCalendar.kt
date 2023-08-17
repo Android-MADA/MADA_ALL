@@ -19,32 +19,37 @@ import retrofit2.http.Query
 interface RetrofitServiceCalendar {
 
 
-    @GET("/api/calender/")
+    @GET("/api/calendar/")
     fun allCalRequest(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
 
-    @GET("/api/calender/")
-    fun monthCalRequest(@Header("Authorization") token : String?, @Query("Year") year: String, @Query("Month") month: String
+    @GET("/api/calendar/")
+    fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: String, @Query("month") month: String
     ) : Call<CalendarDatas>
-
-    @POST("/api/calender/add")
-    fun addCal(@Header("Authorization") token: String?, @Body data: AddCalendarData
-    ) : Call<ResponseSample>
-
-    @PATCH("/api/calender/edit/{id}")
-    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int
-    ) : Call<AddCalendarData>
-    @DELETE("/api/calender/edit/{id}")
+    @DELETE("/api/calendar/edit/{id}")
     fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int
     ) : Call<AddCalendarData>
 
-    @GET("/api/calender/date/{Date}")
-    fun getDday(@Header("Authorization") token : String?, @Path("Date") date : String
+
+
+    //안해봄
+    @POST("/api/calendar/add")
+    fun addCal(@Header("Authorization") token: String?, @Body data: AddCalendarData
+    ) : Call<ResponseSample>
+
+
+    @PATCH("/api/calendar/edit/{id}")
+    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int
+    ) : Call<AddCalendarData>
+
+    @GET("/api/calendar/date/{date}")           //최 후순위
+    fun getDday(@Header("Authorization") token : String?, @Path("date") date : String
     ) : Call<CalendarDatas>
 
-    @GET("/api/calender/date")
+    @GET("/api/calendar/dday")
     fun getAllDday(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
+
 
     @GET("/api/custom/")
     fun characterRequest(@Header("Authorization") token : String?

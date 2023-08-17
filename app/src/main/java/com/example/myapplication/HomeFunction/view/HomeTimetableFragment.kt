@@ -42,7 +42,7 @@ class HomeTimetableFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MjcyNywiZXhwIjoxNjkyMTk4NzI3fQ.ExX5QY74T4jOSHPK8b6j05kB1uWw9akeVaWeTNxy0euwUwweYYcyQp-5JySYVyc_LKu3Sa_VE0PNEoopfTEPEA"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI0NDUwNywiZXhwIjoxNjkyMjgwNTA3fQ.KkWJxLA5crR0veWisTYv0C-6VVs_vwS4Sf8pWrdQCq589rhfeJZqyM4GQJxKZnJVcmsIe3pd-Jo-zOh2QUYd_A"
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
@@ -101,6 +101,7 @@ class HomeTimetableFragment : Fragment() {
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
+            bundle.putString("Token",token)
             if(dataArray!=null) {
                 bundle.putSerializable("pieChartDataArray", dataArray)
                 Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
@@ -113,6 +114,7 @@ class HomeTimetableFragment : Fragment() {
         timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 //페이지 이동 + 데이터 전달
+
                 Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
             }
         })
@@ -161,9 +163,9 @@ class HomeTimetableFragment : Fragment() {
                             var i = 0
                             for (data in datas) {
                                 val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                    extractTime(data.endTime,true),extractTime(data.endTime,false),data.color,i++)
+                                    extractTime(data.endTime,true),extractTime(data.endTime,false),data.color,i++,data.id)
                                 arrays.add(tmp)
-                                Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime}")
+                                Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id}")
                             }
                         } else {
 
@@ -266,7 +268,10 @@ class HomeTimetableFragment : Fragment() {
                         val bundle = Bundle()
                         bundle.putSerializable("pieChartData", pieChartDataArray[label.toInt()])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                        bundle.putString("Token",token)
                         Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
+                    } else {
+                        pieDataSet.selectionShift = 1f //하이라이트 크기
                     }
                 }
             }
