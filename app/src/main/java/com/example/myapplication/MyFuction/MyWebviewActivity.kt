@@ -2,16 +2,19 @@ package com.example.myapplication.MyFuction
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.R
-import com.example.myapplication.databinding.MySignup1Binding
+import com.example.myapplication.databinding.MyWebviewBinding
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MySignup1Activity : AppCompatActivity() {
 
-    private lateinit var binding: MySignup1Binding
-    private var isButtonClicked = false
+class MyWebviewActivity : AppCompatActivity() {
+
+    private lateinit var binding: MyWebviewBinding
 
     // retrofit
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -22,18 +25,21 @@ class MySignup1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MySignup1Binding.inflate(layoutInflater)
+        binding = MyWebviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.signup1Btn.setOnClickListener {
-            isButtonClicked = !isButtonClicked
-            binding.signup1Btn.setBackgroundResource(R.drawable.my_btn_ok)
+        //웹페이지 호출
+        binding.myWebview.loadUrl("http://15.165.210.13:8080/oauth2/authorization/naver");
+    }
 
-            val intent = Intent(this@MySignup1Activity, MySignup2Activity::class.java)
-            startActivity(intent)
-            finish()
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("MySignup1", "로그인 후 다시 MyWebViewActiviy 돌아오기 성공")
+
+        // 화면 전환
+        val intent = Intent(this, MySignup1Activity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 }
-
