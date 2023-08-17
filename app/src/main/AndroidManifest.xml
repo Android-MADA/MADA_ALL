@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 인터넷 접근권한 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,10 +29,10 @@
             android:name=".SplashActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup1"
+            android:name=".MyFuction.MySignup1Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup2"
+            android:name=".MyFuction.MySignup2Activity"
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyNoticeActivity"
