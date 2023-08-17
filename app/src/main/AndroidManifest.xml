@@ -49,6 +49,9 @@
             android:name=".MyFuction.MySetActivity"
             android:exported="false" />
         <activity
+            android:name=".MyFuction.MyNoticeSetActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyFuction.MyProfileNickActivity"
             android:exported="false" />
         <activity
