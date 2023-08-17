@@ -1,6 +1,5 @@
 package com.example.myapplication.Fragment
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -46,6 +45,9 @@ import java.lang.Math.log
 import java.math.BigInteger
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.app.AlertDialog
+import android.content.DialogInterface
+import androidx.activity.OnBackPressedCallback
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -68,6 +70,8 @@ interface OnResetButtonClickListener {
 }
 
 
+
+
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
     private lateinit var customtabLayout: TabLayout
@@ -85,10 +89,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var clothFragment: custom_cloth? = null
     private var adapter: CustomBottomSheetViewPager? = null
 
+    private var changesMade = false
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE4NzU1MywiZXhwIjoxNjkyMjIzNTUzfQ.QEHXjyLoMJMjFEIGEbKS_2RmsGQrb6i80U31rQOCDMHWBCyJkRcA-ET92S0XA5iAQSHJ6NXLr5_TGpoELZepHg"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
         var selectedClothButtonInfo: ButtonInfo?,
@@ -228,9 +234,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
 
 
-
-
-
         return view
     }
 
@@ -297,11 +300,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onResetButtonClicked() {
         Log.d("FragCustom", "onResetButtonClicked()")
         val colorFragment = (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(0) as? custom_color
+        val clothFragment = (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(1) as? custom_cloth
+        val itemFragment = (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(2) as? custom_item
+        val backgroundFragment = (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(1) as? custom_background
         colorFragment?.resetButtonColor()
-        //clothFragment?.resetButtonImage()
-        //itemFragment?.resetButtonImage()
-        //backgroundFragment?.resetButtonImage()
+        clothFragment?.resetButtonCloth()
+        itemFragment?.resetButtonItem()
+        backgroundFragment?.resetButtonBackground()
     }
+
 }
 
     /* override fun onBackPressed() {

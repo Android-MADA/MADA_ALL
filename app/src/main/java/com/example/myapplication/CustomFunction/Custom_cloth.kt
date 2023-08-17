@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnColorImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.FragCustomBinding
 
@@ -20,6 +22,7 @@ class custom_cloth() : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnClothImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -156,6 +159,19 @@ class custom_cloth() : Fragment() {
         }
 
         imageChangeListener?.onClothButtonSelected(buttonInfo)
+    }
+
+    fun resetButtonCloth() {
+        binding.btnClothBasic.setImageResource(R.drawable.custom_null)
+        binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
+        binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
+        binding.btnClothCaffK.setImageResource(R.drawable.set_caffk_s)
+        binding.btnClothV.setImageResource(R.drawable.set_v_s)
+        binding.btnClothAstronauts.setImageResource(R.drawable.set_astronauts_s)
+        binding.btnClothZzim.setImageResource(R.drawable.set_zzim_s)
+        binding.btnClothHanbokF.setImageResource(R.drawable.set_hanbokf_s)
+        binding.btnClothHanbokM.setImageResource(R.drawable.set_hanbokm_s)
+        binding.btnClothSnowman.setImageResource(R.drawable.set_snowman_s)
     }
 
 
