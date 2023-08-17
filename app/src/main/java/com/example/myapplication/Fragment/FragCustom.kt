@@ -48,6 +48,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.activity.OnBackPressedCallback
+import com.example.myapplication.CustomFunction.customPrintDATA
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.PUT
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -90,6 +97,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private var changesMade = false
 
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
@@ -113,6 +121,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
+        getCustomPrint()
 
 
 
@@ -306,6 +315,22 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         clothFragment?.resetButtonCloth()
         itemFragment?.resetButtonItem()
         backgroundFragment?.resetButtonBackground()
+    }
+
+
+    private fun getCustomPrint() {
+        val call: Call<customPrintDATA> = service.customPrint(token)
+
+        call.enqueue(object : Callback<customPrintDATA> {
+            override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
+                val printInfo = response.body()
+                Log.d("response", "${printInfo?.id} ${printInfo?.itemType} ${printInfo?.filePath}")
+            }
+
+            override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
     }
 
 }

@@ -21,7 +21,7 @@ interface RetrofitServiceCustom {
 
     @GET("/api/custom/")
     fun customPrint(@Header("Content-Type") token : String?
-    ) : Callback<customPrintDATA>
+    ) : Call<customPrintDATA>
 
     @GET("/api/custom/item/{item_type}")
     fun customItemCheck(@Header("Content-Type") token : String?, @Path("item_type") item_type : String
