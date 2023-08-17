@@ -12,7 +12,6 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
@@ -61,7 +60,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
             //checkbox value change
             //카테고리 아이디에 따라 다르게 넣기 -> 동적으로 변화해서...따로 livedata나 다른 서버 연결 하고서 다듬어야 될 듯..
             var cbColor = R.drawable.home_checkbox1
-            when(dataSet[position].categoryId.categoryName){
+            when(dataSet[position].category.categoryName){
                 "약속" -> {cbColor = R.drawable.home_checkbox1}
                 "2" -> {cbColor = R.drawable.home_checkbox2}
                 "3" -> {cbColor = R.drawable.home_checkbox3}
