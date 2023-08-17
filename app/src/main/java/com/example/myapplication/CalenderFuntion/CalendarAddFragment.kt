@@ -96,9 +96,6 @@ class CalendarAddFragment : Fragment() {
         edit = bundle?.getBoolean("edit")?: false
         token = bundle?.getString("Token")?: ""
         val today = bundle?.getString("Today")?: null
-        Log.d("aaa",today.toString())
-
-
         if(edit)
             binding.submitBtn.text = "수정"
         binding.textTitle.setText(title)
@@ -560,12 +557,15 @@ class CalendarAddFragment : Fragment() {
                 else {
                     if(binding.submitBtn.text =="등록") {
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString() ) )
+                            curColor,binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString(),
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else if(binding.submitBtn.text =="수정"){
+                        //dasdasd
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                            binding.calendarColor.colorFilter.toString(),binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString()) )
+                            curColor,binding.cyclebtn.text.toString(),curDday,binding.textMemo.text.toString(),
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
                         Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else {
@@ -646,8 +646,6 @@ class CalendarAddFragment : Fragment() {
         val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
         val localDate1 = LocalDate.parse(date1, formatter)
         val localDate2 = LocalDate.parse(date2, formatter)
-        Log.d("string",date1)
-        Log.d("string",date2)
         return if (localDate1.isBefore(localDate2)) {
             true
         } else {
@@ -677,6 +675,19 @@ class CalendarAddFragment : Fragment() {
             return false
         }
     }
+    fun timeChange(time: String): String {
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+
+        calendar.time = inputFormat.parse(timeModified)
+
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        return String.format("%02d:%02d", hour, minute)
+    }
     private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
         if (isExpanded) {
             ToggleAnimation.expand(layoutExpand)
@@ -686,8 +697,9 @@ class CalendarAddFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val tmp = AddCalendarData(data)
-        val call1 = service.addCal(token,tmp)
+        val call1 = service.addCal(token,AddCalendarData(data))
+        Log.d("token",token)
+        Log.d("data",data.toJson())
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
@@ -717,7 +729,7 @@ class CalendarAddFragment : Fragment() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        Log.d("status",responseBody.datas.name.toString())
+                        //Log.d("status",responseBody.data.name.toString())
                     }else
                         Log.d("777","${response.code()}")
 

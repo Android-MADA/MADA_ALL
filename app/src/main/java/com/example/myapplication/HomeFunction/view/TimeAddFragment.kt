@@ -308,7 +308,12 @@ class TimeAddFragment : Fragment() {
                 val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,"${curH[0]}:${curM[0]}:00",
                     "${curH[1]}:${curM[1]}:00",binding.edtHomeScheduleMemo.text.toString())
                 Log.d("time","${curH[0]}:${curM[0]}:00 ${curH[1]}:${curM[1]}:00")
-                addTimeDatas(tmp)
+                if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
+                    addTimeDatas(tmp)
+                } else {
+                    editTimeData(id,tmp)
+                }
+
 
                 //만약 수정 상태라면 해당 데이터 수정 해야함!!!
                 //등록 상태라면 데이터 등록
@@ -415,6 +420,28 @@ class TimeAddFragment : Fragment() {
     private fun delTimeDatas(id : Int) {
         val call = service.deleteTime(token, id)
 
+        call.enqueue(object : Callback<ScheduleResponse> {
+            override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse
+                        Log.d("success","${datas.status} ${datas.message} ${datas.succcess} ")
+                    } else {
+                        Log.d("222","Request was not successful. Message: hi")
+                    }
+                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                } else {
+                    Log.d("333213","itemType: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+    private fun editTimeData(id : Int,data : ScheduleAdd) {
+        val call = service.editTime(token, id,data)
         call.enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
                 if (response.isSuccessful) {

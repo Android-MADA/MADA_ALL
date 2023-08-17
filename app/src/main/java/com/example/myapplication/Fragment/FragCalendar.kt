@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
@@ -28,6 +29,8 @@ import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
+import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -65,7 +68,7 @@ class FragCalendar : Fragment(){
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI0NDUwNywiZXhwIjoxNjkyMjgwNTA3fQ.KkWJxLA5crR0veWisTYv0C-6VVs_vwS4Sf8pWrdQCq589rhfeJZqyM4GQJxKZnJVcmsIe3pd-Jo-zOh2QUYd_A"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTQ2NiwiZXhwIjoxNjkyMzAxNDY2fQ.SREqXsAkqgkDIS6-wo2XpXJurPr_knoIL8TjR3F5LSrWcchqPt0XaGQNL9fX_y8CHVtD_53sllduE50m9MYZOg"
 
 
 
@@ -96,14 +99,12 @@ class FragCalendar : Fragment(){
             calendar.add(Calendar.MONTH, -1)
             datas.clear()
             getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
-            Log.d("pre","pre")
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
             datas.clear()
             getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
-            Log.d("next","next")
         }
         return binding.root
     }
@@ -114,9 +115,9 @@ class FragCalendar : Fragment(){
         val savedData = viewModel.getSavedButtonInfo()
 
         getCustomChar()
-
         val ddayDatas = ArrayList<CalendarDATA>()
         //getDdayDataArray(ddayDatas)
+
 
         for (i in 0 until min(ddayDatas.size, 3)) {
             val color = ddayDatas[i].color
@@ -445,15 +446,14 @@ class FragCalendar : Fragment(){
                                 if(data.start_date==data.end_date) dura = false
                                 else dura = true
                                 val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
-                                    "10:00","11:00","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
+                                    "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                     -1,dura,"${data.memo}","CAL",data.id)
                                 if(dura) {
                                     arrays.add(0,tmp)
                                 } else {
                                     arrays.add(tmp)
                                 }
-                                Log.d("111","datas: ${tmp.startDate} ${tmp.endDate} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo} ${data.id}")
-                                Log.d("111","datas: ${data.start_time} ${data.end_time}")
+                                Log.d("111","datas: ${tmp.startTime} ${tmp.endTime} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo} ${data.id}")
                             }
                         } else {
                            Log.d("2222","Request was not successful.")
@@ -468,7 +468,7 @@ class FragCalendar : Fragment(){
                 setMonthView(arrays,startMon)
             }
             override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
+                //Log.d("444","itemType: ${t.message}")
                 setMonthView(arrays,startMon)
             }
         })
@@ -530,24 +530,5 @@ class FragCalendar : Fragment(){
                 //Log.d("444","itemType: ${t.message}")
             }
         })
-    }
-    private fun loGin() {
-        val call = service.login()
-        call.enqueue(object : Callback<Void> {
-            override fun onResponse(call2: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    //Log.d("header","itemType: ${response.headers().getDate("Authorization")}")
-                    //Log.d("body","itemType: ${response.body()}")
-                } else {
-
-                }
-            }
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                //Log.d("444","itemType: ${t.message}")
-            }
-
-        })
-
     }
 }

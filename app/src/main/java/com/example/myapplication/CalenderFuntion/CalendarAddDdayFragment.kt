@@ -271,8 +271,7 @@ class CalendarAddDdayFragment : Fragment() {
         return isExpanded
     }
     private fun addCalendar(data : CalendarData2) {
-        val tmp = AddCalendarData(data)
-        val call1 = service.addCal(token,tmp)
+        val call1 = service.addCal(token,AddCalendarData(data))
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
