@@ -62,6 +62,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 repeatAdapter = HomeViewpager2TodoAdapter()
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
+                repeatAdapter!!.viewModel = viewModel
 
                 repeatAdapter!!.setItemClickListener(object :
                     HomeViewpager2TodoAdapter.OnItemClickListener {
@@ -79,7 +80,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
-        holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
+        //holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너

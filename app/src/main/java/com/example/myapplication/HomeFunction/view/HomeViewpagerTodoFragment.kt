@@ -67,7 +67,8 @@ class HomeViewpagerTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(2, LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
+                        var todo = Todo(viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N")
+                        //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
                         viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                         //서버 전송(POST)
@@ -76,7 +77,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
                             cateAdapter.cateTodoSet = viewModel.cateTodoList.value
                             binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
-                            Log.d("viewpagerTodo", "catetodo변경 확인")
+                            Log.d("viewpagerTodo", "catetodo변경 확인 ${viewModel.cateTodoList.toString()}")
                             viewModel.updateCompleteTodo()
                             viewModel.updateTodoNum()
                         })
@@ -101,6 +102,8 @@ class HomeViewpagerTodoFragment : Fragment() {
 //            }
             Log.d("viewpagerepeatTodo", "catetodo변경 확인")
         })
+
+
 
     }
 

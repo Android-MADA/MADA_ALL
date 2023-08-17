@@ -1,8 +1,10 @@
 package com.example.myapplication.HomeFunction.Model
 
+import com.google.gson.annotations.SerializedName
+
 data class TodoList(
-    val status : Int,
-    val message : String,
-    val success : Boolean,
-    val data : ArrayList<Todo>
+    @SerializedName("status") val status : Int,
+    @SerializedName("message") val message : String,
+    @SerializedName("success") val success : Boolean,
+    @SerializedName("data") val data : List<Todo>
 )

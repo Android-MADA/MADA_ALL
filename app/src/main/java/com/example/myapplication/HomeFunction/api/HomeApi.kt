@@ -22,7 +22,7 @@ import java.time.LocalDate
 interface HomeApi {
 
     //todo조회
-    @GET("api/home/todo/date/{date}")
+    @GET("/api/home/todo/date/{date}")
     suspend fun getAllTodo(
         @Header("Autorization") token: String?,
         @Path("date") date: LocalDate
@@ -68,7 +68,7 @@ interface HomeApi {
     @DELETE("/api/home/time/scheduleId/{scheduleId}")
     fun deleteTime()
 
-    //카테고리 조회
+    //카테고리 조회 -> 확인 완
     @GET("/api/home/category")
     fun getCategory(
         @Header("Authorization") token : String?

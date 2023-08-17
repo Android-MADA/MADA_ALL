@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.Category
@@ -35,10 +36,8 @@ class HomeCategoryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE2MDU5NCwiZXhwIjoxNjkyMTk2NTk0fQ.MSGHGd8vZ19dYAvtHqt37nq6nGVbdaD9poiAa000-PTvlDvH1b9oii9oX1rY8vGQFQ5zYYN1eocgOXyWUEOGPA"
-        //viewModel.getCategory(token)
-
-
+        //서버연결 - 카테고리 리스트 조회 후 리스트에 넣어서 어댑터에 연결
+        // viewModel.getCategory(token)
         return binding.root
     }
 
@@ -62,9 +61,9 @@ class HomeCategoryFragment : Fragment() {
             override fun onClick(v: View, position: Int, dataSet: Category) {
                 //페이지 이동 + 데이터 전달
                 bundle.putStringArrayList("key", arrayListOf(
-                    dataSet.id.toString(),
+                    //dataSet.id.toString(),
                     dataSet.categoryName,
-                    dataSet.iconId.toString(),
+                    //dataSet.iconId.toString(),
                     dataSet.color,
                     position.toString()
                 ))
@@ -75,6 +74,10 @@ class HomeCategoryFragment : Fragment() {
 
         binding.rvHomeCategory.adapter = categoryAdapter
         binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+
+        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
+            categoryAdapter?.notifyDataSetChanged()
+        })
 
     }
     override fun onDestroyView() {
