@@ -35,6 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyNoticeActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyListItem"

@@ -74,21 +74,21 @@ interface HomeApi {
     @GET("/api/home/category")
     suspend fun getCategory(
         @Header("Authorization") token : String?
-    ): Response<CategoryList>
+    ): CategoryList
 
     //카테고리 추가
     @POST("/api/home/category")
-    suspend fun addCategory(
+    suspend fun postCategory(
         @Header("Authorization") token : String?,
         @Body data : PatchRequestCategory
     ): PactchResponseCategory
 
     // 카테고리 추가(2) -> 확인 완
-    @POST("/api/home/category")
-    fun postCategory(
-        @Header("Authorization") token : String?,
-        @Body data : PatchRequestCategory
-    ): Call<PactchResponseCategory>
+//    @POST("/api/home/category")
+//    fun postCategory(
+//        @Header("Authorization") token : String?,
+//        @Body data : PatchRequestCategory
+//    ): Call<PactchResponseCategory>
 
     //카테고리 수정
     @PATCH("/api/home/category/{categoryId}")

@@ -124,45 +124,41 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             } else {
                 //데이터 변경
                 if (binding.btnHomeCateAddSave.text == "수정") {
-                    //viewModel.editCate(argsArray!![4].toInt(), binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon)
                     //서버 전송(PATCH)
-                    //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, 1))
-                    //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt()))
                     Navigation.findNavController(view)
                         .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                     Log.d("cateEdit", "확인")
                 } else {
-                    //viewModel.addCate(1, binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt())
-                    //서버 전송(POST)
-//                    val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-//                    api.postCategory(viewModel.userToken, PatchRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, iconAdapter.selectedIcon.toInt())).enqueue(
-//                        object : Callback<PactchResponseCategory>{
-//                            override fun onResponse(
-//                                call: Call<PactchResponseCategory>,
-//                                response: Response<PactchResponseCategory>
-//                            ) {
-//                                if(response.isSuccessful){
-//                                    Log.d("cateAddsuccess", response.body().toString())
-//                                }
-//                                else {
-//                                    Log.d("cateAdd", response.code().toString())
-//                                }
-//                            }
-//
-//                            override fun onFailure(
-//                                call: Call<PactchResponseCategory>,
-//                                t: Throwable
-//                            ) {
-//                                Log.d("cateAdd", "fail")
-//                            }
-//
-//                        })
                     val data = PatchRequestCategory(
                         binding.edtHomeCategoryName.text.toString(),
                         colorAdapter.selecetedColor,
-                        iconAdapter.selectedIcon.toInt()
+                        1
                     )
+                    //서버 전송(POST)
+//                    val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+//                    api.postCategory(viewModel.userToken, data).enqueue(object : Callback<PactchResponseCategory>{
+//                        override fun onResponse(
+//                            call: Call<PactchResponseCategory>,
+//                            response: Response<PactchResponseCategory>
+//                        ) {
+//                           if(response.isSuccessful){
+//                               Log.d("addCate", response.body().toString())
+//                           }
+//                            else {
+//                                Log.d("addCate", "onresponse 실패")
+//                           }
+//                        }
+//
+//                        override fun onFailure(call: Call<PactchResponseCategory>, t: Throwable) {
+//                            Log.d("addCate", "onFailure")
+//                        }
+//
+//                    })
                     viewModel.postCategory(viewModel.userToken, data, view)
+
+//                    Navigation.findNavController(view)
+//                        .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+
                 }
 
             }
