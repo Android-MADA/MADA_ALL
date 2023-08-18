@@ -36,8 +36,8 @@ import java.util.Calendar
 class HomeTimetableFragment : Fragment() {
 
     lateinit var binding : HomeFragmentTimetableBinding
-    val sampleTimeArray = ArrayList<SampleTimeData>()
-    val timeAdapter = HomeTimeAdapter(sampleTimeArray)
+
+
     private var bottomFlag = true
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -95,17 +95,6 @@ class HomeTimetableFragment : Fragment() {
             }
         }
 
-        //rv adpter 연결
-        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-                //페이지 이동 + 데이터 전달
-
-                Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-            }
-        })
-
-        binding.rvHomeTimeSchedule.adapter = timeAdapter
-        binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(this.activity)
 
         //edt처리
 
@@ -134,10 +123,10 @@ class HomeTimetableFragment : Fragment() {
         return 0
     }
 
-    //HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0)
     private fun getTimeDatas(date : String) {
         val call = service.getTimetable(token,date)
         val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
+        val sampleTimeArray = ArrayList<SampleTimeData>()
         call.enqueue(object : Callback<ScheduleList> {
             override fun onResponse(call2: Call<ScheduleList>, response: Response<ScheduleList>) {
                 if (response.isSuccessful) {
@@ -153,19 +142,23 @@ class HomeTimetableFragment : Fragment() {
                                 val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
                                     extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
                                 arrays.add(tmp)
+                                sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
                                 Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id}")
                             }
-                        } else {
-
-                            Log.d("2222","Request was not successful. Message: hi")
                         }
                         pirChartOn(arrays)
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
+
+                        val timeAdapter = HomeTimeAdapter(sampleTimeArray)
+                        //rv adpter 연결
+                        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
+                            override fun onClick(v: View, position: Int) {
+                                //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+                            }
+                        })
+
+                        binding.rvHomeTimeSchedule.adapter = timeAdapter
+                        binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
                     }
-                } else {
-                    Log.d("333","itemType: ${response.code()} ${response.message()}")
-                    Log.d("333213",response.errorBody()?.string()!!)
                 }
             }
             override fun onFailure(call: Call<ScheduleList>, t: Throwable) {

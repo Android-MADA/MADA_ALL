@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="색깔"
-                         />
+                        />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="배경"
-                         />
+                        />
                 </com.google.android.material.tabs.TabLayout>
 
             </LinearLayout>
@@ -143,6 +143,3 @@
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
