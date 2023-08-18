@@ -59,7 +59,6 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         //viewModel.getCategory(viewModel.userToken)
@@ -78,7 +77,7 @@ class FragHome : Fragment() {
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
             viewModel.classifyTodo()
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                Log.d("FragHome 서버", viewModel.cateTodoList.toString())
+                Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
             })
         })
 

@@ -23,13 +23,13 @@ class HomeViewModel : ViewModel() {
 
 
     var userToken =
-        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI3MTg1NCwiZXhwIjoxNjkyMzA3ODU0fQ.z1iXyVx6vGTnKB7RFSQ2SXMCkY--3ORs38KOjmW_o_dQZ9cdnv7ISquCgaQepgcBhi_SjKne35oqeWhDuH31ug"
+        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjMzMzM0NCwiZXhwIjoxNjkyMzY5MzQ0fQ.8eizFNLwQ3VhGFoduMN8QAEdE50bct8A1t9o6QwTQwST8T8J1FF7GaM5La3iouKJbsL6z2ewGMC1mh4MvZSong"
 
     fun getCategory(token: String?) = viewModelScope.launch {
         val category = api.getCategory(token)
         Log.d("HomeViewModel 카테고리 값 확인", category.toString())
         //서버에서 받은 카테고리 데이터를 livedata에 넣기
-        _categoryList.value = category.body()?.data
+        _categoryList.value = category.data
         Log.d("viewmodel 값 넣기", _categoryList.value.toString())
     }
 
@@ -45,7 +45,7 @@ class HomeViewModel : ViewModel() {
         }
 
     fun postCategory(token: String?, data: PatchRequestCategory, view : View) = viewModelScope.launch {
-        val response = api.addCategory(token, data)
+        val response = api.postCategory(token, data)
         Log.d("카테고리 post", response.toString())
         Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
     }
