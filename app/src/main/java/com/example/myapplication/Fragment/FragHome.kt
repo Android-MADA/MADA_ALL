@@ -62,6 +62,7 @@ class FragHome : Fragment() {
         val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
+        /*
         viewModel.getCategory(viewModel.userToken)
         //viewModel.getTodo(viewModel.userToken, "2023-08-16")
         api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
@@ -79,7 +80,7 @@ class FragHome : Fragment() {
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                 Log.d("FragHome 서버", viewModel.cateTodoList.toString())
             })
-        })
+        })*/
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()
