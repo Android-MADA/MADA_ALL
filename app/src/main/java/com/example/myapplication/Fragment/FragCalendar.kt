@@ -85,7 +85,6 @@ class FragCalendar : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         token = MyWebviewActivity.prefs.getString("token","")
-        Log.d("token",token)
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1
@@ -303,9 +302,7 @@ class FragCalendar : Fragment(){
                                 // ...
                             }
                         }
-                        ddayDatas.sortedWith(
-                            compareBy { data -> daysRemainingToDate(data.endDate)}
-                        )
+                        ddayDatas.sortBy { daysRemainingToDate(it.endDate) }
 
                         for (i in 0 until min(ddayDatas.size, 3)) {
                             val color = ddayDatas[i].color

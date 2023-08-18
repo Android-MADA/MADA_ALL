@@ -180,12 +180,14 @@ class CalendarAddFragment : Fragment() {
                 binding.clockAndCycle.visibility = View.GONE
                 binding.layoutColorSelector2.visibility = View.VISIBLE
                 binding.layoutColorSelector1.visibility = View.GONE
+                binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
                 curDday = "Y"
             } else {
                 binding.textDday.visibility= View.GONE
                 binding.clockAndCycle.visibility = View.VISIBLE
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
+                binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
                 curDday = "N"
             }
 
@@ -328,6 +330,7 @@ class CalendarAddFragment : Fragment() {
             chip3.isChecked = false
             chip4.isChecked = false
             chip5.isChecked = false
+            binding.repeatWeek.visibility = View.GONE
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
@@ -338,6 +341,8 @@ class CalendarAddFragment : Fragment() {
             chip3.setChipBackgroundColorResource(R.color.white)
             chip4.setChipBackgroundColorResource(R.color.white)
             chip5.setChipBackgroundColorResource(R.color.white)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
             chip1.isChecked = false
             chip3.isChecked = false
             chip4.isChecked = false
@@ -347,6 +352,8 @@ class CalendarAddFragment : Fragment() {
             binding.cyclebtn.text = "매주"
             curRepeat = "Week"
             binding.calAll.visibility = View.GONE
+            binding.repeatMonth.visibility = View.VISIBLE
+            binding.repeatMonth.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.sub5)
@@ -366,6 +373,8 @@ class CalendarAddFragment : Fragment() {
             chip3.setChipBackgroundColorResource(R.color.white)
             chip4.setChipBackgroundColorResource(R.color.sub5)
             chip5.setChipBackgroundColorResource(R.color.white)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.VISIBLE
             chip2.isChecked = false
             chip3.isChecked = false
             chip1.isChecked = false
@@ -380,11 +389,14 @@ class CalendarAddFragment : Fragment() {
             chip3.setChipBackgroundColorResource(R.color.white)
             chip4.setChipBackgroundColorResource(R.color.white)
             chip5.setChipBackgroundColorResource(R.color.sub5)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
             chip2.isChecked = false
             chip3.isChecked = false
             chip4.isChecked = false
             chip1.isChecked = false
         }
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -562,9 +574,9 @@ class CalendarAddFragment : Fragment() {
                             mBuilder.dismiss()
                         })
                     } else {
-                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                        eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
-                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ),id2 )
                     }
                 }
                 else {

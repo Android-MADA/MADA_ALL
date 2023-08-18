@@ -256,8 +256,6 @@ class TimeAddFragment : Fragment() {
                 Log.d("receivedData", "null!")
             }
             if (check) {
-                val preClock = timeChange(binding.tvHomeTimeStart.toString())
-                var nextClock = timeChange(binding.tvHomeTimeEnd.toString())
                 Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
                 val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
                     timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
@@ -268,11 +266,20 @@ class TimeAddFragment : Fragment() {
                     editTimeData(id,tmp)
                 }
 
-
-                //만약 수정 상태라면 해당 데이터 수정 해야함!!!
-                //등록 상태라면 데이터 등록
-
-            } else {            //이미 해당 시간에 일정이 있을 때
+            } else if(binding.edtHomeCategoryName.text.toString()=="") {
+                val mDialogView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                mDialogView.findViewById<TextView>(R.id.textView4).setText("스케줄명을 입력하시오")
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
+                    mBuilder.dismiss()
+                })
+            } else{            //이미 해당 시간에 일정이 있을 때
                 val mDialogView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.home_fragment_time_add_warningsign, null)
                 val mBuilder = AlertDialog.Builder(requireContext())

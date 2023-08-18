@@ -398,30 +398,30 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 }
 
-    /* override fun onBackPressed() {
-        // if(var custom_save = false) {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(mDialogView)
-                .create()
+/* override fun onBackPressed() {
+    // if(var custom_save = false) {
+        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(requireContext())
+            .setView(mDialogView)
+            .create()
 
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
 
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-            val deviceWidth = displayMetrics.widthPixels
+        val deviceWidth = displayMetrics.widthPixels
 
-            val desiredRatio = 0.8f
-            val desiredWidth = (deviceWidth * desiredRatio).toInt()
-            mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+        val desiredRatio = 0.8f
+        val desiredWidth = (deviceWidth * desiredRatio).toInt()
+        mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
-            val display = requireActivity().windowManager.defaultDisplay
-            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
-                mBuilder.dismiss()
-            })
-            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                저장
-            }) */
+        val display = requireActivity().windowManager.defaultDisplay
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+            mBuilder.dismiss()
+        })
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+            저장
+        }) */
