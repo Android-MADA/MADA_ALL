@@ -105,7 +105,7 @@ class HomeTimetableFragment : Fragment() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
     }
-    fun extractTime(timeString: String,hourOrMin : Boolean): Int {
+    private fun extractTime(timeString: String,hourOrMin : Boolean): Int {
         val timeParts = timeString.split(":")
         if (timeParts.size == 3) {
             try {
