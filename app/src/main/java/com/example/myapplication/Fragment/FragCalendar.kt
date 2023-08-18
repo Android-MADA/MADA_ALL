@@ -30,6 +30,7 @@ import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -67,8 +68,7 @@ class FragCalendar : Fragment(){
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI3MjUwNSwiZXhwIjoxNjkyMzA4NTA1fQ.apeTQJDYZrA-g2PsQ_UIrg5zZDJaOWldYVbFW8hR5QsYbcjtDSrNyx1ihAUl8qTmtlrXhXJdO3Uq2lwkA--w2w"
-
+    var token = ""
 
 
 
@@ -83,6 +83,8 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        token = MyWebviewActivity.prefs.getString("token","")
+        Log.d("token",token)
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1
