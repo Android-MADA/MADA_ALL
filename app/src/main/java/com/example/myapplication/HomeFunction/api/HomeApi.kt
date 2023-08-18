@@ -28,33 +28,38 @@ interface HomeApi {
     //todo조회
     @GET("/api/home/todo/date/{date}")
     fun getAllTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
         @Path("date") date: String
     ): Call<TodoList>
 
     //todo추가
     @POST("/api/home/todo")
     suspend fun addTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //todo수정
     @PATCH("/api/home/todo/todoId/{todoId}")
     suspend fun editTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //todo삭제
     @DELETE("/api/home/todo/todoId/{todoId}")
     suspend fun deleteTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //시간표 추가 시 일정 및 todo조회
     @GET("/api/home/time/search/date/{date}")
-    fun getCalendarTodo(
+    fun getCalendarTodo2(
         @Header("Authorization") token : String?, @Path("date") date : String
     ) :Call<ScheduleTodoCalList>
+
+    @GET("/api/home/time/search/date/{date}")
+    fun getCalendarTodo(
+        @Header("Authorization") token: String?, @Path("date") date: String
+    ): Call<ScheduleTodoCalList>
 
     //시간표 조회
     @GET("/api/home/time/date/{date}")

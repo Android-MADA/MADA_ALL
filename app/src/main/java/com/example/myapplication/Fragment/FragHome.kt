@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.Todo
-//import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -59,9 +59,10 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-/*
+
+        /*
         viewModel.getCategory(viewModel.userToken)
         //viewModel.getTodo(viewModel.userToken, "2023-08-16")
         api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
@@ -79,10 +80,10 @@ class FragHome : Fragment() {
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                 Log.d("FragHome 서버", viewModel.cateTodoList.toString())
             })
-        })
+        })*/
 
         viewModel.updateTodoNum()
-        viewModel.updateCompleteTodo()*/
+        viewModel.updateCompleteTodo()
 
         return view
     }

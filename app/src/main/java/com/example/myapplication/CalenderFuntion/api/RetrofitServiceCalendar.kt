@@ -5,6 +5,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.Model.nickName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -36,22 +37,26 @@ interface RetrofitServiceCalendar {
 
 
     @PATCH("/api/calendar/edit/{id}")
-    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int
-    ) : Call<AddCalendarData>
+    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarData2
+    ) : Call<CalendarData2>
+    @GET("/api/calendar/dday")
+    fun getAllDday(@Header("Authorization") token : String?
+    ) : Call<CalendarDatas>
+
 
     @GET("/api/calendar/date/{date}")           //최 후순위
     fun getDday(@Header("Authorization") token : String?, @Path("date") date : String
     ) : Call<CalendarDatas>
 
-    @GET("/api/calendar/dday")
-    fun getAllDday(@Header("Authorization") token : String?
-    ) : Call<CalendarDatas>
+
+
 
 
     @GET("/api/custom/")
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
 
-    @GET("/oauth2/authorization/naver")
-    fun login() : Call<Void>
+    @POST("/user/signup/nickName")
+    fun singup(@Header("Authorization") token: String?, @Body name: nickName
+    ) : Call<Void>
 }

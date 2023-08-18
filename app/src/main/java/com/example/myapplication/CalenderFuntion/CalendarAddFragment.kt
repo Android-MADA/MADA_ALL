@@ -21,14 +21,13 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
-import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,7 +36,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -67,6 +65,7 @@ class CalendarAddFragment : Fragment() {
     var curColor ="#89A9D9"
     var curDday ="N"
     var curRepeat = "No"
+    var id2 : Int = 0
 
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -91,11 +90,13 @@ class CalendarAddFragment : Fragment() {
         nextSchedule.text = (bundle?.getString("nextSchedule") ?: "2023-6-1")
         preClock = bundle?.getString("preClock") ?: "  오전 10:00  "
         nextClock = bundle?.getString("nextClock") ?: "  오전 11:00  "
-        cycle = bundle?.getString("cycle") ?: "반복 안함"
+        cycle = processInput(bundle?.getString("cycle") ?: "No")
         memo = bundle?.getString("memo") ?: ""
         color = bundle?.getString("color") ?:"#89A9D9"
+        curColor = color
         edit = bundle?.getBoolean("edit")?: false
         token = bundle?.getString("Token")?: ""
+        id2 = bundle?.getInt("id")?: -1
         val today = bundle?.getString("Today")?: null
         if(edit)
             binding.submitBtn.text = "수정"
@@ -183,7 +184,6 @@ class CalendarAddFragment : Fragment() {
             } else {
                 binding.textDday.visibility= View.GONE
                 binding.clockAndCycle.visibility = View.VISIBLE
-
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
                 curDday = "N"
@@ -318,6 +318,7 @@ class CalendarAddFragment : Fragment() {
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
             curRepeat = "No"
+            binding.calAll.visibility = View.VISIBLE
             chip1.setChipBackgroundColorResource(R.color.sub5)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -331,6 +332,7 @@ class CalendarAddFragment : Fragment() {
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
             curRepeat = "Day"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.sub5)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -344,6 +346,7 @@ class CalendarAddFragment : Fragment() {
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
             curRepeat = "Week"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.sub5)
@@ -357,6 +360,7 @@ class CalendarAddFragment : Fragment() {
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
             curRepeat = "Month"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -370,6 +374,7 @@ class CalendarAddFragment : Fragment() {
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
             curRepeat = "Year"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -557,7 +562,9 @@ class CalendarAddFragment : Fragment() {
                             mBuilder.dismiss()
                         })
                     } else {
-                        //dday 추가
+                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                            curColor,curRepeat,curDday,binding.textMemo.text.toString(),
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
                     }
                 }
                 else {
@@ -566,14 +573,13 @@ class CalendarAddFragment : Fragment() {
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                             timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                     } else if(binding.submitBtn.text =="수정"){
                         //dasdasd
-                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                        eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
-                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ),id2 )
 
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
+
                     } else {
 
                     }
@@ -702,25 +708,30 @@ class CalendarAddFragment : Fragment() {
         }
         return isExpanded
     }
+    fun processInput(input: String): String {
+        return when (input) {
+            "Day" -> "매일"
+            "Week" -> "매일"
+            "Month" -> "매일"
+            "Year" -> "매일"
+            else -> "반복 안함"
+        }
+    }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,(data))
-        Log.d("token",token)
-        Log.d("data",AddCalendarData(data).toJson())
+        val call1 = service.addCal(token,data)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         Log.d("status",responseBody.status.toString())
-                        Log.d("success",responseBody.success.toString())
-                        Log.d("message",responseBody.message.toString())
                     }else
                         Log.d("777","${response.code()}")
 
                 } else {
                     Log.d("666","itemType: ${response.code()} ")
-                    Log.d("666","itemType: ${response.message()} ")
                 }
+                findNavController().navigate(R.id.action_calendarAdd_to_fragCalendar)
             }
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
@@ -729,24 +740,26 @@ class CalendarAddFragment : Fragment() {
         })
     }
     private fun eidtCalendar(data : CalendarData2,id : Int) {
-        val call1 = service.editCal(token,id)
-        call1.enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+        val call1 = service.editCal(token,id,data)
+
+        call1.enqueue(object : Callback<CalendarData2> {
+            override fun onResponse(call: Call<CalendarData2>, response: Response<CalendarData2>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         //Log.d("status",responseBody.data.name.toString())
                     }else
-                        Log.d("777","${response.code()}")
+                        Log.d("eidt","${response.code()}")
 
                 } else {
-                    Log.d("666","itemType: ${response.code()} ")
-                    Log.d("666","itemType: ${response.message()} ")
+                    Log.d("eidt","itemType: ${response.code()} ")
+                    Log.d("eidt","itemType: ${token} ")
                 }
+                findNavController().navigate(R.id.action_calendarAdd_to_fragCalendar)
             }
 
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
+            override fun onFailure(call: Call<CalendarData2>, t: Throwable) {
+                Log.d("eidt","itemType: ${t.message}")
             }
         })
     }
