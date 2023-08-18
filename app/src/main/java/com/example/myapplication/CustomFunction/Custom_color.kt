@@ -34,7 +34,11 @@ class custom_color : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0NzE3NSwiZXhwIjoxNjkyMzgzMTc1fQ.z5879fsTmqPBTRuRL80ydPlvnyQRExfj2FtPLMP2aDiA4gsM1mj4PLgqPm1NrL35XTyZc9f_o5bagqwiGaJCAg"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTI2MCwiZXhwIjoxNjkyMzg1MjYwfQ.CWqyzV85HTGF5X7HX8gL5f1c1kZJBFqAgVMkagtup23vs57hcYMfu29YOdleuBfGNOLOBTfZXdvDavfLoKZ8Ew"
+
+
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -180,9 +184,9 @@ class custom_color : Fragment() {
             override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    Log.d("response", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                    Log.d("getCustomItemCheckColor", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
                 } else {
-                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckColor", "Unsuccessful response: ${response.code()}")
                 }
             }
 

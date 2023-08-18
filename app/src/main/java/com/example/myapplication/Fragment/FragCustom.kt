@@ -103,7 +103,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0NzE3NSwiZXhwIjoxNjkyMzgzMTc1fQ.z5879fsTmqPBTRuRL80ydPlvnyQRExfj2FtPLMP2aDiA4gsM1mj4PLgqPm1NrL35XTyZc9f_o5bagqwiGaJCAg"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTI2MCwiZXhwIjoxNjkyMzg1MjYwfQ.CWqyzV85HTGF5X7HX8gL5f1c1kZJBFqAgVMkagtup23vs57hcYMfu29YOdleuBfGNOLOBTfZXdvDavfLoKZ8Ew"
+
+
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
         var selectedClothButtonInfo: ButtonInfo?,
@@ -329,7 +331,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
-                Log.d("response", "${printInfo?.id} ${printInfo?.itemType} ${printInfo?.filePath}")
+                Log.d("getCustomPrint", "${printInfo?.id} ${printInfo?.itemType} ${printInfo?.filePath}")
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -345,9 +347,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
                 if (response.isSuccessful) {
                     val changeInfo = response.body()
-                    Log.d("response", "${changeInfo?.status} ${changeInfo?.success} ${changeInfo?.message}")
+                    Log.d("patchCustomItemChange", "${changeInfo?.status} ${changeInfo?.success} ${changeInfo?.message}")
                 } else {
-                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                    Log.d("patchCustomItemChange", "Unsuccessful response: ${response.code()}")
                 }
             }
 
@@ -364,9 +366,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
                 if (response.isSuccessful) {
                     val resetInfo = response.body()
-                    Log.d("response", "${resetInfo?.status} ${resetInfo?.success} ${resetInfo?.message}")
+                    Log.d("patchCustomItemChange", "${resetInfo?.status} ${resetInfo?.success} ${resetInfo?.message}")
                 } else {
-                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                    Log.d("patchCustomItemChange", "Unsuccessful response: ${response.code()}")
                 }
             }
 
