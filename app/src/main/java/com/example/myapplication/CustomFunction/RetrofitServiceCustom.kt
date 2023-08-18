@@ -15,7 +15,7 @@ import retrofit2.http.PUT
 
 interface RetrofitServiceCustom {
 
-    @PUT("/api/custom/{userid}/reset")
+    @PUT("/api/custom/reset")
     fun customReset(@Header("Authorization") token : String?
     ) : Call<CustomItemChangeDATA>
 
@@ -27,8 +27,8 @@ interface RetrofitServiceCustom {
     fun customItemCheck(@Header("Authorization") token : String?, @Path("item_type") item_type : String
     ) : Call<customItemCheckDATA>
 
-    @PATCH("/api/custom/{item_type}/{userid}/change")
-    fun customItemChange(@Header("Authorization") token : String?, @Path("item_type") item_type : String
+    @PATCH("/api/custom/change/{item_id}/")
+    fun customItemChange(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
     ) : Call<CustomItemChangeDATA>
 
     /*@POST("/api/custom/buy/{item_id}")

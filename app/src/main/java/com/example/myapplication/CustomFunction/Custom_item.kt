@@ -270,7 +270,7 @@ class custom_item : Fragment() {
             override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    Log.d("getCustomItemCheckItem", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                    Log.d("getCustomItemCheckBackground", "${checkInfo?.arrayList?.id} ${checkInfo?.arrayList?.itemType} ${checkInfo?.arrayList?.itemUnlockCondition} ${checkInfo?.arrayList?.filePath} ${checkInfo?.arrayList?.have}")
                 } else {
                     Log.d("getCustomItemCheckItem", "Unsuccessful response: ${response.code()}")
                 }
