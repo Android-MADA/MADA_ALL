@@ -1,54 +1,60 @@
 package com.example.myapplication.HomeFunction.viewModel
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.R
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HomeViewModel : ViewModel() {
 
     //서버 연결
-    private val retrofitInstance = RetrofitInstance.getInstance().create(HomeApi::class.java)
+    private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
 
-    var userToken =
-        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTQ3MCwiZXhwIjoxNjkyMzAxNDcwfQ.MWbq5nOl5aLuyU3fBQhH2KOktG5YB1Wzn9UHSwcQTAfcdicFjH-kCPVvIahSByHDe_Ixb3Uz4KpChZy-YjpxmQ"
-
+    //var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
+    var userToken = MyWebviewActivity.prefs.getString("token","")
     fun getCategory(token: String?) = viewModelScope.launch {
-        val category = retrofitInstance.getCategory(token)
+        val category = api.getCategory(token)
         Log.d("HomeViewModel 카테고리 값 확인", category.toString())
         //서버에서 받은 카테고리 데이터를 livedata에 넣기
         _categoryList.value = category.data
         Log.d("viewmodel 값 넣기", _categoryList.value.toString())
     }
 
-//    fun getTodo(token : String?, date : String) = viewModelScope.launch {
-//        val todo = retrofitInstance.getAllTodo(token, date)
-//        Log.d("HomeViewModel todo 값 확인", todo.toString())
-//    }
-
-    fun patchCategory(token: String?, categoryId: Int, data: PatchRequestCategory) =
-        viewModelScope.launch {
-            val response = retrofitInstance.editCategory(token, categoryId, data)
-            Log.d("카테고리 patch", response.message)
-        }
-
-    fun postCategory(token: String?, data: PatchRequestCategory) = viewModelScope.launch {
-        val response = retrofitInstance.addCategory(token, data)
-        Log.d("카테고리 patch", response.toString())
+    fun getTodo(token : String?, date : String) = viewModelScope.launch {
+        val todo = api.getAllTodo(token, date)
+        Log.d("HomeViewModel todo 값 확인", todo.toString())
     }
 
-    fun deleteCategory(token: String?, categoryId: Int) = viewModelScope.launch {
-        val response = retrofitInstance.deleteCategory(token, categoryId)
-        Log.d("카테고리 delete", response.message)
+    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view : View) =
+        viewModelScope.launch {
+            val response = api.editCategory(token, categoryId, data)
+            Log.d("카테고리 patch", response.toString())
+            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        }
+
+    fun postCategory(token: String?, data: PostRequestCategory, view : View) = viewModelScope.launch {
+        val response = api.postCategory(token, data)
+        Log.d("카테고리 post", response.toString())
+        Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+    }
+
+    fun deleteCategory(token: String?, categoryId: Int, view : View) = viewModelScope.launch {
+        val response = api.deleteCategory(token, categoryId)
+        Log.d("카테고리 delete", "확인")
+        Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
     }
 
     //카테고리 리스트
@@ -147,17 +153,6 @@ class HomeViewModel : ViewModel() {
             }
         }
 
-    }
-
-
-    fun addCate(id: Int, cateName: String, color: String, iconName: Int) {
-        with(_categoryList.value) {
-            this?.add(
-                //Category(id, cateName, color, iconName)
-                Category(id, cateName, color)
-            )
-        }
-        //서버 POST
     }
 
     //cate 수정
