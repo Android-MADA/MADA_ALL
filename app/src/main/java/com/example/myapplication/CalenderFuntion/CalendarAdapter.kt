@@ -6,13 +6,13 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
@@ -21,13 +21,12 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendarDataArray:  Array<ArrayList<CalendarDATA?>>,private val token : String)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataArray:  Array<ArrayList<CalendarDATA?>>, private val token : String)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -67,7 +66,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
             holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background)
             holder.textDay.setTextColor(Color.WHITE)
         }
-        for(data in calendarDataArray[position]) {
+        for(data in myDataArray[position]) {
             if (data != null && data.floor !=-1) {
                 val cal =holder.lines[data.floor]
                 cal.setColorFilter(Color.parseColor(data.color), PorterDuff.Mode.SRC_IN)
@@ -110,20 +109,20 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
                 bundle.putString("preSchedule", "$iYear-$iMonth-$iDay")
                 bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay")
                 bundle.putString("Token",token)
-                if(mDialogView.findViewById<TextView>(R.id.textTitle).text.toString()=="")
+                if(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString()=="")
                     Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 else {
-                    // 등록
+
                 }
                 mBuilder.dismiss()
             })
 
 
             //임시 데이터
-            if(calendarDataArray[position].isEmpty()) {
+            if(myDataArray[position].isEmpty()) {
 
             } else {
-                val adapter = CalendarScheduleAdapter(calendarDataArray[position],iDay,holder.itemView,mBuilder,token)
+                val adapter = CalendarScheduleAdapter(myDataArray[position],iDay,holder.itemView,mBuilder,token)
                 var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter

@@ -10,12 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class HomeScheduleAndTodoAdapter(private val dataArray: Array<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
+class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
                                  private val textPreClock : TextView, private val textNextClock : TextView, private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
