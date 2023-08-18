@@ -30,9 +30,7 @@ class custom_item : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
-
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is OnClothImageChangeListener) {
@@ -268,9 +266,11 @@ class custom_item : Fragment() {
             override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    Log.d("response", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckItem", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    }
                 } else {
-                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckItem", "Unsuccessful response: ${response.code()}")
                 }
             }
 
