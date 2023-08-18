@@ -17,6 +17,7 @@
         android:id="@+id/custom_backgroundtable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         >
 
         <TableRow>
@@ -24,24 +25,29 @@
             <ImageButton
                 android:id="@+id/btn_back_basic"
                 android:src="@drawable/custom_null"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_brid_s"
                 android:src="@drawable/back_brid_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_n_s"
                 android:src="@drawable/back_n_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -50,24 +56,29 @@
             <ImageButton
                 android:id="@+id/btn_back_win_s"
                 android:src="@drawable/back_win_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_normal_s"
                 android:src="@drawable/back_normal_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_store_s"
                 android:src="@drawable/back_store_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -76,24 +87,29 @@
             <ImageButton
                 android:id="@+id/btn_back_zzim_s"
                 android:src="@drawable/back_zzim_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_uni_s"
                 android:src="@drawable/back_uni_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_cin_s"
                 android:src="@drawable/back_cin_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -103,10 +119,34 @@
             <ImageButton
                 android:id="@+id/btn_back_sum_s"
                 android:src="@drawable/back_sum_s_1"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>
+
+            <ImageButton
+                android:src="@drawable/set_snowman_s"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"
+                android:visibility="invisible"
+                ></ImageButton>
+
+            <ImageButton
+                android:src="@drawable/set_snowman_s"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"
+                android:visibility="invisible"
+                ></ImageButton>
+
+
 
         </TableRow>
 

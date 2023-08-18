@@ -51,6 +51,7 @@ import androidx.activity.OnBackPressedCallback
 import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -103,9 +104,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
-
+    val token = MyWebviewActivity.prefs.getString("token","")
 
 
 
@@ -173,8 +173,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        var width = 500
-        var height = 500
+        var width = 600
+        var height = 600
         val customRamdi = binding.customRamdi
         val customRamdi_layoutParams = customRamdi.layoutParams
         customRamdi_layoutParams.width = 1200 // 원하는 너비(dp 단위)
@@ -195,8 +195,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         val imgCustomBackground = binding.imgCustomBackground
         val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 1900 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 1900 // 원하는 높이(dp 단위)
+        imgCustomBackground_layoutParams.width = 2500 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 2500 // 원하는 높이(dp 단위)
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
@@ -207,21 +207,21 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
+                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 900).toInt()
+                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 900).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
+                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 900).toInt()
+                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 900).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
+                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 900).toInt()
+                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 900).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 2000).toInt()
                 imgCustomBackground_layoutParams.height =
-                    (height * (1 - slideOffset) + 1500).toInt()
+                    (height * (1 - slideOffset) + 2000).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
