@@ -34,8 +34,7 @@ class custom_color : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0NzE3NSwiZXhwIjoxNjkyMzgzMTc1fQ.z5879fsTmqPBTRuRL80ydPlvnyQRExfj2FtPLMP2aDiA4gsM1mj4PLgqPm1NrL35XTyZc9f_o5bagqwiGaJCAg"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
