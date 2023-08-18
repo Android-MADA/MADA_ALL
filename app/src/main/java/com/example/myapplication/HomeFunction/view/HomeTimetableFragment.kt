@@ -15,6 +15,7 @@ import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.hideBottomNavigation
@@ -42,23 +43,12 @@ class HomeTimetableFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI3MjUwNSwiZXhwIjoxNjkyMzA4NTA1fQ.apeTQJDYZrA-g2PsQ_UIrg5zZDJaOWldYVbFW8hR5QsYbcjtDSrNyx1ihAUl8qTmtlrXhXJdO3Uq2lwkA--w2w"
+    var token = ""
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
-    var today = "2023-08-16"
+    var today = "2023-08-18"
 
-    /*
-    val pieChartDataArray = arrayOf(        //임시 데이터
-        HomeViewpagerTimetableFragment.PieChartData("제목1", "메모1", 0, 0, 1, 0, "#486DA3", 0,"TIME"),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
-        HomeViewpagerTimetableFragment.PieChartData("제목2", "메모2", 1, 0, 6, 0, "#516773", 1,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목3", "메모3", 9, 0, 12, 0, "#FDA4B4", 2,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목4", "메모4", 12, 0, 13, 30, "#52B6C9", 3,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목5", "메모5", 13, 30, 14, 30, "#516773", 4,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목6", "메모6", 14, 30, 16, 30, "#52B6C9", 5,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목7", "메모7", 16, 30, 18, 0, "#FCE79A", 6,"TIME"),
-        HomeViewpagerTimetableFragment.PieChartData("제목8", "메모8", 20, 0, 22, 0, "#486DA3", 7,"TIME")
-    )*/
     var dataArray= ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +60,7 @@ class HomeTimetableFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
         hideBottomNavigation(bottomFlag, activity)
-        
+        token = MyWebviewActivity.prefs.getString("token","")
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
         val currentTime = Calendar.getInstance()
@@ -89,11 +79,6 @@ class HomeTimetableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ivHomeTimetableBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
-            bottomFlag = false
-        }
-
-        binding.tvHomeTimetableSave.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
             bottomFlag = false
         }
@@ -162,8 +147,11 @@ class HomeTimetableFragment : Fragment() {
                         if(datas != null) {
                             var i = 0
                             for (data in datas) {
+                                var end00 = 0
+                                if(data.endTime=="00:00:00")
+                                    end00 = 24
                                 val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                    extractTime(data.endTime,true),extractTime(data.endTime,false),data.color,i++,data.id)
+                                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
                                 arrays.add(tmp)
                                 Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id}")
                             }

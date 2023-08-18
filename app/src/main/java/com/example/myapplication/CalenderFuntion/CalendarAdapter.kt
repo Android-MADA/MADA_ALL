@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
@@ -110,10 +111,10 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val calendar
                 bundle.putString("preSchedule", "$iYear-$iMonth-$iDay")
                 bundle.putString("nextSchedule", "$iYear-$iMonth-$iDay")
                 bundle.putString("Token",token)
-                if(mDialogView.findViewById<TextView>(R.id.textTitle).text.toString()=="")
+                if(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString()=="")
                     Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 else {
-                    // 등록
+
                 }
                 mBuilder.dismiss()
             })

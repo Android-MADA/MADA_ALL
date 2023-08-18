@@ -5,6 +5,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.Model.nickName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -43,10 +44,10 @@ interface RetrofitServiceCalendar {
     ) : Call<CalendarDatas>
 
 
-
     @GET("/api/calendar/date/{date}")           //최 후순위
     fun getDday(@Header("Authorization") token : String?, @Path("date") date : String
     ) : Call<CalendarDatas>
+
 
 
 
@@ -55,6 +56,7 @@ interface RetrofitServiceCalendar {
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
 
-    @GET("/")
-    fun login() : Call<Void>
+    @POST("/user/signup/nickName")
+    fun singup(@Header("Authorization") token: String?, @Body name: nickName
+    ) : Call<Void>
 }

@@ -37,7 +37,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Calendar
+import java.util.Locale
 
 class TimeAddFragment : Fragment() {
 
@@ -51,15 +54,6 @@ class TimeAddFragment : Fragment() {
     val service = retrofit.create(HomeApi::class.java)
     var today ="2023-08-16"
     var curColor = "#89A9D9"
-    val curA = arrayOf<Boolean>(
-        false, false
-    )
-    val curH = arrayOf<String>(
-        "10","11"
-    )
-    val curM = arrayOf<String>(
-        "00","00"
-    )
     lateinit var token : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,13 +162,9 @@ class TimeAddFragment : Fragment() {
             val matchResult = regex.find(times[0].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
-                curH[0] = hour.toString().padStart(2, '0')
-                curM[0] = minute.toString().padStart(2, '0')
                 if (ampm == "오전") {
-                    curA[0] = false
                     ticker1.value = 0
                 } else {
-                    curA[0] = true
                     ticker1.value = 1
                 }
 
@@ -195,14 +185,10 @@ class TimeAddFragment : Fragment() {
             val matchResult = regex.find(times[1].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
-                curH[1] = hour.toString().padStart(2, '0')
-                curM[1] = minute.toString().padStart(2, '0')
                 if (ampm == "오전") {
-                    curA[1] = false
                     ticker1.value = 0
                 }
                 else {
-                    curA[1] = true
                     ticker1.value = 1
                 }
 
@@ -222,29 +208,26 @@ class TimeAddFragment : Fragment() {
         ticker3.minValue = 0
         ticker3.maxValue = 11
         ticker3.displayedValues = data2
+
         ticker1.setOnValueChangedListener { picker, oldVal, newVal ->
             if (newVal == 0) {
-                curA[scheduleSelect] = false
                 times[scheduleSelect].text =
                     times[scheduleSelect].text.toString().replace("오후", "오전")
             } else {
-                curA[scheduleSelect] = true
                 times[scheduleSelect].text =
                     times[scheduleSelect].text.toString().replace("오전", "오후")
             }
-
         }
         ticker2.setOnValueChangedListener { picker, oldVal, newVal ->
-            curH[scheduleSelect] = newVal.toString().padStart(2, '0')
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
                 times[scheduleSelect].text = "  " + ampm + " " + newVal + ":" + minute + "  "
             } else {
+
             }
         }
         ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
-            curM[scheduleSelect] = newVal.toString().padStart(2, '0')
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
@@ -256,33 +239,15 @@ class TimeAddFragment : Fragment() {
 
         //등록 btn
         btnSubmit.setOnClickListener {
-            var matchResult = regex.find(times[0].text.toString())
-            var start: Int = 0
-            var end: Int = 0
-            if (matchResult != null) {
-                val (ampm, tmpHour, tmpMin) = matchResult.destructured
-                if (ampm == "오전") {
-                    start = tmpHour.toInt() * 60 + tmpMin.toInt()
-                } else {
-                    start = tmpHour.toInt() * 60 + tmpMin.toInt() + 12 * 60
-                }
-
-            }
-            matchResult = regex.find(times[1].text.toString())
-            if (matchResult != null) {
-                val (ampm, tmpHour, tmpMin) = matchResult.destructured
-                if (ampm == "오전") {
-                    end = tmpHour.toInt() * 60 + tmpMin.toInt()
-                } else {
-                    end = tmpHour.toInt() * 60 + tmpMin.toInt() + 12 * 60
-                }
-            }
+            var start = timePlusMinutes(binding.tvHomeTimeStart.text.toString())
+            var end = timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
             var check = true
             if (receivedData != null) {
                 for (data in receivedData) {
-
                     var tmpStart = data.startHour * 60 + data.startMin
                     var tmpEnd = data.endHour * 60 + data.endMin
+                    if(tmpEnd==0)
+                        tmpEnd = 24*60
                     if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
                         if (data.divisionNumber != recievedPieData?.divisionNumber)
                             check = false
@@ -292,23 +257,13 @@ class TimeAddFragment : Fragment() {
             } else {
                 Log.d("receivedData", "null!")
             }
-            if (check) {         //이상 x
-                if(curA[0]&&curH[0].toInt()==12)
-                    curH[0] = "12"
-                else if(!curA[0]&&curH[0].toInt()==12)
-                    curH[0] = "00"
-                else if(curA[0])
-                    curH[0] = (curH[0].toInt() + 12).toString()
+            if (check) {
+                val preClock = timeChange(binding.tvHomeTimeStart.toString())
+                var nextClock = timeChange(binding.tvHomeTimeEnd.toString())
+                Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
+                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
+                    timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
 
-                if(curA[1]&&curH[1].toInt()==12)
-                    curH[1] = "12"
-                else if(!curA[1]&&curH[1].toInt()==12)
-                    curH[1] = "24"
-                else if(curA[1])
-                    curH[1] = (curH[1].toInt() + 12).toString()
-                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,"${curH[0]}:${curM[0]}:00",
-                    "${curH[1]}:${curM[1]}:00",binding.edtHomeScheduleMemo.text.toString())
-                Log.d("time","${curH[0]}:${curM[0]}:00 ${curH[1]}:${curM[1]}:00")
                 if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
                     addTimeDatas(tmp)
                 } else {
@@ -511,6 +466,34 @@ class TimeAddFragment : Fragment() {
 
         val minuteStr = if (minute < 10) "0$minute" else minute.toString()
         return "  $amPm $hour12:$minuteStr  "
+    }
+    fun timeChange(time: String): String {
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+
+        calendar.time = inputFormat.parse(timeModified)
+
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        return String.format("%02d:%02d:00", hour, minute)
+    }
+    fun timePlusMinutes(time: String): Int {
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+
+        calendar.time = inputFormat.parse(timeModified)
+
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val totalMinutes = hour * 60 + minute
+
+        return totalMinutes
     }
 
 }

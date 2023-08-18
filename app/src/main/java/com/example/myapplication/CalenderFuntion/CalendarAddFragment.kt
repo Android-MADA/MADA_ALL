@@ -187,7 +187,6 @@ class CalendarAddFragment : Fragment() {
             } else {
                 binding.textDday.visibility= View.GONE
                 binding.clockAndCycle.visibility = View.VISIBLE
-
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
                 curDday = "N"
@@ -566,7 +565,9 @@ class CalendarAddFragment : Fragment() {
                             mBuilder.dismiss()
                         })
                     } else {
-                        //dday 추가
+                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                            curColor,curRepeat,curDday,binding.textMemo.text.toString(),
+                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
                     }
                 }
                 else {
@@ -743,6 +744,7 @@ class CalendarAddFragment : Fragment() {
     }
     private fun eidtCalendar(data : CalendarData2,id : Int) {
         val call1 = service.editCal(token,id,data)
+
         call1.enqueue(object : Callback<CalendarData2> {
             override fun onResponse(call: Call<CalendarData2>, response: Response<CalendarData2>) {
                 if (response.isSuccessful) {
