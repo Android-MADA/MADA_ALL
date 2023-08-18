@@ -5,7 +5,7 @@ import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
-import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
@@ -30,6 +30,7 @@ interface HomeApi {
 //    ): Call<TodoList>
 
     //todo조회(2) -> 확인 완
+    @GET("/api/home/todo/date/{date}")
     suspend fun getAllTodo(
         @Header("Authorization") token: String?,
         @Path("date", encoded = true) date: String
