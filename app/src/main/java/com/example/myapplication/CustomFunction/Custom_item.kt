@@ -9,10 +9,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomItemBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class custom_item : Fragment() {
     lateinit var binding: CustomItemBinding
@@ -20,6 +27,11 @@ class custom_item : Fragment() {
 
     private var imageChangeListener: OnItemImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,6 +47,8 @@ class custom_item : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CustomItemBinding.inflate(inflater, container, false)
+        getCustomItemCheck("item")
+
 
         binding.btnItemBasic.setOnClickListener{
             onImageButtonClick(binding.btnItemBasic)
@@ -245,6 +259,25 @@ class custom_item : Fragment() {
         binding.btnItemGlassSunB.setImageResource(R.drawable.hat_heart_s)
         binding.btnItemGlassSunB.setImageResource(R.drawable.hat_bee_s)
         binding.btnItemGlassSunB.setImageResource(R.drawable.heads_s)
+    }
+
+    fun getCustomItemCheck(itemType: String) {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    Log.d("response", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                } else {
+                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
     }
 
 }

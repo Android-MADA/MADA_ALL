@@ -48,6 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.activity.OnBackPressedCallback
+import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
 import retrofit2.Call
@@ -232,6 +233,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
             binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
             onResetButtonClicked()
+            putcustomReset()
 
 
         }
@@ -239,6 +241,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
+            patchCustomItemChange("1")
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
         }
@@ -330,6 +333,44 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+    fun patchCustomItemChange(itemType: String) {
+        val call: Call<CustomItemChangeDATA> = service.customItemChange(token, itemType)
+
+        call.enqueue(object : Callback<CustomItemChangeDATA> {
+            override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
+                if (response.isSuccessful) {
+                    val changeInfo = response.body()
+                    Log.d("response", "${changeInfo?.status} ${changeInfo?.success} ${changeInfo?.message}")
+                } else {
+                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<CustomItemChangeDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+    fun putcustomReset() {
+        val call: Call<CustomItemChangeDATA> = service.customReset(token)
+
+        call.enqueue(object : Callback<CustomItemChangeDATA> {
+            override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
+                if (response.isSuccessful) {
+                    val resetInfo = response.body()
+                    Log.d("response", "${resetInfo?.status} ${resetInfo?.success} ${resetInfo?.message}")
+                } else {
+                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<CustomItemChangeDATA>, t: Throwable) {
                 Log.d("error", t.message.toString())
             }
         })
