@@ -1,11 +1,17 @@
 package com.example.myapplication.MyFuction
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.nickName
@@ -38,26 +44,20 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
         holder.item.text = itemData.item
 
         holder.item.setOnClickListener {
-            if(holder.item.text == "로그아웃"){
-                // 로그아웃 서버 연결(팝업X 상태)
-                val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-                    .addConverterFactory(GsonConverterFactory.create()).build()
-                val api = retrofit.create(RetrofitServiceMy::class.java)
-                token = MyWebviewActivity.prefs.getString("token","")
-                val call = api.logout(token)
-                call.enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if(response.isSuccessful) {
-                            Log.d("logout 성공", response.body().toString())
-                        }
-                        else{
-                            Log.d("logout 실패", response.body().toString())
-                        }
-                    }
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("logout 실패 ", "서버 오류")
-                    }
-                })
+            if(holder.item.text == "로그아웃") {
+                var mDialogView = LayoutInflater.from(holder.itemView.context)
+                    .inflate(R.layout.my_logout_popup, null)
+                var mBuilder = AlertDialog.Builder(holder.itemView.context)
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+                val alertDialog = mBuilder.show()
+                val display =
+                    (holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                mBuilder?.window?.setGravity(Gravity.CENTER)
             }
             val targetActivity = itemData.targetActivity
             val intent = Intent(holder.itemView.context, targetActivity)

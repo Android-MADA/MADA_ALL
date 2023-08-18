@@ -65,7 +65,7 @@
 
         <ImageView
             android:id="@+id/ment_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="560dp"
         android:background="@drawable/calendar_dday_background"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 

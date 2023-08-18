@@ -50,17 +50,27 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/title1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="8dp"
             android:text="@string/notice_1"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/content1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/notice_1"
+            android:textColor="@color/black"
+            android:textSize="16sp" />/>
+
+        <TextView
+            android:id="@+id/date1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -74,21 +84,31 @@
             android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/title2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="@string/notice_2"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/content2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/notice_2"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/date2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="\n2023.06.06\n"
+            android:text="\n2023.06.23\n"
             android:textSize="12sp" />
 
         <View
