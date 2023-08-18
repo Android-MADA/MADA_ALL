@@ -19,6 +19,7 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
 import retrofit2.Call
@@ -35,6 +36,8 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
+        Log.d("Hometoken 확인", viewModel.userToken.toString())
 
     }
 
@@ -59,9 +62,8 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        /*
+
         viewModel.getCategory(viewModel.userToken)
         viewModel.getTodo(viewModel.userToken, "2023-08-16")
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
@@ -69,7 +71,7 @@ class FragHome : Fragment() {
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                 Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
             })
-        })*/
+        })
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()
