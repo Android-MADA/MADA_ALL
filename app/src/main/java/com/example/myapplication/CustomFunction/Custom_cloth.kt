@@ -148,26 +148,20 @@ class custom_cloth() : Fragment() {
 
     fun onClothButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, R.drawable.custom_empty)
-            R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, R.drawable.set_dev)
-            R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, R.drawable.set_movie)
-            R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, R.drawable.set_caffk)
-            R.id.btn_cloth_v -> ButtonInfo(clickedButton.id, R.drawable.set_v)
-            R.id.btn_cloth_astronauts -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.set_astronauts,
-            )
-            R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, R.drawable.set_zzim)
-            R.id.btn_cloth_hanbokF -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.set_hanbokf
-            )
+            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, 0,R.drawable.custom_empty)
+            R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, 41,R.drawable.set_dev)
+            R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, 44,R.drawable.set_movie)
+            R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, 40,R.drawable.set_caffk)
+            R.id.btn_cloth_v -> ButtonInfo(clickedButton.id, 46,R.drawable.set_v)
+            R.id.btn_cloth_astronauts -> ButtonInfo(clickedButton.id, 39,R.drawable.set_astronauts,)
+            R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, 47, R.drawable.set_zzim)
+            R.id.btn_cloth_hanbokF -> ButtonInfo(clickedButton.id, 42,R.drawable.set_hanbokf)
             R.id.btn_cloth_hanbokM -> ButtonInfo(
-                clickedButton.id,
+                clickedButton.id,43,
                 R.drawable.set_hanbokm
             )
             R.id.btn_cloth_snowman -> ButtonInfo(
-                clickedButton.id,
+                clickedButton.id,45,
                 R.drawable.set_snowman
             )
             else -> throw IllegalArgumentException("Unknown button ID")

@@ -136,16 +136,16 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, R.drawable.custom_empty)
-            R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, R.drawable.back_brid)
-            R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, R.drawable.back_n)
-            R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, R.drawable.back_win)
-            R.id.btn_back_normal_s -> ButtonInfo(clickedButton.id, R.drawable.back_nomal)
-            R.id.btn_back_store_s -> ButtonInfo(clickedButton.id, R.drawable.back_store)
-            R.id.btn_back_zzim_s -> ButtonInfo(clickedButton.id, R.drawable.back_zzim)
-            R.id.btn_back_uni_s -> ButtonInfo(clickedButton.id, R.drawable.back_uni)
-            R.id.btn_back_cin_s -> ButtonInfo(clickedButton.id, R.drawable.back_cin)
-            R.id.btn_back_sum_s -> ButtonInfo(clickedButton.id, R.drawable.back_sum)
+            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 0, R.drawable.custom_empty)
+            R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, 1, R.drawable.back_brid)
+            R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, 3, R.drawable.back_n)
+            R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, 8, R.drawable.back_win)
+            R.id.btn_back_normal_s -> ButtonInfo(clickedButton.id, 4, R.drawable.back_nomal)
+            R.id.btn_back_store_s -> ButtonInfo(clickedButton.id, 5, R.drawable.back_store)
+            R.id.btn_back_zzim_s -> ButtonInfo(clickedButton.id, 9, R.drawable.back_zzim)
+            R.id.btn_back_uni_s -> ButtonInfo(clickedButton.id, 7, R.drawable.back_uni)
+            R.id.btn_back_cin_s -> ButtonInfo(clickedButton.id, 2, R.drawable.back_cin)
+            R.id.btn_back_sum_s -> ButtonInfo(clickedButton.id, 6, R.drawable.back_sum)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
