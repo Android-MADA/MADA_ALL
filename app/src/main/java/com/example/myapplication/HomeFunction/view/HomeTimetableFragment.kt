@@ -221,12 +221,11 @@ class HomeTimetableFragment : Fragment() {
         pieDataSet.apply {
             colors = colorsItems
             setDrawValues(false) // 비율 숫자 없애기
-
         }
 
         val pieData = PieData(pieDataSet)
-
-        val range = chart.width/80f
+        val smallXY = if(chart.width > chart.height) chart.height else chart.width
+        val range = smallXY/70f
 
         chart.apply {
             data = pieData

@@ -84,7 +84,7 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = MyWebviewActivity.prefs.getString("token","")?: "123"
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1
@@ -250,20 +250,23 @@ class FragCalendar : Fragment(){
                                 val dura : Boolean
                                 if(data.start_date==data.end_date) dura = false
                                 else dura = true
-
-                                val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
-                                    "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                    -1,dura,"${data.memo}","CAL",data.id)
                                 if(data.d_day=="N") {
+                                    val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
+                                        -1,dura,"${data.memo}","CAL",data.id)
                                     if(dura) {
                                         arrays.add(0,tmp)
                                     } else {
                                         arrays.add(tmp)
                                     }
+                                } else {
+                                    val tmp = CalendarDATA("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
+                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
+                                        -1,false,"${data.memo}","CAL",data.id)
+                                    arrays.add(tmp)
                                 }
 
-                                Log.d("111","datas: ${tmp.startTime} ${tmp.endTime} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo} ${data.id}")
-                                Log.d("111","${data.toString()}")
+
                             }
                         } else {
                            Log.d("2222","Request was not successful.")

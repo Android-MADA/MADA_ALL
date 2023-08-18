@@ -190,7 +190,7 @@ class CalendarAddSFragment : Fragment() {
         }
     }
     fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
         val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
 
         val date = inputFormat.parse(dateString)

@@ -268,7 +268,7 @@ class CalendarAddDdayFragment : Fragment() {
         }
     }
     fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
         val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
 
         val date = inputFormat.parse(dateString)
@@ -283,8 +283,8 @@ class CalendarAddDdayFragment : Fragment() {
         return isExpanded
     }
     fun convertToDateKoreanFormat2(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
