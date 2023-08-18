@@ -243,7 +243,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
-            patchCustomItemChange("1")
+            patchCustomItemChange(1)
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
         }
@@ -331,7 +331,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
-                Log.d("getCustomPrint", "${printInfo?.id} ${printInfo?.itemType} ${printInfo?.filePath}")
+                Log.d("getCustomPrint", "${printInfo?.arrayList?.id} ${printInfo?.arrayList?.itemType} ${printInfo?.arrayList?.filePath}")
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -340,8 +340,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-    fun patchCustomItemChange(itemType: String) {
-        val call: Call<CustomItemChangeDATA> = service.customItemChange(token, itemType)
+    fun patchCustomItemChange(itemID: Int) {
+        val call: Call<CustomItemChangeDATA> = service.customItemChange(token, itemID)
 
         call.enqueue(object : Callback<CustomItemChangeDATA> {
             override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
