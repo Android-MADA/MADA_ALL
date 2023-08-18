@@ -60,7 +60,7 @@ class FragCalendar : Fragment(){
     var preStartToEnd : sche = sche(0, 0, 0, 0)
     var nextStartToEnd : sche = sche(0, 0, 0, 0)
 
-    private val viewModel: CustomViewModel by viewModels()      //쥐새끼
+    private val viewModel: CustomViewModel by viewModels()
     private var todayMonth = 6
     private var todayYear =2023
 
