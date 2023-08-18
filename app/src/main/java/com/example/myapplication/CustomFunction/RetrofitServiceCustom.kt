@@ -17,7 +17,7 @@ interface RetrofitServiceCustom {
 
     @PUT("/api/custom/reset")
     fun customReset(@Header("Authorization") token : String?
-    ) : Call<CustomItemChangeDATA>
+    ) : Call<Void>
 
     @GET("/api/custom/")
     fun customPrint(@Header("Authorization") token : String?
@@ -29,7 +29,7 @@ interface RetrofitServiceCustom {
 
     @PATCH("/api/custom/change/{item_id}/")
     fun customItemChange(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
-    ) : Call<CustomItemChangeDATA>
+    ) : Call<Void>
 
     /*@POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Long

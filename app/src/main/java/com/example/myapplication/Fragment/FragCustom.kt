@@ -103,8 +103,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTI2MCwiZXhwIjoxNjkyMzg1MjYwfQ.CWqyzV85HTGF5X7HX8gL5f1c1kZJBFqAgVMkagtup23vs57hcYMfu29YOdleuBfGNOLOBTfZXdvDavfLoKZ8Ew"
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2MTQxNiwiZXhwIjoxNjkyMzk3NDE2fQ.cEGfSPi2klkD2fnalPNrhSeez1BuOMKW4UpHZdIxG7yLv5is4z_FhqIU9ESv7S9G4d1k-6TK2gNThxLOm1RZWw"
 
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
@@ -346,38 +345,28 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
     fun patchCustomItemChange(itemID: Int) {
-        val call: Call<CustomItemChangeDATA> = service.customItemChange(token, itemID)
+        val call: Call<Void> = service.customItemChange(token, itemID)
 
-        call.enqueue(object : Callback<CustomItemChangeDATA> {
-            override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
-                if (response.isSuccessful) {
-                    val changeInfo = response.body()
-                    Log.d("patchCustomItemChange", "${changeInfo?.status} ${changeInfo?.success} ${changeInfo?.message}")
-                } else {
-                    Log.d("patchCustomItemChange", "Unsuccessful response: ${response.code()}")
-                }
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val responseCode = response.code()
+                Log.d("patchCustomItemChange", "Response Code: $responseCode")
             }
-
-            override fun onFailure(call: Call<CustomItemChangeDATA>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("error", t.message.toString())
             }
         })
     }
 
     fun putcustomReset() {
-        val call: Call<CustomItemChangeDATA> = service.customReset(token)
+        val call: Call<Void> = service.customReset(token)
 
-        call.enqueue(object : Callback<CustomItemChangeDATA> {
-            override fun onResponse(call: Call<CustomItemChangeDATA>, response: Response<CustomItemChangeDATA>) {
-                if (response.isSuccessful) {
-                    val resetInfo = response.body()
-                    Log.d("patchCustomItemChange", "${resetInfo?.status} ${resetInfo?.success} ${resetInfo?.message}")
-                } else {
-                    Log.d("patchCustomItemChange", "Unsuccessful response: ${response.code()}")
-                }
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val responseCode = response.code()
+                Log.d("putcustomReset", "Response Code: $responseCode")
             }
-
-            override fun onFailure(call: Call<CustomItemChangeDATA>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("error", t.message.toString())
             }
         })
