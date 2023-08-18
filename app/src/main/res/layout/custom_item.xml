@@ -17,6 +17,7 @@
         android:id="@+id/custom_itemtable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         >
 
         <TableRow>
@@ -25,8 +26,10 @@
                 android:id="@+id/btn_item_basic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="15dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:src="@drawable/custom_null"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -35,8 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/gh_normal_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="15dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -44,9 +49,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/hat_ber_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="28dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
@@ -56,24 +62,29 @@
             <ImageButton
                 android:id="@+id/btn_item_hat_grad"
                 android:src="@drawable/hat_grad_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_8bit"
                 android:src="@drawable/g_8bit_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_woig"
                 android:src="@drawable/g_woig_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -82,24 +93,29 @@
             <ImageButton
                 android:id="@+id/btn_item_hat_ipod"
                 android:src="@drawable/hat_ipod_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_sunR"
                 android:src="@drawable/g_sunr_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_sunB"
                 android:src="@drawable/g_sunb_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -108,24 +124,29 @@
             <ImageButton
                 android:id="@+id/btn_item_hat_flower"
                 android:src="@drawable/hat_flower_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_hat_v"
                 android:src="@drawable/hat_v_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_hat_dinof"
                 android:src="@drawable/hat_dinof_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"
-                android:layout_marginRight="28dp"
                 ></ImageButton>
 
         </TableRow>
@@ -135,24 +156,29 @@
             <ImageButton
                 android:id="@+id/btn_item_hat_sheep"
                 android:src="@drawable/hat_sheep_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_bag_e"
                 android:src="@drawable/bag_e_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_bag_luck"
                 android:src="@drawable/bag_luck_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
@@ -162,24 +188,29 @@
             <ImageButton
                 android:id="@+id/btn_item_hat_heart"
                 android:src="@drawable/hat_heart_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_hat_bee"
                 android:src="@drawable/hat_bee_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_hat_heads"
                 android:src="@drawable/heads_s"
-                android:layout_marginLeft="28dp"
-                android:layout_marginTop="25dp"
-                android:background="#FFFFFF"
-                android:layout_marginRight="28dp"></ImageButton>
+                android:layout_margin ="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 

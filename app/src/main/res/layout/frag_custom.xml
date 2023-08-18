@@ -1,145 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-        <ImageView
-            android:id="@+id/img_custom_background"
-            android:layout_width="700dp"
-            android:layout_height="700dp"
-            android:layout_gravity="top|center"
-            android:src="@drawable/custom_empty">
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/custom_ramdi"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
-            android:src="@drawable/c_ramdi"></ImageView>
-
-        <ImageView
-            android:id="@+id/img_custom_cloth"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/custom_empty">
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/img_custom_item"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/custom_empty">
-        </ImageView>
-
-        <ImageButton
-            android:id="@+id/btn_custom_reset"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/custom_btn_reset"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="25dp"
-            android:background="#00FF0000"></ImageButton>
-
-        <Button
-            android:id="@+id/btn_custom_save"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="#00FF0000"
-            android:textColor="#000000"
-            android:layout_gravity="right|top"
-            android:text="저장하기"></Button>
-
-
-
-
-    </FrameLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent">
 
-        <LinearLayout
+            <ImageButton
+                android:id="@+id/btn_custom_reset"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/custom_btn_reset"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="25dp"
+                android:background="#00FF0000"></ImageButton>
+
+            <Button
+                android:id="@+id/btn_custom_save"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="#00FF0000"
+                android:textColor="#000000"
+                android:layout_gravity="right|top"
+                android:text="저장하기"></Button>
+
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:orientation="vertical"
-            app:behavior_hideable="false"
-            android:id="@+id/CustomBottomSheet"
-            app:behavior_peekHeight="60dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:layout_weight="10"
+            android:layout_height="0dp">
+
+
+            <ImageView
+                android:id="@+id/img_custom_background"
+                android:layout_width="700dp"
+                android:layout_height="700dp"
+                android:layout_gravity="top|center"
+                android:src="@drawable/custom_empty">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/custom_ramdi"
+                android:layout_width="500dp"
+                android:layout_height="500dp"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/c_ramdi"></ImageView>
+
+            <ImageView
+                android:id="@+id/img_custom_cloth"
+                android:layout_width="500dp"
+                android:layout_height="500dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/custom_empty">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/img_custom_item"
+                android:layout_width="500dp"
+                android:layout_height="500dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/custom_empty">
+            </ImageView>
+
+        </FrameLayout>
+    </LinearLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                >
+                android:layout_height="400dp"
+                android:orientation="vertical"
+                app:behavior_hideable="false"
+                android:id="@+id/CustomBottomSheet"
+                app:behavior_peekHeight="60dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/CustomPagetabLayout"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    >
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/CustomPagetabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:tabGravity="fill"
+                        android:background="@drawable/custom_radius"
+                        app:tabIndicatorColor="#000000"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorHeight="3dp"
+                        app:tabTextAppearance="@style/CustomTabTextAppearance"
+                        app:tabMode="fixed">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="색깔"
+                            />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="의상"
+                            />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="소품"
+                            />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="배경"
+                            />
+                    </com.google.android.material.tabs.TabLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/CustomBottomSheetTable"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:tabGravity="fill"
-                    android:background="@drawable/custom_radius"
-                    app:tabIndicatorColor="#000000"
-                    app:tabIndicatorFullWidth="false"
-                    app:tabIndicatorHeight="3dp"
-                    app:tabTextAppearance="@style/CustomTabTextAppearance"
-                    app:tabMode="fixed">
+                    android:background="#FFFFFF"
+                    android:paddingTop="10dp">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="색깔"
-                        />
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/CustomBottomSheetViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="의상"
-                        />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="소품"
-                        />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="배경"
-                        />
-                </com.google.android.material.tabs.TabLayout>
-
+                </FrameLayout>
             </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <FrameLayout
-                android:id="@+id/CustomBottomSheetTable"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:background="#FFFFFF"
-                android:paddingTop="10dp">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/CustomBottomSheetViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-            </FrameLayout>
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
