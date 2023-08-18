@@ -41,54 +41,13 @@ class MyWebviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyWebviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val url = "http://15.165.210.13:8080/oauth2/authorization/naver"
-
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val cookie = response.headers()["set-cookie"]
-
-                // SharedPreferences 또는 다른 데이터 저장 방식을 사용하여 토큰 저장
-                val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("token", cookie)
-                if (response.code() == 200 || response.code() == 201) {
-                    val responseData = response.headers()
-                    val refreshToken = responseData.getDate("Authorization")
-                    Log.d("dsa",refreshToken.toString())
-
-                    // 로그인 성공하면 메인 화면으로 이동
-                    val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
-                    startActivity(intent)
-                } else if (response.code() == 400) {
-                    Toast.makeText(this@MyWebviewActivity, "입력한 값을 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
-                } else if (response.code() == 500) {
-                    Toast.makeText(this@MyWebviewActivity, "서버와의 연결이 불안정합니다.\n잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("fetch error", e.message, e)
-            }
 
 
-        })
+        binding.myWebview.loadUrl("http://15.165.210.13:8080/oauth2/authorization/naver")
+
 
 
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        Log.d("MyWebviewActivity", "웹페이지에서 다시 MyWebViewActiviy 돌아오기 성공")
-//
-//        // 화면 전환
-//        val intent = Intent(this, MySignup1Activity::class.java)
-//        startActivity(intent)
-//        finish()
-//    }
 
 
 }
