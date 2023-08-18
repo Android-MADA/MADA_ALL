@@ -21,9 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
-import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi

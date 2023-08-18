@@ -21,32 +21,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
-import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
-import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.lang.Integer.min
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -67,7 +58,7 @@ class FragCalendar : Fragment(){
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI3MjUwNSwiZXhwIjoxNjkyMzA4NTA1fQ.apeTQJDYZrA-g2PsQ_UIrg5zZDJaOWldYVbFW8hR5QsYbcjtDSrNyx1ihAUl8qTmtlrXhXJdO3Uq2lwkA--w2w"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
 
 
 
@@ -517,8 +508,8 @@ class FragCalendar : Fragment(){
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for (data in datas) {
-                                //arrays.add(data)
-                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //arrays.add(data)d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //Log.
                                 // ...
                             }
                         } else {

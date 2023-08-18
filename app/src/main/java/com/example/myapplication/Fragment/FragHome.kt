@@ -59,7 +59,7 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjE5NDg0NywiZXhwIjoxNjkyMjMwODQ3fQ.b1YBDxmWi45MkkL6DknWZYEFfefXC3h4Gi0meLtv4WWs-1WAMFxFKloW7x8EjRFX_iDFOdmGdJCvJgJbsWfGgA"
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         viewModel.getCategory(viewModel.userToken)
