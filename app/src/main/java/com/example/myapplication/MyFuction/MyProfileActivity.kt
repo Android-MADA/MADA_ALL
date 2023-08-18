@@ -39,7 +39,7 @@ class MyProfileActivity : AppCompatActivity() {
 
             }
             override fun onFailure(call: Call<MyGetProfileData>, t: Throwable) {
-                Log.d("서버 연결 실패", "getProfile 실패")
+                Log.d("서버 오류", "getProfile 실패")
             }
 
         })

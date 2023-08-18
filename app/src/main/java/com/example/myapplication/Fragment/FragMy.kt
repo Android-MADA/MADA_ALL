@@ -40,8 +40,7 @@ class FragMy : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceMy::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
     @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreateView(
@@ -61,7 +60,7 @@ class FragMy : Fragment() {
             MyListItem("알림", MyNoticeSetActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
+            MyListItem("로그아웃", Splash2Activity::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 
