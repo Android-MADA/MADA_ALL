@@ -4,5 +4,5 @@ import androidx.annotation.Keep
 
 @Keep
 data class customPrintDATA(
-    val arrayList: print
+    val data : ArrayList<print>
 )

@@ -4,5 +4,5 @@ import androidx.annotation.Keep
 
 @Keep
 data class customItemCheckDATA(
-    val arrayList: itemcheck
+    val data : ArrayList<itemcheck>
 )

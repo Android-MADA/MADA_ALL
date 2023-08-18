@@ -184,9 +184,11 @@ class custom_color : Fragment() {
             override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    Log.d("getCustomItemCheckBackground", "${checkInfo?.arrayList?.id} ${checkInfo?.arrayList?.itemType} ${checkInfo?.arrayList?.itemUnlockCondition} ${checkInfo?.arrayList?.filePath} ${checkInfo?.arrayList?.have}")
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id}")
+                    }
                 } else {
-                    Log.d("getCustomItemCheckColor", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
                 }
             }
 

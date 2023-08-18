@@ -331,7 +331,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
-                Log.d("getCustomPrint", "${printInfo?.arrayList?.id} ${printInfo?.arrayList?.itemType} ${printInfo?.arrayList?.filePath}")
+                printInfo?.data?.forEachIndexed { index, item ->
+                    Log.d("getCustomPrint", "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}")
+                }
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -339,6 +341,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
     }
+
+
+
 
     fun patchCustomItemChange(itemID: Int) {
         val call: Call<CustomItemChangeDATA> = service.customItemChange(token, itemID)
