@@ -175,63 +175,27 @@ class custom_item : Fragment() {
 
     fun onItemButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_item_basic -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.custom_empty
-            )
-            R.id.btn_item_glass_normal -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_nomal
-            )
-            R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, R.drawable.hat_ber)
-            R.id.btn_item_hat_grad -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_grad
-            )
-            R.id.btn_item_glass_8bit -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_8bit
-            )
-            R.id.btn_item_glass_woig -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_woig
-            )
-            R.id.btn_item_hat_ipod -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_ipod
-            )
-            R.id.btn_item_glass_sunR -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_sunr
-            )
-            R.id.btn_item_glass_sunB -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_sunb
-            )
-            R.id.btn_item_hat_flower -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_flower
-            )
-            R.id.btn_item_hat_v -> ButtonInfo(clickedButton.id, R.drawable.hat_v)
-            R.id.btn_item_hat_dinof -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_dinof
-            )
-            R.id.btn_item_hat_sheep -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_sheep
-            )
-            R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id, R.drawable.bag_e)
-            R.id.btn_item_bag_luck -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.bag_luck
-            )
+            R.id.btn_item_basic -> ButtonInfo(clickedButton.id, 0, R.drawable.custom_empty)
+            R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, 22,R.drawable.g_nomal)
+            R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, 30, R.drawable.hat_ber)
+            R.id.btn_item_hat_grad -> ButtonInfo(clickedButton.id, 33, R.drawable.hat_grad)
+            R.id.btn_item_glass_8bit -> ButtonInfo(clickedButton.id, 21,R.drawable.g_8bit)
+            R.id.btn_item_glass_woig -> ButtonInfo(clickedButton.id, 25, R.drawable.g_woig)
+            R.id.btn_item_hat_ipod -> ButtonInfo(clickedButton.id, 35, R.drawable.hat_ipod)
+            R.id.btn_item_glass_sunR -> ButtonInfo(clickedButton.id, 24,R.drawable.g_sunr)
+            R.id.btn_item_glass_sunB -> ButtonInfo(clickedButton.id,23, R.drawable.g_sunb)
+            R.id.btn_item_hat_flower -> ButtonInfo(clickedButton.id, 32, R.drawable.hat_flower)
+            R.id.btn_item_hat_v -> ButtonInfo(clickedButton.id, 37, R.drawable.hat_v)
+            R.id.btn_item_hat_dinof -> ButtonInfo(clickedButton.id, 31,R.drawable.hat_dinof)
+            R.id.btn_item_hat_sheep -> ButtonInfo(clickedButton.id, 36, R.drawable.hat_sheep)
+            R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id,19, R.drawable.bag_e)
+            R.id.btn_item_bag_luck -> ButtonInfo(clickedButton.id,20, R.drawable.bag_luck)
             R.id.btn_item_hat_heart -> ButtonInfo(
-                clickedButton.id,
+                clickedButton.id,34,
                 R.drawable.hat_heart
             )
-            R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, R.drawable.hat_bee)
-            R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, R.drawable.heads)
+            R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, 29, R.drawable.hat_bee)
+            R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, 38, R.drawable.heads)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 

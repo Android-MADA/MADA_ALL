@@ -144,18 +144,15 @@ class custom_color : Fragment() {
 
     fun onColorButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_color_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
-            R.id.btn_color_blue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyb)
-            R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
-            R.id.btn_color_bluepurple -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.c_ramdybp
-            )
-            R.id.btn_color_green -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyg)
-            R.id.btn_color_orange -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyo)
-            R.id.btn_color_pink -> ButtonInfo(clickedButton.id, R.drawable.c_ramdypn)
-            R.id.btn_color_purple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyp)
-            R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyy)
+            R.id.btn_color_basic -> ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
+            R.id.btn_color_blue -> ButtonInfo(clickedButton.id, 11, R.drawable.c_ramdyb)
+            R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, 17, R.drawable.c_ramdyrb)
+            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, 12, R.drawable.c_ramdybp)
+            R.id.btn_color_green -> ButtonInfo(clickedButton.id, 13, R.drawable.c_ramdyg)
+            R.id.btn_color_orange -> ButtonInfo(clickedButton.id, 14, R.drawable.c_ramdyo)
+            R.id.btn_color_pink -> ButtonInfo(clickedButton.id, 16, R.drawable.c_ramdypn)
+            R.id.btn_color_purple -> ButtonInfo(clickedButton.id, 15, R.drawable.c_ramdyp)
+            R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, 18, R.drawable.c_ramdyy)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
