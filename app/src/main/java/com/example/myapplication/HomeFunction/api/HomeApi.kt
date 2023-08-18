@@ -98,11 +98,10 @@ interface HomeApi {
         @Body data : PatchRequestCategory
     ): PactchResponseCategory
 
-    //카테고리 삭제
+    //카테고리 삭제 -> 확인 완
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
-        @Header("Authorization") token: String?,
-        @Path("categoryId") categoryId: Int
-    ): PactchResponseCategory
-
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    )
 }

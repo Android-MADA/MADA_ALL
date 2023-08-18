@@ -50,9 +50,10 @@ class HomeViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
     }
 
-    fun deleteCategory(token: String?, categoryId: Int) = viewModelScope.launch {
+    fun deleteCategory(token: String?, categoryId: Int, view : View) = viewModelScope.launch {
         val response = api.deleteCategory(token, categoryId)
-        Log.d("카테고리 delete", response.toString())
+        Log.d("카테고리 delete", "확인")
+        Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
     }
 
     //카테고리 리스트

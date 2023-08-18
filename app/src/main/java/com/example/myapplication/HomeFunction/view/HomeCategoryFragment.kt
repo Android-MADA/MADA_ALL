@@ -66,9 +66,9 @@ class HomeCategoryFragment : Fragment() {
                     override fun onClick(v: View, position: Int, dataSet: Category) {
                         //페이지 이동 + 데이터 전달
                         bundle.putStringArrayList("key", arrayListOf(
-                            //dataSet.id.toString(),
+                            dataSet.id.toString(),
                             dataSet.categoryName,
-                            //dataSet.iconId.toString(),
+                            dataSet.iconId.toString(),
                             dataSet.color,
                             position.toString()
                         ))
@@ -102,9 +102,9 @@ class HomeCategoryFragment : Fragment() {
                 override fun onClick(v: View, position: Int, dataSet: Category) {
                     //페이지 이동 + 데이터 전달
                     bundle.putStringArrayList("key", arrayListOf(
-                        //dataSet.id.toString(),
+                        dataSet.id.toString(),
                         dataSet.categoryName,
-                        //dataSet.iconId.toString(),
+                        dataSet.iconId.toString(),
                         dataSet.color,
                         position.toString()
                     ))
