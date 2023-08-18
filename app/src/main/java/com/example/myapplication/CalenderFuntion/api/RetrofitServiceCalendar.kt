@@ -55,6 +55,6 @@ interface RetrofitServiceCalendar {
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
 
-    @GET("/oauth2/authorization/naver")
+    @GET("/")
     fun login() : Call<Void>
 }

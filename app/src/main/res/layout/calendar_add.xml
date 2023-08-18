@@ -747,14 +747,101 @@
                             app:chipStrokeColor="@color/grey4"
                             app:chipStrokeWidth="1dp" />
                     </LinearLayout>
-                </LinearLayout>
 
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:background="@drawable/calendar_cell_background_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_marginLeft="15dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="월"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="화"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="수"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="목"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:id="@+id/textView25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="금"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:id="@+id/textView26"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="토"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_cell_background2"
+                            android:id="@+id/textView27"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="일"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="15dp"
                     android:background="?android:attr/listDivider" />
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_marginBottom="300dp"
