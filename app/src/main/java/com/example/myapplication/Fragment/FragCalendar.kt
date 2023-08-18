@@ -84,6 +84,7 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //binding.bottomSheet
         token = MyWebviewActivity.prefs.getString("token","")?: "123"
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
