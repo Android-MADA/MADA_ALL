@@ -80,7 +80,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
-        //holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
+        holder.cateIcon.setImageResource(findIcon(dataSet[position].iconId))
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너
@@ -112,4 +112,28 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
     }
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
+
+    fun findIcon(iconId : Int) : Int {
+        val icon = when(iconId){
+            1 -> {R.drawable.ic_home_cate_burn}
+            2 -> {R.drawable.ic_home_cate_chat1}
+            3 -> {R.drawable.ic_home_cate_health}
+            4 -> {R.drawable.ic_home_cate_heart}
+            5 -> {R.drawable.ic_home_cate_laptop}
+            6 -> {R.drawable.ic_home_cate_lightout}
+            7 -> {R.drawable.ic_home_cate_lightup}
+            8 -> {R.drawable.ic_home_cate_meal2}
+            9 -> {R.drawable.ic_home_cate_meal1}
+            10 -> {R.drawable.ic_home_cate_mic}
+            11 -> {R.drawable.ic_home_cate_music}
+            12 -> {R.drawable.ic_home_cate_pen}
+            13 -> {R.drawable.ic_home_cate_phone}
+            14 -> {R.drawable.ic_home_cate_plan}
+            15 -> {R.drawable.ic_home_cate_rest}
+            16 -> {R.drawable.ic_home_cate_sony}
+            17 -> {R.drawable.ic_home_cate_study}
+            else -> {R.drawable.ic_home_cate_work}
+        }
+        return icon
+    }
 }
