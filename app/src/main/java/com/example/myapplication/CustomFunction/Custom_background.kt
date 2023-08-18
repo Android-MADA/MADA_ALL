@@ -30,8 +30,7 @@ class custom_background : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTI2MCwiZXhwIjoxNjkyMzg1MjYwfQ.CWqyzV85HTGF5X7HX8gL5f1c1kZJBFqAgVMkagtup23vs57hcYMfu29YOdleuBfGNOLOBTfZXdvDavfLoKZ8Ew"
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2MTQxNiwiZXhwIjoxNjkyMzk3NDE2fQ.cEGfSPi2klkD2fnalPNrhSeez1BuOMKW4UpHZdIxG7yLv5is4z_FhqIU9ESv7S9G4d1k-6TK2gNThxLOm1RZWw"
 
 
 
@@ -175,7 +174,7 @@ class custom_background : Fragment() {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
                     checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id}")
+                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
                     }
                 } else {
                     Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
