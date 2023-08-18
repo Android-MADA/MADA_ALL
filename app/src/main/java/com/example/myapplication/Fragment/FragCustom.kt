@@ -103,7 +103,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2MTQxNiwiZXhwIjoxNjkyMzk3NDE2fQ.cEGfSPi2klkD2fnalPNrhSeez1BuOMKW4UpHZdIxG7yLv5is4z_FhqIU9ESv7S9G4d1k-6TK2gNThxLOm1RZWw"
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
+
+
+
+
+
+
+
 
     data class selectedButtonInfo(
         var selectedColorButtonInfo: ButtonInfo?,
@@ -125,6 +132,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
         getCustomPrint()
+        postcustomItemBuy(7)
 
 
 
@@ -234,7 +242,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
             binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
             onResetButtonClicked()
-            putcustomReset()
+            getcustomReset()
 
 
         }
@@ -242,7 +250,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
-            patchCustomItemChange(1)
+            patchCustomItemChange(3)
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
         }
@@ -358,13 +366,27 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-    fun putcustomReset() {
+    fun getcustomReset() {
         val call: Call<Void> = service.customReset(token)
 
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val responseCode = response.code()
                 Log.d("putcustomReset", "Response Code: $responseCode")
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+    fun postcustomItemBuy(itemID: Int) {
+        val call: Call<Void> = service.customItemBuy(token, itemID)
+
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val responseCode = response.code()
+                Log.d("postcustomItemBuy", "Response Code: $responseCode")
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("error", t.message.toString())

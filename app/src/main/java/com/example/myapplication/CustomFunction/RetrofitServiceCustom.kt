@@ -15,9 +15,9 @@ import retrofit2.http.PUT
 
 interface RetrofitServiceCustom {
 
-    @PUT("/api/custom/reset")
+    @GET("/api/custom/reset")
     fun customReset(@Header("Authorization") token : String?
-    ) : Call<Void>
+    ) : Call<Void> //완료
 
     @GET("/api/custom/")
     fun customPrint(@Header("Authorization") token : String?
@@ -31,9 +31,9 @@ interface RetrofitServiceCustom {
     fun customItemChange(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
     ) : Call<Void>
 
-    /*@POST("/api/custom/buy/{item_id}")
-    fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Long
-    ) : Callback<ResponseSample>*/
+    @POST("/api/custom/buy/{item_id}")
+    fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
+    ) : Call<Void>
 
 
 
