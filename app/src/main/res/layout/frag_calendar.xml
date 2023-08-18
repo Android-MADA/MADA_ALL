@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:background="#E1E9F5"
         android:gravity="bottom"
+        app:umanoInitialState="expanded"
         app:umanoDragView="@+id/bottom_sheet"
         app:umanoFadeColor="@android:color/transparent"
         app:umanoShadowHeight="0dp"
@@ -182,6 +183,7 @@
             android:layout_height="300dp"
             android:background="@drawable/calendar_dday_background"
             android:orientation="vertical"
+
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <TextView
