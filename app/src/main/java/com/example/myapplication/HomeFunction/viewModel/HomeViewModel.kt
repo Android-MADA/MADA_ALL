@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -23,7 +23,7 @@ class HomeViewModel : ViewModel() {
 
 
     var userToken =
-        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjMzMzM0NCwiZXhwIjoxNjkyMzY5MzQ0fQ.8eizFNLwQ3VhGFoduMN8QAEdE50bct8A1t9o6QwTQwST8T8J1FF7GaM5La3iouKJbsL6z2ewGMC1mh4MvZSong"
+        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTgwMywiZXhwIjoxNjkyMzg1ODAzfQ.WYut0ICa9MouoZnN47FxfTGGlZRuDi-67aIMA5nD8ctXtcajYPYlFj4hjXh18oR1UIG-ZEYaO8-4rUWy-tcOuw"
 
     fun getCategory(token: String?) = viewModelScope.launch {
         val category = api.getCategory(token)
@@ -38,13 +38,14 @@ class HomeViewModel : ViewModel() {
         Log.d("HomeViewModel todo 값 확인", todo.toString())
     }
 
-    fun patchCategory(token: String?, categoryId: Int, data: PatchRequestCategory) =
+    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view : View) =
         viewModelScope.launch {
             val response = api.editCategory(token, categoryId, data)
             Log.d("카테고리 patch", response.toString())
+            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         }
 
-    fun postCategory(token: String?, data: PatchRequestCategory, view : View) = viewModelScope.launch {
+    fun postCategory(token: String?, data: PostRequestCategory, view : View) = viewModelScope.launch {
         val response = api.postCategory(token, data)
         Log.d("카테고리 post", response.toString())
         Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)

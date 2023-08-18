@@ -1,25 +1,18 @@
 package com.example.myapplication.HomeFunction.api
 
-import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
-import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
-import java.time.LocalDate
 
 interface HomeApi {
 
@@ -76,11 +69,11 @@ interface HomeApi {
         @Header("Authorization") token : String?
     ): CategoryList
 
-    //카테고리 추가
+    //카테고리 추가 -> 확인 완
     @POST("/api/home/category")
     suspend fun postCategory(
         @Header("Authorization") token : String?,
-        @Body data : PatchRequestCategory
+        @Body data : PostRequestCategory
     ): PactchResponseCategory
 
     // 카테고리 추가(2) -> 확인 완
@@ -93,12 +86,12 @@ interface HomeApi {
     //카테고리 수정
     @PATCH("/api/home/category/{categoryId}")
     suspend fun editCategory(
-        @Header("Authorization") token: String?,
-        @Path("categoryId") categoryId: Int,
-        @Body data : PatchRequestCategory
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int,
+        @Body data : PostRequestCategory
     ): PactchResponseCategory
 
-    //카테고리 삭제 -> 확인 완
+    //카테고리 삭제 -> 확인 완, todo test만 삭제 오류
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
         @Header("Authorization") token : String?,

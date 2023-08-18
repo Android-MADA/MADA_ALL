@@ -14,24 +14,17 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
-import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
-import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateIconAdapter
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.example.myapplication.hideBottomNavigation
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
@@ -73,7 +66,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         if (arguments != null) {
             //데이터 뿌리기
             argsArray = requireArguments().getStringArrayList("key")!!
-//            binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
+            Log.d("argsArray", argsArray!!.toString())
+            binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![2].toInt()))
 //            binding.edtHomeCategoryName.setText(argsArray!![1])
 //            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             binding.edtHomeCategoryName.setText(argsArray!![1])
@@ -121,17 +115,18 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             if (binding.edtHomeCategoryName.text.isBlank()) {
                 Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
+                val data = PostRequestCategory(
+                    binding.edtHomeCategoryName.text.toString(),
+                    colorAdapter.selecetedColor,
+                    findIconId(iconAdapter.selectedIcon)
+                )
+
                 //데이터 변경
                 if (binding.btnHomeCateAddSave.text == "수정") {
                     //서버 전송(PATCH)
-                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                    viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, view)
                     Log.d("cateEdit", "확인")
                 } else {
-                    val data = PatchRequestCategory(
-                        binding.edtHomeCategoryName.text.toString(),
-                        colorAdapter.selecetedColor,
-                        findIconId(iconAdapter.selectedIcon)
-                    )
                     Log.d("addCAte", data.toString())
                     //서버 전송(POST)
 //                    val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
@@ -289,6 +284,30 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             else -> {16}
         }
         return iconId
+    }
+
+    fun findIcon(iconId : Int) : Int {
+        val icon = when(iconId){
+            1 -> {R.drawable.ic_home_cate_burn}
+            2 -> {R.drawable.ic_home_cate_chat1}
+            3 -> {R.drawable.ic_home_cate_health}
+            4 -> {R.drawable.ic_home_cate_heart}
+            5 -> {R.drawable.ic_home_cate_laptop}
+            6 -> {R.drawable.ic_home_cate_lightout}
+            7 -> {R.drawable.ic_home_cate_lightup}
+            8 -> {R.drawable.ic_home_cate_meal2}
+            9 -> {R.drawable.ic_home_cate_meal1}
+            10 -> {R.drawable.ic_home_cate_mic}
+            11 -> {R.drawable.ic_home_cate_music}
+            12 -> {R.drawable.ic_home_cate_pen}
+            13 -> {R.drawable.ic_home_cate_phone}
+            14 -> {R.drawable.ic_home_cate_plan}
+            15 -> {R.drawable.ic_home_cate_rest}
+            16 -> {R.drawable.ic_home_cate_sony}
+            17 -> {R.drawable.ic_home_cate_study}
+            else -> {R.drawable.ic_home_cate_work}
+        }
+        return icon
     }
 
 }
