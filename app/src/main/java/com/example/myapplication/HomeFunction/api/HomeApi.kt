@@ -1,9 +1,15 @@
 package com.example.myapplication.HomeFunction.api
 
+
+import com.example.myapplication.HomeFunction.Model.Schedule
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
-import com.example.myapplication.HomeFunction.Model.PostRequestCategory
+import com.example.myapplication.HomeFunction.Model.PatchRequestCategory
+import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.Model.ScheduleResponse
+import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
 import retrofit2.http.Body
@@ -24,7 +30,6 @@ interface HomeApi {
 //    ): Call<TodoList>
 
     //todo조회(2) -> 확인 완
-    @GET("/api/home/todo/date/{date}")
     suspend fun getAllTodo(
         @Header("Authorization") token: String?,
         @Path("date", encoded = true) date: String
@@ -40,18 +45,25 @@ interface HomeApi {
     //todo수정
     @PATCH("/api/home/todo/todoId/{todoId}")
     suspend fun editTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //todo삭제
     @DELETE("/api/home/todo/todoId/{todoId}")
     suspend fun deleteTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //시간표 추가 시 일정 및 todo조회
     @GET("/api/home/time/search/date/{date}")
-    suspend fun getCalendarTodo()
+    fun getCalendarTodo2(
+        @Header("Authorization") token : String?, @Path("date") date : String
+    ) :Call<ScheduleTodoCalList>
+
+    @GET("/api/home/time/search/date/{date}")
+    fun getCalendarTodo(
+        @Header("Authorization") token: String?, @Path("date") date: String
+    ): Call<ScheduleTodoCalList>
 
     //시간표 조회
     @GET("/api/home/time/date/{date}")
@@ -61,15 +73,19 @@ interface HomeApi {
 
     //시간표 추가
     @POST("/api/home/time")
-    fun addTime()
+    fun addTime(@Header("Authorization") token : String?, @Body data: ScheduleAdd
+    ): Call<ScheduleResponse>
 
     //시간표 수정
     @PATCH("/api/home/time/scheduleId/{scheduleId}")
-    fun editTime()
+    fun editTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int, @Body data : ScheduleAdd
+    ): Call<ScheduleResponse>
 
     //시간표 삭제
     @DELETE("/api/home/time/scheduleId/{scheduleId}")
-    fun deleteTime()
+    fun deleteTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int
+    ): Call<ScheduleResponse>
+
 
     //카테고리 조회 -> 확인 완
     @GET("/api/home/category")

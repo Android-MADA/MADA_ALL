@@ -2,15 +2,24 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class custom_color : Fragment() {
@@ -21,6 +30,13 @@ class custom_color : Fragment() {
 
 
     private var imageChangeListener: OnColorImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,6 +56,8 @@ class custom_color : Fragment() {
     ): View? {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
+        getCustomItemCheck("color")
+
 
 
         binding.btnColorBasic.setOnClickListener{
@@ -69,6 +87,9 @@ class custom_color : Fragment() {
         binding.btnColorYellow.setOnClickListener{
             onImageButtonClick(binding.btnColorYellow)
             onColorButtonClick(it as ImageButton)}
+
+
+
 
         return binding.root
     }
@@ -106,7 +127,7 @@ class custom_color : Fragment() {
     }
 
 
-    private fun getUnselectedImageResource(button: ImageButton): Int {
+    fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_color_basic -> R.drawable.color_basic
             R.id.btn_color_blue -> R.drawable.color_blue
@@ -126,7 +147,10 @@ class custom_color : Fragment() {
             R.id.btn_color_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
             R.id.btn_color_blue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyb)
             R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
-            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdybp)
+            R.id.btn_color_bluepurple -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.c_ramdybp
+            )
             R.id.btn_color_green -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyg)
             R.id.btn_color_orange -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyo)
             R.id.btn_color_pink -> ButtonInfo(clickedButton.id, R.drawable.c_ramdypn)
@@ -137,6 +161,42 @@ class custom_color : Fragment() {
 
         imageChangeListener?.onColorButtonSelected(buttonInfo)
     }
+
+    fun resetButtonColor() {
+        Log.d("CustomColorFragment", "resetButtonImage() called")
+        binding.btnColorBasic.setImageResource(R.drawable.color_basic)
+        binding.btnColorBlue.setImageResource(R.drawable.color_blue)
+        binding.btnColorRblue.setImageResource(R.drawable.color_rblue)
+        binding.btnColorBluepurple.setImageResource(R.drawable.color_bluepurple)
+        binding.btnColorGreen.setImageResource(R.drawable.color_green)
+        binding.btnColorOrange.setImageResource(R.drawable.color_orange)
+        binding.btnColorPink.setImageResource(R.drawable.color_pink)
+        binding.btnColorPurple.setImageResource(R.drawable.color_purple)
+        binding.btnColorYellow.setImageResource(R.drawable.color_yellow)
+    }
+
+    fun getCustomItemCheck(itemType: String) {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckColor", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    }
+                } else {
+                    Log.d("getCustomItemCheckColor", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+
 
 
 

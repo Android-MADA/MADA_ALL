@@ -5,19 +5,26 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
+import android.widget.CheckBox
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -30,6 +37,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -46,11 +54,17 @@ class CalendarAddDdayFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDVWJlYWF6cDhBem9mWDJQQUlxVHN0NmVxUTN4T1JfeXBWR1VuQUlqZU40IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjA5MjQ0OCwiZXhwIjoxNjkyMTI4NDQ4fQ.H9X0jEZVqG9FMzwhDh8I05ov6KRVlGfI8C5bXUwoEWB1lrcQQZzVC9shykYX2_4r-IL51KBhA45Qru0zLf5YhA"
+    var token = ""
+    var edit = false
+    lateinit var preSchedule : TextView
+    lateinit var nextSchedule : TextView
+    var curColor ="#E1E9F5"
+    var id2 : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        preSchedule = TextView(requireContext())
+        nextSchedule = TextView(requireContext())
     }
 
     override fun onCreateView(
@@ -60,37 +74,45 @@ class CalendarAddDdayFragment : Fragment() {
     ): View? {
         binding = CalendarAddDdayBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
-        val ddayValue = arguments?.getBoolean("dday", false)
         val today: LocalDate = LocalDate.now()
-        val dayOfWeekKorean = today.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
         dayString = "${today.year}-${today.monthValue}-${today.dayOfMonth}"
+        token = arguments?.getString("Token")?: ""
+        binding.textTitle.setText(arguments?.getString("title"))
+        preSchedule.text = StringBuilder(arguments?.getString("startDate") ?: dayString)
+        nextSchedule.text = StringBuilder(arguments?.getString("endDate") ?: dayString)
 
-        val num = arguments?.getInt("num")
-        if(num!=null) {
-            binding.textTitle.setText(arguments?.getString("title"))
-            binding.preScheldule.text  = convertToDateKoreanFormat(arguments?.getString("startDate") ?: dayString)
-            binding.nextScheldule.text = convertToDateKoreanFormat(arguments?.getString("endDate") ?: dayString)
-            binding.textDday.text = "D - "+(arguments?.getInt("dday") ?:"0").toString()
-            binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#E1E9F5"), PorterDuff.Mode.SRC_IN)
-            binding.layoutColorSelector.visibility = View.GONE
-            binding.textMemo.setText(arguments?.getString("memo"))
-        }
+
+        binding.preScheldule.text  = convertToDateKoreanFormat(preSchedule.text.toString())
+        binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule.text.toString())
+        dayString = binding.preScheldule.text.toString()
+        binding.textDday.text = "D - "+(arguments?.getInt("dday") ?:"0").toString()
+        binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#E1E9F5"), PorterDuff.Mode.SRC_IN)
+        curColor = arguments?.getString("color") ?: "#E1E9F5"
+        binding.layoutColorSelector.visibility = View.GONE
+        binding.textMemo.setText(arguments?.getString("memo"))
         binding.cal.visibility= View.GONE
-
+        edit = arguments?.getBoolean("eidt")?: false
+        id2 = arguments?.getInt("id")?: -1
+        if(edit) {
+            binding.addBtn.text ="수정"
+        }
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
 
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            curColor = "#E1E9F5"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
+            curColor = "#FFE7EB"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
+            curColor = "#F5EED1"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor.setOnClickListener {
@@ -134,11 +156,59 @@ class CalendarAddDdayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backButton.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
+            //뭐가 있다면
+            if(binding.textTitle.text.toString() != "" || binding.preScheldule.text.toString() != dayString ||
+                binding.nextScheldule.text.toString() != dayString  || binding.textMemo.text.toString()!="") {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+                if(edit) {
+                    mDialogView.findViewById<TextView>(R.id.textTitle).text = "수정하지 않고 나가시겠습니가?"
+                }
+                val display = requireActivity().windowManager.defaultDisplay
+                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
+                    mBuilder.dismiss()
+                })
+            } else {
+                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
+            }
+
         }
         binding.addBtn.setOnClickListener {
-            //데이터 추가 코드
-            Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
+            if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())||
+                binding.textDday.text=="D - 0") {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 날짜를 입력해 주십시오"
+                val display = requireActivity().windowManager.defaultDisplay
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+            }  else {
+                if(binding.addBtn.text=="수정") {
+                    eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                        curColor,"No","Y",binding.textMemo.text.toString(),
+                        "10:00:00","10:00:00"),id2)
+                } else {            //수정
+
+                }
+            }
         }
     }
     override fun onDestroyView() {
@@ -160,9 +230,9 @@ class CalendarAddDdayFragment : Fragment() {
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
         val dayList = dayInMonthArray()
         val adapter: CalendarSmallAdapter = if (preNext == -1) {
-            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule,binding.textBlank)
+            CalendarSmallAdapter(dayList, binding.cal, binding.preScheldule,binding.textBlank,preSchedule)
         } else {
-            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule,binding.textDday)
+            CalendarSmallAdapter(dayList, binding.cal, binding.nextScheldule,binding.textDday,nextSchedule)
         }
         var manager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(),7)
         binding.calendar2.layoutManager = manager
@@ -185,6 +255,18 @@ class CalendarAddDdayFragment : Fragment() {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
         return date.format(formatter)
     }
+    fun compareDates(date1: String, date2: String): Boolean {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val localDate1 = LocalDate.parse(date1, formatter)
+        val localDate2 = LocalDate.parse(date2, formatter)
+        Log.d("string",date1)
+        Log.d("string",date2)
+        return if (localDate1.isBefore(localDate2)) {
+            true
+        } else {
+            false
+        }
+    }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
         val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
@@ -200,8 +282,15 @@ class CalendarAddDdayFragment : Fragment() {
         }
         return isExpanded
     }
+    fun convertToDateKoreanFormat2(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
     private fun addCalendar(data : CalendarData2) {
-        val call1 = service.addCal(token,data.toJson())
+        val call1 = service.addCal(token,data)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
                 if (response.isSuccessful) {
@@ -221,6 +310,30 @@ class CalendarAddDdayFragment : Fragment() {
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
+    private fun eidtCalendar(data : CalendarData2,id : Int) {
+        val call1 = service.editCal(token,id,data)
+
+        call1.enqueue(object : Callback<CalendarData2> {
+            override fun onResponse(call: Call<CalendarData2>, response: Response<CalendarData2>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        //Log.d("status",responseBody.data.name.toString())
+                    }else
+                        Log.d("eidt","${response.code()}")
+
+                } else {
+                    Log.d("eidt","itemType: ${response.code()} ")
+                    Log.d("eidt","itemType: ${token} ")
+                }
+                findNavController().navigate(R.id.action_calendarAddDday_to_fragCalendar)
+            }
+
+            override fun onFailure(call: Call<CalendarData2>, t: Throwable) {
+                Log.d("eidt","itemType: ${t.message}")
             }
         })
     }

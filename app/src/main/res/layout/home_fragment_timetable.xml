@@ -7,175 +7,126 @@
     tools:context=".HomeFunction.view.HomeTimetableFragment"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/home_fragment_timetable">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home_timetable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/main"
+            android:layout_height="60dp"
+            android:background="@color/main">
 
-            >
             <ImageView
                 android:id="@+id/iv_home_timetable_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/home_baseline_arrow_back_ios_24"/>
+                android:src="@drawable/home_baseline_arrow_back_ios_24" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="시간표"
-                android:textSize="16sp"
                 android:textColor="@color/font"
-                android:textStyle="bold"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_home_timetable_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="저장"
-                android:textSize="16sp"
-                android:textColor="@color/font"
-                android:textStyle="bold"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                />
         </androidx.appcompat.widget.Toolbar>
 
-        <EditText
-            android:layout_marginTop="30dp"
-            android:id="@+id/edt_home_time_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:hint="시간표 제목"
-            android:textStyle="bold"
-            android:background="@null"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_home_timetable"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="12dp"
-            />
-        <View
-            android:id="@+id/edt_home_bar"
-            app:layout_constraintTop_toBottomOf="@id/edt_home_time_name"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="16dp"
-            android:background="#F0F0F0" />
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/iv_home_time_timetable"
-            android:layout_width="320dp"
-            android:layout_height="320dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintTop_toBottomOf="@id/edt_home_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-            <com.example.myapplication.CustomCircleBarView
-                android:id="@+id/progressbar"
-                android:layout_width="305dp"
-                android:layout_height="305dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/progressbar"
-                app:layout_constraintLeft_toLeftOf="@id/progressbar"
-                app:layout_constraintRight_toRightOf="@+id/progressbar" />
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/progressbar"
-                app:layout_constraintLeft_toLeftOf="@id/progressbar"
-                app:layout_constraintBottom_toBottomOf="@id/progressbar"/>
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/progressbar"
-                app:layout_constraintLeft_toLeftOf="@id/progressbar"
-                app:layout_constraintRight_toRightOf="@+id/progressbar" />
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" 6 "
-                android:layout_marginRight="2dp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/progressbar"
-                app:layout_constraintRight_toRightOf="@+id/progressbar"
-                app:layout_constraintBottom_toBottomOf="@id/progressbar"/>
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@id/iv_home_time_timetable"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginEnd="26dp">
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/edt_home_time_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="시간표 제목"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_home_time_schedule"
+            <View
+                android:id="@+id/edt_home_bar"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="#F0F0F0" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/iv_home_time_timetable"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="10"
+                android:padding="20dp">
+
+                <com.example.myapplication.CustomCircleBarView
+
+                    android:id="@+id/progressbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    />
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </ScrollView>
 
+                <com.github.mikephil.charting.charts.PieChart
+
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="26dp"
+                android:layout_weight="3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_home_time_schedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_home_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="right"
             android:layout_margin="16dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.MediumComponent"
+            android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:src="@drawable/ic_home_time_add"
             app:maxImageSize="24dp"
-            app:tint="@color/black"
-            />
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.MediumComponent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </layout>

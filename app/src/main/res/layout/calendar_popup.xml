@@ -63,7 +63,7 @@
 
 
         <EditText
-            android:id="@+id/imageView2"
+            android:id="@+id/textTitle222"
             android:layout_width="260dp"
             android:layout_height="55dp"
             android:layout_gravity="center"
