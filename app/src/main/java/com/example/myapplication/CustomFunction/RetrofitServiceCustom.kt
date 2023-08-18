@@ -15,25 +15,25 @@ import retrofit2.http.PUT
 
 interface RetrofitServiceCustom {
 
-    @PUT("/api/custom/{userid}/reset")
-    fun customReset(@Header("Content-Type") token : String?
-    ) : Call<CustomItemChangeDATA>
+    @GET("/api/custom/reset")
+    fun customReset(@Header("Authorization") token : String?
+    ) : Call<Void> //완료
 
     @GET("/api/custom/")
-    fun customPrint(@Header("Content-Type") token : String?
+    fun customPrint(@Header("Authorization") token : String?
     ) : Call<customPrintDATA>
 
     @GET("/api/custom/item/{item_type}")
-    fun customItemCheck(@Header("Content-Type") token : String?, @Path("item_type") item_type : String
+    fun customItemCheck(@Header("Authorization") token : String?, @Path("item_type") item_type : String
     ) : Call<customItemCheckDATA>
 
-    @PATCH("/api/custom/{item_type}/{userid}/change")
-    fun customItemChange(@Header("Content-Type") token : String?, @Path("item_type") item_type : String
-    ) : Call<CustomItemChangeDATA>
+    @PATCH("/api/custom/change/{item_id}/")
+    fun customItemChange(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
+    ) : Call<Void>
 
     @POST("/api/custom/buy/{item_id}")
-    fun customItemBuy(@Header("Content-Type") token : String?, @Path("item_id") item_id : Long
-    ) : Callback<ResponseSample>
+    fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
+    ) : Call<Void>
 
 
 

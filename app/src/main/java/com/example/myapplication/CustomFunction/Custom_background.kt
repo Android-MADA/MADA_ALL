@@ -30,8 +30,7 @@ class custom_background : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjI2NTcxNiwiZXhwIjoxNjkyMzAxNzE2fQ.WjCYi164TS0TXB1MhK7BqT38ze_x_vgC9Pute9sxpSatYsQxvGg5yp1hIFbWinB65lqWGSZ34hRmU0LAJZkNKA"
-
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -137,21 +136,12 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.custom_empty
-            )
+            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, R.drawable.custom_empty)
             R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, R.drawable.back_brid)
             R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, R.drawable.back_n)
             R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, R.drawable.back_win)
-            R.id.btn_back_normal_s -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.back_nomal
-            )
-            R.id.btn_back_store_s -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.back_store
-            )
+            R.id.btn_back_normal_s -> ButtonInfo(clickedButton.id, R.drawable.back_nomal)
+            R.id.btn_back_store_s -> ButtonInfo(clickedButton.id, R.drawable.back_store)
             R.id.btn_back_zzim_s -> ButtonInfo(clickedButton.id, R.drawable.back_zzim)
             R.id.btn_back_uni_s -> ButtonInfo(clickedButton.id, R.drawable.back_uni)
             R.id.btn_back_cin_s -> ButtonInfo(clickedButton.id, R.drawable.back_cin)
@@ -181,9 +171,11 @@ class custom_background : Fragment() {
             override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    Log.d("response", "${checkInfo?.id} ${checkInfo?.itemType} ${checkInfo?.itemUnlockCondition} ${checkInfo?.filePath} ${checkInfo?.have}")
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    }
                 } else {
-                    Log.d("response", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
                 }
             }
 
