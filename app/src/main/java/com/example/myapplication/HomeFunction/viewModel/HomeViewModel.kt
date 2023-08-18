@@ -22,8 +22,7 @@ class HomeViewModel : ViewModel() {
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
 
-    var userToken =
-        "Bearers eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM0OTgwMywiZXhwIjoxNjkyMzg1ODAzfQ.WYut0ICa9MouoZnN47FxfTGGlZRuDi-67aIMA5nD8ctXtcajYPYlFj4hjXh18oR1UIG-ZEYaO8-4rUWy-tcOuw"
+    var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
 
     fun getCategory(token: String?) = viewModelScope.launch {
         val category = api.getCategory(token)

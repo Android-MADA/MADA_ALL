@@ -61,19 +61,8 @@ class FragHome : Fragment() {
         //서버연결 시작
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        //viewModel.getCategory(viewModel.userToken)
-        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
-        api.getAllTodo(viewModel.userToken, "2023-08-16").enqueue(object :Callback<TodoList>{
-            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                Log.d("getTodo", response.isSuccessful.toString())
-                Log.d("getTodo", response.body().toString())
-            }
-
-            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                Log.d("getTodo", "todoGet 실패")
-            }
-
-        })
+        viewModel.getCategory(viewModel.userToken)
+        viewModel.getTodo(viewModel.userToken, "2023-08-16")
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
             viewModel.classifyTodo()
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
