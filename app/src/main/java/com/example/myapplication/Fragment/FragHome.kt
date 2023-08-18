@@ -61,6 +61,7 @@ class FragHome : Fragment() {
         //서버연결 시작
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
+        /*
         viewModel.getCategory(viewModel.userToken)
         viewModel.getTodo(viewModel.userToken, "2023-08-16")
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
@@ -68,7 +69,7 @@ class FragHome : Fragment() {
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                 Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
             })
-        })
+        })*/
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()

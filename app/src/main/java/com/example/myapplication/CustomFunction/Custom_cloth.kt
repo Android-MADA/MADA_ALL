@@ -2,24 +2,40 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnColorImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
-class custom_cloth : Fragment() {
+class custom_cloth() : Fragment() {
     lateinit var binding: CustomClothBinding
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnClothImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,6 +52,8 @@ class custom_cloth : Fragment() {
     ): View? {
         binding = CustomClothBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
+        getCustomItemCheck("set")
+
 
         binding.btnClothBasic.setOnClickListener{
             onImageButtonClick(binding.btnClothBasic)
@@ -88,7 +106,9 @@ class custom_cloth : Fragment() {
             selectedButton = clickedButton
         }
     }
-
+    public fun resetCloth() {
+        selectedButton?.setImageResource(getUnselectedImageResource(selectedButton!!))
+    }
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
@@ -133,15 +153,61 @@ class custom_cloth : Fragment() {
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, R.drawable.set_movie)
             R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, R.drawable.set_caffk)
             R.id.btn_cloth_v -> ButtonInfo(clickedButton.id, R.drawable.set_v)
-            R.id.btn_cloth_astronauts -> ButtonInfo(clickedButton.id, R.drawable.set_astronauts)
+            R.id.btn_cloth_astronauts -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_astronauts,
+            )
             R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, R.drawable.set_zzim)
-            R.id.btn_cloth_hanbokF -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokf)
-            R.id.btn_cloth_hanbokM -> ButtonInfo(clickedButton.id, R.drawable.set_hanbokm)
-            R.id.btn_cloth_snowman -> ButtonInfo(clickedButton.id, R.drawable.set_snowman)
+            R.id.btn_cloth_hanbokF -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_hanbokf
+            )
+            R.id.btn_cloth_hanbokM -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_hanbokm
+            )
+            R.id.btn_cloth_snowman -> ButtonInfo(
+                clickedButton.id,
+                R.drawable.set_snowman
+            )
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         imageChangeListener?.onClothButtonSelected(buttonInfo)
+    }
+
+    fun resetButtonCloth() {
+        binding.btnClothBasic.setImageResource(R.drawable.custom_null)
+        binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
+        binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
+        binding.btnClothCaffK.setImageResource(R.drawable.set_caffk_s)
+        binding.btnClothV.setImageResource(R.drawable.set_v_s)
+        binding.btnClothAstronauts.setImageResource(R.drawable.set_astronauts_s)
+        binding.btnClothZzim.setImageResource(R.drawable.set_zzim_s)
+        binding.btnClothHanbokF.setImageResource(R.drawable.set_hanbokf_s)
+        binding.btnClothHanbokM.setImageResource(R.drawable.set_hanbokm_s)
+        binding.btnClothSnowman.setImageResource(R.drawable.set_snowman_s)
+    }
+
+    fun getCustomItemCheck(itemType: String) {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckCloth", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    }
+                } else {
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
     }
 
 

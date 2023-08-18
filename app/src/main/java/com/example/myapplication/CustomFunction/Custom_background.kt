@@ -2,21 +2,35 @@ package com.example.myapplication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnBackgroundImageChangeListener
 import com.example.myapplication.Fragment.OnClothImageChangeListener
+import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.databinding.CustomBackgroundBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class custom_background : Fragment() {
     lateinit var binding: CustomBackgroundBinding
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnBackgroundImageChangeListener? = null
+    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCustom::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,6 +46,8 @@ class custom_background : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CustomBackgroundBinding.inflate(inflater, container, false)
+        getCustomItemCheck("background")
+
 
         binding.btnBackBasic.setOnClickListener{
             onImageButtonClick(binding.btnBackBasic)
@@ -135,4 +151,39 @@ class custom_background : Fragment() {
 
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
+    fun resetButtonBackground() {
+        binding.btnBackBasic.setImageResource(R.drawable.custom_null)
+        binding.btnBackBridS.setImageResource(R.drawable.back_brid_s_1)
+        binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
+        binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)
+        binding.btnBackNormalS.setImageResource(R.drawable.back_normal_s_1)
+        binding.btnBackStoreS.setImageResource(R.drawable.back_store_s_1)
+        binding.btnBackZzimS.setImageResource(R.drawable.back_zzim_s_1)
+        binding.btnBackUniS.setImageResource(R.drawable.back_uni_s_1)
+        binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
+        binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
+
+    }
+    fun getCustomItemCheck(itemType: String) {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    checkInfo?.data?.forEachIndexed { index, item ->
+                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    }
+                } else {
+                    Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+
 }

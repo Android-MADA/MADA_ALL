@@ -15,7 +15,8 @@ data class CalendarDATA(
     var floor : Int,
     val duration : Boolean,
     val memo : String,
-    val what : String       //종류
+    val what : String,       //종류
+    val id : Int       //종류
 
 ) {
 

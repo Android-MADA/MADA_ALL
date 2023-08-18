@@ -40,7 +40,8 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val endHour: Int,
         val endMin: Int,
         val colorCode: String,
-        val divisionNumber: Int
+        val divisionNumber: Int,
+        val id : Int
     ) : Serializable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,16 +77,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
         }
 
         var chart = binding.chart
-        val pieChartDataArray = arrayOf(        //임시 데이터
-            PieChartData("제목1", "메모1", 0,0,1,0, "#486DA3",0,),      //제목, 메모, 시작 시각, 시작 분, 끝 시각, 끝 분, 색깔 코드, 구분 숫자
-            PieChartData("제목2", "메모2", 1,0,6,0, "#516773",1),
-            PieChartData("제목3", "메모3", 9,0,12,0, "#FDA4B4",2),
-            PieChartData("제목4", "메모4", 12,0,13,30, "#52B6C9",3),
-            PieChartData("제목5", "메모5", 13,30,14,30, "#516773",4),
-            PieChartData("제목6", "메모6", 14,30,16,30, "#52B6C9",5),
-            PieChartData("제목7", "메모7", 16,30,18,0, "#FCE79A",6),
-            PieChartData("제목8", "메모8", 20,0,22,0, "#486DA3",7)
-        )
+        val pieChartDataArray = ArrayList<PieChartData>()
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             binding.none.visibility = View.VISIBLE
         } else
@@ -133,12 +125,13 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val pieData = PieData(pieDataSet)
 
 
+        val range = chart.width/80f
 
         chart.apply {
             data = pieData
             isRotationEnabled = false                               //드래그로 회전 x
             isDrawHoleEnabled = false                               //중간 홀 그리기 x
-            setExtraOffsets(25f,25f,25f,25f)    //크기 조절
+            setExtraOffsets(range,range,range,range)    //크기 조절
             setUsePercentValues(false)
             setEntryLabelColor(Color.BLACK)
             marker = marker_
@@ -156,7 +149,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     if (label == "999") {
                         pieDataSet.selectionShift = 1f //하이라이트 크기
                     } else {
-                        pieDataSet.selectionShift = 30f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+                        pieDataSet.selectionShift = 60f // 다른 라벨의 경우 선택 시 하이라이트 크기 설정
                     }
                     lastSelectedEntry = label.toInt()
                 }
@@ -165,13 +158,14 @@ class HomeViewpagerTimetableFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                 bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+
                 Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
 
             }
         })
 
-        binding.noneBtn.setOnClickListener {
-
+        binding.chart.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment)
         }
 
         return binding.root

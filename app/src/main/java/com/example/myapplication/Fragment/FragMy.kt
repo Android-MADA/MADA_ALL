@@ -2,31 +2,47 @@ package com.example.myapplication.Fragment
 
 import android.content.Intent
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MyFuction.MyListAdapter
 import com.example.myapplication.MyFuction.MyListItem
+import com.example.myapplication.MyFuction.MyLogoutPopupActivity
 import com.example.myapplication.MyFuction.MyNoticeActivity
+import com.example.myapplication.MyFuction.MyNoticeSetActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
-import com.example.myapplication.MyFuction.MyProfileNickActivity
 import com.example.myapplication.MyFuction.MyRecordDayActivity
 import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
+import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class FragMy : Fragment() {
 
     private lateinit var binding: FragMyBinding
+
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceMy::class.java)
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
+
+    @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,10 +58,10 @@ class FragMy : Fragment() {
         val MyList = arrayListOf(
             MyListItem("프로필 편집",  MyProfileActivity::class.java),
             MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림", null),
+            MyListItem("알림", MyNoticeSetActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", Splash2Activity::class.java),
+            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 

@@ -1,0 +1,8 @@
+package com.example.myapplication.CustomFunction
+
+import androidx.annotation.Keep
+
+@Keep
+data class customItemCheckDATA(
+    val data : ArrayList<itemcheck>
+)

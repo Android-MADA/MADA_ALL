@@ -12,15 +12,12 @@ import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
-class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<CalendarDATA?>, private val today: Int
-                              , private val parentView : View, private val parentDialog : AlertDialog) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>, private val today: Int
+                              , private val parentView : View, private val parentDialog : AlertDialog, private val token : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
     companion object {
@@ -28,7 +25,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
         private const val VIEW_TYPE_WITHOUT_DURATION = 2
     }
     override fun getItemViewType(position: Int): Int {
-        val item = calendarDataArray[position]
+        val item = myDataArray[position]
         return if (item?.duration == true) {
             VIEW_TYPE_WITH_DURATION
         } else {
@@ -53,7 +50,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = calendarDataArray[position]
+        val item = myDataArray[position]
         if(item!=null) {
             when (holder.itemViewType) {
                 VIEW_TYPE_WITH_DURATION -> {
@@ -91,6 +88,8 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
                 if(item.memo!="")
                     bundle.putString("memo",item.memo)
                 bundle.putString("color",item.color)
+                bundle.putString("Token",token)
+                bundle.putInt("id",item.id)
                 Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
                 parentDialog.dismiss()
 
@@ -99,7 +98,7 @@ class CalendarScheduleAdapter(private val calendarDataArray:  ArrayList<Calendar
 
     }
     override fun getItemCount(): Int {
-        return calendarDataArray.size
+        return myDataArray.size
     }
     inner class ItemViewHolderWithDuration(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Define views for VIEW_TYPE_WITH_DURATION here

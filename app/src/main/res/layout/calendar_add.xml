@@ -250,188 +250,196 @@
                 android:textColor="@color/point_main"
                 android:text="D - 0" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"/>
-
             <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/calAll"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/calendar_calendar_image" />
-
-                <TextView
-                    android:id="@+id/preScheldule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="  6월 9일 (금)  "
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="16sp"
-                    android:text="    ~    " />
-
-                <TextView
-                    android:id="@+id/nextScheldule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:background="@android:color/transparent"
-                    android:text="  6월 9일 (금)  "
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/cal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="15dp"
+                    android:background="?android:attr/listDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/preBtn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:background="@android:color/transparent"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/calendar_arrow_left" />
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/calendar_calendar_image" />
 
                     <TextView
-                        android:id="@+id/textCalendar"
+                        android:id="@+id/preScheldule"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="2023년 6월"
-                        android:textAlignment="center"
+                        android:layout_marginLeft="10dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="  6월 9일 (금)  "
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
-                    <ImageButton
-                        android:id="@+id/nextBtn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="15dp"
+                        android:text="    ~    "
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/nextScheldule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/calendar_arrow_right" />
+                        android:gravity="center"
+                        android:text="  6월 9일 (금)  "
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/cal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/textSun"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="S"
-                        android:textAlignment="center"
-                        android:textColor="#D92437"
-                        android:textSize="14sp" />
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/textMon"
-                        android:layout_width="0dp"
+                        <ImageButton
+                            android:id="@+id/preBtn"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="centerInside"
+                            app:srcCompat="@drawable/calendar_arrow_left" />
+
+                        <TextView
+                            android:id="@+id/textCalendar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="2023년 6월"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <ImageButton
+                            android:id="@+id/nextBtn"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="15dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="centerInside"
+                            app:srcCompat="@drawable/calendar_arrow_right" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="M"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:layout_marginTop="30dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/textTue"
-                        android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/textSun"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="S"
+                            android:textAlignment="center"
+                            android:textColor="#D92437"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textMon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="M"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textTue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="T"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textWed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="W"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textThu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="T"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textFri"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="F"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textSat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="S"
+                            android:textAlignment="center"
+                            android:textColor="#0041A3"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="T"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:layout_gravity="center">
 
-                    <TextView
-                        android:id="@+id/textWed"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="W"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/textThu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="T"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/textFri"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="F"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/textSat"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="S"
-                        android:textAlignment="center"
-                        android:textColor="#0041A3"
-                        android:textSize="14sp" />
-
+                    </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/calendar2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-
 
 
             <View
@@ -506,26 +514,29 @@
 
                             <TextView
                                 android:id="@+id/preScheldule2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="90dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
                                 android:text="  오전 10:00  "
+                                android:gravity="center"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/textView9"
+                                android:layout_marginHorizontal="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="    ~    " />
+                                android:text="~" />
 
                             <TextView
                                 android:id="@+id/nextScheldule2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="90dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
+                                android:gravity="center"
                                 android:background="@android:color/transparent"
                                 android:text="  오전 11:00  "
                                 android:textColor="@color/black"
@@ -661,7 +672,7 @@
                             android:layout_height="55dp"
                             android:checkable="true"
                             android:layout_marginLeft="40dp"
-                            android:text="매일"
+                            android:text="반복 안함"
                             android:textSize="16sp"
                             android:theme="@style/ChipTheme"
                             app:checkedIconVisible="false"
@@ -676,7 +687,7 @@
                             android:layout_height="55dp"
                             android:background="@color/black"
                             android:checkable="true"
-                            android:text="반복 안함"
+                            android:text="매일"
                             android:textSize="16sp"
                             android:layout_marginHorizontal="20dp"
                             android:theme="@style/ChipTheme"
@@ -702,6 +713,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -736,14 +748,472 @@
                             app:chipStrokeColor="@color/grey4"
                             app:chipStrokeWidth="1dp" />
                     </LinearLayout>
-                </LinearLayout>
 
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/repeat_week"
+                        android:background="@drawable/calendar_cell_background_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:background="@drawable/calendar_add_repeat_back1"
+                            android:id="@+id/textView21"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:gravity="center"
+                            android:text="월"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:id="@+id/textView22"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="화"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_margin="5dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="수"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_margin="5dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="목"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:id="@+id/textView25"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="금"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:id="@+id/textView26"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="토"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_margin="5dp"
+                            android:id="@+id/textView27"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:text="일"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/repeat_month"
+                        android:background="@drawable/calendar_dell_background_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="15dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:id="@+id/textCal1"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal2"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="2"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal3"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="3"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal4"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="4"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal5"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="5"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal6"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="6"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal7"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="7"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:id="@+id/textCal8"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="8"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal9"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="9"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal10"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="10"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal11"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="11"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal12"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="12"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal13"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="13"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal14"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="14"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:id="@+id/textCal15"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="15"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal16"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="16"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal17"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="17"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal18"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="18"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal19"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="19"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal20"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="20"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal21"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="21"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:id="@+id/textCal22"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="22"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal23"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="23"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal24"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="24"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal25"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="25"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal26"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="26"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal27"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="27"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal28"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="28"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:id="@+id/textCal29"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="29"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal30"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="30"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCal31"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+
+                                android:text="31"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textCalFinal"
+                                android:layout_width="80dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="5dp"
+                                android:gravity="center"
+                                android:text="마지막 날"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="15dp"
                     android:background="?android:attr/listDivider" />
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_marginBottom="300dp"

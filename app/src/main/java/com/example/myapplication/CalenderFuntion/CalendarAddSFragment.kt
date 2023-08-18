@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +19,22 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.example.myapplication.databinding.CalendarAddSBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -34,6 +45,13 @@ import java.util.Locale
 
 class CalendarAddSFragment : Fragment() {
     lateinit var binding: CalendarAddSBinding
+
+
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCalendar::class.java)
+    lateinit var token : String
+    var id2 = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,10 +68,13 @@ class CalendarAddSFragment : Fragment() {
         val nextSchedule = arguments?.getString("nextSchedule") ?:"2023-6-1"
         val preClock = arguments?.getString("preClock")
         val nextClock = arguments?.getString("nextClock")
-        val cycle = arguments?.getString("cycle")
+        val cycle = processInput(arguments?.getString("cycle")?:"반복 안함")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
-        //데이터 받아서 로드하기
+        id2 = arguments?.getInt("id")?: -1
+
+        token = arguments?.getString("Token")?: ""
+
         binding.title.text = title
         binding.calendarColor.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.preScheldule.text = convertToDateKoreanFormat(preSchedule)
@@ -96,6 +117,8 @@ class CalendarAddSFragment : Fragment() {
                     bundle.putString("memo", arguments?.getString("memo"))
                     bundle.putString("color", arguments?.getString("color"))
                     bundle.putBoolean("edit", true)
+                    bundle.putInt("id",id2)
+                    bundle.putString("Token",token)
                     Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
                     true
                 }
@@ -123,7 +146,7 @@ class CalendarAddSFragment : Fragment() {
                         mBuilder.dismiss()
                     })
                     mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                        Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
+                        deleteCalendar(id2)     //아이디
                         mBuilder.dismiss()
                     })
                     true
@@ -157,6 +180,15 @@ class CalendarAddSFragment : Fragment() {
             bottomNavigation?.isVisible = true
         }
     }
+    fun processInput(input: String): String {
+        return when (input) {
+            "Day" -> "매일"
+            "Week" -> "매일"
+            "Month" -> "매일"
+            "Year" -> "매일"
+            else -> "반복 안함"
+        }
+    }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
         val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
@@ -164,7 +196,28 @@ class CalendarAddSFragment : Fragment() {
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+    private fun deleteCalendar(id : Int) {
+        val call1 = service.deleteCal(token,id)
+        call1.enqueue(object : Callback<AddCalendarData> {
+            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        //Log.d("del1",responseBody.datas.name.toString())
+                    }else
+                        Log.d("del2","${response.code()}")
 
+                } else {
+                    //Log.d("del3","itemType: ${response.code()} ${id} ")
+                }
+                findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
+            }
+
+            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
+                //Log.d("del4","itemType: ${t.message}")
+            }
+        })
+    }
 
 
 

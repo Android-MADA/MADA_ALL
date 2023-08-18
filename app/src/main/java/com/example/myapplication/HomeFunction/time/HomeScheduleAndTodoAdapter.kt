@@ -10,12 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class HomeScheduleAndTodoAdapter(private val dataArray: Array<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
+class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
                                  private val textPreClock : TextView, private val textNextClock : TextView, private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
@@ -136,8 +135,9 @@ class HomeScheduleAndTodoAdapter(private val dataArray: Array<CalendarDATA>, pri
         val parts = timeString.split(":")
         val hour = parts[0].toInt()
         val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else hour
-        val ampm = if (hour > 12) "오전" else "오후"
+        val convertedHour = if (hour > 12) hour - 12 else if(hour >0) hour else 12
+        val ampm = if (hour > 12&&hour<24) "오후" else if(hour <12 && hour>0) "오전" else if(hour ==12) "오후" else "오전"
+
         return "  $ampm $convertedHour:$minute  "
     }
 
