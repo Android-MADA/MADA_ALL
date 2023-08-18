@@ -44,7 +44,7 @@ class HomeCategoryFragment : Fragment() {
         hideBottomNavigation(bottomFlag, activity)
 
         //서버연결 - 카테고리 리스트 조회 후 리스트에 넣어서 어댑터에 연결
-        // viewModel.getCategory(token)
+         viewModel.getCategory(viewModel.userToken)
         return binding.root
     }
 
@@ -66,9 +66,9 @@ class HomeCategoryFragment : Fragment() {
                     override fun onClick(v: View, position: Int, dataSet: Category) {
                         //페이지 이동 + 데이터 전달
                         bundle.putStringArrayList("key", arrayListOf(
-                            //dataSet.id.toString(),
+                            dataSet.id.toString(),
                             dataSet.categoryName,
-                            //dataSet.iconId.toString(),
+                            dataSet.iconId.toString(),
                             dataSet.color,
                             position.toString()
                         ))
@@ -102,9 +102,9 @@ class HomeCategoryFragment : Fragment() {
                 override fun onClick(v: View, position: Int, dataSet: Category) {
                     //페이지 이동 + 데이터 전달
                     bundle.putStringArrayList("key", arrayListOf(
-                        //dataSet.id.toString(),
+                        dataSet.id.toString(),
                         dataSet.categoryName,
-                        //dataSet.iconId.toString(),
+                        dataSet.iconId.toString(),
                         dataSet.color,
                         position.toString()
                     ))
@@ -117,6 +117,13 @@ class HomeCategoryFragment : Fragment() {
             binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
         }
         //
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCategory(viewModel.userToken)
+        cateAdapter?.notifyDataSetChanged()
 
     }
     override fun onDestroyView() {

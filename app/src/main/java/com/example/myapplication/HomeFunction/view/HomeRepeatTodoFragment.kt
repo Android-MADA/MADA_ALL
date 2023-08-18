@@ -47,6 +47,7 @@ class HomeRepeatTodoFragment : Fragment() {
 
         //서버에서 cateogry, todo받아오기
 
+
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
             viewModel.classifyTodo()
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
