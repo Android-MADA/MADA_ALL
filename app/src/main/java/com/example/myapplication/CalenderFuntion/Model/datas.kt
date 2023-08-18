@@ -79,3 +79,6 @@ class ResponseSample (
         return gson.toJson(this)
     }
 }
+data class nickName (
+    @SerializedName("nickName") val name: String
+)

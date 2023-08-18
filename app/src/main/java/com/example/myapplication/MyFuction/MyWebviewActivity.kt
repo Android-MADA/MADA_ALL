@@ -73,10 +73,9 @@ class MyWebviewActivity : AppCompatActivity() {
                     finish()
                     return true // 처리됨
                 } else if (url.startsWith("http://15.165.210.13:8080/user/signup")) {
-                    val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
-                    getResponse(url)
-                    //startActivity(intent)
-                    //finish()
+
+                    getResponse2(url)
+
                     return true // 처리됨
                 } else {
                     return true
@@ -110,6 +109,23 @@ class MyWebviewActivity : AppCompatActivity() {
                     }
 
                 }
+            }
+        }
+    }
+    private fun getResponse2(url : String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val headers = fetchHeadersFromUrl(url)
+            withContext(Dispatchers.Main) {
+                for ((key, value) in headers) {
+                    if(key!=null&&key.equals("Authorization")) {
+                        //Log.d("dsa",value.toString())
+                        prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
+                    }
+
+                }
+                val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }
