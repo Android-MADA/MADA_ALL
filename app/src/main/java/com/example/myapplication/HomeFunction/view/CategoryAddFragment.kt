@@ -76,9 +76,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 //            binding.ivHomeCateIcon.setImageResource(argsArray!![2].toInt())
 //            binding.edtHomeCategoryName.setText(argsArray!![1])
 //            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
-            binding.edtHomeCategoryName.setText(argsArray!![0])
-            binding.ivHomeCateColor.imageTintList =
-                ColorStateList.valueOf(Color.parseColor(argsArray!![1]))
+            binding.edtHomeCategoryName.setText(argsArray!![1])
+            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             // 수정버튼 활성화
             binding.btnHomeCateAddSave.text = "수정"
             //삭제버튼 활성화
@@ -125,15 +124,15 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 //데이터 변경
                 if (binding.btnHomeCateAddSave.text == "수정") {
                     //서버 전송(PATCH)
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                     Log.d("cateEdit", "확인")
                 } else {
                     val data = PatchRequestCategory(
                         binding.edtHomeCategoryName.text.toString(),
                         colorAdapter.selecetedColor,
-                        1
+                        findIconId(iconAdapter.selectedIcon)
                     )
+                    Log.d("addCAte", data.toString())
                     //서버 전송(POST)
 //                    val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 //                    api.postCategory(viewModel.userToken, data).enqueue(object : Callback<PactchResponseCategory>{
@@ -256,17 +255,40 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
 
         if (flag == "delete") {
-            viewModel.removeCate(argsArray!![4].toInt())
+            //viewModel.removeCate(argsArray!![4].toInt())
             //카테고리, 카테고리에 해당하는 todo 삭제 서버 전송(DELETE, id)
             //viewModel.deleteCategory(viewModel.userToken, (argsArray!![0].toInt()))
+            viewModel.deleteCategory(viewModel.userToken, argsArray!![0].toInt(), requireView())
         }
-        Navigation.findNavController(requireView())
-            .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         dialog.dismiss()
     }
 
     override fun onNoButtonClicked(dialog: Dialog) {
         dialog.dismiss()
+    }
+
+    private fun findIconId(icon: String) :Int {
+        val iconId: Int = when(icon){
+            R.drawable.ic_home_cate_meal1.toString() -> {9}
+            R.drawable.ic_home_cate_meal2.toString() -> {8}
+            R.drawable.ic_home_cate_chat1.toString() -> {2}
+            R.drawable.ic_home_cate_health.toString() -> {3}
+            R.drawable.ic_home_cate_phone.toString() -> {13}
+            R.drawable.ic_home_cate_rest.toString() -> {15}
+            R.drawable.ic_home_cate_heart.toString() -> {4}
+            R.drawable.ic_home_cate_study.toString() -> {17}
+            R.drawable.ic_home_cate_laptop.toString() -> {5}
+            R.drawable.ic_home_cate_music.toString() -> {11}
+            R.drawable.ic_home_cate_lightup.toString() -> {7}
+            R.drawable.ic_home_cate_lightout.toString() -> {6}
+            R.drawable.ic_home_cate_pen.toString() -> {12}
+            R.drawable.ic_home_cate_burn.toString() -> {1}
+            R.drawable.ic_home_cate_plan.toString() -> {14}
+            R.drawable.ic_home_cate_work.toString() -> {18}
+            R.drawable.ic_home_cate_mic.toString() -> {10}
+            else -> {16}
+        }
+        return iconId
     }
 
 }

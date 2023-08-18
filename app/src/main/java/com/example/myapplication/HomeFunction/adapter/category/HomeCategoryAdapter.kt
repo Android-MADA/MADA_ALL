@@ -13,6 +13,7 @@ import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.R
 
 class HomeCategoryAdapter() : RecyclerView.Adapter<HomeCategoryAdapter.viewHolder>() {
+
     lateinit var dataSet : ArrayList<Category>
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
