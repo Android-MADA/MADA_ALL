@@ -320,7 +320,6 @@ class CalendarAddFragment : Fragment() {
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
             curRepeat = "No"
-            binding.calAll.visibility = View.VISIBLE
             chip1.setChipBackgroundColorResource(R.color.sub5)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -331,6 +330,7 @@ class CalendarAddFragment : Fragment() {
             chip4.isChecked = false
             chip5.isChecked = false
             binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
@@ -352,7 +352,7 @@ class CalendarAddFragment : Fragment() {
             binding.cyclebtn.text = "매주"
             curRepeat = "Week"
             binding.calAll.visibility = View.GONE
-            binding.repeatMonth.visibility = View.VISIBLE
+            binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
@@ -646,7 +646,7 @@ class CalendarAddFragment : Fragment() {
         return dayList
     }
     fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
         val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
 
         val date = inputFormat.parse(dateString)
@@ -660,8 +660,8 @@ class CalendarAddFragment : Fragment() {
         return daysRemaining.toInt()
     }
     fun convertToDateKoreanFormat2(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
@@ -677,7 +677,7 @@ class CalendarAddFragment : Fragment() {
         }
     }
     fun compareTimes(time1: String, time2: String): Boolean {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault()) // 수정된 형식
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US")) // 수정된 형식
         val calendar1 = Calendar.getInstance()
         val calendar2 = Calendar.getInstance()
 
@@ -700,7 +700,7 @@ class CalendarAddFragment : Fragment() {
         }
     }
     fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
         val timeModified = time.replace("오전", "AM").replace("오후", "PM")

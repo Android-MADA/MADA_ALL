@@ -473,7 +473,7 @@ class TimeAddFragment : Fragment() {
         return "  $amPm $hour12:$minuteStr  "
     }
     fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
         val timeModified = time.replace("오전", "AM").replace("오후", "PM")
@@ -486,10 +486,10 @@ class TimeAddFragment : Fragment() {
         return String.format("%02d:%02d:00", hour, minute)
     }
     fun timePlusMinutes(time: String): Int {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar.time = inputFormat.parse(timeModified)
 
