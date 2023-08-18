@@ -474,9 +474,7 @@ class TimeAddFragment : Fragment() {
 
                             for(data in datas.calendarList) {
                                 Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
-                                //arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
-                                //    data.color,"","",data.CalendarName,1,false,"","CAL",7))
-                                arrays.add(CalendarDATA("","","","10:00:00","11:00:00",
+                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
                                     data.color,"","",data.CalendarName,1,false,"","CAL",7))
                             }
                             val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)

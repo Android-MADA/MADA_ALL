@@ -322,6 +322,7 @@ class CalendarAddFragment : Fragment() {
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
             curRepeat = "No"
+            binding.calAll.visibility = View.VISIBLE
             chip1.setChipBackgroundColorResource(R.color.sub5)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -335,6 +336,7 @@ class CalendarAddFragment : Fragment() {
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
             curRepeat = "Day"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.sub5)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -348,6 +350,7 @@ class CalendarAddFragment : Fragment() {
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
             curRepeat = "Week"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.sub5)
@@ -361,6 +364,7 @@ class CalendarAddFragment : Fragment() {
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
             curRepeat = "Month"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
@@ -374,6 +378,7 @@ class CalendarAddFragment : Fragment() {
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
             curRepeat = "Year"
+            binding.calAll.visibility = View.GONE
             chip1.setChipBackgroundColorResource(R.color.white)
             chip2.setChipBackgroundColorResource(R.color.white)
             chip3.setChipBackgroundColorResource(R.color.white)
