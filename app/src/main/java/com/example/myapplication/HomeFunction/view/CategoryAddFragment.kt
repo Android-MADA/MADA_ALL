@@ -250,9 +250,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
 
         if (flag == "delete") {
-            //viewModel.removeCate(argsArray!![4].toInt())
-            //카테고리, 카테고리에 해당하는 todo 삭제 서버 전송(DELETE, id)
-            //viewModel.deleteCategory(viewModel.userToken, (argsArray!![0].toInt()))
             viewModel.deleteCategory(viewModel.userToken, argsArray!![0].toInt(), requireView())
         }
         dialog.dismiss()

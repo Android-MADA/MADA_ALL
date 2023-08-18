@@ -16,17 +16,25 @@ import retrofit2.http.Path
 
 interface HomeApi {
 
-    //todo조회 -> 확인 완
+    //todo조회(1) -> 확인 완
+//    @GET("/api/home/todo/date/{date}")
+//    fun getAllTodo(
+//        @Header("Authorization") token: String?,
+//        @Path("date", encoded = true) date: String
+//    ): Call<TodoList>
+
+    //todo조회(2) -> 확인 완
     @GET("/api/home/todo/date/{date}")
-    fun getAllTodo(
+    suspend fun getAllTodo(
         @Header("Authorization") token: String?,
         @Path("date", encoded = true) date: String
-    ): Call<TodoList>
+    ): TodoList
+
 
     //todo추가
     @POST("/api/home/todo")
     suspend fun addTodo(
-        @Header("Autorization") token: String?,
+        @Header("Authorization") token: String?,
     )
 
     //todo수정
@@ -83,7 +91,7 @@ interface HomeApi {
 //        @Body data : PatchRequestCategory
 //    ): Call<PactchResponseCategory>
 
-    //카테고리 수정
+    //카테고리 수정 -> 확인 완
     @PATCH("/api/home/category/{categoryId}")
     suspend fun editCategory(
         @Header("Authorization") token : String?,

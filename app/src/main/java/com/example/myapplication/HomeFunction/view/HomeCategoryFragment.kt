@@ -44,7 +44,7 @@ class HomeCategoryFragment : Fragment() {
         hideBottomNavigation(bottomFlag, activity)
 
         //서버연결 - 카테고리 리스트 조회 후 리스트에 넣어서 어댑터에 연결
-        // viewModel.getCategory(token)
+         viewModel.getCategory(viewModel.userToken)
         return binding.root
     }
 
