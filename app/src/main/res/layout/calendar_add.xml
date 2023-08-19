@@ -770,7 +770,7 @@
                         <TextView
                             android:layout_margin="5dp"
                             android:background="@drawable/calendar_add_repeat_back1"
-                            android:id="@+id/textView21"
+                            android:id="@+id/textWeek1"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:gravity="center"
@@ -779,7 +779,7 @@
                             android:textColor="@color/black"/>
                         <TextView
                             android:layout_margin="5dp"
-                            android:id="@+id/textView22"
+                            android:id="@+id/textWeek2"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:text="화"
@@ -787,7 +787,7 @@
                             android:textSize="16sp"
                             android:textColor="@color/black"/>
                         <TextView
-                            android:id="@+id/textView23"
+                            android:id="@+id/textWeek3"
                             android:layout_margin="5dp"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
@@ -796,7 +796,7 @@
                             android:textSize="16sp"
                             android:textColor="@color/black"/>
                         <TextView
-                            android:id="@+id/textView24"
+                            android:id="@+id/textWeek4"
                             android:layout_margin="5dp"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
@@ -806,7 +806,7 @@
                             android:textColor="@color/black"/>
                         <TextView
                             android:layout_margin="5dp"
-                            android:id="@+id/textView25"
+                            android:id="@+id/textWeek5"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:text="금"
@@ -815,7 +815,7 @@
                             android:textColor="@color/black"/>
                         <TextView
                             android:layout_margin="5dp"
-                            android:id="@+id/textView26"
+                            android:id="@+id/textWeek6"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:text="토"
@@ -824,7 +824,7 @@
                             android:textColor="@color/black"/>
                         <TextView
                             android:layout_margin="5dp"
-                            android:id="@+id/textView27"
+                            android:id="@+id/textWeek7"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:text="일"

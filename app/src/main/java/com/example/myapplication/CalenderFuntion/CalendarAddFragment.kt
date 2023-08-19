@@ -75,6 +75,8 @@ class CalendarAddFragment : Fragment() {
     var ddayId : Int = -1
 
 
+
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
@@ -365,7 +367,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
-            binding.calAll.visibility = View.VISIBLE
+            toggleLayout(true,binding.calAll)
             curRepeat = "No"
             updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
@@ -374,7 +376,7 @@ class CalendarAddFragment : Fragment() {
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
             curRepeat = "Day"
-            binding.calAll.visibility = View.GONE
+            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
@@ -382,7 +384,7 @@ class CalendarAddFragment : Fragment() {
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
             curRepeat = "Week"
-            binding.calAll.visibility = View.GONE
+            toggleLayout(false,binding.calAll)
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
@@ -390,7 +392,7 @@ class CalendarAddFragment : Fragment() {
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
             curRepeat = "Month"
-            binding.calAll.visibility = View.GONE
+            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
@@ -398,10 +400,50 @@ class CalendarAddFragment : Fragment() {
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
             curRepeat = "Year"
-            binding.calAll.visibility = View.GONE
+            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+        }
+
+        var selectedTextWeek = binding.textWeek1
+
+        val textWeek = arrayOf(
+            binding.textWeek1, binding.textWeek2, binding.textWeek3, binding.textWeek4, binding.textWeek5,binding.textWeek6,binding.textWeek7
+        )
+        for (textView in textWeek) {
+            textView.setOnClickListener {
+                // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.
+                selectedTextWeek?.setBackgroundResource(android.R.color.transparent)
+
+                // 클릭한 TextView의 배경을 원하는 배경으로 설정합니다.
+                textView.setBackgroundResource(R.drawable.calendar_add_repeat_back1) // 여기서 R.drawable.selected_background는 적절한 배경 리소스로 변경해야 합니다.
+
+                // 선택된 TextView를 업데이트합니다.
+                selectedTextWeek = textView
+            }
+        }
+        var selectedTextMon = binding.textCal1
+        val textMon = arrayOf(
+            binding.textCal1, binding.textCal2, binding.textCal3, binding.textCal4, binding.textCal5,
+            binding.textCal6, binding.textCal7, binding.textCal8, binding.textCal9, binding.textCal10,
+            binding.textCal11, binding.textCal12, binding.textCal13, binding.textCal14, binding.textCal15,
+            binding.textCal16, binding.textCal17, binding.textCal18, binding.textCal19, binding.textCal20,
+            binding.textCal21, binding.textCal22, binding.textCal23, binding.textCal24, binding.textCal25,
+            binding.textCal26, binding.textCal27, binding.textCal28, binding.textCal29, binding.textCal30,
+            binding.textCal31, binding.textCalFinal
+        )
+        for (textView in textMon) {
+            textView.setOnClickListener {
+                // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.
+                selectedTextMon?.setBackgroundResource(android.R.color.transparent)
+
+                // 클릭한 TextView의 배경을 원하는 배경으로 설정합니다.
+                textView.setBackgroundResource(R.drawable.calendar_add_repeat_back1) // 선택한 배경 리소스로 변경
+
+                // 선택된 TextView를 업데이트합니다.
+                selectedTextMon = textView
+            }
         }
 
         return binding.root
