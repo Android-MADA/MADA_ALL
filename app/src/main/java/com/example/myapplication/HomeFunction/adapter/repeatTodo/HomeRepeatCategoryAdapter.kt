@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
 class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
@@ -22,6 +24,8 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
     var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
     var repeatAdapter : HomeRepeatTodoAdapter? = null
     var topFlag = false
+    var viewModel : HomeViewModel? = null
+    var api : HomeApi? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -62,13 +66,9 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.cateIndex = position
+                repeatAdapter!!.viewModel = viewModel
+                repeatAdapter!!.api = api
 
-                repeatAdapter!!.setItemClickListener(object :
-                    HomeRepeatTodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
-                    }
-
-                })
                 holder.todoRv.apply {
                     adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
@@ -82,30 +82,19 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
-            //repeatAdd로 이동(cateId, 넘기기)
             if(holder.todoAdd.isGone){
                 holder.todoAdd.isVisible = true
             }
             else { holder.todoAdd.isGone = true }
 
-//            val bundle = Bundle()
-//
-//            bundle.putStringArrayList("keyAdd", arrayListOf(
-//                dataSet[position].id.toString(),
-//                dataSet[position].categoryName,
-//                dataSet[position].color,
-//                dataSet[position].icon_id
-//            ))
-//
-//            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
         }
-        //sample btn click listener
+
         holder.edtTodo.setOnKeyListener { view, keyCode, event ->
             // Enter Key Action
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                itemClickListener.onClick(view, position, dataSet[position].id, holder.edtTodo, holder.todoAdd)
                 true
             }
 
@@ -113,7 +102,7 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
         }
     }
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
+        fun onClick(v: View, position: Int, cate : Int, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {

@@ -2,14 +2,18 @@ package com.example.myapplication.HomeFunction.viewModel
 
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
@@ -35,7 +39,9 @@ class HomeViewModel : ViewModel() {
 
     fun getTodo(token : String?, date : String) = viewModelScope.launch {
         val todo = api.getAllTodo(token, date)
-        Log.d("HomeViewModel todo 값 확인", todo.toString())
+        //Log.d("HomeViewModel todo 값 확인", todo.toString())
+        _todoList.value = todo.data
+        //Log.d("HomeViewModel todo 값 확인2", _todoList.value.toString())
     }
 
     fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view : View) =
@@ -55,6 +61,40 @@ class HomeViewModel : ViewModel() {
         val response = api.deleteCategory(token, categoryId)
         Log.d("카테고리 delete", "확인")
         Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+    }
+
+//    fun postTodo(data : PostRequestTodo) = viewModelScope.launch{
+//        val response = api.addTodo(userToken, data)
+//        Log.d("todo POST", response.data.toString())
+//        todoId = response.data.id
+//    }
+
+    fun deleteRepeatTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeRepeatTodoAdapter) = viewModelScope.launch {
+        //서버 전송
+        val response = api.deleteTodo(userToken, todoId)
+        Log.d("todo DELETE", "todo delete 실행")
+        //live data 수정
+        _cateTodoList.value!![cateIndex].removeAt(todoIndex)
+        adapater.notifyDataSetChanged()
+    }
+    fun deleteTodo(todoId : Int, cateIndex : Int, todoIndex : Int) = viewModelScope.launch {
+        //서버 전송
+        val response = api.deleteTodo(userToken, todoId)
+        Log.d("todo DELETE", "todo delete 실행")
+        //live data 수정
+        _cateTodoList.value!![cateIndex].removeAt(todoIndex)
+    }
+
+    fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View) = viewModelScope.launch {
+        api.editTodo(userToken, todoId, data)
+        Log.d("todo patch", "todo 변경 확인")
+        _cateTodoList.value!![cateId][todoPosition].todoName = data.todoName
+        _cateTodoList.value!![cateId][todoPosition].repeat = data.repeat
+        _cateTodoList.value!![cateId][todoPosition].startRepeatDate = data.startRepeatDate
+        _cateTodoList.value!![cateId][todoPosition].endRepeatDate = data.endRepeatDate
+        _cateTodoList.value!![cateId][todoPosition].repeatWeek = data.repeatWeek
+        _cateTodoList.value!![cateId][todoPosition].repeatMonth = data.repeatMonth
+        Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
     }
 
     //카테고리 리스트
@@ -81,6 +121,16 @@ class HomeViewModel : ViewModel() {
     private val _homeDate = MutableLiveData<LocalDate>(LocalDate.now())
     val homeDate: LiveData<LocalDate>
         get() = _homeDate
+
+    //viewPager date 넘기기 확인 코드 시작
+
+    var viewpagerDate : LocalDate? = LocalDate.now()
+
+    fun updateDate(){
+        _homeDate.value = viewpagerDate
+    }
+
+    //viewPager date 넘기기 확인 코드 끝
 
     //투두 개수
     private val _todoNum = MutableLiveData<Int>(0)
@@ -119,6 +169,12 @@ class HomeViewModel : ViewModel() {
 
     var size = categoryList.value?.size?.minus(1)
     fun classifyTodo() {
+        var size = if(categoryList.value!!.size != 0){
+            categoryList.value!!.size.minus(1)
+        }
+        else {
+            0
+        }
         //todo 리스트에서 cateName으로 각각 가져오기
         //position별로 대응되도록 작성
         //카테고리 삭제 시 todo list도 전체 삭제
@@ -141,18 +197,29 @@ class HomeViewModel : ViewModel() {
             arrayListOf()
 
         )
+//
+//        if (todoList.value?.isEmpty() != true) {
+//            var completeNum = 0
+//            for (i in todoList.value!!) {
+//                for (j in 0..size!!) {
+//                    if (i.category.id == categoryList.value!![j].id) {
+//                        _cateTodoList.value?.get(j)!!.add(i)
+//                    }
+//                }
+//            }
+//        }
 
-        if (todoList.value?.isEmpty() != true) {
-            var completeNum = 0
-            for (i in todoList.value!!) {
-                for (j in 0..size!!) {
-                    if (i.category.id == categoryList.value!![j].id) {
-                        _cateTodoList.value?.get(j)!!.add(i)
+        if(size != 0) {
+                Log.d("classify", "if문 작동 중")
+                for(i in todoList.value!!){
+                    for(j in 0..size){
+                        if(i.category.id == categoryList.value!![j].id){
+                            _cateTodoList.value!![j].add(i)
+                        }
                     }
                 }
-            }
+                Log.d("classify실행2", cateTodoList.value.toString() )
         }
-
     }
 
     //cate 수정
@@ -201,16 +268,9 @@ class HomeViewModel : ViewModel() {
     }
 
     //todo추가
-    fun addTodo(position: Int, todo: Todo, flag: Boolean) {
-//        if(flag){
-//            _cateTodoList!!.value!![position].add(0, todo)
-//        }
-//        else {
-//            _cateTodoList!!.value!![position].add(todo)
-//        }
-
+    var todoId = 0
+    fun addTodo(position: Int, todo: Todo) {
         _cateTodoList!!.value!![position].add(todo)
-
     }
 
     private var _completeBottomFlag = MutableLiveData<Boolean>(true)
@@ -252,8 +312,8 @@ class HomeViewModel : ViewModel() {
         if (dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9) {
             dayString = "0${dayOfWeek}"
         }
-
-        _homeDate.value = LocalDate.parse("${year}-${monthString}-${dayString}")
+        viewpagerDate = LocalDate.parse("${year}-${monthString}-${dayString}")
+        _homeDate.value = viewpagerDate
     }
 
     //calendarview 시작 요일

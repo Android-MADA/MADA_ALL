@@ -48,6 +48,13 @@ class HomeViewpagerTodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //date 변경 감지 확인 코드 시작
+
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            Log.d("viewpagerDate", "date 변경 감지")
+        })
+
+        //date 변경 감지 확인 코드 끝
         if (viewModel.categoryList.value?.isNotEmpty() == true) {
             //rv연결
             cateAdapter = HomeViewpager2CategoryAdapter()
@@ -67,14 +74,14 @@ class HomeViewpagerTodoFragment : Fragment() {
                 ) {
                     if (edt.text.toString() != "") {
 
-                        var todo = Todo(
-                            viewModel.categoryList!!.value!![position],
-                            edt.text.toString(),
-                            false,
-                            "N"
-                        )
+//                        var todo = Todo(
+//                            viewModel.categoryList!!.value!![position],
+//                            edt.text.toString(),
+//                            false,
+//                            "N"
+//                        )
                         //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
-                        viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
+                        //viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                         //서버 전송(POST)
 
@@ -131,14 +138,14 @@ class HomeViewpagerTodoFragment : Fragment() {
                     ) {
                         if (edt.text.toString() != "") {
 
-                            var todo = Todo(
-                                viewModel.categoryList!!.value!![position],
-                                edt.text.toString(),
-                                false,
-                                "N"
-                            )
+//                            var todo = Todo(
+//                                viewModel.categoryList!!.value!![position],
+//                                edt.text.toString(),
+//                                false,
+//                                "N"
+//                            )
                             //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
-                            viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
+                            //viewModel.addTodo(position, todo, viewModel.todoTopFlag.value!!)
 
                             //서버 전송(POST)
 

@@ -36,6 +36,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //viewModel.userToken ="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjQ0MDQzNCwiZXhwIjoxNjkyNDc2NDM0fQ.jyCvYqxrFhrIa84I-OrXL4IJcFyB1MZlMIi_r6mW3pDHrglwJMtz7gQCujKgEd_hYBkliNWmXv4EknpE4bKyWg"
         viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
         Log.d("Hometoken 확인", viewModel.userToken.toString())
 
@@ -66,8 +67,11 @@ class FragHome : Fragment() {
 
         viewModel.getCategory(viewModel.userToken)
         viewModel.getTodo(viewModel.userToken, "2023-08-16")
+
         viewModel.todoList.observe(viewLifecycleOwner, Observer {
+
             viewModel.classifyTodo()
+
             viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
                 Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
             })
@@ -131,14 +135,16 @@ class FragHome : Fragment() {
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
             viewModel.changeDate(year, (month +1), dayOfMonth)
+            Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
         }
+
 
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             //서버에서 category 새로 받아오기(date)
             //서버에서 Tood 새로 받아오기(date)
             //서버에서 ment 새로 받아오기(date)
-
+            viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
             viewModel.updateCateTodoList()
         })
@@ -149,6 +155,7 @@ class FragHome : Fragment() {
             //completeNum 업데이트
             viewModel.updateTodoNum()
             viewModel.updateCompleteTodo()
+
         })
 
         //date를 통해서 todo가 변경되었을 때 실행

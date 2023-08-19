@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
@@ -49,41 +50,33 @@ class RepeatTodoAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val argsArrayAdd = requireArguments().getStringArrayList("keyAdd")
-        val argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
-        //0 todo
-        //1 repeat
-        //2 cateIndex
-        //3 position(todo)
+        var argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
+        //0 id
+        //1 todoName
+        //2 repeat
+        //3 repeatWeek
+        //4 repeatMonth
+        //5 repeatStartDay
+        //6 repeatEndDay
+        //7 category position
+        //8 todoPosition
 
-        if(argsArrayAdd != null){
-            binding.btnHomeRepeatAddSave.text = "등록"
-        }
-        else{
-            binding.btnHomeRepeatAddSave.text = "삭제"
-            binding.edtHomeCategoryName.setText(argsArrayEdit!![0])
-            if(argsArrayEdit!![1] == "N"){
+            binding.edtHomeCategoryName.setText(argsArrayEdit!![1])
+            if(argsArrayEdit!![2] == "N"){
                 binding.tvRepeatRepeat.text = "반복 안함"
                 binding.tvRepeatNo.setBackgroundResource(R.drawable.home_repeat_selected_background)
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
             }
-            else{
+            else if(argsArrayEdit!![2] == "day"){
                 binding.tvRepeatRepeat.text = "매일"
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
                 binding.tvRepeatNo.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
+                binding.tvHomeRepeatStart.text = argsArrayEdit!![5]
+                binding.tvHomeRepeatEnd.text = argsArrayEdit!![6]
             }
-            //시작일, 종료일 null 확인하고 뿌리기
-        }
 
-        //bundle이 넘어오면 등록 -> 삭제, 데이터 뿌리기
-        //start, end date 현재날짜로 달력에 뿌리기 -> 일단 text만 변경하기
+
         binding.ivHomeRepeatAddBack.setOnClickListener {
-            if(binding.btnHomeRepeatAddSave.text == "삭제"){
-                //수정 사항 서버 전송
-                viewModel.editTodo(argsArrayEdit!![2].toInt(), argsArrayEdit!![3].toInt(), binding.edtHomeCategoryName.text.toString(), null, null, "N")
-                Log.d("repeatEdit", viewModel.cateTodoList.value.toString())
-
-            }
             Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
         }
 
@@ -120,6 +113,7 @@ class RepeatTodoAddFragment : Fragment() {
             binding.tvRepeatNo.setBackgroundResource(R.drawable.home_repeat_selected_background)
             binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
             binding.tvRepeatRepeat.text = binding.tvRepeatNo.text
+            //시작일, 종료일 gone?
         }
 
         binding.tvRepeatEveryday.setOnClickListener {
@@ -151,25 +145,36 @@ class RepeatTodoAddFragment : Fragment() {
             if(binding.edtHomeCategoryName.text.isBlank()){
                 Toast.makeText(this.requireActivity(), "TODO 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
-//            if(binding.tvRepeatRepeat.text != "반복 안함"){
-//                if(binding.tvHomeRepeatStartday.text == "없음" || binding.tvHomeRepeatStartday.text == "없음"){
-//                    Toast.makeText(this.requireActivity(), "시작일과 종료일을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
-//                }
-//            }
             else {
-                if(binding.btnHomeRepeatAddSave.text == "삭제"){
-                    //삭제 서버 전송
-                    //id = argsEdit으로 조합
-                    viewModel.deleteTodo(argsArrayEdit!![2].toInt(), argsArrayEdit!![3].toInt())
+                if(binding.tvRepeatRepeat.text != "반복 안함"){
+                    if(binding.tvHomeRepeatStartday.text == "없음" || binding.tvHomeRepeatEndday.text == "없음"){
+                        Toast.makeText(this.requireActivity(), "시작일과 종료일을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
+                        val startDay = findNull(binding.tvHomeRepeatStart.text.toString())
+                        val endDay = findNull(binding.tvHomeRepeatEnd.text.toString())
+                        val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
+
+                        viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
+                    }
+                }
+                else if (binding.tvRepeatRepeat.text == "반복 안함") {
+                    val repeatString = "N"
+                    val startDay = null
+                    val endDay = null
+                    val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, null, null)
+
+                    viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
                 }
                 else {
-                    //add 서버 전송
-                    //category = argsAdd로 조합
-                    var todo = Todo(viewModel.categoryList!!.value!![argsArrayEdit!![2].toInt()], binding.edtHomeCategoryName.text.toString(), false, "N")
-                    //var todo = Todo( LocalDate.now(), viewModel.categoryList!!.value!![position], edt.text.toString(), false, "N", null, null, null)
-                    viewModel.addTodo(argsArrayEdit!![2].toInt(), todo, viewModel.todoTopFlag.value!!)
+                    val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
+                    val startDay = findNull(binding.tvHomeRepeatStart.text.toString())
+                    val endDay = findNull(binding.tvHomeRepeatEnd.text.toString())
+                    val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
+
+                    viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
                 }
-                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
             }
         }
 
@@ -188,5 +193,24 @@ class RepeatTodoAddFragment : Fragment() {
 
         return LocalDate.parse("${year}-${monthString}-${dayString}")
     }
+
+    private fun findRepeat(repeat : String) : String{
+        val repeatString  = when(repeat){
+            "반복 안함" -> "N"
+            "매일" -> "day"
+            else -> "N"
+        }
+        return repeatString
+    }
+
+    fun findNull(day : String) : String?{
+        val repeatDay = when(day){
+            "시작일" -> null
+            "종료일" -> null
+            else -> day
+        }
+        return repeatDay
+    }
+
 
 }

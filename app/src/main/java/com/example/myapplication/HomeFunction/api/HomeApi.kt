@@ -1,11 +1,12 @@
 package com.example.myapplication.HomeFunction.api
 
 
-import com.example.myapplication.HomeFunction.Model.Schedule
-import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.HomeFunction.Model.CategoryList
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestTodo
+import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
@@ -22,14 +23,7 @@ import retrofit2.http.Path
 
 interface HomeApi {
 
-    //todo조회(1) -> 확인 완
-//    @GET("/api/home/todo/date/{date}")
-//    fun getAllTodo(
-//        @Header("Authorization") token: String?,
-//        @Path("date", encoded = true) date: String
-//    ): Call<TodoList>
-
-    //todo조회(2) -> 확인 완
+    //todo조회 -> 확인 완
     @GET("/api/home/todo/date/{date}")
     suspend fun getAllTodo(
         @Header("Authorization") token: String?,
@@ -38,21 +32,31 @@ interface HomeApi {
 
 
     //todo추가
-    @POST("/api/home/todo")
-    suspend fun addTodo(
-        @Header("Authorization") token: String?,
-    )
+//    @POST("/api/home/todo")
+//    suspend fun addTodo(
+//        @Header("Authorization") token: String?,
+//        @Body data : PostRequestTodo
+//    ) : PostResponseTodo
 
-    //todo수정
+    @POST("/api/home/todo")
+    fun addTodo(
+        @Header("Authorization") token: String?,
+        @Body data : PostRequestTodo
+    ) : Call<PostResponseTodo>
+
+    //todo수정 -> 확인 완
     @PATCH("/api/home/todo/todoId/{todoId}")
     suspend fun editTodo(
         @Header("Authorization") token: String?,
-    )
+        @Path("todoId", encoded = true) todoId: Int,
+        @Body data : PatchRequestTodo
+    ): PostResponseTodo
 
-    //todo삭제
+    //todo삭제 -> 확인 완
     @DELETE("/api/home/todo/todoId/{todoId}")
     suspend fun deleteTodo(
         @Header("Authorization") token: String?,
+        @Path("todoId", encoded = true) todoId: Int
     )
 
     //시간표 추가 시 일정 및 todo조회
@@ -101,12 +105,6 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): PactchResponseCategory
 
-    // 카테고리 추가(2) -> 확인 완
-//    @POST("/api/home/category")
-//    fun postCategory(
-//        @Header("Authorization") token : String?,
-//        @Body data : PatchRequestCategory
-//    ): Call<PactchResponseCategory>
 
     //카테고리 수정 -> 확인 완
     @PATCH("/api/home/category/{categoryId}")
@@ -116,7 +114,7 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): PactchResponseCategory
 
-    //카테고리 삭제 -> 확인 완, todo test만 삭제 오류
+    //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
         @Header("Authorization") token : String?,
