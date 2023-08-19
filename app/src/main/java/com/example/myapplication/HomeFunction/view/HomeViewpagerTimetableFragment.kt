@@ -20,6 +20,7 @@ import com.example.myapplication.R
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
+import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -48,6 +49,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
     lateinit var binding : HomeFragmentViewpagerTimetableBinding
 
+
     data class PieChartData(
         val title: String,
         val memo: String,
@@ -65,6 +67,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
     val service = retrofit.create(HomeApi::class.java)
     var token = ""
 
+    var today = "2023-08-18"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,6 +77,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = HomeFragmentViewpagerTimetableBinding.inflate((layoutInflater))
         customCircleBarView = binding.progressbar
         token = MyWebviewActivity.prefs.getString("token","")
@@ -85,10 +89,13 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         customCircleBarView.setProgress(progressPercentage.toInt())
         //파이차트
-        getTimeDatas("2023-08-18")
+        getTimeDatas(today)
 
         binding.chart.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment)
+            val bundle = Bundle()
+            bundle.putBoolean("viewpager",true)
+            bundle.putString("Token",token)
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
         }
 
         return binding.root
@@ -164,14 +171,18 @@ class HomeViewpagerTimetableFragment : Fragment() {
         //Pi Chart
         var chart = binding.chart
 
-        if(pieChartDataArray.size==0) {     //그날 정보가 없다면
-            binding.none.visibility = View.VISIBLE
-        } else {
-            binding.none.visibility = View.GONE
-        }
+
         val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
+
+        if(pieChartDataArray.size==0) {     //그날 정보가 없다면
+            binding.none.visibility = View.VISIBLE
+            entries.add(PieEntry(10f, "998"))
+            colorsItems.add(Color.parseColor("#F0F0F0"))
+        } else {
+            binding.none.visibility = View.GONE
+        }
         for(data in pieChartDataArray) {
             val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
             val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
@@ -207,9 +218,9 @@ class HomeViewpagerTimetableFragment : Fragment() {
         }
 
         val pieData = PieData(pieDataSet)
-
+        Log.d("chartWidth","${chart.width} ${chart.height}")
         val smallXY = if(chart.width > chart.height) chart.height else chart.width
-        val range = smallXY/80f
+        val range = smallXY/60f
 
         chart.apply {
             data = pieData
@@ -223,7 +234,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             //rotationAngle = 30f // 회전 각도, 굳이 필요 없을듯
             description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
         }
-        var lastSelectedEntry = 0
+        var lastSelectedEntry = -1
         chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e is PieEntry) {
@@ -231,20 +242,34 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     val label = pieEntry.label
                     if (label == "999") {
                         pieDataSet.selectionShift = 1f //하이라이트 크기
+                        lastSelectedEntry = label.toInt()
+                    } else if(label == "998") {
+                        pieDataSet.selectionShift = 1f //하이라이트 크기
+                        lastSelectedEntry = 998
                     } else {
                         pieDataSet.selectionShift = 30f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+                        lastSelectedEntry = label.toInt()
                     }
-                    lastSelectedEntry = label.toInt()
+
                 }
             }
             override fun onNothingSelected() {
-                val bundle = Bundle()
-                if(pieChartDataArray.size>0) {
+                if(lastSelectedEntry==998) {
+                    val bundle = Bundle()
+                    bundle.putBoolean("viewpager",true)
+                    bundle.putString("Token",token)
+                    bundle.putString("today",today)
+                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                } else if(lastSelectedEntry>=0) {
+                    val bundle = Bundle()
                     bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                     bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-                }
-                Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
 
+                    bundle.putBoolean("viewpager",true)
+                    bundle.putString("Token",token)
+                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                }
+                lastSelectedEntry =-1
             }
         })
 

@@ -1,7 +1,9 @@
 package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -34,6 +36,7 @@ import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -115,7 +118,7 @@ class CalendarAddFragment : Fragment() {
         }
         binding.preScheldule2.text = preClock
         binding.nextScheldule2.text = nextClock
-        binding.cyclebtn.text = cycle
+
         binding.textMemo.setText(memo)
         binding.calendarColor.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         dayString =binding.preScheldule.text.toString()
@@ -184,6 +187,7 @@ class CalendarAddFragment : Fragment() {
                 binding.clockAndCycle.visibility = View.GONE
                 binding.layoutColorSelector2.visibility = View.VISIBLE
                 binding.layoutColorSelector1.visibility = View.GONE
+                binding.preScheldule.visibility = View.GONE
                 binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
                 curDday = "Y"
             } else {
@@ -191,6 +195,7 @@ class CalendarAddFragment : Fragment() {
                 binding.clockAndCycle.visibility = View.VISIBLE
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
+                binding.preScheldule.visibility = View.VISIBLE
                 binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
                 curDday = "N"
             }
@@ -318,21 +323,51 @@ class CalendarAddFragment : Fragment() {
         val chip3 = binding.chip3
         val chip4 = binding.chip4
         val chip5 = binding.chip5
+        if(cycle =="매일") {
+            binding.cyclebtn.text = "매일"
+            curRepeat = "Day"
+            binding.calAll.visibility = View.GONE
+            updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
+        } else if(cycle =="매주") {
+
+            binding.cyclebtn.text = "매주"
+            curRepeat = "Week"
+            binding.calAll.visibility = View.GONE
+            binding.repeatWeek.visibility = View.VISIBLE
+            binding.repeatMonth.visibility = View.GONE
+            updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
+        } else if(cycle =="매월") {
+            binding.cyclebtn.text = "매월"
+            curRepeat = "Month"
+            binding.calAll.visibility = View.GONE
+            updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.VISIBLE
+        } else if(cycle =="매년") {
+
+            binding.cyclebtn.text = "매년"
+            curRepeat = "Year"
+            binding.calAll.visibility = View.GONE
+            updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
+        } else {
+            binding.cyclebtn.text = "반복 안함"
+            curRepeat = "No"
+            updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
+            binding.repeatWeek.visibility = View.GONE
+            binding.repeatMonth.visibility = View.GONE
+        }
         binding.cyclebtn.setOnClickListener {
             binding.chipGroup.visibility = View.VISIBLE
         }
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
+            binding.calAll.visibility = View.VISIBLE
             curRepeat = "No"
-            chip1.setChipBackgroundColorResource(R.color.sub5)
-            chip2.setChipBackgroundColorResource(R.color.white)
-            chip3.setChipBackgroundColorResource(R.color.white)
-            chip4.setChipBackgroundColorResource(R.color.white)
-            chip5.setChipBackgroundColorResource(R.color.white)
-            chip2.isChecked = false
-            chip3.isChecked = false
-            chip4.isChecked = false
-            chip5.isChecked = false
+            updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
         }
@@ -340,17 +375,9 @@ class CalendarAddFragment : Fragment() {
             binding.cyclebtn.text = "매일"
             curRepeat = "Day"
             binding.calAll.visibility = View.GONE
-            chip1.setChipBackgroundColorResource(R.color.white)
-            chip2.setChipBackgroundColorResource(R.color.sub5)
-            chip3.setChipBackgroundColorResource(R.color.white)
-            chip4.setChipBackgroundColorResource(R.color.white)
-            chip5.setChipBackgroundColorResource(R.color.white)
+            updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
-            chip1.isChecked = false
-            chip3.isChecked = false
-            chip4.isChecked = false
-            chip5.isChecked = false
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
@@ -358,47 +385,23 @@ class CalendarAddFragment : Fragment() {
             binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
-            chip1.setChipBackgroundColorResource(R.color.white)
-            chip2.setChipBackgroundColorResource(R.color.white)
-            chip3.setChipBackgroundColorResource(R.color.sub5)
-            chip4.setChipBackgroundColorResource(R.color.white)
-            chip5.setChipBackgroundColorResource(R.color.white)
-            chip2.isChecked = false
-            chip1.isChecked = false
-            chip4.isChecked = false
-            chip5.isChecked = false
+            updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
         }
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
             curRepeat = "Month"
             binding.calAll.visibility = View.GONE
-            chip1.setChipBackgroundColorResource(R.color.white)
-            chip2.setChipBackgroundColorResource(R.color.white)
-            chip3.setChipBackgroundColorResource(R.color.white)
-            chip4.setChipBackgroundColorResource(R.color.sub5)
-            chip5.setChipBackgroundColorResource(R.color.white)
+            updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
-            chip2.isChecked = false
-            chip3.isChecked = false
-            chip1.isChecked = false
-            chip5.isChecked = false
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
             curRepeat = "Year"
             binding.calAll.visibility = View.GONE
-            chip1.setChipBackgroundColorResource(R.color.white)
-            chip2.setChipBackgroundColorResource(R.color.white)
-            chip3.setChipBackgroundColorResource(R.color.white)
-            chip4.setChipBackgroundColorResource(R.color.white)
-            chip5.setChipBackgroundColorResource(R.color.sub5)
+            updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
-            chip2.isChecked = false
-            chip3.isChecked = false
-            chip4.isChecked = false
-            chip1.isChecked = false
         }
 
         return binding.root
@@ -420,10 +423,20 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+
                 if(edit) {
                     mDialogView.findViewById<TextView>(R.id.textTitle).text = "수정하지 않고 나가시겠습니까?"
                 }
-                val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
                     mBuilder.dismiss()
                 })
@@ -448,8 +461,16 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
 
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
                 mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 날짜를 입력해 주십시오"
-                val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
                     mBuilder.dismiss()
                 })
@@ -463,8 +484,18 @@ class CalendarAddFragment : Fragment() {
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
 
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+
                 mDialogView.findViewById<TextView>(R.id.textTitle).text = "올바른 시간을 입력해 주십시오"
-                val display = requireActivity().windowManager.defaultDisplay
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
                     mBuilder.dismiss()
                 })
@@ -494,6 +525,18 @@ class CalendarAddFragment : Fragment() {
 
         }
 
+    }
+    fun updateUIForWeekRepeat(chip1: Chip, chip2: Chip, chip3: Chip, chip4: Chip, chip5: Chip) {
+        chip1.setChipBackgroundColorResource(R.color.sub5)
+        chip2.setChipBackgroundColorResource(R.color.white)
+        chip3.setChipBackgroundColorResource(R.color.white)
+        chip4.setChipBackgroundColorResource(R.color.white)
+        chip5.setChipBackgroundColorResource(R.color.white)
+        chip2.isChecked = false
+        chip3.isChecked = false
+        chip1.isChecked = true
+        chip4.isChecked = false
+        chip5.isChecked = false
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -783,7 +826,7 @@ class CalendarAddFragment : Fragment() {
                                     mDialogView.findViewById<TextView>(R.id.textInfo).text = "대체할 디데이를 선택해야 합니다"
                                 } else {
                                     deleteCalendar(ddayId)
-                                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                                         curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                                         timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
@@ -791,7 +834,7 @@ class CalendarAddFragment : Fragment() {
                                 }
                             })
                         } else {
-                            addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                            addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                                 curColor,curRepeat,curDday,binding.textMemo.text.toString(),
                                 timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
                         }

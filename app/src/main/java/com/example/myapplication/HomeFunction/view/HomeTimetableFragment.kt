@@ -225,7 +225,9 @@ class HomeTimetableFragment : Fragment() {
 
         val pieData = PieData(pieDataSet)
         val smallXY = if(chart.width > chart.height) chart.height else chart.width
-        val range = smallXY/60f
+
+        val range = smallXY / 60.toFloat()
+
 
         chart.apply {
             data = pieData

@@ -68,7 +68,7 @@ class CalendarAddSFragment : Fragment() {
         val nextSchedule = arguments?.getString("nextSchedule") ?:"2023-6-1"
         val preClock = arguments?.getString("preClock")
         val nextClock = arguments?.getString("nextClock")
-        val cycle = processInput(arguments?.getString("cycle")?:"반복 안함")
+        val cycle = processInput(arguments?.getString("cycle")?:"No")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
         id2 = arguments?.getInt("id")?: -1
@@ -182,6 +182,7 @@ class CalendarAddSFragment : Fragment() {
     }
     fun processInput(input: String): String {
         return when (input) {
+
             "Day" -> "매일"
             "Week" -> "매일"
             "Month" -> "매일"

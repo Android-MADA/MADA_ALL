@@ -80,8 +80,7 @@
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/calendar_color"
@@ -94,6 +93,7 @@
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/layout_color_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

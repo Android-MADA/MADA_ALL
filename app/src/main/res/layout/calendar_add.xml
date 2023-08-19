@@ -13,8 +13,8 @@
 
         <ImageButton
             android:id="@+id/backButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:scaleType="fitCenter"
@@ -81,7 +81,6 @@
                     android:hint="일정 이름"
                     android:inputType="text"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     android:importantForAutofill="no" />
                 <ImageView
                     android:id="@+id/calendar_color"
@@ -94,12 +93,13 @@
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
+
                 android:id="@+id/layout_color_selectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/layout_color_selector1"
@@ -529,6 +529,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:gravity="center"
                                 android:text="~" />
 
                             <TextView
@@ -667,7 +668,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chip2"
+                            android:id="@+id/chip1"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
                             android:checkable="true"
@@ -682,7 +683,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chip1"
+                            android:id="@+id/chip2"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
                             android:background="@color/black"
