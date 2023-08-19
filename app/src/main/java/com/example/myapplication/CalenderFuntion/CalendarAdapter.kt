@@ -3,9 +3,11 @@ package com.example.myapplication.CalenderFuntion
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -99,7 +101,19 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
             mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
             val alertDialog = mBuilder.show()
+
+            val displayMetrics = DisplayMetrics()
+            val windowManager = holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val size = Point()
             val display = (holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+            display.getSize(size)
+
+            val screenWidth = size.x
+            val popupWidth = (screenWidth * 0.8).toInt()
+
+            mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+
             mBuilder?.window?.setGravity(Gravity.CENTER)
 
             mDialogView.findViewById<TextView>(R.id.textDay2).text = iDay.toString() +"일"
@@ -133,7 +147,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
     }
 
     override fun getItemCount(): Int {
-        return 42
+        return dayList.size
     }
 
 }

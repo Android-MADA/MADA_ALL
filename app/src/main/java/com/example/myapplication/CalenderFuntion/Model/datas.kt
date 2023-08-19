@@ -30,8 +30,7 @@ data class CalendarDataId(
     @SerializedName("dday") val d_day: String,
     @SerializedName("memo") val memo: String,
     @SerializedName("calendarId") val id: Int
-) {
-}
+)
 data class AddCalendarData (
     @SerializedName("data") val datas: CalendarData2
 

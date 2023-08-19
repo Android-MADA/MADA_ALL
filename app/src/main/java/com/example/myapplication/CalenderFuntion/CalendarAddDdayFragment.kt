@@ -202,13 +202,13 @@ class CalendarAddDdayFragment : Fragment() {
                 })
             }  else {
                 if(binding.addBtn.text.toString()=="수정") {
-                    eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                    eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                         curColor,"No","Y",binding.textMemo.text.toString(),
-                        "10:00:00","10:00:00"),id2)
+                        "10:00:00","11:00:00"),id2)
                 } else {            //등록
-                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                         curColor,"No","Y",binding.textMemo.text.toString(),
-                        "10:00:00","10:00:00"))
+                        "10:00:00","11:00:00"))
                 }
             }
         }

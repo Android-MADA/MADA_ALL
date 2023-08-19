@@ -53,7 +53,7 @@ class TimeAddFragment : Fragment() {
     var today ="2023-08-16"
     var curColor = "#89A9D9"
     lateinit var token : String
-
+    var viewpager = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initColorArray()
@@ -95,6 +95,7 @@ class TimeAddFragment : Fragment() {
         val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<HomeViewpagerTimetableFragment.PieChartData>?: null
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
+        viewpager = arguments?.getBoolean("viewpager")?: false
         today = arguments?.getString("today")?: "2023-06-01"
         token= arguments?.getString("Token")?: ""
         var id = 0
@@ -298,12 +299,15 @@ class TimeAddFragment : Fragment() {
 
         }
         binding.ivHomeAddTimeBack.setOnClickListener {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+            if(viewpager) {
+                bottomFlag = false
+                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+            }
+            else
+                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
         }
         btnDelete.setOnClickListener {
             delTimeDatas(id)
-
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
@@ -360,7 +364,12 @@ class TimeAddFragment : Fragment() {
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
-                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                if(viewpager) {
+                    bottomFlag = false
+                    findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                }
+                else
+                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
@@ -380,7 +389,12 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                    if(viewpager) {
+                        bottomFlag = false
+                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                    }
+                    else
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
@@ -403,7 +417,12 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                    if(viewpager) {
+                        bottomFlag = false
+                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                    }
+                    else
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
@@ -441,16 +460,8 @@ class TimeAddFragment : Fragment() {
                             var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                             binding.homeTimeTodoList.layoutManager = manager
                             binding.homeTimeTodoList.adapter = adapter
-                        } else {
-
-                            Log.d("2222","Request was not successful. Message: hi")
                         }
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
                     }
-                } else {
-                    Log.d("333","itemType: ${response.code()} ${response.message()}")
-                    Log.d("333213",response.errorBody()?.string()!!)
                 }
             }
             override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {

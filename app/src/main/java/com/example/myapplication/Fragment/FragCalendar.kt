@@ -202,12 +202,18 @@ class FragCalendar : Fragment(){
         }
         monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
         var i = 0
+        var curMon = calendar.get(Calendar.MONTH)+1
         while(i<43) {
+
             val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
             val date = dateFormat.parse(monthCalendar.time.toString())
             calendarDayArray[i++] = SimpleDateFormat("yyyy-M-d", Locale.ENGLISH).format(date)
             dayList.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH,1)
+            if(i==36&&curMon.toString()!=SimpleDateFormat("M", Locale.ENGLISH).format(date)) {
+                Log.d("breeeak","${SimpleDateFormat("M", Locale.ENGLISH).format(date)} ${curMon}")
+                break
+            }
         }
         if(startMon) {      //월요일 부터 시작이라면
             dayList.removeAt(0)
@@ -218,8 +224,13 @@ class FragCalendar : Fragment(){
             val textView = binding.textSun
             binding.textYoil.removeView(binding.textSun)
             binding.textYoil.addView(textView)
+            return dayList
+        } else {
+            dayList.removeAt(dayList.size-1)
+
+            return dayList
         }
-        return dayList
+
     }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
@@ -266,7 +277,7 @@ class FragCalendar : Fragment(){
                                         -1,false,"${data.memo}","CAL",data.id)
                                     arrays.add(tmp)
                                 }
-
+                                Log.d("item","${data.name} ${data.repeat}")
 
                             }
                         } else {

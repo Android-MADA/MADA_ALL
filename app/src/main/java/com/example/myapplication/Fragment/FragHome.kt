@@ -22,6 +22,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
+import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,7 +49,7 @@ class FragHome : Fragment() {
     ): View? {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-
+        hideBottomNavigation(false, activity)
         //서버에서 cateogry, todo받아오기
 
 

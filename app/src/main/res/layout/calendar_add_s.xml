@@ -249,6 +249,7 @@
                         android:background="@android:color/transparent"
                         android:text="  오전 10:00  "
                         android:textColor="@color/black"
+                        android:gravity="center"
                         android:textSize="16sp" />
 
                     <TextView
@@ -256,6 +257,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:text="    ~    " />
 
                     <TextView
@@ -265,6 +267,7 @@
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:text="  오전 11:00  "
+                        android:gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
