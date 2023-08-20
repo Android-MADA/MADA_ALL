@@ -57,7 +57,7 @@ class MyRecordMonthActivity : AppCompatActivity() {
         val dayList = dayInMonthArray()
 
         val formatter2 = DateTimeFormatter.ofPattern("M")
-        val adapter = MyCalendarAdapter(dayList,CalendarUtil.selectedDate.format(formatter2))
+        val adapter = MyCalendarMonthAdapter(dayList,CalendarUtil.selectedDate.format(formatter2))
         var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter

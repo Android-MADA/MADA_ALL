@@ -38,12 +38,11 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class MyCalendarAdapter(private val dayList: ArrayList<Date>,private val realMonth : String, private val recordView : View,private val today : TextView)
-        : RecyclerView.Adapter<MyCalendarAdapter.ItemViewHolder>()  {
+class MyCalendarMonthAdapter(private val dayList: ArrayList<Date>, private val realMonth : String)
+        : RecyclerView.Adapter<MyCalendarMonthAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth
-    lateinit var preText : TextView
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -70,20 +69,11 @@ class MyCalendarAdapter(private val dayList: ArrayList<Date>,private val realMon
             holder.textDay.text = iDay.toString()
 
             if(iYear == y && iMonth == m && iDay == d) {
-                preText = holder.textDay
                 holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background2)
                 holder.textDay.setTextColor(Color.WHITE)
             }
 
             holder.itemView.setOnClickListener {
-                preText.setBackgroundResource(android.R.color.transparent)
-                preText.setTextColor(Color.BLACK)
-                holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background2)
-                holder.textDay.setTextColor(Color.WHITE)
-                preText = holder.textDay
-                recordView.visibility = View.VISIBLE
-                today.text = "$iYear-${iMonth.toString().padStart(2, '0')}-${iDay.toString().padStart(2, '0')}"
-                today.callOnClick()
             }
         }
 

@@ -48,6 +48,7 @@ class MyRecordDayActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
     var token = ""
+    var today = "2023-08-18"        //default값
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +64,8 @@ class MyRecordDayActivity : AppCompatActivity() {
         //달력 부분
         CalendarUtil.selectedDate = LocalDate.now()
 
-        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        getTimeDatas("2023-08-18")
+        binding.todayInfo.text = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
         calendar = Calendar.getInstance()
         setMonthView()
 
@@ -85,7 +86,9 @@ class MyRecordDayActivity : AppCompatActivity() {
             val intent = Intent(this, MyRecordWeekActivity::class.java)
             startActivity(intent)
         }
-
+        binding.todayInfo.setOnClickListener {
+            getTimeDatas(binding.todayInfo.text.toString())
+        }
 
         // 홈 투두 받아오기
         val homeViewPager = homeFragmentBinding.homeViewpager2
@@ -98,7 +101,7 @@ class MyRecordDayActivity : AppCompatActivity() {
         val dayList = dayInMonthArray()
 
         val formatter2 = DateTimeFormatter.ofPattern("M")
-        val adapter = MyCalendarAdapter(dayList,CalendarUtil.selectedDate.format(formatter2))
+        val adapter = MyCalendarAdapter(dayList,CalendarUtil.selectedDate.format(formatter2),binding.record,binding.todayInfo)
         var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter
