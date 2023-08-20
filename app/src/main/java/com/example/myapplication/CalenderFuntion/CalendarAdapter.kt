@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,19 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
@@ -35,6 +45,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
     var d = LocalDate.now().dayOfMonth
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
 
+    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = retrofit.create(RetrofitServiceCalendar::class.java)
     //임시 데이터
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
@@ -126,7 +139,9 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 if(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString()=="")
                     Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 else {
-
+                    addCalendar(
+                        CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
+                            ,"#E1E9F5","No","N" , "","10:00:00","11:00:00"))
                 }
                 mBuilder.dismiss()
             })
@@ -150,4 +165,26 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
         return dayList.size
     }
 
+    private fun addCalendar(data : CalendarData2) {
+        val call1 = service.addCal(token,data)
+        call1.enqueue(object : Callback<ResponseSample> {
+            override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("status",responseBody.status.toString())
+                    }else
+                        Log.d("777","${response.code()}")
+
+                } else {
+                    Log.d("666","itemType: ${response.code()} ")
+                }
+                // 페이지 이동
+            }
+
+            override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 }

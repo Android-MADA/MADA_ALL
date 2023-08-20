@@ -52,7 +52,7 @@ class FragHome : Fragment() {
         hideBottomNavigation(false, activity)
         //서버에서 cateogry, todo받아오기
 
-
+        /*
 
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
@@ -76,6 +76,8 @@ class FragHome : Fragment() {
 
         viewModel.updateTodoNum()
         viewModel.updateCompleteTodo()
+        */
+
 
         return view
     }
@@ -101,9 +103,17 @@ class FragHome : Fragment() {
         //actinobar 설정
         binding.toolbarHome.inflateMenu(R.menu.home_menu)
         binding.toolbarHome.setOnMenuItemClickListener {
+            //달력에 지정된 날짜 다음 프래그먼트로 전달
+            val year = viewModel.homeDate.value!!.year
+            val month = String.format("%02d", viewModel.homeDate.value!!.monthValue)
+            val day = String.format("%02d", viewModel.homeDate.value!!.dayOfMonth)
+            val bundle = Bundle()
+            bundle.putString("today","${year}-${month}-${day}")
+
             when(it.itemId){
+
                 R.id.home_menu_timetable -> {
-                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeTimetableFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeTimetableFragment,bundle)
                     true
                 }
                 R.id.home_menu_category -> {
@@ -162,6 +172,7 @@ class FragHome : Fragment() {
             binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
             binding.progressBar.progress = viewModel.completeTodoNum.value!!
         })
+
 
     }
 

@@ -50,7 +50,7 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today ="2023-08-16"
+    var today ="2023-08-18"
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
@@ -96,7 +96,7 @@ class TimeAddFragment : Fragment() {
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
         viewpager = arguments?.getBoolean("viewpager")?: false
-        today = arguments?.getString("today")?: "2023-06-01"
+        today = arguments?.getString("today")?: "2023-08-18"
         token= arguments?.getString("Token")?: ""
         var id = 0
 
@@ -109,8 +109,8 @@ class TimeAddFragment : Fragment() {
             //ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
             colorSelector.isGone = true
 
-            times[0].text = convertTo12HourFormat(recievedPieData.startHour,recievedPieData.startMin)
-            times[1].text = convertTo12HourFormat(recievedPieData.endHour,recievedPieData.endMin)
+            times[0].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.startHour, recievedPieData.startMin))
+            times[1].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.endHour, recievedPieData.endMin))
             id = recievedPieData.id
             textMemo.setText(recievedPieData.memo)
         }
@@ -240,6 +240,8 @@ class TimeAddFragment : Fragment() {
         btnSubmit.setOnClickListener {
             var start = timePlusMinutes(binding.tvHomeTimeStart.text.toString())
             var end = timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
+            if(end == 0)
+                end =24*60
             var check = true
             if (receivedData != null) {
                 for (data in receivedData) {
@@ -252,9 +254,8 @@ class TimeAddFragment : Fragment() {
                             check = false
                     }
                 }
-                Log.d("receivedData", "!null")
             } else {
-                Log.d("receivedData", "null!")
+
             }
             if (check) {
                 Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
@@ -452,10 +453,15 @@ class TimeAddFragment : Fragment() {
                             }
 
                             for(data in datas.calendarList) {
-                                Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
-                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
-                                    data.color,"","",data.CalendarName,1,false,"","CAL",7))
+                                Log.d("cal","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color} ${data.dday}" )
+                                if(data.dday=="N")
+                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                    data.color,"","N",data.CalendarName,1,false,"","CAL",7))
+                                else
+                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                        data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
                             }
+
                             val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
                             var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                             binding.homeTimeTodoList.layoutManager = manager
@@ -468,20 +474,6 @@ class TimeAddFragment : Fragment() {
                 Log.d("444","itemType: ${t.message}")
             }
         })
-    }
-    fun convertTo12HourFormat(hour24: Int, minute: Int): String {
-        val amPm: String
-        val hour12: Int
-        if (hour24 >= 12) {
-            amPm = "오후"
-            hour12 = if (hour24 > 12) hour24 - 12 else hour24
-        } else {
-            amPm = "오전"
-            hour12 = if (hour24 == 0) 12 else hour24
-        }
-
-        val minuteStr = if (minute < 10) "0$minute" else minute.toString()
-        return "  $amPm $hour12:$minuteStr  "
     }
     fun timeChange(time: String): String {
         val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US"))
@@ -496,6 +488,16 @@ class TimeAddFragment : Fragment() {
 
         return String.format("%02d:%02d:00", hour, minute)
     }
+    fun timeChangeReverse(time: String): String {
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat(" a h:mm ", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
+
+        calendar.time = inputFormat.parse(time)
+
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
+    }
+
     fun timePlusMinutes(time: String): Int {
         val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
         val calendar = Calendar.getInstance()
@@ -508,6 +510,7 @@ class TimeAddFragment : Fragment() {
         val minute = calendar.get(Calendar.MINUTE)
 
         val totalMinutes = hour * 60 + minute
+
 
         return totalMinutes
     }
