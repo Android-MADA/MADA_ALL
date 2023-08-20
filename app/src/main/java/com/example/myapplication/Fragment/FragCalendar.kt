@@ -38,6 +38,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -260,6 +261,7 @@ class FragCalendar : Fragment(){
                         if(datas != null) {
                             for (data in datas) {
                                 val dura : Boolean
+
                                 if(data.start_date==data.end_date) dura = false
                                 else dura = true
                                 if(data.d_day=="N") {
@@ -271,24 +273,18 @@ class FragCalendar : Fragment(){
                                     } else {
                                         arrays.add(tmp)
                                     }
+                                } else if(daysRemainingToDate(data.end_date)<0){
+                                    deleteCalendar(data.id)
                                 } else {
                                     val tmp = CalendarDATA("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
                                         "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                         -1,false,"${data.memo}","CAL",data.id)
                                     arrays.add(tmp)
                                 }
-                                Log.d("item","${data.name} ${data.repeat}")
-
+                                Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
                             }
-                        } else {
-                           Log.d("2222","Request was not successful.")
                         }
-
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
                     }
-                } else {
-                   Log.d("333","itemType: ${response.code()}")
                 }
                 setMonthView(arrays,startMon)
             }
@@ -534,7 +530,20 @@ class FragCalendar : Fragment(){
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)
-                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                if(data.itemType=="color") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.calendarRamdi)
+                                } else if(data.itemType=="set") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgCalendarCloth)
+                                } else if(data.itemType=="item") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgCalendarItem)
+                                }
                                 // ...
                             }
                         } else {

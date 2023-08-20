@@ -339,14 +339,43 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-                <ImageView
-                    android:layout_weight="1"
-                    android:id="@+id/calendar_ramdi"
-                    android:padding="15dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginBottom="20dp"
-                    android:src="@drawable/calendar_character"/>
+                    android:padding="15dp">
+                    <ImageView
+                        android:id="@+id/calendar_ramdi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/calendar_character"/>
+                    <ImageView
+                        android:id="@+id/img_calendar_cloth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/calendar_character"/>
+                    <ImageView
+                        android:id="@+id/img_calendar_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/calendar_character"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
 

@@ -8,6 +8,7 @@ import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.Model.TodoList
@@ -70,7 +71,7 @@ interface HomeApi {
     @GET("/api/home/time/date/{date}")
     fun getTimetable(
         @Header("Authorization") token: String?, @Path("date") date: String
-    ): Call<ScheduleList>
+    ): Call<ScheduleListData>
 
     //시간표 추가
     @POST("/api/home/time")

@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.Model.ScheduleList
+import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
@@ -128,12 +129,12 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val call = service.getTimetable(token,date)
         val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
         val sampleTimeArray = ArrayList<SampleTimeData>()
-        call.enqueue(object : Callback<ScheduleList> {
-            override fun onResponse(call2: Call<ScheduleList>, response: Response<ScheduleList>) {
+        call.enqueue(object : Callback<ScheduleListData> {
+            override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
-                        val datas = apiResponse.datas
+                        val datas = apiResponse.datas2.datas
                         if(datas != null) {
                             var i = 0
                             for (data in datas) {
@@ -152,7 +153,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     }
                 }
             }
-            override fun onFailure(call: Call<ScheduleList>, t: Throwable) {
+            override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
             }
         })

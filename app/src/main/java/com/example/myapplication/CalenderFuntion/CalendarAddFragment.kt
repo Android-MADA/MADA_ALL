@@ -136,17 +136,17 @@ class CalendarAddFragment : Fragment() {
 
         binding.calendarColor1.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            curColor ="#E1E9F5"
+            curColor ="#89A9D9"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor2.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-            curColor ="#89A9D9"
+            curColor ="#2AA1B7"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor3.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
-            curColor ="#2AA1B7"
+            curColor ="#F5EED1"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor4.setOnClickListener {
@@ -166,17 +166,17 @@ class CalendarAddFragment : Fragment() {
         }
         binding.calendarColor7.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            curColor ="#E1E9F5"
+            curColor ="#89A9D9"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor8.setOnClickListener {
             binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            curColor ="#FFE7EB"
+            curColor ="#F0768C"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor9.setOnClickListener {
             binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
-            curColor ="#F5EED1"
+            curColor ="#F8D141"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor.setOnClickListener {
@@ -325,6 +325,7 @@ class CalendarAddFragment : Fragment() {
         val chip3 = binding.chip3
         val chip4 = binding.chip4
         val chip5 = binding.chip5
+        /*
         if(cycle =="매일") {
             binding.cyclebtn.text = "매일"
             curRepeat = "Day"
@@ -405,7 +406,9 @@ class CalendarAddFragment : Fragment() {
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
         }
+        */
 
+        /*
         var selectedTextWeek = binding.textWeek1
 
         val textWeek = arrayOf(
@@ -444,7 +447,7 @@ class CalendarAddFragment : Fragment() {
                 // 선택된 TextView를 업데이트합니다.
                 selectedTextMon = textView
             }
-        }
+        }*/
 
         return binding.root
     }
