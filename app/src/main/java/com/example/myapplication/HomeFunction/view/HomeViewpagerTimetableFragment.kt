@@ -242,10 +242,10 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     val pieEntry = e as PieEntry
                     val label = pieEntry.label
                     if (label == "999") {
-                        pieDataSet.selectionShift = 1f //하이라이트 크기
+                        pieDataSet.selectionShift = 0f //하이라이트 크기
                         lastSelectedEntry = label.toInt()
                     } else if(label == "998") {
-                        pieDataSet.selectionShift = 1f //하이라이트 크기
+                        pieDataSet.selectionShift = 0f //하이라이트 크기
                         lastSelectedEntry = 998
                     } else {
                         pieDataSet.selectionShift = 30f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정

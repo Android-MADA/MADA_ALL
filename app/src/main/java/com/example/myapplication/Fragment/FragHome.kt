@@ -52,7 +52,7 @@ class FragHome : Fragment() {
         hideBottomNavigation(false, activity)
         //서버에서 cateogry, todo받아오기
 
-        /*
+
 
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
@@ -64,19 +64,19 @@ class FragHome : Fragment() {
 
         //서버연결 시작
 
+        /*
+                viewModel.getCategory(viewModel.userToken)
+                viewModel.getTodo(viewModel.userToken, "2023-08-16")
+                viewModel.todoList.observe(viewLifecycleOwner, Observer {
+                    viewModel.classifyTodo()
+                    viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+                        Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
+                    })
+                })
 
-        viewModel.getCategory(viewModel.userToken)
-        viewModel.getTodo(viewModel.userToken, "2023-08-16")
-        viewModel.todoList.observe(viewLifecycleOwner, Observer {
-            viewModel.classifyTodo()
-            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
-            })
-        })
-
-        viewModel.updateTodoNum()
-        viewModel.updateCompleteTodo()
-        */
+                viewModel.updateTodoNum()
+                viewModel.updateCompleteTodo()
+                */
 
 
         return view
