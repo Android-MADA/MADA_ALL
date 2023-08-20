@@ -51,7 +51,7 @@ class CustomCircleBarView : View {
 
         // 3. 각도에 따라 텍스트 그리기
         val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        textPaint.textSize = 50f
+        textPaint.textSize = smallXY / 20.toFloat()
         textPaint.color = Color.BLACK
 
         val textX = centerX + radius * Math.cos(Math.toRadians(-90.0)).toFloat() - textPaint.measureText("0") / 2
