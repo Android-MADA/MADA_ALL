@@ -13,8 +13,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.R
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>, private val today: Int
                               , private val parentView : View, private val parentDialog : AlertDialog, private val token : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
@@ -66,6 +69,8 @@ class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>
                     val viewHolderWithoutDuration = holder as ItemViewHolderWithoutDuration
                     viewHolderWithoutDuration.textTime1.text = convertTo12HourFormat(item.startTime)+"-"
                     viewHolderWithoutDuration.textTime2.text = convertTo12HourFormat(item.endTime)
+                    if(viewHolderWithoutDuration.textTime2.text=="00:00")
+                        viewHolderWithoutDuration.textTime2.text="24:00"
                     viewHolderWithoutDuration.backgroundPoint.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
                     viewHolderWithoutDuration.textTitle.text = item.title
                 }
@@ -116,20 +121,23 @@ class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>
     }
 
     fun convertTo12HourFormat(timeString: String): String {
-        val parts = timeString.split(":")
-        val hour = parts[0].toInt()
-        val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else hour
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat("HH:mm", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
 
-        return "$convertedHour:$minute"
+        calendar.time = inputFormat.parse(timeString)
+
+        return outputFormat.format(calendar.time)
     }
     fun convertTo12HourFormat2(timeString: String): String {
-        val parts = timeString.split(":")
-        val hour = parts[0].toInt()
-        val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else hour
-        val ampm = if (hour > 12) "오전" else "오후"
-        return "  $ampm $convertedHour:$minute  "
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat("  a h:mm  ", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
+
+        calendar.time = inputFormat.parse(timeString)
+
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
+
     }
 
 }

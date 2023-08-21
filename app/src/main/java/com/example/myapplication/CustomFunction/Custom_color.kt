@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
+import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,11 +34,12 @@ class custom_color : Fragment() {
 
     private var imageChangeListener: OnColorImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
+    val token = MyWebviewActivity.prefs.getString("token","")
 
 
     override fun onAttach(context: Context) {
@@ -96,16 +100,8 @@ class custom_color : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
@@ -144,22 +140,21 @@ class custom_color : Fragment() {
 
     fun onColorButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_color_basic -> ButtonInfo(clickedButton.id, R.drawable.c_ramdi)
-            R.id.btn_color_blue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyb)
-            R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyrb)
-            R.id.btn_color_bluepurple -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.c_ramdybp
-            )
-            R.id.btn_color_green -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyg)
-            R.id.btn_color_orange -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyo)
-            R.id.btn_color_pink -> ButtonInfo(clickedButton.id, R.drawable.c_ramdypn)
-            R.id.btn_color_purple -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyp)
-            R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, R.drawable.c_ramdyy)
+            R.id.btn_color_basic -> ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
+            R.id.btn_color_blue -> ButtonInfo(clickedButton.id, 11, R.drawable.c_ramdyb)
+            R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, 17, R.drawable.c_ramdyrb)
+            R.id.btn_color_bluepurple -> ButtonInfo(clickedButton.id, 12, R.drawable.c_ramdybp)
+            R.id.btn_color_green -> ButtonInfo(clickedButton.id, 13, R.drawable.c_ramdyg)
+            R.id.btn_color_orange -> ButtonInfo(clickedButton.id, 14, R.drawable.c_ramdyo)
+            R.id.btn_color_pink -> ButtonInfo(clickedButton.id, 16, R.drawable.c_ramdypn)
+            R.id.btn_color_purple -> ButtonInfo(clickedButton.id, 15, R.drawable.c_ramdyp)
+            R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, 18, R.drawable.c_ramdyy)
             else -> throw IllegalArgumentException("Unknown button ID")
+
         }
 
         imageChangeListener?.onColorButtonSelected(buttonInfo)
+
     }
 
     fun resetButtonColor() {
@@ -179,14 +174,22 @@ class custom_color : Fragment() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckColor", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
-                    }
+                    val responseCode = response.code()
+                    val datas = checkInfo?.data?.itemList
+                    datas?.forEachIndexed { index, item ->
+                        Log.d(
+                            "getCustomItemCheckCloth",
+                            "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                 } else {
-                    Log.d("getCustomItemCheckColor", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 
@@ -195,6 +198,8 @@ class custom_color : Fragment() {
             }
         })
     }
+
+
 
 
 

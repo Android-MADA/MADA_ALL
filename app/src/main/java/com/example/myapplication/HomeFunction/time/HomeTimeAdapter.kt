@@ -1,6 +1,8 @@
 package com.example.myapplication.HomeFunction.time
 
 import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +35,7 @@ class HomeTimeAdapter(private val dataSet : ArrayList<SampleTimeData>) : Recycle
 
     override fun onBindViewHolder(holder: HomeTimeAdapter.viewHolder, position: Int) {
 
-        holder.timeImageView.imageTintList = ColorStateList.valueOf(dataSet[position].color)
+        holder.timeImageView.setColorFilter(Color.parseColor(dataSet[position].color), PorterDuff.Mode.SRC_IN)
         holder.timeTextView.text = dataSet[position].name
 
         holder.timeLayout.setOnClickListener {

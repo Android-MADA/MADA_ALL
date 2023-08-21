@@ -25,6 +25,7 @@ import com.example.myapplication.MyFuction.MyNoticeSetActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
 import com.example.myapplication.MyFuction.MyRecordDayActivity
+import com.example.myapplication.MyFuction.MyRecordWeekActivity
 import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy

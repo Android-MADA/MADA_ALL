@@ -9,7 +9,8 @@ data class calendarList2(
     @SerializedName("CalendarName") val CalendarName : String,
     @SerializedName("color") val color : String,
     @SerializedName("startTime") val startTime : String,
-    @SerializedName("endTime") val endTime : String
+    @SerializedName("endTime") val endTime : String,
+    @SerializedName("d-day") val dday : String
 )
 data class data(
     @SerializedName("calendarList") val calendarList : ArrayList<calendarList2>,
