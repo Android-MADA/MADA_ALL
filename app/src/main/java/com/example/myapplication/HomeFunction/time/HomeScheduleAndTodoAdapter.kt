@@ -62,11 +62,10 @@ class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>,
             when (holder.itemViewType) {
                 VIEW_TYPE_CAL_DURATION -> {
                     val viewHolderWithDuration = holder as ItemViewHolderCalDuration
-                    viewHolderWithDuration.textDay.text = "${today}일"
+                    viewHolderWithDuration.textDay.text = "D-Day"
                     viewHolderWithDuration.textTitle.text = item.title
-                    val date1 = LocalDate.parse(item.startDate, formatter)
                     val date2 = LocalDate.parse(item.endDate, formatter)
-                    viewHolderWithDuration.textDuration.text = ("${date1.monthValue}월 ${date1.dayOfMonth}일 ~ ${date2.monthValue}월 ${date2.dayOfMonth}일")
+                    viewHolderWithDuration.textDuration.text = ("~ ${date2.monthValue}월 ${date2.dayOfMonth}일")
                     viewHolderWithDuration.backgroundBar.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
                 }
                 VIEW_TYPE_CAL_NO_DURATION -> {

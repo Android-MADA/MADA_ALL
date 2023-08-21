@@ -2,26 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:orientation="vertical">
 
     <ImageButton
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/calendar_dday_blue_popup"
         android:id="@+id/plus"
-        android:layout_width="wrap_content"
+        android:layout_width="370dp"
         android:layout_height="250dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter" />
 
     <TextView
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/plus"
+        app:layout_constraintTop_toTopOf="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -31,8 +30,8 @@
         android:textColor="@color/white" />
     <TextView
         android:id="@+id/textTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/plus"
+        app:layout_constraintTop_toTopOf="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -42,8 +41,8 @@
         android:textColor="@color/black" />
     <TextView
         android:id="@+id/textDay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/plus"
+        app:layout_constraintTop_toTopOf="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -54,8 +53,8 @@
 
     <TextView
         android:id="@+id/textDday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/plus"
+        app:layout_constraintTop_toTopOf="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
@@ -65,10 +64,10 @@
         android:textColor="@color/point_main" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/plus"
+        app:layout_constraintRight_toRightOf="@+id/plus"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="30dp"
         android:orientation="horizontal">

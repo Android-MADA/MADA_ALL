@@ -38,6 +38,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,8 +85,8 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        token = MyWebviewActivity.prefs.getString("token","")
-        Log.d("token",token)
+        //binding.bottomSheet
+        token = MyWebviewActivity.prefs.getString("token","")?: "123"
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1
@@ -202,12 +203,18 @@ class FragCalendar : Fragment(){
         }
         monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
         var i = 0
+        var curMon = calendar.get(Calendar.MONTH)+1
         while(i<43) {
+
             val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
             val date = dateFormat.parse(monthCalendar.time.toString())
             calendarDayArray[i++] = SimpleDateFormat("yyyy-M-d", Locale.ENGLISH).format(date)
             dayList.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH,1)
+            if(i==36&&curMon.toString()!=SimpleDateFormat("M", Locale.ENGLISH).format(date)) {
+                Log.d("breeeak","${SimpleDateFormat("M", Locale.ENGLISH).format(date)} ${curMon}")
+                break
+            }
         }
         if(startMon) {      //월요일 부터 시작이라면
             dayList.removeAt(0)
@@ -218,8 +225,13 @@ class FragCalendar : Fragment(){
             val textView = binding.textSun
             binding.textYoil.removeView(binding.textSun)
             binding.textYoil.addView(textView)
+            return dayList
+        } else {
+            dayList.removeAt(dayList.size-1)
+
+            return dayList
         }
-        return dayList
+
     }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
@@ -249,32 +261,30 @@ class FragCalendar : Fragment(){
                         if(datas != null) {
                             for (data in datas) {
                                 val dura : Boolean
+
                                 if(data.start_date==data.end_date) dura = false
                                 else dura = true
-
-                                val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
-                                    "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                    -1,dura,"${data.memo}","CAL",data.id)
                                 if(data.d_day=="N") {
+                                    val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
+                                        -1,dura,"${data.memo}","CAL",data.id)
                                     if(dura) {
                                         arrays.add(0,tmp)
                                     } else {
                                         arrays.add(tmp)
                                     }
+                                } else if(daysRemainingToDate(data.end_date)<0){
+                                    deleteCalendar(data.id)
+                                } else {
+                                    val tmp = CalendarDATA("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
+                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
+                                        -1,false,"${data.memo}","CAL",data.id)
+                                    arrays.add(tmp)
                                 }
-
-                                Log.d("111","datas: ${tmp.startTime} ${tmp.endTime} ${tmp.title} ${tmp.color} ${tmp.repeat} ${tmp.dDay} ${tmp.memo} ${data.id}")
-                                Log.d("111","${data.toString()}")
+                                Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
                             }
-                        } else {
-                           Log.d("2222","Request was not successful.")
                         }
-
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
                     }
-                } else {
-                   Log.d("333","itemType: ${response.code()}")
                 }
                 setMonthView(arrays,startMon)
             }
@@ -303,9 +313,7 @@ class FragCalendar : Fragment(){
                                 // ...
                             }
                         }
-                        ddayDatas.sortedWith(
-                            compareBy { data -> daysRemainingToDate(data.endDate)}
-                        )
+                        ddayDatas.sortBy { daysRemainingToDate(it.endDate) }
 
                         for (i in 0 until min(ddayDatas.size, 3)) {
                             val color = ddayDatas[i].color
@@ -522,7 +530,20 @@ class FragCalendar : Fragment(){
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)
-                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                if(data.itemType=="color") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.calendarRamdi)
+                                } else if(data.itemType=="set") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgCalendarCloth)
+                                } else if(data.itemType=="item") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgCalendarItem)
+                                }
                                 // ...
                             }
                         } else {

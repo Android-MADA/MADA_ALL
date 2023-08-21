@@ -41,9 +41,9 @@
         android:id="@+id/textDay"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:text="9"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="@color/black"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
