@@ -261,18 +261,7 @@ class TimeAddFragment : Fragment() {
             } else {
 
             }
-            if (check&&!compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
-                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
-                    timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-
-                if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
-                    addTimeDatas(tmp)
-                } else {
-                    editTimeData(id,tmp)
-                }
-
-            } else if(binding.edtHomeCategoryName.text.toString()=="") {
+            if(binding.edtHomeCategoryName.text.toString()=="") {
                 val mDialogView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.home_fragment_time_add_warningsign, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -318,7 +307,7 @@ class TimeAddFragment : Fragment() {
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
-            } else {            //이미 해당 시간에 일정이 있을 때
+            } else if(!check){            //이미 해당 시간에 일정이 있을 때
                 val mDialogView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.home_fragment_time_add_warningsign, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -340,9 +329,20 @@ class TimeAddFragment : Fragment() {
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
+            } else if (check&&!compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
+            //Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
+            val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
+                timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+
+            if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
+                addTimeDatas(tmp)
+            } else {
+                editTimeData(id,tmp)
             }
 
-            // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
+            }
+
+        // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
             //2. 시간표 화면으로 이동
 
         }
