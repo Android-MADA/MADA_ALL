@@ -30,7 +30,7 @@ class HomeViewModel : ViewModel() {
 
 
     //var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
-    var userToken = MyWebviewActivity.prefs.getString("token","")
+    var userToken = MyWebviewActivity.prefs.getString("token", "")
     fun getCategory(token: String?) = viewModelScope.launch {
         val response = api.getCategory(token)
         val category = response.data.CategoryList
@@ -40,16 +40,16 @@ class HomeViewModel : ViewModel() {
         //Log.d("viewmodel 값 넣기", _categoryList.value.toString())
     }
 
-    var userName  = "김마다"
-    fun getTodo(token : String?, date : String) = viewModelScope.launch {
+    var userName = "김마다"
+    fun getTodo(token: String?, date: String) = viewModelScope.launch {
         val todo = api.getAllTodo(token, date)
         Log.d("HomeViewModel todo 값 확인", todo.toString())
         _todoList.value = todo.data.TodoList
         userName = todo.data.nickname
         classifyTodo()
-        //updateTodoNum()
-        //updateCompleteTodo()
+        updateTodoNum(null)
         updateCateTodoList()
+        updateCompleteTodo(null)
     }
 
 
@@ -62,23 +62,27 @@ class HomeViewModel : ViewModel() {
         Log.d("repeatTodo", repeatList.value.toString())
     }
 
-    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view : View) =
+    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view: View) =
         viewModelScope.launch {
             val response = api.editCategory(token, categoryId, data)
             Log.d("카테고리 patch", response.toString())
-            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         }
 
-    fun postCategory(token: String?, data: PostRequestCategory, view : View) = viewModelScope.launch {
-        val response = api.postCategory(token, data)
-        Log.d("카테고리 post", response.toString())
-        Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-    }
+    fun postCategory(token: String?, data: PostRequestCategory, view: View) =
+        viewModelScope.launch {
+            val response = api.postCategory(token, data)
+            Log.d("카테고리 post", response.toString())
+            Navigation.findNavController(view)
+                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        }
 
-    fun deleteCategory(token: String?, categoryId: Int, view : View) = viewModelScope.launch {
+    fun deleteCategory(token: String?, categoryId: Int, view: View) = viewModelScope.launch {
         val response = api.deleteCategory(token, categoryId)
         Log.d("카테고리 delete", "확인")
-        Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        Navigation.findNavController(view)
+            .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
     }
 
 //    fun postTodo(data : PostRequestTodo) = viewModelScope.launch{
@@ -87,7 +91,12 @@ class HomeViewModel : ViewModel() {
 //        todoId = response.data.id
 //    }
 
-    fun deleteRepeatTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeRepeatTodoAdapter) = viewModelScope.launch {
+    fun deleteRepeatTodo(
+        todoId: Int,
+        cateIndex: Int,
+        todoIndex: Int,
+        adapater: HomeRepeatTodoAdapter
+    ) = viewModelScope.launch {
         //서버 전송
         val response = api.deleteTodo(userToken, todoId)
         Log.d("repeattodo DELETE", "todo delete 실행")
@@ -95,28 +104,44 @@ class HomeViewModel : ViewModel() {
         _repeatList.value!![cateIndex].removeAt(todoIndex)
         adapater.notifyDataSetChanged()
     }
-    fun deleteTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeViewpager2TodoAdapter) = viewModelScope.launch {
+
+    fun deleteTodo(
+        todoId: Int,
+        cateIndex: Int,
+        todoIndex: Int,
+        adapater: HomeViewpager2TodoAdapter
+    ) = viewModelScope.launch {
         //서버 전송
         val response = api.deleteTodo(userToken, todoId)
         Log.d("todo DELETE", "todo delete 실행")
         //live data 수정
         _cateTodoList.value!![cateIndex].removeAt(todoIndex)
         adapater.notifyDataSetChanged()
+        updateTodoNum("delete")
+        updateCompleteTodo("delete")
     }
 
-    fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View?) = viewModelScope.launch {
+    fun patchTodo(
+        todoId: Int,
+        data: PatchRequestTodo,
+        cateId: Int,
+        todoPosition: Int,
+        view: View?
+    ) = viewModelScope.launch {
         api.editTodo(userToken, todoId, data)
         Log.d("todo patch", "todo 변경 확인")
-        if(view == null){
+        if (view == null) {
             _cateTodoList.value!![cateId][todoPosition].todoName = data.todoName
             _cateTodoList.value!![cateId][todoPosition].repeat = data.repeat
             _cateTodoList.value!![cateId][todoPosition].startRepeatDate = data.startRepeatDate
             _cateTodoList.value!![cateId][todoPosition].endRepeatDate = data.endRepeatDate
             _cateTodoList.value!![cateId][todoPosition].repeatWeek = data.repeatWeek
             _cateTodoList.value!![cateId][todoPosition].repeatMonth = data.repeatMonth
-        }
-        else {
-            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+            _cateTodoList.value!![cateId][todoPosition].complete = data.complete
+
+        } else {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
         }
     }
 
@@ -140,7 +165,7 @@ class HomeViewModel : ViewModel() {
         arrayListOf()
     )
 
-    val repeatTodoL : LiveData<ArrayList<repeatTodo>>
+    val repeatTodoL: LiveData<ArrayList<repeatTodo>>
         get() = _repeatTodoL
 
     //날짜
@@ -151,9 +176,9 @@ class HomeViewModel : ViewModel() {
 
     //viewPager date 넘기기 확인 코드 시작
 
-    var viewpagerDate : LocalDate? = LocalDate.now()
+    var viewpagerDate: LocalDate? = LocalDate.now()
 
-    fun updateDate(){
+    fun updateDate() {
         _homeDate.value = viewpagerDate
     }
 
@@ -221,10 +246,11 @@ class HomeViewModel : ViewModel() {
 
     //var size = categoryList.value?.size?.minus(1)
     fun classifyTodo() {
-        var size = if(categoryList.value!!.size != 0){
+        var size = if (categoryList.value!!.size != 0) {
             categoryList.value!!.size.minus(1)
+        } else {
+            -1
         }
-        else { -1 }
 
         todoCateList = arrayListOf(
             arrayListOf(),
@@ -245,18 +271,17 @@ class HomeViewModel : ViewModel() {
 
         )
 
-        if(size > 0) {
-                for(i in todoList.value!!){
-                    for(j in 0..size){
-                        if(i.category.id == categoryList.value!![j].id){
-                            todoCateList!![j].add(i)
-                        }
+        if (size > 0) {
+            for (i in todoList.value!!) {
+                for (j in 0..size) {
+                    if (i.category.id == categoryList.value!![j].id) {
+                        todoCateList!![j].add(i)
                     }
                 }
+            }
 
-        }
-        else if( size == 0){
-            for(i in todoList.value!!){
+        } else if (size == 0) {
+            for (i in todoList.value!!) {
                 todoCateList!![0].add(i)
             }
         }
@@ -265,10 +290,11 @@ class HomeViewModel : ViewModel() {
 
     fun classifyRepeatTodo() {
 
-        var size = if(categoryList.value!!.size != 0){
+        var size = if (categoryList.value!!.size != 0) {
             categoryList.value!!.size.minus(1)
+        } else {
+            -1
         }
-        else { -1 }
 
         repeatTodoList = arrayListOf(
             arrayListOf(),
@@ -289,23 +315,22 @@ class HomeViewModel : ViewModel() {
 
         )
 
-        if(size > 0) {
-            for(i in repeatTodoL.value!!){
-                for(j in 0..size){
-                    if(i.category.id == categoryList.value!![j].id){
+        if (size > 0) {
+            for (i in repeatTodoL.value!!) {
+                for (j in 0..size) {
+                    if (i.category.id == categoryList.value!![j].id) {
                         repeatTodoList!![j].add(i)
                     }
                 }
             }
 
-        }
-        else if( size == 0){
-            for(i in repeatTodoL.value!!){
+        } else if (size == 0) {
+            for (i in repeatTodoL.value!!) {
                 repeatTodoList!![0].add(i)
             }
         }
-            Log.d("repeatclassify실행2", repeatTodoList.toString() )
-        }
+        Log.d("repeatclassify실행2", repeatTodoList.toString())
+    }
 
     //cate 수정
     fun editCate(position: Int, name: String, color: String, iconName: String) {
@@ -356,9 +381,11 @@ class HomeViewModel : ViewModel() {
     var todoId = 0
     fun addTodo(position: Int, todo: Todo) {
         _cateTodoList!!.value!![position].add(todo)
+        updateTodoNum("add")
+        updateCompleteTodo("add")
     }
 
-    fun addRepeatTodo(position : Int, todo : repeatTodo){
+    fun addRepeatTodo(position: Int, todo: repeatTodo) {
         _repeatList!!.value!![position].add(todo)
     }
 
@@ -391,7 +418,7 @@ class HomeViewModel : ViewModel() {
 
 
     //date 변경
-    fun changeDate(year: Int, month: Int, dayOfWeek: Int, flag : String?) : String{
+    fun changeDate(year: Int, month: Int, dayOfWeek: Int, flag: String?): String {
         var date = homeDate.value!!.toString()
         var monthString: String = month.toString()
         var dayString = dayOfWeek.toString()
@@ -404,7 +431,7 @@ class HomeViewModel : ViewModel() {
         }
         date = "${year}-${monthString}-${dayString}"
 
-        if(flag == "home"){
+        if (flag == "home") {
             viewpagerDate = LocalDate.parse("${year}-${monthString}-${dayString}")
             _homeDate.value = viewpagerDate
         }
@@ -434,50 +461,58 @@ class HomeViewModel : ViewModel() {
         _completeTodoNum.value = completeNumber
     }
 
-    var repeatTodoList : ArrayList<ArrayList<repeatTodo>>? = _repeatList.value
+    var repeatTodoList: ArrayList<ArrayList<repeatTodo>>? = _repeatList.value
 
-    fun updateRepeatList(){
+    fun updateRepeatList() {
         _repeatList.value = repeatTodoList
     }
 
 
-    var todoNumber: Int? = _todoNum.value
-    var completeNumber: Int? = _completeTodoNum.value
+    var todoNumber: Int = 0
+    var completeNumber: Int = 0
 
     //completeTodoNum 반영 함수
-    fun updateCompleteTodo() {
-        if (cateTodoList.value?.isEmpty() != true) {
-            completeNumber = 0
-            for (i in cateTodoList.value!!) {
-                if (i.isNotEmpty()) {
-                    for (j in 0..i.size!!.minus(1)) {
-                        if (i[j].complete) {
-                            completeNumber = completeNumber!! + 1
-                        }
+    fun updateCompleteTodo(flag : String?) {
+        if(flag == null){
+            if (cateTodoList.value?.isEmpty() != true) {
+                completeNumber = 0
+                for (i in todoList.value!!) {
+                    if (i.complete) {
+                        completeNumber = completeNumber.plus(1)
                     }
                 }
+                _completeTodoNum.value = completeNumber
+            } else {
+                _completeTodoNum.value = 0
             }
-            _completeTodoNum.value = completeNumber
-        } else {
-            _completeTodoNum.value = 0
         }
+        //todo add
+        else if(flag == "add"){
+            _completeTodoNum.value = ++completeNumber
+        }
+        //todo 삭제
+        else {
+            _completeTodoNum.value = --completeNumber
+        }
+        //cb 클릭 -> add, delete 상황 적용
+
     }
 
-    fun updateTodoNum() {
-
-        if (cateTodoList.value?.isEmpty() != true) {
-            todoNumber = 0
-            for (i in cateTodoList.value!!) {
-                if (i.isNotEmpty()) {
-                    for (j in 0..i.size!!.minus(1)) {
-                        todoNumber = todoNumber!! + 1
-                    }
-                }
+    fun updateTodoNum(flag: String?) {
+        if (flag == null) {
+            if (cateTodoList.value?.isEmpty() != true) {
+                todoNumber = todoList.value!!.size
+            } else {
+                todoNumber = 0
             }
             _todoNum.value = todoNumber
+        } else if (flag == "add") {
+            _todoNum.value = ++todoNumber
         } else {
-            _todoNum.value = 0
+            //delete
+            _todoNum.value = --todoNumber
         }
+
     }
 
 

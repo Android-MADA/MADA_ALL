@@ -9,4 +9,5 @@ data class PatchRequestTodo(
     @SerializedName("repeatMonth") var repeatMonth: String?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?,
+    @SerializedName("complete") var complete : Boolean
 )

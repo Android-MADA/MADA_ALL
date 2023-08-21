@@ -142,7 +142,7 @@ class RepeatTodoAddFragment : Fragment() {
                         val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
                         val startDay = binding.tvHomeRepeatStartday.text.toString()
                         val endDay = binding.tvHomeRepeatEndday.text.toString()
-                        val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
+                        val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay, complete = false)
                         Log.d("repeat patch", data.toString())
                         viewModel.patchTodo(_argsArrayEdit!![0].toInt(), data, _argsArrayEdit!![7].toInt(), _argsArrayEdit!![8].toInt(), view)
                     }
