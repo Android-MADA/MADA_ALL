@@ -56,7 +56,9 @@ class HomeViewModel : ViewModel() {
     fun getRepeatTodo() = viewModelScope.launch {
         val response = api.getRepeatTodo(userToken)
         Log.d("HomeViewModel repeatTodo GET", response.data.RepeatTodoList.toString())
+        _repeatTodoL.value = response.data.RepeatTodoList
         classifyRepeatTodo()
+        updateRepeatList()
         Log.d("repeatTodo", repeatList.value.toString())
     }
 
@@ -90,7 +92,7 @@ class HomeViewModel : ViewModel() {
         val response = api.deleteTodo(userToken, todoId)
         Log.d("repeattodo DELETE", "todo delete 실행")
         //live data 수정
-        //_cateTodoList.value!![cateIndex].removeAt(todoIndex)
+        _repeatList.value!![cateIndex].removeAt(todoIndex)
         adapater.notifyDataSetChanged()
     }
     fun deleteTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeViewpager2TodoAdapter) = viewModelScope.launch {
@@ -105,13 +107,15 @@ class HomeViewModel : ViewModel() {
     fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View?) = viewModelScope.launch {
         api.editTodo(userToken, todoId, data)
         Log.d("todo patch", "todo 변경 확인")
-        _cateTodoList.value!![cateId][todoPosition].todoName = data.todoName
-        _cateTodoList.value!![cateId][todoPosition].repeat = data.repeat
-        _cateTodoList.value!![cateId][todoPosition].startRepeatDate = data.startRepeatDate
-        _cateTodoList.value!![cateId][todoPosition].endRepeatDate = data.endRepeatDate
-        _cateTodoList.value!![cateId][todoPosition].repeatWeek = data.repeatWeek
-        _cateTodoList.value!![cateId][todoPosition].repeatMonth = data.repeatMonth
-        if(view != null){
+        if(view == null){
+            _cateTodoList.value!![cateId][todoPosition].todoName = data.todoName
+            _cateTodoList.value!![cateId][todoPosition].repeat = data.repeat
+            _cateTodoList.value!![cateId][todoPosition].startRepeatDate = data.startRepeatDate
+            _cateTodoList.value!![cateId][todoPosition].endRepeatDate = data.endRepeatDate
+            _cateTodoList.value!![cateId][todoPosition].repeatWeek = data.repeatWeek
+            _cateTodoList.value!![cateId][todoPosition].repeatMonth = data.repeatMonth
+        }
+        else {
             Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
         }
     }
@@ -132,8 +136,12 @@ class HomeViewModel : ViewModel() {
     val todoList: LiveData<ArrayList<Todo>>
         get() = _todoList
 
-    //스케쥴 리스트 -> 추후 작성
-    //timetable title -> 추후 작성
+    private val _repeatTodoL = MutableLiveData<ArrayList<repeatTodo>>(
+        arrayListOf()
+    )
+
+    val repeatTodoL : LiveData<ArrayList<repeatTodo>>
+        get() = _repeatTodoL
 
     //날짜
     //2023-08-13
@@ -260,11 +268,9 @@ class HomeViewModel : ViewModel() {
         var size = if(categoryList.value!!.size != 0){
             categoryList.value!!.size.minus(1)
         }
-        else {
-            0
-        }
+        else { -1 }
 
-        _cateTodoList.value = arrayListOf(
+        repeatTodoList = arrayListOf(
             arrayListOf(),
             arrayListOf(),
             arrayListOf(),
@@ -283,18 +289,23 @@ class HomeViewModel : ViewModel() {
 
         )
 
-        if(size != 0) {
-            Log.d("classify", "if문 작동 중")
-            for(i in todoList.value!!){
+        if(size > 0) {
+            for(i in repeatTodoL.value!!){
                 for(j in 0..size){
                     if(i.category.id == categoryList.value!![j].id){
-                        _cateTodoList.value!![j].add(i)
+                        repeatTodoList!![j].add(i)
                     }
                 }
             }
-            Log.d("classify실행2", cateTodoList.value.toString() )
+
         }
-    }
+        else if( size == 0){
+            for(i in repeatTodoL.value!!){
+                repeatTodoList!![0].add(i)
+            }
+        }
+            Log.d("repeatclassify실행2", repeatTodoList.toString() )
+        }
 
     //cate 수정
     fun editCate(position: Int, name: String, color: String, iconName: String) {
@@ -347,6 +358,10 @@ class HomeViewModel : ViewModel() {
         _cateTodoList!!.value!![position].add(todo)
     }
 
+    fun addRepeatTodo(position : Int, todo : repeatTodo){
+        _repeatList!!.value!![position].add(todo)
+    }
+
     private var _completeBottomFlag = MutableLiveData<Boolean>(true)
     val completeBottomFlag: LiveData<Boolean>
         get() = _completeBottomFlag
@@ -376,7 +391,8 @@ class HomeViewModel : ViewModel() {
 
 
     //date 변경
-    fun changeDate(year: Int, month: Int, dayOfWeek: Int) {
+    fun changeDate(year: Int, month: Int, dayOfWeek: Int, flag : String?) : String{
+        var date = homeDate.value!!.toString()
         var monthString: String = month.toString()
         var dayString = dayOfWeek.toString()
 
@@ -386,8 +402,14 @@ class HomeViewModel : ViewModel() {
         if (dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9) {
             dayString = "0${dayOfWeek}"
         }
-        viewpagerDate = LocalDate.parse("${year}-${monthString}-${dayString}")
-        _homeDate.value = viewpagerDate
+        date = "${year}-${monthString}-${dayString}"
+
+        if(flag == "home"){
+            viewpagerDate = LocalDate.parse("${year}-${monthString}-${dayString}")
+            _homeDate.value = viewpagerDate
+        }
+
+        return date
     }
 
     //calendarview 시작 요일

@@ -50,16 +50,8 @@ class FragHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewModel.getCategory(viewModel.userToken)
-        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
-
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-
-            //viewModel.classifyTodo()
             binding.tvHomeUsername.text = "${viewModel.userName}님,"
-//            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-//                Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
-//            })
         })
 
         val calendarLayout = binding.layoutCalendarviewHome
@@ -110,7 +102,7 @@ class FragHome : Fragment() {
             var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
-            viewModel.changeDate(year, (month +1), dayOfMonth)
+            viewModel.changeDate(year, (month +1), dayOfMonth, "home")
             Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
         }
@@ -160,13 +152,13 @@ class FragHome : Fragment() {
 
     private fun homeMent(day : String) : String {
         var homeMent = when(day){
-            "월요일" -> "월요일 입니다."
-            "화요일" -> "화요일 입니다."
-            "수요일" -> "수요일 입니다."
-            "목요일" -> "목요일 입니다."
-            "금요일" -> "금요일 입니다."
-            "토요일" -> "토요일 입니다."
-            else -> "일요일 입니다."
+            "월요일" -> "월요병 날려버리고 화이팅!"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
+            "목요일" -> "오늘도 열심히 달려 봐요"
+            "금요일" -> "오늘도 열심히 달려 봐요"
+            "토요일" -> "주말을 알차게!"
+            else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
     }

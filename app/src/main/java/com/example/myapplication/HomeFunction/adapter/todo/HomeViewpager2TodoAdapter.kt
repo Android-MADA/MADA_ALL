@@ -135,7 +135,6 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                     holder.edtTodo.text.clear()
                     holder.editLayout.isGone = true
 
-
                     notifyDataSetChanged()
                     true
                 }
