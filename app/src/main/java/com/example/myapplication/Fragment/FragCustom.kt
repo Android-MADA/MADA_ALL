@@ -289,12 +289,18 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
+
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
             val temdata = getSelectedButtonInfo()
             Log.d("Savedata", "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}")
-            if (temdata.selectedColorButtonInfo?.serverID != 0){
-                patchCustomItemChange(temdata.selectedColorButtonInfo!!.serverID)
+            val itemIds = listOf(
+                temdata.selectedColorButtonInfo?.serverID,
+                temdata.selectedClothButtonInfo?.serverID,
+                temdata.selectedItemButtonInfo?.serverID,
+                temdata.selectedBackgroundButtonInfo?.serverID
+            ).filterNotNull().filter { it != 900 && it != 800 && it != 700 && it != 0 }
+            /*if (temdata.selectedColorButtonInfo?.serverID != 0){
             }
             if (temdata.selectedClothButtonInfo?.serverID != 900){
                 patchCustomItemChange(temdata.selectedClothButtonInfo!!.serverID)
@@ -304,7 +310,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
             if (temdata.selectedBackgroundButtonInfo?.serverID != 700){
                 patchCustomItemChange(temdata.selectedBackgroundButtonInfo!!.serverID)
-            }
+            }*/
+            patchCustomItemChange(itemIds)
             unsavedChanges = false
         }
 
@@ -450,8 +457,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-    fun patchCustomItemChange(itemID: Int) {
-        val call: Call<Void> = service.customItemChange(token, itemID)
+    fun patchCustomItemChange(itemIds: List<Int>) {
+        val call: Call<Void> = service.customItemChange(token, itemIds)
 
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
