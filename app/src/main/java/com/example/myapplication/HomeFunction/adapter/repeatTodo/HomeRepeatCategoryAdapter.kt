@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.repeatTodo
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
@@ -21,7 +22,7 @@ import com.example.myapplication.R
 class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
 
     lateinit var dataSet : ArrayList<Category>
-    var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
+    var cateTodoSet : ArrayList<ArrayList<repeatTodo>>? = null
     var repeatAdapter : HomeRepeatTodoAdapter? = null
     var topFlag = false
     var viewModel : HomeViewModel? = null
