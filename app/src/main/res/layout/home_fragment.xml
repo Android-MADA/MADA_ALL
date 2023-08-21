@@ -140,7 +140,33 @@
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/home_character"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence" />
+                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/iv_home_ramdi"
+                android:layout_width="145dp"
+                android:layout_height="181dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"
+                android:src="@drawable/calendar_character"
+                />
+
+            <ImageView
+                android:id="@+id/iv_home_cloth"
+                android:layout_width="145dp"
+                android:layout_height="181dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"/>
+            <ImageView
+                android:id="@+id/iv_home_item"
+                android:layout_width="145dp"
+                android:layout_height="181dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"/>
 
             <TextView
                 android:id="@+id/tv_home_calendar"

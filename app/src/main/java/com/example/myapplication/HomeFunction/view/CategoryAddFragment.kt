@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
@@ -68,8 +69,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             argsArray = requireArguments().getStringArrayList("key")!!
             Log.d("argsArray", argsArray!!.toString())
             binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![2].toInt()))
-//            binding.edtHomeCategoryName.setText(argsArray!![1])
-//            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             binding.edtHomeCategoryName.setText(argsArray!![1])
             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             // 수정버튼 활성화
@@ -128,30 +127,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     Log.d("cateEdit", "확인")
                 } else {
                     Log.d("addCAte", data.toString())
-                    //서버 전송(POST)
-//                    val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-//                    api.postCategory(viewModel.userToken, data).enqueue(object : Callback<PactchResponseCategory>{
-//                        override fun onResponse(
-//                            call: Call<PactchResponseCategory>,
-//                            response: Response<PactchResponseCategory>
-//                        ) {
-//                           if(response.isSuccessful){
-//                               Log.d("addCate", response.body().toString())
-//                           }
-//                            else {
-//                                Log.d("addCate", "onresponse 실패")
-//                           }
-//                        }
-//
-//                        override fun onFailure(call: Call<PactchResponseCategory>, t: Throwable) {
-//                            Log.d("addCate", "onFailure")
-//                        }
-//
-//                    })
                     viewModel.postCategory(viewModel.userToken, data, view)
-
-//                    Navigation.findNavController(view)
-//                        .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
 
                 }
 
@@ -248,9 +224,11 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
-
         if (flag == "delete") {
             viewModel.deleteCategory(viewModel.userToken, argsArray!![0].toInt(), requireView())
+        }
+        else {
+            Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
         }
         dialog.dismiss()
     }
