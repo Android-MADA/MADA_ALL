@@ -85,16 +85,8 @@ class custom_background : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
