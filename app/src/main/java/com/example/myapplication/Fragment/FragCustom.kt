@@ -151,8 +151,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         viewPager = binding.CustomBottomSheetViewPager
 
         getCustomPrint()
-        postcustomItemBuy(7)
-
+        postcustomItemBuy(11)
+        postcustomItemBuy(41)
+        postcustomItemBuy(22)
+        postcustomItemBuy(1)
 
 
 

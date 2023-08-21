@@ -519,7 +519,7 @@ class CalendarAddFragment : Fragment() {
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
                     mBuilder.dismiss()
                 })
-            } else if(compareTimes(binding.preScheldule2.text.toString(),binding.nextScheldule2.text.toString())) {
+            } else if(binding.nextScheldule2.text.toString()!="  오전 12:00  "&&compareTimes(binding.preScheldule2.text.toString(),binding.nextScheldule2.text.toString())) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -550,6 +550,13 @@ class CalendarAddFragment : Fragment() {
                     getDdayDataArray()
                 }
                 else {
+                    if (binding.switch2.isChecked) {
+                        binding.preScheldule2.text = "  오전 12:00  "
+                        binding.nextScheldule2.text = "  오전 12:00  "
+                    } else {
+                        binding.preScheldule2.text = "  오전 12:00  "
+                        binding.nextScheldule2.text = "  오전 12:00  "
+                    }
                     if(binding.submitBtn.text =="등록") {
                         addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                             curColor,curRepeat,curDday,binding.textMemo.text.toString(),
