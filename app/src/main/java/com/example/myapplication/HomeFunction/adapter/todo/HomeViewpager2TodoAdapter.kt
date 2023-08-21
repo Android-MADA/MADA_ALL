@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -38,6 +39,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
         val editLayout : LinearLayout
         val edtTodo : EditText
         val todoLayout : ConstraintLayout
+        val repeatIcon : ImageView
 
         init {
             todoCheckBox = view.findViewById(R.id.iv_repeat_todo)
@@ -46,6 +48,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
             editLayout = view.findViewById(R.id.layout_viewpager_todo_edit)
             edtTodo = view.findViewById(R.id.edt_home_viewpager2_todo_edit)
             todoLayout = view.findViewById(R.id.layout_viewpager_todo)
+            repeatIcon = view.findViewById(R.id.iv_home_repeat)
         }
     }
 
@@ -88,6 +91,11 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
 
             if(dataSet[position].repeat != "N"){
                 holder.todoMenu.isGone = true
+                holder.repeatIcon.isVisible = true
+            }
+            else {
+                holder.todoMenu.isVisible = true
+                holder.repeatIcon.isGone = true
             }
 
             holder.todoMenu.setOnClickListener {
@@ -109,9 +117,18 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                 popup.show()
             }
 
-//            holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-//                dataSet[position].complete = buttonView.isChecked
-//
+            holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                dataSet[position].complete = buttonView.isChecked
+
+                viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(dataSet[position].todoName, dataSet[position].repeat, dataSet[position].repeatWeek, dataSet[position].repeatMonth, dataSet[position].startRepeatDate, dataSet[position].endRepeatDate, isChecked), cateIndex, position, null )
+                if(isChecked){
+                    viewModel!!.updateCompleteTodo("add")
+                }
+                else {
+                    viewModel!!.updateCompleteTodo("delete")
+                }
+                //patch, completenum
+
 //                if(isChecked){
 //                    if(completeFlag){
 //                        var todoMove = dataSet[position]
@@ -127,10 +144,8 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
 //                    }
 //
 //                }
-//
-//                Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].complete}")
-//                itemClickListener.onClick(buttonView, position, dataSet)
-//            }
+                notifyDataSetChanged()
+            }
 
             holder.edtTodo.setOnKeyListener { view, keyCode, event ->
                 // Enter Key Action
@@ -138,7 +153,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                     && keyCode == KeyEvent.KEYCODE_ENTER
                 ) {
                     //데이터 수정 반영
-                    viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(holder.edtTodo.text.toString(), "N", null, null, null, null), cateIndex, position, null)
+                    viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(holder.edtTodo.text.toString(), "N", null, null, null, null, dataSet[position].complete), cateIndex, position, null)
                     dataSet[position].todoName = holder.edtTodo.text.toString()
                     //edt 업애고 이전 투두 복구
                     holder.todoLayout.isVisible = true
