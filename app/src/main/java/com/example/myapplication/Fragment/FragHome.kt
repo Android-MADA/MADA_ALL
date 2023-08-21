@@ -11,21 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.CategoryList
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.time.LocalDate
 import java.util.Calendar
 
 class FragHome : Fragment() {
@@ -36,10 +26,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //viewModel.userToken ="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjQ0MDQzNCwiZXhwIjoxNjkyNDc2NDM0fQ.jyCvYqxrFhrIa84I-OrXL4IJcFyB1MZlMIi_r6mW3pDHrglwJMtz7gQCujKgEd_hYBkliNWmXv4EknpE4bKyWg"
         viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
-        Log.d("Hometoken 확인", viewModel.userToken.toString())
-
     }
 
 
@@ -49,11 +36,6 @@ class FragHome : Fragment() {
     ): View? {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        //서버에서 cateogry, todo받아오기
-
-
-
         val homeViewPager = binding.homeViewpager2
         val homeIndicator = binding.homeIndicator
 
@@ -62,29 +44,23 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
 
-        //서버연결 시작
-
-
-        viewModel.getCategory(viewModel.userToken)
-        viewModel.getTodo(viewModel.userToken, "2023-08-16")
-
-        viewModel.todoList.observe(viewLifecycleOwner, Observer {
-
-            viewModel.classifyTodo()
-
-            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
-            })
-        })
-
-        viewModel.updateTodoNum()
-        viewModel.updateCompleteTodo()
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //viewModel.getCategory(viewModel.userToken)
+        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
+
+        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+
+            //viewModel.classifyTodo()
+            binding.tvHomeUsername.text = "${viewModel.userName}님,"
+//            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+//                Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
+//            })
+        })
 
         val calendarLayout = binding.layoutCalendarviewHome
         binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -141,22 +117,19 @@ class FragHome : Fragment() {
 
 
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            //서버에서 category 새로 받아오기(date)
-            //서버에서 Tood 새로 받아오기(date)
-            //서버에서 ment 새로 받아오기(date)
-            viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
+            //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
-            viewModel.updateCateTodoList()
+            //viewModel.updateCateTodoList()
         })
 
 
-        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            //todoNum 업데이트
-            //completeNum 업데이트
-            viewModel.updateTodoNum()
-            viewModel.updateCompleteTodo()
-
-        })
+//        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+//            //todoNum 업데이트
+//            //completeNum 업데이트
+//            viewModel.updateTodoNum()
+//            viewModel.updateCompleteTodo()
+//
+//        })
 
         //date를 통해서 todo가 변경되었을 때 실행
         viewModel.todoNum.observe(viewLifecycleOwner, Observer {

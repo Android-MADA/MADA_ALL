@@ -53,17 +53,13 @@ class HomeRepeatTodoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //반복 투두 페이지는 서버 연결 GET으로 데이터를 가져오지 않고 lveData 내에 cateTodoList를 사용하기로 함.
+        //서버 연결
+        viewModel.getRepeatTodo()
 
-        binding.ivHomeRepeatBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
-            bottomFlag = false
-        }
-
-        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+        viewModel.repeatList.observe(viewLifecycleOwner, Observer {
             if(cateAdapter != null){
-                if(viewModel.categoryList.value!!.isEmpty() != true){
-                    cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
+                if(viewModel.repeatList.value!!.isEmpty() != true){
+                    cateAdapter!!.cateTodoSet = viewModel.repeatList.value
                     cateAdapter!!.notifyDataSetChanged()
                 }
                 //카테고리를 다 지우고 왔을 때
@@ -80,6 +76,11 @@ class HomeRepeatTodoFragment : Fragment() {
             }
             Log.d("repeatTodo 데이터 확인 중", "cateTodoList observer 작동")
         })
+
+        binding.ivHomeRepeatBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
+            bottomFlag = false
+        }
     }
 
     override fun onDestroyView() {
@@ -93,7 +94,7 @@ class HomeRepeatTodoFragment : Fragment() {
 
         cateAdapter = HomeRepeatCategoryAdapter(view)
         cateAdapter!!.dataSet = viewModel.categoryList.value!!
-        cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
+        cateAdapter!!.cateTodoSet = viewModel.repeatList.value
         cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
         cateAdapter!!.viewModel = viewModel
         cateAdapter!!.api = api
@@ -108,30 +109,30 @@ class HomeRepeatTodoFragment : Fragment() {
                 layout: LinearLayout
             ) {
                 if (edt.text.toString() != "") {
-                    var endDate = "${viewModel.homeDate.value!!.year + 1}-${viewModel.homeDate.value!!.month}-${viewModel.homeDate.value!!.dayOfMonth}"
-                    //var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "day", null, null, viewModel.homeDate.value.toString(), endDate, false, false, false, false)
-                    var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "N", null, null, null, null, false, false, false, false)
-
-                    api.addTodo(viewModel.userToken, todo).enqueue(object : Callback<PostResponseTodo> {
-                        override fun onResponse(
-                            call: Call<PostResponseTodo>,
-                            response: Response<PostResponseTodo>
-                        ) {
-                            if(response.isSuccessful){
-                                Log.d("todo post", response.body()!!.data.toString())
-                                viewModel.addTodo(position, response.body()!!.data)
-                                cateAdapter!!.notifyDataSetChanged()
-                            }
-                            else {
-                                Log.d("todo post", "안드 쪽 오류")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
-                            Log.d("todo post", "서버 연결 실패")
-                        }
-
-                    })
+//                    var endDate = "${viewModel.homeDate.value!!.year + 1}-${viewModel.homeDate.value!!.month}-${viewModel.homeDate.value!!.dayOfMonth}"
+//                    //var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "day", null, null, viewModel.homeDate.value.toString(), endDate, false, false, false, false)
+//                    var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "N", null, null, null, null, false, false, false, false)
+//
+//                    api.addTodo(viewModel.userToken, todo).enqueue(object : Callback<PostResponseTodo> {
+//                        override fun onResponse(
+//                            call: Call<PostResponseTodo>,
+//                            response: Response<PostResponseTodo>
+//                        ) {
+//                            if(response.isSuccessful){
+//                                Log.d("todo post", response.body()!!.data.toString())
+//                                viewModel.addTodo(position, response.body()!!.data.Todo)
+//                                cateAdapter!!.notifyDataSetChanged()
+//                            }
+//                            else {
+//                                Log.d("todo post", "안드 쪽 오류")
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
+//                            Log.d("todo post", "서버 연결 실패")
+//                        }
+//
+//                    })
                 }
                 edt.text.clear()
                 layout.isGone = true

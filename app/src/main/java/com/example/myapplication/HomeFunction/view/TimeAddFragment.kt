@@ -304,7 +304,7 @@ class TimeAddFragment : Fragment() {
         }
 
         val datas = ArrayList<CalendarDATA>()
-        getTodoCalDatas(today,datas)
+        //getTodoCalDatas(today,datas)
 
 
 
@@ -411,46 +411,46 @@ class TimeAddFragment : Fragment() {
     //                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
     //                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
     //            ),
-    private fun getTodoCalDatas(date : String,arrays: ArrayList<CalendarDATA>) {
-        val call = service.getCalendarTodo(token,date)
-        call.enqueue(object : Callback<ScheduleTodoCalList> {
-            override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.datas
-                        if(datas != null) {
-                            for(data in datas.todoList) {
-                                arrays.add(CalendarDATA("","","","","",
-                                                    "","","",data.todoName,1,false,"","TODO",7))
-                            }
-
-                            for(data in datas.calendarList) {
-                                Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
-                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
-                                    data.color,"","",data.CalendarName,1,false,"","CAL",7))
-                            }
-                            val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
-                            var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
-                            binding.homeTimeTodoList.layoutManager = manager
-                            binding.homeTimeTodoList.adapter = adapter
-                        } else {
-
-                            Log.d("2222","Request was not successful. Message: hi")
-                        }
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
-                    }
-                } else {
-                    Log.d("333","itemType: ${response.code()} ${response.message()}")
-                    Log.d("333213",response.errorBody()?.string()!!)
-                }
-            }
-            override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
+//    private fun getTodoCalDatas(date : String,arrays: ArrayList<CalendarDATA>) {
+//        val call = service.getCalendarTodo(token,date)
+//        call.enqueue(object : Callback<ScheduleTodoCalList> {
+//            override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
+//                if (response.isSuccessful) {
+//                    val apiResponse = response.body()
+//                    if (apiResponse != null) {
+//                        val datas = apiResponse.datas
+//                        if(datas != null) {
+//                            for(data in datas.todoList) {
+//                                arrays.add(CalendarDATA("","","","","",
+//                                                    "","","",data.todoName,1,false,"","TODO",7))
+//                            }
+//
+//                            for(data in datas.calendarList) {
+//                                Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
+//                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+//                                    data.color,"","",data.CalendarName,1,false,"","CAL",7))
+//                            }
+//                            val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
+//                            var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
+//                            binding.homeTimeTodoList.layoutManager = manager
+//                            binding.homeTimeTodoList.adapter = adapter
+//                        } else {
+//
+//                            Log.d("2222","Request was not successful. Message: hi")
+//                        }
+//                    } else {
+//                        Log.d("222","Request was not successful. Message: hi")
+//                    }
+//                } else {
+//                    Log.d("333","itemType: ${response.code()} ${response.message()}")
+//                    Log.d("333213",response.errorBody()?.string()!!)
+//                }
+//            }
+//            override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
+//                Log.d("444","itemType: ${t.message}")
+//            }
+//        })
+//    }
     fun convertTo12HourFormat(hour24: Int, minute: Int): String {
         val amPm: String
         val hour12: Int

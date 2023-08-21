@@ -13,7 +13,9 @@ import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.repeatTodo
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
@@ -30,18 +32,32 @@ class HomeViewModel : ViewModel() {
     //var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
     var userToken = MyWebviewActivity.prefs.getString("token","")
     fun getCategory(token: String?) = viewModelScope.launch {
-        val category = api.getCategory(token)
+        val response = api.getCategory(token)
+        val category = response.data.CategoryList
         Log.d("HomeViewModel 카테고리 값 확인", category.toString())
         //서버에서 받은 카테고리 데이터를 livedata에 넣기
-        _categoryList.value = category.data
-        Log.d("viewmodel 값 넣기", _categoryList.value.toString())
+        _categoryList.value = category
+        //Log.d("viewmodel 값 넣기", _categoryList.value.toString())
     }
 
+    var userName  = "김마다"
     fun getTodo(token : String?, date : String) = viewModelScope.launch {
         val todo = api.getAllTodo(token, date)
-        //Log.d("HomeViewModel todo 값 확인", todo.toString())
-        _todoList.value = todo.data
-        //Log.d("HomeViewModel todo 값 확인2", _todoList.value.toString())
+        Log.d("HomeViewModel todo 값 확인", todo.toString())
+        _todoList.value = todo.data.TodoList
+        userName = todo.data.nickname
+        classifyTodo()
+        //updateTodoNum()
+        //updateCompleteTodo()
+        updateCateTodoList()
+    }
+
+
+    fun getRepeatTodo() = viewModelScope.launch {
+        val response = api.getRepeatTodo(userToken)
+        Log.d("HomeViewModel repeatTodo GET", response.data.RepeatTodoList.toString())
+        classifyRepeatTodo()
+        Log.d("repeatTodo", repeatList.value.toString())
     }
 
     fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view : View) =
@@ -72,17 +88,18 @@ class HomeViewModel : ViewModel() {
     fun deleteRepeatTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeRepeatTodoAdapter) = viewModelScope.launch {
         //서버 전송
         val response = api.deleteTodo(userToken, todoId)
-        Log.d("todo DELETE", "todo delete 실행")
+        Log.d("repeattodo DELETE", "todo delete 실행")
         //live data 수정
-        _cateTodoList.value!![cateIndex].removeAt(todoIndex)
+        //_cateTodoList.value!![cateIndex].removeAt(todoIndex)
         adapater.notifyDataSetChanged()
     }
-    fun deleteTodo(todoId : Int, cateIndex : Int, todoIndex : Int) = viewModelScope.launch {
+    fun deleteTodo(todoId : Int, cateIndex : Int, todoIndex : Int, adapater : HomeViewpager2TodoAdapter) = viewModelScope.launch {
         //서버 전송
         val response = api.deleteTodo(userToken, todoId)
         Log.d("todo DELETE", "todo delete 실행")
         //live data 수정
         _cateTodoList.value!![cateIndex].removeAt(todoIndex)
+        adapater.notifyDataSetChanged()
     }
 
     fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View) = viewModelScope.launch {
@@ -167,18 +184,84 @@ class HomeViewModel : ViewModel() {
     val cateTodoList: LiveData<ArrayList<ArrayList<Todo>>>
         get() = _cateTodoList
 
-    var size = categoryList.value?.size?.minus(1)
+    var _repeatList = MutableLiveData<ArrayList<ArrayList<repeatTodo>>>(
+        //일단 카테고리 개수 제한 : 15개
+        arrayListOf(
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
+
+        )
+    )
+
+    val repeatList: LiveData<ArrayList<ArrayList<repeatTodo>>>
+        get() = _repeatList
+
+    //var size = categoryList.value?.size?.minus(1)
     fun classifyTodo() {
+        var size = if(categoryList.value!!.size != 0){
+            categoryList.value!!.size.minus(1)
+        }
+        else { -1 }
+
+        todoCateList = arrayListOf(
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
+
+        )
+
+        if(size > 0) {
+                for(i in todoList.value!!){
+                    for(j in 0..size){
+                        if(i.category.id == categoryList.value!![j].id){
+                            todoCateList!![j].add(i)
+                        }
+                    }
+                }
+
+        }
+        else if( size == 0){
+            for(i in todoList.value!!){
+                todoCateList!![0].add(i)
+            }
+        }
+        Log.d("classify실행 완", todoCateList.toString())
+    }
+
+    fun classifyRepeatTodo() {
+
         var size = if(categoryList.value!!.size != 0){
             categoryList.value!!.size.minus(1)
         }
         else {
             0
         }
-        //todo 리스트에서 cateName으로 각각 가져오기
-        //position별로 대응되도록 작성
-        //카테고리 삭제 시 todo list도 전체 삭제
-        //adpter에는 cateTodoList.value[position] 넣기
+
         _cateTodoList.value = arrayListOf(
             arrayListOf(),
             arrayListOf(),
@@ -197,28 +280,17 @@ class HomeViewModel : ViewModel() {
             arrayListOf()
 
         )
-//
-//        if (todoList.value?.isEmpty() != true) {
-//            var completeNum = 0
-//            for (i in todoList.value!!) {
-//                for (j in 0..size!!) {
-//                    if (i.category.id == categoryList.value!![j].id) {
-//                        _cateTodoList.value?.get(j)!!.add(i)
-//                    }
-//                }
-//            }
-//        }
 
         if(size != 0) {
-                Log.d("classify", "if문 작동 중")
-                for(i in todoList.value!!){
-                    for(j in 0..size){
-                        if(i.category.id == categoryList.value!![j].id){
-                            _cateTodoList.value!![j].add(i)
-                        }
+            Log.d("classify", "if문 작동 중")
+            for(i in todoList.value!!){
+                for(j in 0..size){
+                    if(i.category.id == categoryList.value!![j].id){
+                        _cateTodoList.value!![j].add(i)
                     }
                 }
-                Log.d("classify실행2", cateTodoList.value.toString() )
+            }
+            Log.d("classify실행2", cateTodoList.value.toString() )
         }
     }
 
@@ -330,22 +402,18 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    var _test = "22"
-
-    private val __test = MutableLiveData<String>(_test)
-    val test: LiveData<String>
-        get() = __test
-
-    fun updateTest() {
-        __test.value = _test
-    }
-
     var todoCateList: ArrayList<ArrayList<Todo>>? = _cateTodoList.value
-
     fun updateCateTodoList() {
+        classifyRepeatTodo()
         _cateTodoList.value = todoCateList
         _todoNum.value = todoNumber
         _completeTodoNum.value = completeNumber
+    }
+
+    var repeatTodoList : ArrayList<ArrayList<repeatTodo>>? = _repeatList.value
+
+    fun updateRepeatList(){
+        _repeatList.value = repeatTodoList
     }
 
 

@@ -15,15 +15,18 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
 class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
 
     lateinit var dataSet : ArrayList<Todo>
+    var cateIndex = 0
     var topFlag = false
     var completeFlag = false
     var viewModel : HomeViewModel? = null
+    var api : HomeApi? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -87,11 +90,11 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                         holder.edtTodo.setText(dataSet[position].todoName)
                     }
                     else{
-                        dataSet.removeAt(position)
-                        notifyDataSetChanged()
-                        viewModel!!.updateCompleteTodo()
-                        viewModel!!.updateTodoNum()
-                        //서버 전송
+//                        viewModel!!.updateCompleteTodo()
+//                        viewModel!!.updateTodoNum()
+//                        //서버 전송
+                        val todoId = dataSet[position].id
+                        viewModel!!.deleteTodo(todoId, cateIndex, position, this)
                     }
                     true
                 }

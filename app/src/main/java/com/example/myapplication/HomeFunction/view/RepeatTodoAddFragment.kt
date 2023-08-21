@@ -197,7 +197,7 @@ class RepeatTodoAddFragment : Fragment() {
     private fun findRepeat(repeat : String) : String{
         val repeatString  = when(repeat){
             "반복 안함" -> "N"
-            "매일" -> "day"
+            "매일" -> "DAY"
             else -> "N"
         }
         return repeatString

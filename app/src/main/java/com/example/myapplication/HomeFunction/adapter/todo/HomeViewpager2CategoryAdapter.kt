@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
@@ -25,6 +26,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
     var topFlag = false
     var viewModel : HomeViewModel? = null
     //var completeFlag = false
+    var api : HomeApi? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -63,16 +65,17 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.viewModel = viewModel
+                repeatAdapter!!.api = api
 
-                repeatAdapter!!.setItemClickListener(object :
-                    HomeViewpager2TodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
-                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
-                        viewModel!!.updateCompleteTodo()
-                        viewModel!!.updateTodoNum()
-                    }
-
-                })
+//                repeatAdapter!!.setItemClickListener(object :
+//                    HomeViewpager2TodoAdapter.OnItemClickListener {
+//                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
+//                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
+//                        viewModel!!.updateCompleteTodo()
+//                        viewModel!!.updateTodoNum()
+//                    }
+//
+//                })
                 holder.todoRv.apply {
                     adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
@@ -96,7 +99,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                itemClickListener.onClick(view, position, dataSet[position].id, holder.edtTodo, holder.todoAdd)
                 true
             }
 
@@ -104,7 +107,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
         }
 }
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
+        fun onClick(v: View, position: Int, cate : Int, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {

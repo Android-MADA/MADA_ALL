@@ -1,12 +1,13 @@
 package com.example.myapplication.HomeFunction.api
 
 
-import com.example.myapplication.HomeFunction.Model.CategoryList
+import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
+import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
@@ -96,7 +97,7 @@ interface HomeApi {
     @GET("/api/home/category")
     suspend fun getCategory(
         @Header("Authorization") token : String?
-    ): CategoryList
+    ): CategoryList1
 
     //카테고리 추가 -> 확인 완
     @POST("/api/home/category")
@@ -120,4 +121,9 @@ interface HomeApi {
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
     )
+
+    @GET("/api/home/todo/repeat")
+    suspend fun getRepeatTodo(
+        @Header("Authorization") token : String?
+    ) : RepeatData1
 }
