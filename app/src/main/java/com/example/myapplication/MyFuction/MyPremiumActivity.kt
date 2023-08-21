@@ -42,7 +42,7 @@ class MyPremiumActivity : AppCompatActivity() {
                     val responseCode = response.code()
 
                     if(response.isSuccessful){
-                        Log.d("프리미엄 변경 성공", "Response Code: $responseCode")
+                        Log.d("프리미엄 변경 성공, ${response.body()?.is_subscribe}", "Response Code: $responseCode")
                     }
                     else{
                         Log.d("프리미엄 변경 실패", "Response Code: $responseCode")
@@ -51,9 +51,11 @@ class MyPremiumActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<MyPremiumData>, t: Throwable) {
                     Log.d("서버 오류", "프리미엄 변경 실패")
                 }
+
             })
             finish()
         }
 
     }
 }
+
