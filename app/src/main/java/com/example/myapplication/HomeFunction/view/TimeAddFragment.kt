@@ -16,6 +16,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +28,7 @@ import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
@@ -46,11 +48,12 @@ class TimeAddFragment : Fragment() {
     private var bottomFlag = true
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
+    private val viewModel : HomeViewModel by activityViewModels()
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today ="2023-08-18"
+    var today = viewModel.homeDate.value.toString()
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
