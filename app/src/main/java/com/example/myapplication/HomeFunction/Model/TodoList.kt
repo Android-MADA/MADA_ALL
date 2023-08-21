@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class TodoList(
     //@SerializedName("data") var data: ArrayList<Todo>
-    @SerializedName("data") var data: todolist2
+    @SerializedName("data") var data: todoData2
 
 )

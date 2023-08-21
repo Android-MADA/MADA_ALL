@@ -11,8 +11,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
@@ -22,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.util.Calendar
+import com.squareup.picasso.Picasso
 
 class FragHome : Fragment() {
 
@@ -62,6 +67,7 @@ class FragHome : Fragment() {
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${viewModel.userName}님,"
+            getCustomChar()
         })
 
         val calendarLayout = binding.layoutCalendarviewHome
@@ -146,6 +152,11 @@ class FragHome : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideBottomNavigation(false, activity)
+    }
+
     private fun findDayOfWeek(y : Int, m : Int, d : Int, selected : Calendar) : String {
         var dayOfWeek =
             when(selected.get(Calendar.DAY_OF_WEEK)){
@@ -171,6 +182,51 @@ class FragHome : Fragment() {
             else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
+    }
+
+    private fun getCustomChar() {
+
+        val service = RetrofitInstance.getInstance().create(RetrofitServiceCalendar::class.java)
+        val call2 = service.characterRequest(viewModel.userToken)
+        call2.enqueue(object : Callback<CharacterResponse> {
+            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                //arrays.add(data)
+                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                if(data.itemType=="color") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.ivHomeRamdi)
+                                } else if(data.itemType=="set") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.ivHomeCloth)
+                                } else if(data.itemType=="item") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.ivHomeItem)
+                                }
+                                // ...
+                            }
+                        } else {
+                            //Log.d("2221","${response.code()}")
+                        }
+                    } else {
+                        //Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+        })
     }
 
 }

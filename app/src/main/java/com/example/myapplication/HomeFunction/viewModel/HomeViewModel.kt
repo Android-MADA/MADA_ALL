@@ -109,6 +109,7 @@ class HomeViewModel : ViewModel() {
         todoId: Int,
         cateIndex: Int,
         todoIndex: Int,
+        complete : Boolean,
         adapater: HomeViewpager2TodoAdapter
     ) = viewModelScope.launch {
         //서버 전송
@@ -118,7 +119,10 @@ class HomeViewModel : ViewModel() {
         _cateTodoList.value!![cateIndex].removeAt(todoIndex)
         adapater.notifyDataSetChanged()
         updateTodoNum("delete")
-        updateCompleteTodo("delete")
+        if(complete){
+            updateCompleteTodo("delete")
+        }
+
     }
 
     fun patchTodo(
@@ -382,7 +386,7 @@ class HomeViewModel : ViewModel() {
     fun addTodo(position: Int, todo: Todo) {
         _cateTodoList!!.value!![position].add(todo)
         updateTodoNum("add")
-        updateCompleteTodo("add")
+        //updateCompleteTodo("add")
     }
 
     fun addRepeatTodo(position: Int, todo: repeatTodo) {
@@ -492,7 +496,11 @@ class HomeViewModel : ViewModel() {
         }
         //todo 삭제
         else {
-            _completeTodoNum.value = --completeNumber
+            completeNumber = when(completeNumber){
+                0 -> {0}
+                else -> completeNumber.minus(1)
+            }
+            _completeTodoNum.value = completeNumber
         }
         //cb 클릭 -> add, delete 상황 적용
 
