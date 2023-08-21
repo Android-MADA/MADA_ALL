@@ -2,6 +2,6 @@ package com.example.myapplication.HomeFunction.Model
 
 import com.google.gson.annotations.SerializedName
 
-data class PactchResponseCategory(
-    @SerializedName("data") val data: Category
+data class categorylist2(
+    @SerializedName("CategoryList") var CategoryList : ArrayList<Category>
 )

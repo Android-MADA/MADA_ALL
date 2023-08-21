@@ -4,6 +4,7 @@
     <!-- 인터넷 접근권한 -->
     <uses-permission
         android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -44,6 +45,7 @@
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyNoticeActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyListItem"

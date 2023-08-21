@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:background="#E1E9F5"
         android:gravity="bottom"
+        app:umanoInitialState="expanded"
         app:umanoDragView="@+id/bottom_sheet"
         app:umanoFadeColor="@android:color/transparent"
         app:umanoShadowHeight="0dp"
@@ -182,6 +183,7 @@
             android:layout_height="300dp"
             android:background="@drawable/calendar_dday_background"
             android:orientation="vertical"
+
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <TextView
@@ -337,14 +339,43 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-                <ImageView
-                    android:layout_weight="1"
-                    android:id="@+id/calendar_ramdi"
-                    android:padding="15dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/calendar_character"/>
+                    android:layout_weight="1"
+                    android:layout_marginBottom="35dp">
+                    <ImageView
+                        android:id="@+id/calendar_ramdi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/calendar_character"/>
+                    <ImageView
+                        android:id="@+id/img_calendar_cloth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                    <ImageView
+                        android:id="@+id/img_calendar_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
 
@@ -355,18 +386,17 @@
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/calendar_dday_plus_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.MediumComponent"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/ic_home_time_add"
-        app:maxImageSize="24dp"
-        app:tint="@color/black"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/calendar_plus_btn"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
         />
 
 

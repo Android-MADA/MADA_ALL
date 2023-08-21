@@ -91,7 +91,7 @@ class CalendarAddDdayFragment : Fragment() {
         binding.layoutColorSelector.visibility = View.GONE
         binding.textMemo.setText(arguments?.getString("memo"))
         binding.cal.visibility= View.GONE
-        edit = arguments?.getBoolean("eidt")?: false
+        edit = arguments?.getBoolean("edit")?: false
         id2 = arguments?.getInt("id")?: -1
         if(edit) {
             binding.addBtn.text ="수정"
@@ -185,7 +185,7 @@ class CalendarAddDdayFragment : Fragment() {
         }
         binding.addBtn.setOnClickListener {
             if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())||
-                binding.textDday.text=="D - 0") {
+                binding.textDday.text.toString()=="D - 0") {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -201,12 +201,14 @@ class CalendarAddDdayFragment : Fragment() {
                     mBuilder.dismiss()
                 })
             }  else {
-                if(binding.addBtn.text=="수정") {
-                    eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(preSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                if(binding.addBtn.text.toString()=="수정") {
+                    eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
                         curColor,"No","Y",binding.textMemo.text.toString(),
-                        "10:00:00","10:00:00"),id2)
-                } else {            //수정
-
+                        "10:00:00","11:00:00"),id2)
+                } else {            //등록
+                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                        curColor,"No","Y",binding.textMemo.text.toString(),
+                        "10:00:00","11:00:00"))
                 }
             }
         }
@@ -268,7 +270,7 @@ class CalendarAddDdayFragment : Fragment() {
         }
     }
     fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
         val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
 
         val date = inputFormat.parse(dateString)
@@ -283,8 +285,8 @@ class CalendarAddDdayFragment : Fragment() {
         return isExpanded
     }
     fun convertToDateKoreanFormat2(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale("en","US"))
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
@@ -299,15 +301,10 @@ class CalendarAddDdayFragment : Fragment() {
                         Log.d("status",responseBody.status.toString())
                         Log.d("success",responseBody.success.toString())
                         Log.d("message",responseBody.message.toString())
-                    }else
-                        Log.d("777","777")
-
-                } else {
-                    Log.d("666","itemType: ${response.code()} ")
-                    Log.d("666","itemType: ${response.message()} ")
+                    }
                 }
+                findNavController().navigate(R.id.action_calendarAddDday_to_fragCalendar)
             }
-
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
             }
@@ -322,12 +319,8 @@ class CalendarAddDdayFragment : Fragment() {
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         //Log.d("status",responseBody.data.name.toString())
-                    }else
-                        Log.d("eidt","${response.code()}")
+                    }
 
-                } else {
-                    Log.d("eidt","itemType: ${response.code()} ")
-                    Log.d("eidt","itemType: ${token} ")
                 }
                 findNavController().navigate(R.id.action_calendarAddDday_to_fragCalendar)
             }
