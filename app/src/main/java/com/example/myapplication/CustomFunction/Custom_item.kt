@@ -224,14 +224,22 @@ class custom_item : Fragment() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckItem", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            Log.d(
+                                "getCustomItemCheckCloth",
+                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                     }
                 } else {
-                    Log.d("getCustomItemCheckItem", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 

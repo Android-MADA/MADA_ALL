@@ -158,18 +158,27 @@ class custom_background : Fragment() {
         binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
 
     }
+
     fun getCustomItemCheck(itemType: String) {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            Log.d(
+                                "getCustomItemCheckCloth",
+                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                     }
                 } else {
-                    Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 
@@ -178,6 +187,8 @@ class custom_background : Fragment() {
             }
         })
     }
+
+
 
 
 }

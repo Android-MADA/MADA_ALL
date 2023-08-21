@@ -215,13 +215,14 @@ class custom_cloth() : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d(
-                            "getCustomItemCheckCloth",
-                            "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
-                        )
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            Log.d(
+                                "getCustomItemCheckCloth",
+                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                     }
-                    initButtonLockStates(checkInfo)
                 } else {
                     Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
@@ -234,7 +235,9 @@ class custom_cloth() : Fragment() {
     }
 
     private fun initButtonLockStates(checkInfo: customItemCheckDATA?) {
-        checkInfo?.data?.forEach { item ->
+        val itemList = checkInfo?.data?.itemList ?: emptyList()
+
+        itemList.forEach { item ->
             val isLocked = !item.have
             buttonLockMap[item.id] = isLocked
             Log.d("initbtnlock", "Button ID: ${item.id}, Is Locked: $isLocked")
