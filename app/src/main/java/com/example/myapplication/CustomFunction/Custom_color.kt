@@ -96,16 +96,8 @@ class custom_color : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
@@ -143,7 +135,6 @@ class custom_color : Fragment() {
     }
 
     fun onColorButtonClick(clickedButton: ImageButton) {
-        val defaultButtonInfo = ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
         val buttonInfo = when (clickedButton.id) {
             R.id.btn_color_basic -> ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
             R.id.btn_color_blue -> ButtonInfo(clickedButton.id, 11, R.drawable.c_ramdyb)
@@ -155,16 +146,10 @@ class custom_color : Fragment() {
             R.id.btn_color_purple -> ButtonInfo(clickedButton.id, 15, R.drawable.c_ramdyp)
             R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, 18, R.drawable.c_ramdyy)
             else -> throw IllegalArgumentException("Unknown button ID")
+
         }
 
-        if (buttonInfo == defaultButtonInfo) {
-            // If the button is already selected (same as default), reset to default image
-            imageChangeListener?.onColorButtonSelected(defaultButtonInfo)
-        } else {
-            // Change the image to the selected button's image
-            imageChangeListener?.onColorButtonSelected(buttonInfo)
-        }
-
+        imageChangeListener?.onColorButtonSelected(buttonInfo)
 
     }
 

@@ -299,18 +299,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 temdata.selectedClothButtonInfo?.serverID,
                 temdata.selectedItemButtonInfo?.serverID,
                 temdata.selectedBackgroundButtonInfo?.serverID
-            ).filterNotNull().filter { it != 900 && it != 800 && it != 700 && it != 0 }
-            /*if (temdata.selectedColorButtonInfo?.serverID != 0){
-            }
-            if (temdata.selectedClothButtonInfo?.serverID != 900){
-                patchCustomItemChange(temdata.selectedClothButtonInfo!!.serverID)
-            }
-            if (temdata.selectedItemButtonInfo?.serverID != 800){
-                patchCustomItemChange(temdata.selectedItemButtonInfo!!.serverID)
-            }
-            if (temdata.selectedBackgroundButtonInfo?.serverID != 700){
-                patchCustomItemChange(temdata.selectedBackgroundButtonInfo!!.serverID)
-            }*/
+            ).filterNotNull().filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null}
             patchCustomItemChange(itemIds)
             unsavedChanges = false
         }
@@ -332,6 +321,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
         custom_save = false
+        Log.d("customcolorbtncheck", "${colorbuttonInfo.selectedImageResource}")
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
         unsavedChanges = true
@@ -391,7 +381,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
 
-        /*val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -413,10 +403,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     }
                     true
                 }
-                // Handle other menu items
                 else -> false
             }
-        }*/
+        }
     }
 
     override fun onResetButtonClicked() {
