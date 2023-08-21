@@ -14,6 +14,7 @@ import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,10 +28,14 @@ class custom_item : Fragment() {
 
     private var imageChangeListener: OnItemImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
+
+    val token = MyWebviewActivity.prefs.getString("token","")
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is OnClothImageChangeListener) {
@@ -109,16 +114,8 @@ class custom_item : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
@@ -175,63 +172,27 @@ class custom_item : Fragment() {
 
     fun onItemButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_item_basic -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.custom_empty
-            )
-            R.id.btn_item_glass_normal -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_nomal
-            )
-            R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, R.drawable.hat_ber)
-            R.id.btn_item_hat_grad -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_grad
-            )
-            R.id.btn_item_glass_8bit -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_8bit
-            )
-            R.id.btn_item_glass_woig -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_woig
-            )
-            R.id.btn_item_hat_ipod -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_ipod
-            )
-            R.id.btn_item_glass_sunR -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_sunr
-            )
-            R.id.btn_item_glass_sunB -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.g_sunb
-            )
-            R.id.btn_item_hat_flower -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_flower
-            )
-            R.id.btn_item_hat_v -> ButtonInfo(clickedButton.id, R.drawable.hat_v)
-            R.id.btn_item_hat_dinof -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_dinof
-            )
-            R.id.btn_item_hat_sheep -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.hat_sheep
-            )
-            R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id, R.drawable.bag_e)
-            R.id.btn_item_bag_luck -> ButtonInfo(
-                clickedButton.id,
-                R.drawable.bag_luck
-            )
+            R.id.btn_item_basic -> ButtonInfo(clickedButton.id, 800, R.drawable.custom_empty)
+            R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, 22,R.drawable.g_nomal)
+            R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, 30, R.drawable.hat_ber)
+            R.id.btn_item_hat_grad -> ButtonInfo(clickedButton.id, 33, R.drawable.hat_grad)
+            R.id.btn_item_glass_8bit -> ButtonInfo(clickedButton.id, 21,R.drawable.g_8bit)
+            R.id.btn_item_glass_woig -> ButtonInfo(clickedButton.id, 25, R.drawable.g_woig)
+            R.id.btn_item_hat_ipod -> ButtonInfo(clickedButton.id, 35, R.drawable.hat_ipod)
+            R.id.btn_item_glass_sunR -> ButtonInfo(clickedButton.id, 24,R.drawable.g_sunr)
+            R.id.btn_item_glass_sunB -> ButtonInfo(clickedButton.id,23, R.drawable.g_sunb)
+            R.id.btn_item_hat_flower -> ButtonInfo(clickedButton.id, 32, R.drawable.hat_flower)
+            R.id.btn_item_hat_v -> ButtonInfo(clickedButton.id, 37, R.drawable.hat_v)
+            R.id.btn_item_hat_dinof -> ButtonInfo(clickedButton.id, 31,R.drawable.hat_dinof)
+            R.id.btn_item_hat_sheep -> ButtonInfo(clickedButton.id, 36, R.drawable.hat_sheep)
+            R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id,19, R.drawable.bag_e)
+            R.id.btn_item_bag_luck -> ButtonInfo(clickedButton.id,20, R.drawable.bag_luck)
             R.id.btn_item_hat_heart -> ButtonInfo(
-                clickedButton.id,
+                clickedButton.id,34,
                 R.drawable.hat_heart
             )
-            R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, R.drawable.hat_bee)
-            R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, R.drawable.heads)
+            R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, 29, R.drawable.hat_bee)
+            R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, 38, R.drawable.heads)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
@@ -263,14 +224,22 @@ class custom_item : Fragment() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckItem", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            Log.d(
+                                "getCustomItemCheckCloth",
+                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                     }
                 } else {
-                    Log.d("getCustomItemCheckItem", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 

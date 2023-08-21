@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.myapplication.MyFuction.MySignup1Activity
+import com.example.myapplication.MyFuction.MySignup2Activity
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.Splash2Binding
@@ -30,7 +31,7 @@ class Splash2Activity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.kakaoBtn.setOnClickListener{
-            val intent = Intent(this, MySignup1Activity::class.java)
+            val intent = Intent(this, MySignup2Activity::class.java)
             startActivity(intent)
             finish()
         }
@@ -41,7 +42,7 @@ class Splash2Activity : AppCompatActivity() {
             finish()
         }
         binding.googleBtn.setOnClickListener{
-            val intent = Intent(this, MySignup1Activity::class.java)
+            val intent = Intent(this, MySignup2Activity::class.java)
             startActivity(intent)
             finish()
         }

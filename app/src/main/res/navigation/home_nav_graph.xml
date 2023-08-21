@@ -115,6 +115,9 @@
         <action
             android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
             app:destination="@id/homeTimetableFragment" />
+        <action
+            android:id="@+id/action_timeAddFragment_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/homeRepeatTodoFragment"
