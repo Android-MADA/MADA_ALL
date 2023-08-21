@@ -156,27 +156,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        /*if (printId in 1..9) {
-            setImageViewWithFilePath(binding.imgCustomBackground, printfilePath)
-            Log.d("background", "${printId} ${printfilePath}")
-        }
-        if (printId in 10..18) {
-            setImageViewWithFilePath(binding.customRamdi, printfilePath)
-            Log.d("customRamdi", "${printId} ${printfilePath}")
-        }
-        if (printId in 19..38) {
-            setImageViewWithFilePath(binding.imgCustomItem, printfilePath)
-            Log.d("imgCustomItem", "${printId} ${printfilePath}")
-        }
-        if (printId in 39..47) {
-            setImageViewWithFilePath(binding.imgCustomCloth, printfilePath)
-            Log.d("imgCustomCloth", "${printId} ${printfilePath}")
-        }*/
-
-
-
-
-        /*val savedData = viewModel.getSavedButtonInfo()
+        val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
@@ -195,7 +175,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
             )
-        }*/
+        }
 
 
         /*val fragmentManager: FragmentManager = childFragmentManager
