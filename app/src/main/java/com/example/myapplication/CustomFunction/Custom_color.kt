@@ -13,6 +13,7 @@ import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
 import retrofit2.Call
@@ -31,11 +32,12 @@ class custom_color : Fragment() {
 
     private var imageChangeListener: OnColorImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
+    val token = MyWebviewActivity.prefs.getString("token","")
 
 
     override fun onAttach(context: Context) {
