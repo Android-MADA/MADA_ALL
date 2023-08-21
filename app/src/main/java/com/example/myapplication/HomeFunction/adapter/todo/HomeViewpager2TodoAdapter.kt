@@ -110,7 +110,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                     }
                     else{
                         val todoId = dataSet[position].id
-                        viewModel!!.deleteTodo(todoId, cateIndex, position, this)
+                        viewModel!!.deleteTodo(todoId, cateIndex, position, dataSet[position].complete, this)
                     }
                     true
                 }
@@ -121,10 +121,10 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                 dataSet[position].complete = buttonView.isChecked
 
                 viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(dataSet[position].todoName, dataSet[position].repeat, dataSet[position].repeatWeek, dataSet[position].repeatMonth, dataSet[position].startRepeatDate, dataSet[position].endRepeatDate, isChecked), cateIndex, position, null )
-                if(isChecked){
+                if(buttonView.isChecked == true){
                     viewModel!!.updateCompleteTodo("add")
                 }
-                else {
+                else if(buttonView.isChecked == false){
                     viewModel!!.updateCompleteTodo("delete")
                 }
                 //patch, completenum
