@@ -449,14 +449,14 @@ class TimeAddFragment : Fragment() {
                         if(datas != null) {
                             for(data in datas.todoList) {
                                 arrays.add(CalendarDATA("","","","","",
-                                                    "","","",data.todoName,1,false,"","TODO",7))
+                                    "","","",data.todoName,1,false,"","TODO",7))
                             }
 
                             for(data in datas.calendarList) {
                                 Log.d("cal","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color} ${data.dday}" )
                                 if(data.dday=="N")
                                     arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
-                                    data.color,"","N",data.CalendarName,1,false,"","CAL",7))
+                                        data.color,"","N",data.CalendarName,1,false,"","CAL",7))
                                 else
                                     arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
                                         data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
