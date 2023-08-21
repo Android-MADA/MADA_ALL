@@ -156,7 +156,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        if (printId in 1..9) {
+        /*if (printId in 1..9) {
             setImageViewWithFilePath(binding.imgCustomBackground, printfilePath)
             Log.d("background", "${printId} ${printfilePath}")
         }
@@ -171,7 +171,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         if (printId in 39..47) {
             setImageViewWithFilePath(binding.imgCustomCloth, printfilePath)
             Log.d("imgCustomCloth", "${printId} ${printfilePath}")
-        }
+        }*/
 
 
 
@@ -423,16 +423,40 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private fun getCustomPrint() {
         val call: Call<customPrintDATA> = service.customPrint(token)
-
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
                 val responseCode = response.code()
+                val datas = printInfo?.data
                 printInfo?.data?.forEachIndexed { index, item ->
                     printId = item.id
                     printfilePath = item.filePath
-                    Log.d("getCustomPrint", "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}")
+                    Log.d(
+                        "getCustomPrint",
+                        "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
+                    )
                     Log.d("patchCustomItemChange", "Response Code: $responseCode")
+                }
+                if (datas != null) {
+                    for (data in datas) {
+                        if (data.itemType == "color") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.customRamdi)
+                        } else if (data.itemType == "set") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomCloth)
+                        } else if (data.itemType == "item") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomItem)
+                        } else if (data.itemType == "background") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomBackground)
+                        }
+                    }
                 }
             }
 
