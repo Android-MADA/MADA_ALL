@@ -4,10 +4,10 @@ package com.example.myapplication.MyFuction.Model
 import android.provider.ContactsContract
 
 data class MyGetProfileData(
-    val data : ArrayList<MyProfileData>
+    val data : MyProfileData
 )
 data class MyProfileData(
-    val nickname: String?,
-    val email: String?,
+    val nickname: String,
+    val email: String,
 )
 

@@ -1,8 +1,9 @@
 package com.example.myapplication.MyFuction.Model
 
 data class MyChangeNicknameData(
-    val nickname: String,
+    val data: MyChangeNicknameData2
 )
 data class MyChangeNicknameData2(
-    val data: MyChangeNicknameData,
+    val nickname: String
 )
+
