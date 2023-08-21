@@ -208,11 +208,9 @@ class custom_cloth() : Fragment() {
 
     private fun initButtonLockStates(checkInfo: customItemCheckDATA?) {
         checkInfo?.data?.forEach { item ->
-            // item의 id를 버튼 ID로 사용하여 잠금 상태를 맵에 저장합니다.
             buttonLockMap[item.id] = !item.have
         }
         Log.d("initbtnlock","button lock init success")
-        // 각 버튼의 잠금 상태를 적용합니다.
         applyButtonLockStates()
     }
 
