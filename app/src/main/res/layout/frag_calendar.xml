@@ -212,6 +212,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -232,7 +233,7 @@
                             android:id="@+id/dday1_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="17dp"
                             android:layout_marginBottom="20dp"
                             android:text=""
                             android:textColor="@color/white"
@@ -274,7 +275,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="17dp"
                             android:layout_marginBottom="20dp"
                             android:textColor="@color/white"
                             android:textSize="14sp"
@@ -314,7 +315,7 @@
                             android:id="@+id/dday3_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="17dp"
                             android:layout_marginBottom="20dp"
                             android:text=""
                             android:textStyle="bold"
@@ -341,7 +342,8 @@
                 </LinearLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="180dp"
+                    android:layout_gravity="right"
                     android:layout_weight="1"
                     android:layout_marginBottom="35dp">
                     <ImageView
@@ -352,7 +354,6 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:scaleType="centerCrop"
                         android:src="@drawable/calendar_character"/>
                     <ImageView
                         android:id="@+id/img_calendar_cloth"
@@ -361,7 +362,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:scaleType="centerCrop"
                         app:layout_constraintTop_toTopOf="parent"/>
                     <ImageView
                         android:id="@+id/img_calendar_item"
@@ -370,7 +370,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:scaleType="centerCrop"
                         app:layout_constraintTop_toTopOf="parent"/>
 
 

@@ -13,6 +13,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
@@ -96,7 +97,22 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                         cal.setImageResource(R.drawable.calendar_line_center)
                     }
                 } else {
-                    holder.lines[data.floor].setImageResource(R.drawable.calendar_point)
+                    if(data.startTime=="00:00:00"&&data.endTime=="00:00:00") {
+
+                        cal .viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                            override fun onGlobalLayout() {
+                                cal .viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                                val parentWidth = holder.itemView.width
+                                val layoutParams = cal .layoutParams
+                                layoutParams.width = (parentWidth * 0.8).toInt()
+                                cal .layoutParams = layoutParams
+                            }
+                        })
+                        cal.setImageResource(R.drawable.calendar_line_center2)
+                    }
+                    else
+                        cal.setImageResource(R.drawable.calendar_point)
                 }
             } else {
 
