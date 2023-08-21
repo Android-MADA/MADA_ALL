@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -90,9 +91,6 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                         holder.edtTodo.setText(dataSet[position].todoName)
                     }
                     else{
-//                        viewModel!!.updateCompleteTodo()
-//                        viewModel!!.updateTodoNum()
-//                        //서버 전송
                         val todoId = dataSet[position].id
                         viewModel!!.deleteTodo(todoId, cateIndex, position, this)
                     }
@@ -126,15 +124,18 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
 
             holder.edtTodo.setOnKeyListener { view, keyCode, event ->
                 // Enter Key Action
-                if (keyCode == KeyEvent.KEYCODE_ENTER
+                if (event.action == KeyEvent.ACTION_DOWN
+                    && keyCode == KeyEvent.KEYCODE_ENTER
                 ) {
                     //데이터 수정 반영
+                    viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(holder.edtTodo.text.toString(), "N", null, null, null, null), cateIndex, position, null)
                     dataSet[position].todoName = holder.edtTodo.text.toString()
                     //edt 업애고 이전 투두 복구
                     holder.todoLayout.isVisible = true
                     holder.edtTodo.text.clear()
                     holder.editLayout.isGone = true
-                    itemClickListener.onClick(view, position, dataSet)
+
+
                     notifyDataSetChanged()
                     true
                 }
