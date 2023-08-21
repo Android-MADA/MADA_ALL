@@ -11,14 +11,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.CategoryList
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
@@ -38,8 +32,6 @@ class FragHome : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
-        Log.d("Hometoken 확인", viewModel.userToken.toString())
-
     }
 
 
@@ -49,9 +41,9 @@ class FragHome : Fragment() {
     ): View? {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+
         hideBottomNavigation(false, activity)
         //서버에서 cateogry, todo받아오기
-
 
 
         val homeViewPager = binding.homeViewpager2
@@ -62,28 +54,15 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
 
-        //서버연결 시작
-
-        /*
-                viewModel.getCategory(viewModel.userToken)
-                viewModel.getTodo(viewModel.userToken, "2023-08-16")
-                viewModel.todoList.observe(viewLifecycleOwner, Observer {
-                    viewModel.classifyTodo()
-                    viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                        Log.d("FragHome 서버", viewModel.cateTodoList.value.toString())
-                    })
-                })
-
-                viewModel.updateTodoNum()
-                viewModel.updateCompleteTodo()
-                */
-
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+            binding.tvHomeUsername.text = "${viewModel.userName}님,"
+        })
 
         val calendarLayout = binding.layoutCalendarviewHome
         binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -141,25 +120,16 @@ class FragHome : Fragment() {
             var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
-            viewModel.changeDate(year, (month +1), dayOfMonth)
+            viewModel.changeDate(year, (month +1), dayOfMonth, "home")
+            Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
         }
 
+
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            //서버에서 category 새로 받아오기(date)
-            //서버에서 Tood 새로 받아오기(date)
-            //서버에서 ment 새로 받아오기(date)
-
+            //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
-            viewModel.updateCateTodoList()
-        })
-
-
-        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            //todoNum 업데이트
-            //completeNum 업데이트
-            viewModel.updateTodoNum()
-            viewModel.updateCompleteTodo()
+            //viewModel.updateCateTodoList()
         })
 
         //date를 통해서 todo가 변경되었을 때 실행
@@ -192,13 +162,13 @@ class FragHome : Fragment() {
 
     private fun homeMent(day : String) : String {
         var homeMent = when(day){
-            "월요일" -> "월요일 입니다."
-            "화요일" -> "화요일 입니다."
-            "수요일" -> "수요일 입니다."
-            "목요일" -> "목요일 입니다."
-            "금요일" -> "금요일 입니다."
-            "토요일" -> "토요일 입니다."
-            else -> "일요일 입니다."
+            "월요일" -> "월요병 날려버리고 화이팅!"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
+            "목요일" -> "오늘도 열심히 달려 봐요"
+            "금요일" -> "오늘도 열심히 달려 봐요"
+            "토요일" -> "주말을 알차게!"
+            else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
     }
