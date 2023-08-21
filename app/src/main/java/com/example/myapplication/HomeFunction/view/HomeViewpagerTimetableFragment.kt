@@ -8,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.YourMarkerView
@@ -49,7 +53,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
     lateinit var binding : HomeFragmentViewpagerTimetableBinding
-
+    private val viewModel: HomeViewModel by activityViewModels()
 
     data class PieChartData(
         val title: String,
@@ -63,9 +67,9 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val id : Int
     ) : Serializable
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(HomeApi::class.java)
+//    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+//        .addConverterFactory(GsonConverterFactory.create()).build()
+    val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
     var token = ""
 
     var today = "2023-06-01"
@@ -79,6 +83,12 @@ class HomeViewpagerTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            today = viewModel.homeDate.value.toString()
+            getTimeDatas(today)
+
+        })
+
         binding = HomeFragmentViewpagerTimetableBinding.inflate((layoutInflater))
         customCircleBarView = binding.progressbar
         token = MyWebviewActivity.prefs.getString("token","")
@@ -91,6 +101,10 @@ class HomeViewpagerTimetableFragment : Fragment() {
         customCircleBarView.setProgress(progressPercentage.toInt())
         //파이차트
         getTimeDatas(today)
+
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            Log.d("timetable date 확인", viewModel.homeDate.value.toString())
+        })
 
         binding.chart.setOnClickListener {
             val bundle = Bundle()
