@@ -1,15 +1,19 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.isGone
@@ -50,7 +54,7 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today ="2023-08-18"
+    var today ="2023-06-01"
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
@@ -257,7 +261,7 @@ class TimeAddFragment : Fragment() {
             } else {
 
             }
-            if (check) {
+            if (check&&!compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
                 Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
                 val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
                     timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
@@ -277,11 +281,21 @@ class TimeAddFragment : Fragment() {
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
                 mDialogView.findViewById<TextView>(R.id.textView4).setText("스케줄명을 입력하시오")
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
-            } else{            //이미 해당 시간에 일정이 있을 때
+            } else if(compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
                 val mDialogView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.home_fragment_time_add_warningsign, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -290,6 +304,39 @@ class TimeAddFragment : Fragment() {
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                mDialogView.findViewById<TextView>(R.id.textView4).setText("올바른 시간을 입력해 주십시오")
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
+                    mBuilder.dismiss()
+                })
+            } else {            //이미 해당 시간에 일정이 있을 때
+                val mDialogView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
@@ -419,7 +466,6 @@ class TimeAddFragment : Fragment() {
                         Log.d("222","Request was not successful. Message: hi")
                     }
                     if(viewpager) {
-                        bottomFlag = false
                         findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                     }
                     else
@@ -476,10 +522,10 @@ class TimeAddFragment : Fragment() {
         })
     }
     fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US"))
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar.time = inputFormat.parse(timeModified)
 
@@ -487,6 +533,29 @@ class TimeAddFragment : Fragment() {
         val minute = calendar.get(Calendar.MINUTE)
 
         return String.format("%02d:%02d:00", hour, minute)
+    }
+    fun compareTimes(time1: String, time2: String): Boolean {
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US")) // 수정된 형식
+        val calendar1 = Calendar.getInstance()
+        val calendar2 = Calendar.getInstance()
+
+        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM").replace(" ","")
+        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM").replace(" ","")
+
+        calendar1.time = inputFormat.parse(time1Modified)
+        calendar2.time = inputFormat.parse(time2Modified)
+
+        val hour1 = calendar1.get(Calendar.HOUR_OF_DAY)
+        val minute1 = calendar1.get(Calendar.MINUTE)
+
+        val hour2 = calendar2.get(Calendar.HOUR_OF_DAY)
+        val minute2 = calendar2.get(Calendar.MINUTE)
+
+        if (hour1 > hour2 || (hour1 == hour2 && minute1 >= minute2)) {
+            return true
+        } else {
+            return false
+        }
     }
     fun timeChangeReverse(time: String): String {
         val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
