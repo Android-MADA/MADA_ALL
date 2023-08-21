@@ -14,6 +14,7 @@ import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnBackgroundImageChangeListener
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomBackgroundBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,11 +28,12 @@ class custom_background : Fragment() {
 
     private var imageChangeListener: OnBackgroundImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
 
+    val token = MyWebviewActivity.prefs.getString("token","")
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is OnBackgroundImageChangeListener) {
@@ -85,16 +87,8 @@ class custom_background : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
@@ -136,7 +130,7 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 0, R.drawable.custom_empty)
+            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 700, R.drawable.custom_empty)
             R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, 1, R.drawable.back_brid)
             R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, 3, R.drawable.back_n)
             R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, 8, R.drawable.back_win)
@@ -164,18 +158,27 @@ class custom_background : Fragment() {
         binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
 
     }
+
     fun getCustomItemCheck(itemType: String) {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckBackground", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            Log.d(
+                                "getCustomItemCheckCloth",
+                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                     }
                 } else {
-                    Log.d("getCustomItemCheckBackground", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 
@@ -184,6 +187,8 @@ class custom_background : Fragment() {
             }
         })
     }
+
+
 
 
 }
