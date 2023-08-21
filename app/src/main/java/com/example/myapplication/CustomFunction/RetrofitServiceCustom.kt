@@ -23,6 +23,7 @@ interface RetrofitServiceCustom {
     fun customPrint(@Header("Authorization") token : String?
     ) : Call<customPrintDATA>
 
+
     @GET("/api/custom/item/{item_type}")
     fun customItemCheck(@Header("Authorization") token : String?, @Path("item_type") item_type : String
     ) : Call<customItemCheckDATA>

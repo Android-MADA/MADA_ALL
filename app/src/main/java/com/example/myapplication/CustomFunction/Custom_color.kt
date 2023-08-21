@@ -143,6 +143,7 @@ class custom_color : Fragment() {
     }
 
     fun onColorButtonClick(clickedButton: ImageButton) {
+        val defaultButtonInfo = ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
         val buttonInfo = when (clickedButton.id) {
             R.id.btn_color_basic -> ButtonInfo(clickedButton.id, 10, R.drawable.c_ramdi)
             R.id.btn_color_blue -> ButtonInfo(clickedButton.id, 11, R.drawable.c_ramdyb)
@@ -156,7 +157,15 @@ class custom_color : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        imageChangeListener?.onColorButtonSelected(buttonInfo)
+        if (buttonInfo == defaultButtonInfo) {
+            // If the button is already selected (same as default), reset to default image
+            imageChangeListener?.onColorButtonSelected(defaultButtonInfo)
+        } else {
+            // Change the image to the selected button's image
+            imageChangeListener?.onColorButtonSelected(buttonInfo)
+        }
+
+
     }
 
     fun resetButtonColor() {
