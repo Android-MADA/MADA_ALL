@@ -18,6 +18,7 @@ import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.repeatTodo
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -60,7 +61,7 @@ class HomeRepeatTodoFragment : Fragment() {
             if(cateAdapter != null){
                 if(viewModel.repeatList.value!!.isEmpty() != true){
                     cateAdapter!!.cateTodoSet = viewModel.repeatList.value
-                    cateAdapter!!.notifyDataSetChanged()
+                    binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
                 }
                 //카테고리를 다 지우고 왔을 때
                 else {
@@ -109,30 +110,32 @@ class HomeRepeatTodoFragment : Fragment() {
                 layout: LinearLayout
             ) {
                 if (edt.text.toString() != "") {
-//                    var endDate = "${viewModel.homeDate.value!!.year + 1}-${viewModel.homeDate.value!!.month}-${viewModel.homeDate.value!!.dayOfMonth}"
-//                    //var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "day", null, null, viewModel.homeDate.value.toString(), endDate, false, false, false, false)
-//                    var todo = PostRequestTodo(viewModel.homeDate.value.toString(), PostRequestTodoCateId(cate) , edt.text.toString(), false, "N", null, null, null, null, false, false, false, false)
-//
-//                    api.addTodo(viewModel.userToken, todo).enqueue(object : Callback<PostResponseTodo> {
-//                        override fun onResponse(
-//                            call: Call<PostResponseTodo>,
-//                            response: Response<PostResponseTodo>
-//                        ) {
-//                            if(response.isSuccessful){
-//                                Log.d("todo post", response.body()!!.data.toString())
-//                                viewModel.addTodo(position, response.body()!!.data.Todo)
-//                                cateAdapter!!.notifyDataSetChanged()
-//                            }
-//                            else {
-//                                Log.d("todo post", "안드 쪽 오류")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
-//                            Log.d("todo post", "서버 연결 실패")
-//                        }
-//
-//                    })
+                    var endDate = viewModel.changeDate((viewModel.homeDate.value!!.year + 1), viewModel.homeDate.value!!.monthValue, viewModel.homeDate.value!!.dayOfMonth, null)
+                    //var endDate = "${viewModel.homeDate.value!!.year + 1}-${viewModel.homeDate.value!!.monthValue}-${viewModel.homeDate.value!!.dayOfMonth}"
+                    Log.d("endDate학인", endDate.toString())
+                    var todo = PostRequestTodo(null, PostRequestTodoCateId(cate) , edt.text.toString(), false, "DAY", null, null, viewModel.homeDate.value.toString(), endDate, false, false, false, false)
+
+                    api.addTodo(viewModel.userToken, todo).enqueue(object : Callback<PostResponseTodo> {
+                        override fun onResponse(
+                            call: Call<PostResponseTodo>,
+                            response: Response<PostResponseTodo>
+                        ) {
+                            if(response.isSuccessful){
+                                val repeatTodo = response.body()!!.data.Todo
+                                Log.d("todo post", response.body()!!.data.toString())
+                                viewModel.addRepeatTodo(position, repeatTodo(repeatTodo.id, null, repeatTodo.category, repeatTodo.todoName, repeatTodo.repeat, repeatTodo.repeatWeek, repeatTodo.repeatMonth, repeatTodo.startRepeatDate, repeatTodo.endRepeatDate ))
+                                cateAdapter!!.notifyDataSetChanged()
+                            }
+                            else {
+                                Log.d("todo post", "안드 쪽 오류")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
+                            Log.d("todo post", "서버 연결 실패")
+                        }
+
+                    })
                 }
                 edt.text.clear()
                 layout.isGone = true

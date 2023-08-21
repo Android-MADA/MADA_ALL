@@ -50,29 +50,26 @@ class RepeatTodoAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
+        var _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
         //0 id
         //1 todoName
         //2 repeat
         //3 repeatWeek
+
         //4 repeatMonth
         //5 repeatStartDay
         //6 repeatEndDay
         //7 category position
         //8 todoPosition
 
-            binding.edtHomeCategoryName.setText(argsArrayEdit!![1])
-            if(argsArrayEdit!![2] == "N"){
-                binding.tvRepeatRepeat.text = "반복 안함"
-                binding.tvRepeatNo.setBackgroundResource(R.drawable.home_repeat_selected_background)
-                binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
-            }
-            else if(argsArrayEdit!![2] == "day"){
+            binding.edtHomeCategoryName.setText(_argsArrayEdit!![1])
+
+            if(_argsArrayEdit!![2] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
                 binding.tvRepeatNo.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
-                binding.tvHomeRepeatStart.text = argsArrayEdit!![5]
-                binding.tvHomeRepeatEnd.text = argsArrayEdit!![6]
+                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![5]
+                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![6]
             }
 
 
@@ -146,35 +143,18 @@ class RepeatTodoAddFragment : Fragment() {
                 Toast.makeText(this.requireActivity(), "TODO 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
-                if(binding.tvRepeatRepeat.text != "반복 안함"){
                     if(binding.tvHomeRepeatStartday.text == "없음" || binding.tvHomeRepeatEndday.text == "없음"){
                         Toast.makeText(this.requireActivity(), "시작일과 종료일을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
                     }
                     else {
                         val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
-                        val startDay = findNull(binding.tvHomeRepeatStart.text.toString())
-                        val endDay = findNull(binding.tvHomeRepeatEnd.text.toString())
+                        val startDay = binding.tvHomeRepeatStartday.text.toString()
+                        val endDay = binding.tvHomeRepeatEndday.text.toString()
                         val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
-
-                        viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
+                        Log.d("repeat patch", data.toString())
+                        viewModel.patchTodo(_argsArrayEdit!![0].toInt(), data, _argsArrayEdit!![7].toInt(), _argsArrayEdit!![8].toInt(), view)
                     }
-                }
-                else if (binding.tvRepeatRepeat.text == "반복 안함") {
-                    val repeatString = "N"
-                    val startDay = null
-                    val endDay = null
-                    val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, null, null)
 
-                    viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
-                }
-                else {
-                    val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
-                    val startDay = findNull(binding.tvHomeRepeatStart.text.toString())
-                    val endDay = findNull(binding.tvHomeRepeatEnd.text.toString())
-                    val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
-
-                    viewModel.patchTodo(argsArrayEdit!![0].toInt(), data, argsArrayEdit!![7].toInt(), argsArrayEdit!![8].toInt(), view)
-                }
             }
         }
 

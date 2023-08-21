@@ -3,7 +3,7 @@ package com.example.myapplication.HomeFunction.Model
 import com.google.gson.annotations.SerializedName
 
 data class PostRequestTodo(
-    @SerializedName("date") val date: String,
+    @SerializedName("date") val date: String?,
     @SerializedName("category") var category: PostRequestTodoCateId,
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
@@ -18,3 +18,4 @@ data class PostRequestTodo(
     @SerializedName("newTodoStartSetting") var newTodoStartSetting: Boolean
 
 )
+

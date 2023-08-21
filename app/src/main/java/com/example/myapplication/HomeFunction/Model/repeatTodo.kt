@@ -12,7 +12,7 @@ data class RepeatData2(
 
 data class repeatTodo(
     @SerializedName("id") val id: Int,
-    @SerializedName("date") val date: String,
+    @SerializedName("date") val date: String?,
     @SerializedName("category") var category: Category,
     @SerializedName("todoName") var todoName: String,
     @SerializedName("repeat") var repeat: String,
