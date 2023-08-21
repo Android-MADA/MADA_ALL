@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
 import com.example.myapplication.databinding.MyProfileBinding
-import okhttp3.Callback
 import retrofit2.Call
 import retrofit2.Response
 
@@ -30,8 +29,9 @@ class MyProfileActivity : AppCompatActivity() {
             ) {
                 if(response.isSuccessful){
                     Log.d("getProfile 성공", response.body().toString())
-                    binding.textView4.text = response.body()?.data!!.nickname
-                    binding.textView7.text = response.body()?.data!!.email
+                    val response = response.body()
+                    binding.nickname.text = response.data.nickname
+                    binding.email.text = response.body()?.data!!.email
                 }
                 else{
                     Log.d("getProfile 실패", response.body().toString())
