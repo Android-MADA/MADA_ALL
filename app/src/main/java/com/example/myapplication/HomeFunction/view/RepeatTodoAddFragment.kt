@@ -67,7 +67,6 @@ class RepeatTodoAddFragment : Fragment() {
             if(_argsArrayEdit!![2] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
-                binding.tvRepeatNo.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
                 binding.tvHomeRepeatStartday.text = _argsArrayEdit!![5]
                 binding.tvHomeRepeatEndday.text = _argsArrayEdit!![6]
             }
@@ -106,16 +105,9 @@ class RepeatTodoAddFragment : Fragment() {
             }
         }
 
-        binding.tvRepeatNo.setOnClickListener {
-            binding.tvRepeatNo.setBackgroundResource(R.drawable.home_repeat_selected_background)
-            binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
-            binding.tvRepeatRepeat.text = binding.tvRepeatNo.text
-            //시작일, 종료일 gone?
-        }
 
         binding.tvRepeatEveryday.setOnClickListener {
             binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
-            binding.tvRepeatNo.setBackgroundResource(R.drawable.home_reapeat_unselected_background)
             binding.tvRepeatRepeat.text = binding.tvRepeatEveryday.text
         }
 

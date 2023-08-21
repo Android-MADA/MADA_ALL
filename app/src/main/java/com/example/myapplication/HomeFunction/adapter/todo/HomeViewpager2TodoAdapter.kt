@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -61,24 +62,33 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
 
         if(dataSet.isNotEmpty()){
 
-            //checkbox value change
-            //카테고리 아이디에 따라 다르게 넣기 -> 동적으로 변화해서...따로 livedata나 다른 서버 연결 하고서 다듬어야 될 듯..
+
             var cbColor = R.drawable.home_checkbox1
-            when(dataSet[position].category.categoryName){
-                "약속" -> {cbColor = R.drawable.home_checkbox1}
-                "2" -> {cbColor = R.drawable.home_checkbox2}
-                "3" -> {cbColor = R.drawable.home_checkbox3}
-                "4" -> {cbColor = R.drawable.home_checkbox4}
-                "운동" -> {cbColor = R.drawable.home_checkbox5}
-                "공부" -> {cbColor = R.drawable.home_checkbox6}
-                "7" -> {cbColor = R.drawable.home_checkbox7}
-                else -> {cbColor = R.drawable.home_checkbox6}
+
+            when(dataSet[position].category.color){
+                "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
+                "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
+                "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
+                "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
+                "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
+                "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
+                "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
+                "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
+                "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
+                "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
+                "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
+                else -> {cbColor = R.drawable.home_checkbox12}
 
             }
+
             holder.todoCheckBox.setBackgroundResource(cbColor)
             //menu창 누르면 메뉴창 오픈, 각 메뉴 별로 행동 설정
             holder.tvTodo.text = dataSet[position].todoName
             holder.todoCheckBox.isChecked = dataSet[position].complete
+
+            if(dataSet[position].repeat != "N"){
+                holder.todoMenu.isGone = true
+            }
 
             holder.todoMenu.setOnClickListener {
                 val popup = PopupMenu(holder.itemView.context, it)
@@ -99,28 +109,28 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                 popup.show()
             }
 
-            holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                dataSet[position].complete = buttonView.isChecked
-
-                if(isChecked){
-                    if(completeFlag){
-                        var todoMove = dataSet[position]
-                        dataSet.removeAt(position)
-                        dataSet.add(todoMove)
-                    }
-                }
-                else {
-                    if(completeFlag){
-                        var todoMove = dataSet[position]
-                        dataSet.removeAt(position)
-                        dataSet.add(0, todoMove)
-                    }
-
-                }
-
-                Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].complete}")
-                itemClickListener.onClick(buttonView, position, dataSet)
-            }
+//            holder.todoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+//                dataSet[position].complete = buttonView.isChecked
+//
+//                if(isChecked){
+//                    if(completeFlag){
+//                        var todoMove = dataSet[position]
+//                        dataSet.removeAt(position)
+//                        dataSet.add(todoMove)
+//                    }
+//                }
+//                else {
+//                    if(completeFlag){
+//                        var todoMove = dataSet[position]
+//                        dataSet.removeAt(position)
+//                        dataSet.add(0, todoMove)
+//                    }
+//
+//                }
+//
+//                Log.d("ch확인", "${dataSet[position].todoName} : ${dataSet[position].complete}")
+//                itemClickListener.onClick(buttonView, position, dataSet)
+//            }
 
             holder.edtTodo.setOnKeyListener { view, keyCode, event ->
                 // Enter Key Action
