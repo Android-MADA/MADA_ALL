@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,17 +17,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.FragMyData
-import com.example.myapplication.MyFuction.Model.MyChangeNicknameData2
-import com.example.myapplication.MyFuction.Model.MyGetNoticesData
-import com.example.myapplication.MyFuction.Model.MyGetProfileData
 import com.example.myapplication.MyFuction.MyListAdapter
 import com.example.myapplication.MyFuction.MyListItem
 import com.example.myapplication.MyFuction.MyLogoutPopupActivity
 import com.example.myapplication.MyFuction.MyNoticeActivity
-import com.example.myapplication.MyFuction.MyNoticeSetActivity
+import com.example.myapplication.MyFuction.MyAlarmActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
 import com.example.myapplication.MyFuction.MyRecordDayActivity
@@ -36,8 +32,8 @@ import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
-import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -65,14 +61,16 @@ class FragMy : Fragment() {
             startActivity(intent)
         }
 
+        getCustomChar()
+
         // 리스트
         val MyList = arrayListOf (
             MyListItem("프로필 편집", MyProfileActivity::class.java),
             MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림", MyNoticeSetActivity::class.java),
+            MyListItem("알림", MyAlarmActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", Splash2Activity::class.java),
+            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 
@@ -114,9 +112,9 @@ class FragMy : Fragment() {
                     Log.d("selectfragMy 성공", response.body().toString())
                     if (response.body()!!.data.subscribe == true) binding.userType.text = "프리미엄 유저"
                     else binding.userType.text = "일반 유저"
-                    binding.myNickname.text = "안녕하세요"+"${response.body()!!.data.nickname}"+"님!"
-                    binding.sayingContent.text = response.body()!!.data.saying.content
-                    binding.sayingSayer.text = response.body()!!.data.saying.sayer
+                    binding.myNickname.text = "안녕하세요"+" ${response.body()!!.data.nickname}"+"님!"
+                    binding.sayingContent.text = response.body()!!.data.saying[0].content
+                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
                     Log.d("selectfragMy 실패", response.body().toString())
                 }
@@ -127,9 +125,53 @@ class FragMy : Fragment() {
             }
         })
 
+
+
         binding.rvMyitem.addItemDecoration(dividerItemDecoration)
         return binding.root
 
     }
-
+    // 캐릭터 커스텀 불러오기
+    fun getCustomChar() {
+        val call2 = api.characterRequest(token)
+        call2.enqueue(object : Callback<CharacterResponse> {
+            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                //arrays.add(data)
+                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                if(data.itemType=="color") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.myRamdi)
+                                } else if(data.itemType=="set") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgMyCloth)
+                                } else if(data.itemType=="item") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgMyItem)
+                                }
+                                // ...
+                            }
+                        } else {
+                            //Log.d("2221","${response.code()}")
+                        }
+                    } else {
+                        //Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 }

@@ -43,10 +43,10 @@ class MyProfileNickActivity : AppCompatActivity() {
                     val responseCode = response.code()
 
                     if(response.isSuccessful){
-                        Log.d("닉네임을 ${response.body()!!.data.nickname}으로 변경 성공", "Response Code: $responseCode")
+                        Log.d("닉네임을 ${response.body()?.data!!.nickname}으로 변경 성공", "Response Code: $responseCode")
                     }
                     else{
-                        Log.d("닉네임을 ${response.body()!!.data.nickname}으로 변경 실패", "Response Code: $responseCode")
+                        Log.d("닉네임을 ${response.body()?.data!!.nickname}으로 변경 실패", "Response Code: $responseCode")
                     }
                 }
                 override fun onFailure(call: Call<MyChangeNicknameData>, t: Throwable) {

@@ -1,5 +1,6 @@
 package com.example.myapplication.MyFuction
 
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.MyFuction.Model.FragMyData
 import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
@@ -68,6 +69,12 @@ interface RetrofitServiceMy {
     @PATCH("/user/subscribe")
     fun setPremium(@Header("Authorization") token: String?
     ): Call<MyPremiumData>
+
+
+    // 커스텀 캐릭터
+    @GET("/api/custom/")
+    fun characterRequest(@Header("Authorization") token : String?
+    ) : Call<CharacterResponse>
 
 
 

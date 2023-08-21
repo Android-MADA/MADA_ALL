@@ -6,7 +6,7 @@ data class FragMyData(
 data class FragMyData2(
     val subscribe: Boolean,
     val nickname: String,
-    val saying: MySayingData,
+    val saying: ArrayList<MySayingData>,
 )
 data class MySayingData(
     val id:Int,
