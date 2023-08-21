@@ -14,6 +14,7 @@ import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,10 +28,14 @@ class custom_item : Fragment() {
 
     private var imageChangeListener: OnItemImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
+
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdE12X0lfS3VlbFYwTWZJUUVfZll3ZTdic2tYc1Yza28zdktXeTF1OXFVIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NDQ2MCwiZXhwIjoxNjkyNDAwNDYwfQ.nwLaHsVxDdk95Q2hSTxr0j4sbg1Kv5AUhEnEDmFXGn0GiiWDRkSI4Op8WE6nqIoDwJcgMElRvVb5pHTWBVxMww"
+
+    val token = MyWebviewActivity.prefs.getString("token","")
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is OnClothImageChangeListener) {
