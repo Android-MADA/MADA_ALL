@@ -102,7 +102,7 @@ class HomeViewModel : ViewModel() {
         adapater.notifyDataSetChanged()
     }
 
-    fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View) = viewModelScope.launch {
+    fun patchTodo(todoId : Int, data : PatchRequestTodo, cateId : Int, todoPosition : Int,  view : View?) = viewModelScope.launch {
         api.editTodo(userToken, todoId, data)
         Log.d("todo patch", "todo 변경 확인")
         _cateTodoList.value!![cateId][todoPosition].todoName = data.todoName
@@ -111,7 +111,9 @@ class HomeViewModel : ViewModel() {
         _cateTodoList.value!![cateId][todoPosition].endRepeatDate = data.endRepeatDate
         _cateTodoList.value!![cateId][todoPosition].repeatWeek = data.repeatWeek
         _cateTodoList.value!![cateId][todoPosition].repeatMonth = data.repeatMonth
-        Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+        if(view != null){
+            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+        }
     }
 
     //카테고리 리스트

@@ -44,12 +44,7 @@ class HomeViewpagerTodoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.home_fragment_viewpager_todo,
-            container,
-            false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_viewpager_todo, container, false)
         return binding.root
     }
 
@@ -119,7 +114,7 @@ class HomeViewpagerTodoFragment : Fragment() {
             override fun onClick(
                 v: View,
                 position: Int,
-                cate: String,
+                cate: Int,
                 edt: EditText,
                 layout: LinearLayout
             ) {
@@ -137,7 +132,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                             if(response.isSuccessful){
                                 Log.d("todo post", response.body()!!.data.toString())
                                 viewModel.addTodo(position, response.body()!!.data.Todo)
-                                cateAdapter!!.notifyDataSetChanged()
+                                binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
                             }
                             else {
                                 Log.d("todo post", "안드 쪽 오류")
@@ -158,8 +153,8 @@ class HomeViewpagerTodoFragment : Fragment() {
                             "viewpagerTodo",
                             "catetodo변경 확인 ${viewModel.cateTodoList.toString()}"
                         )
-                        viewModel.updateCompleteTodo()
-                        viewModel.updateTodoNum()
+                        //viewModel.updateCompleteTodo()
+                        //viewModel.updateTodoNum()
                     })
 
                 }

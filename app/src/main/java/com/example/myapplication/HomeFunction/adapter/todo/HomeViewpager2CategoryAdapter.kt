@@ -62,6 +62,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
             if(cateTodoSet!![position].isNotEmpty()){
 
                 repeatAdapter = HomeViewpager2TodoAdapter()
+                repeatAdapter!!.cateIndex = position
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.viewModel = viewModel
