@@ -158,7 +158,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        if (printId in 1..9) {
+        /*if (printId in 1..9) {
             setImageViewWithFilePath(binding.imgCustomBackground, printfilePath)
             Log.d("background", "${printId} ${printfilePath}")
         }
@@ -173,7 +173,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         if (printId in 39..47) {
             setImageViewWithFilePath(binding.imgCustomCloth, printfilePath)
             Log.d("imgCustomCloth", "${printId} ${printfilePath}")
-        }
+        }*/
 
 
 
@@ -301,18 +301,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 temdata.selectedClothButtonInfo?.serverID,
                 temdata.selectedItemButtonInfo?.serverID,
                 temdata.selectedBackgroundButtonInfo?.serverID
-            ).filterNotNull().filter { it != 900 && it != 800 && it != 700 && it != 0 }
-            /*if (temdata.selectedColorButtonInfo?.serverID != 0){
-            }
-            if (temdata.selectedClothButtonInfo?.serverID != 900){
-                patchCustomItemChange(temdata.selectedClothButtonInfo!!.serverID)
-            }
-            if (temdata.selectedItemButtonInfo?.serverID != 800){
-                patchCustomItemChange(temdata.selectedItemButtonInfo!!.serverID)
-            }
-            if (temdata.selectedBackgroundButtonInfo?.serverID != 700){
-                patchCustomItemChange(temdata.selectedBackgroundButtonInfo!!.serverID)
-            }*/
+            ).filterNotNull().filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null}
             patchCustomItemChange(itemIds)
             unsavedChanges = false
         }
@@ -334,6 +323,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
         custom_save = false
+        Log.d("customcolorbtncheck", "${colorbuttonInfo.selectedImageResource}")
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
         unsavedChanges = true
@@ -393,7 +383,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
 
-        /*val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -415,10 +405,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     }
                     true
                 }
-                // Handle other menu items
                 else -> false
             }
-        }*/
+        }
     }
 
     override fun onResetButtonClicked() {
@@ -436,16 +425,40 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private fun getCustomPrint() {
         val call: Call<customPrintDATA> = service.customPrint(token)
-
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
                 val responseCode = response.code()
+                val datas = printInfo?.data
                 printInfo?.data?.forEachIndexed { index, item ->
                     printId = item.id
                     printfilePath = item.filePath
-                    Log.d("getCustomPrint", "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}")
+                    Log.d(
+                        "getCustomPrint",
+                        "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
+                    )
                     Log.d("patchCustomItemChange", "Response Code: $responseCode")
+                }
+                if (datas != null) {
+                    for (data in datas) {
+                        if (data.itemType == "color") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.customRamdi)
+                        } else if (data.itemType == "set") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomCloth)
+                        } else if (data.itemType == "item") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomItem)
+                        } else if (data.itemType == "background") {
+                            Picasso.get()
+                                .load(data.filePath)
+                                .into(binding.imgCustomBackground)
+                        }
+                    }
                 }
             }
 
