@@ -175,7 +175,7 @@ class custom_item : Fragment() {
 
     fun onItemButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_item_basic -> ButtonInfo(clickedButton.id, 0, R.drawable.custom_empty)
+            R.id.btn_item_basic -> ButtonInfo(clickedButton.id, 800, R.drawable.custom_empty)
             R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, 22,R.drawable.g_nomal)
             R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, 30, R.drawable.hat_ber)
             R.id.btn_item_hat_grad -> ButtonInfo(clickedButton.id, 33, R.drawable.hat_grad)

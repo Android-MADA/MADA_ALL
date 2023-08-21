@@ -136,7 +136,7 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 0, R.drawable.custom_empty)
+            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 700, R.drawable.custom_empty)
             R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, 1, R.drawable.back_brid)
             R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, 3, R.drawable.back_n)
             R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, 8, R.drawable.back_win)
