@@ -92,16 +92,8 @@ class custom_cloth() : Fragment() {
 
     fun onImageButtonClick(clickedButton: ImageButton) {
         val prevSelectedButton = selectedButton
-
-        if (clickedButton == prevSelectedButton) {
-            // If the same button is clicked again, deselect it
-            clickedButton.setImageResource(getUnselectedImageResource(clickedButton))
-            selectedButton = null
-        } else {
-            // Deselect the previously selected button (if any)
+        if (prevSelectedButton != clickedButton) {
             prevSelectedButton?.setImageResource(getUnselectedImageResource(prevSelectedButton))
-
-            // Select the newly clicked button
             clickedButton.setImageResource(getSelectedImageResource(clickedButton))
             selectedButton = clickedButton
         }
@@ -156,14 +148,8 @@ class custom_cloth() : Fragment() {
             R.id.btn_cloth_astronauts -> ButtonInfo(clickedButton.id, 39,R.drawable.set_astronauts,)
             R.id.btn_cloth_zzim -> ButtonInfo(clickedButton.id, 47, R.drawable.set_zzim)
             R.id.btn_cloth_hanbokF -> ButtonInfo(clickedButton.id, 42,R.drawable.set_hanbokf)
-            R.id.btn_cloth_hanbokM -> ButtonInfo(
-                clickedButton.id,43,
-                R.drawable.set_hanbokm
-            )
-            R.id.btn_cloth_snowman -> ButtonInfo(
-                clickedButton.id,45,
-                R.drawable.set_snowman
-            )
+            R.id.btn_cloth_hanbokM -> ButtonInfo(clickedButton.id,43, R.drawable.set_hanbokm)
+            R.id.btn_cloth_snowman -> ButtonInfo(clickedButton.id,45, R.drawable.set_snowman)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
