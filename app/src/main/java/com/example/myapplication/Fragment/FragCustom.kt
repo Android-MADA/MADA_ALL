@@ -147,7 +147,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         getCustomPrint()
-        postcustomItemBuy(7)
+        postcustomItemBuy(8)
 
 
         val savedData = viewModel.getSavedButtonInfo()
@@ -300,21 +300,30 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
-
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
-            val temdata = getSelectedButtonInfo()
+            var temdata = getSelectedButtonInfo()
             Log.d(
                 "Savedata",
                 "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}"
             )
-            val itemIds = listOf(
-                temdata.selectedColorButtonInfo?.serverID,
-                temdata.selectedClothButtonInfo?.serverID,
-                temdata.selectedItemButtonInfo?.serverID,
-                temdata.selectedBackgroundButtonInfo?.serverID
-            ).filterNotNull()
-                .filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null }
+            val itemIds: List<Int> = if (temdata.selectedColorButtonInfo?.serverID == null) {
+                listOf(
+                    10,
+                    temdata.selectedClothButtonInfo?.serverID,
+                    temdata.selectedItemButtonInfo?.serverID,
+                    temdata.selectedBackgroundButtonInfo?.serverID
+                ).filterNotNull()
+                    .filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null }
+            } else {
+                listOf(
+                    temdata.selectedColorButtonInfo?.serverID,
+                    temdata.selectedClothButtonInfo?.serverID,
+                    temdata.selectedItemButtonInfo?.serverID,
+                    temdata.selectedBackgroundButtonInfo?.serverID
+                ).filterNotNull()
+                    .filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null }
+            }
             patchCustomItemChange(itemIds)
             unsavedChanges = false
         }

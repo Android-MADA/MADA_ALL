@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
+import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -172,14 +174,22 @@ class custom_color : Fragment() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(call: Call<customItemCheckDATA>, response: Response<customItemCheckDATA>) {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.forEachIndexed { index, item ->
-                        Log.d("getCustomItemCheckColor", "Item $index - id: ${item.id} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}")
-                    }
+                    val responseCode = response.code()
+                    val datas = checkInfo?.data?.itemList
+                    datas?.forEachIndexed { index, item ->
+                        Log.d(
+                            "getCustomItemCheckCloth",
+                            "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            )
+                        }
                 } else {
-                    Log.d("getCustomItemCheckColor", "Unsuccessful response: ${response.code()}")
+                    Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
             }
 
@@ -188,6 +198,8 @@ class custom_color : Fragment() {
             }
         })
     }
+
+
 
 
 
