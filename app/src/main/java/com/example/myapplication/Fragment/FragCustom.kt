@@ -47,6 +47,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.findNavController
@@ -190,17 +191,17 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val layoutParams = binding.CustomBottomSheet.layoutParams
-                layoutParams.height =
-                    400.dpToPx(requireContext())  // Set the desired height in pixels
-                binding.CustomBottomSheet.layoutParams = layoutParams
-
                 val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
+
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    val layoutParams = binding.CustomBottomSheet.layoutParams
+                    layoutParams.height = 400.dpToPx(requireContext())  // Set the desired height in pixels
+                    binding.CustomBottomSheet.layoutParams = layoutParams
+
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                } else {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
+
+                // Here you can add code specific to handling the selected tab if needed
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -208,17 +209,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-                val layoutParams = binding.CustomBottomSheet.layoutParams
-                layoutParams.height =
-                    400.dpToPx(requireContext())  // Set the desired height in pixels
-                binding.CustomBottomSheet.layoutParams = layoutParams
-
                 val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
+
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    val layoutParams = binding.CustomBottomSheet.layoutParams
+                    layoutParams.height = 400.dpToPx(requireContext())  // Set the desired height in pixels
+                    binding.CustomBottomSheet.layoutParams = layoutParams
+
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 } else {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
+
+                // Here you can add code specific to handling the reselected tab if needed
             }
         })
 
@@ -326,6 +329,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
             patchCustomItemChange(itemIds)
             unsavedChanges = false
+            Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
 
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
@@ -502,7 +506,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         "getCustomPrint",
                         "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
                     )
-                    Log.d("patchCustomItemChange", "Response Code: $responseCode")
+                    Log.d("getCustomPrint", "Response Code: $responseCode")
                 }
                 if (datas != null) {
                     for (item in datas) {
@@ -544,7 +548,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.d("error", t.message.toString())
+                Log.d("patchCustomItemChange", t.message.toString())
             }
         })
     }
