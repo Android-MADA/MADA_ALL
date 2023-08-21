@@ -48,10 +48,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.AppCompatButton
+import com.bumptech.glide.Glide
 import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -98,7 +102,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var backgroundFragment: custom_background? = null
     private var adapter: CustomBottomSheetViewPager? = null
 
-    private var changesMade = false
+    private var printId: Int = 0
+    private var printfilePath: String = "z"
+
+    private var unsavedChanges = false
+
 
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -119,6 +127,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         var selectedBackgroundButtonInfo: ButtonInfo?
     )
 
+    fun setImageViewWithFilePath(imageView: ImageView, filePath: String) {
+        try {
+            Picasso.get()
+                .load(filePath)
+                .into(imageView)
+        } catch (e: Exception) {
+            Log.e("Picasso Error", "Error loading image: ${e.message}")
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -131,13 +149,34 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
+
         getCustomPrint()
         postcustomItemBuy(7)
 
 
 
 
-        val savedData = viewModel.getSavedButtonInfo()
+        if (printId in 1..9) {
+            setImageViewWithFilePath(binding.imgCustomBackground, printfilePath)
+            Log.d("background", "${printId} ${printfilePath}")
+        }
+        if (printId in 10..18) {
+            setImageViewWithFilePath(binding.customRamdi, printfilePath)
+            Log.d("customRamdi", "${printId} ${printfilePath}")
+        }
+        if (printId in 19..38) {
+            setImageViewWithFilePath(binding.imgCustomItem, printfilePath)
+            Log.d("imgCustomItem", "${printId} ${printfilePath}")
+        }
+        if (printId in 39..47) {
+            setImageViewWithFilePath(binding.imgCustomCloth, printfilePath)
+            Log.d("imgCustomCloth", "${printId} ${printfilePath}")
+        }
+
+
+
+
+        /*val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
@@ -156,7 +195,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
             )
-        }
+        }*/
 
 
         /*val fragmentManager: FragmentManager = childFragmentManager
@@ -229,13 +268,13 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
         binding.btnCustomReset.setOnClickListener {
-            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 0, R.drawable.c_ramdi)
+            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             selectedColorButtonInfo = colorbtninfo
-            val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, 0, R.drawable.custom_empty)
+            val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             selectedClothButtonInfo = clothbtninfo
-            val itembtninfo = ButtonInfo(R.id.btn_item_basic, 0,R.drawable.custom_empty)
+            val itembtninfo = ButtonInfo(R.id.btn_item_basic, 800,R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
-            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 0,R.drawable.custom_empty)
+            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 700,R.drawable.custom_empty)
             selectedBackgroundButtonInfo = backgroundbtninfo
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
@@ -250,16 +289,37 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomSave.setOnClickListener {
-            patchCustomItemChange(3)
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
             val temdata = getSelectedButtonInfo()
             Log.d("Savedata", "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}")
+            if (temdata.selectedColorButtonInfo?.serverID != 0){
+                patchCustomItemChange(temdata.selectedColorButtonInfo!!.serverID)
+            }
+            if (temdata.selectedClothButtonInfo?.serverID != 900){
+                patchCustomItemChange(temdata.selectedClothButtonInfo!!.serverID)
+            }
+            if (temdata.selectedItemButtonInfo?.serverID != 800){
+                patchCustomItemChange(temdata.selectedItemButtonInfo!!.serverID)
+            }
+            if (temdata.selectedBackgroundButtonInfo?.serverID != 700){
+                patchCustomItemChange(temdata.selectedBackgroundButtonInfo!!.serverID)
+            }
+            unsavedChanges = false
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showBackConfirmationDialog()
+            }
+        })
+
 
 
         return view
     }
+
+
 
 
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
@@ -267,24 +327,28 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         custom_save = false
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
+        unsavedChanges = true
     }
 
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
         selectedClothButtonInfo = clothbuttonInfo
+        unsavedChanges = true
     }
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
+        unsavedChanges = true
     }
 
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
         selectedBackgroundButtonInfo = backgroundbuttonInfo
+        unsavedChanges = true
     }
 
     fun getSelectedButtonInfo(): selectedButtonInfo {
@@ -319,6 +383,33 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
+
+        /*val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.fragHome -> {
+                    if (unsavedChanges) {
+                        showBackConfirmationDialog()
+                    }
+                    true
+                }
+                R.id.fragCalendar -> {
+                    if (unsavedChanges) {
+                        showBackConfirmationDialog()
+                    }
+                    true
+                }
+                R.id.fragMy -> {
+                    if (unsavedChanges) {
+                        showBackConfirmationDialog()
+                    }
+                    true
+                }
+                // Handle other menu items
+                else -> false
+            }
+        }*/
     }
 
     override fun onResetButtonClicked() {
@@ -340,8 +431,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
+                val responseCode = response.code()
                 printInfo?.data?.forEachIndexed { index, item ->
+                    printId = item.id
+                    printfilePath = item.filePath
                     Log.d("getCustomPrint", "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}")
+                    Log.d("patchCustomItemChange", "Response Code: $responseCode")
                 }
             }
 
@@ -349,6 +444,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 Log.d("error", t.message.toString())
             }
         })
+
     }
 
 
@@ -397,33 +493,44 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     }
 
 
+    /*private fun showBackConfirmationDialog() {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Unsaved Changes")
+            .setMessage("You have unsaved changes. Are you sure you want to go back?")
+            .setPositiveButton("Discard") { _, _ ->
+                // Discard changes and navigate back
+                requireActivity().onBackPressed()
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        alertDialog.show()
+    }*/
+
+    private fun showBackConfirmationDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        val btnNo = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_no)
+        val btnYes = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_yes)
+
+        btnNo.setOnClickListener {
+            alertDialog.dismiss()
+            // Handle "No" button click if needed
+        }
+
+        btnYes.setOnClickListener {
+            alertDialog.dismiss()
+            requireActivity().onBackPressed()
+        }
+
+        alertDialog.show()
+    }
+
+
+
 
 }
 
-/* override fun onBackPressed() {
-    // if(var custom_save = false) {
-        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
-        val mBuilder = AlertDialog.Builder(requireContext())
-            .setView(mDialogView)
-            .create()
-
-        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        mBuilder.show()
-
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-        val deviceWidth = displayMetrics.widthPixels
-
-        val desiredRatio = 0.8f
-        val desiredWidth = (deviceWidth * desiredRatio).toInt()
-        mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-
-        val display = requireActivity().windowManager.defaultDisplay
-        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
-            mBuilder.dismiss()
-        })
-        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-            저장
-        }) */
