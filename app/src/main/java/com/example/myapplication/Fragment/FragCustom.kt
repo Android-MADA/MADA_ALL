@@ -58,12 +58,19 @@ import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
+import okhttp3.HttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PUT
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
+
+
+
 
 interface OnColorImageChangeListener {
     fun onColorButtonSelected(buttonInfo: ButtonInfo)
@@ -115,11 +122,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var alertDialog: AlertDialog
 
 
+    val baseUrl = "http://15.165.210.13:8080/"
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
     val token = MyWebviewActivity.prefs.getString("token", "")
+
+
+
+
 
 
     data class selectedButtonInfo(
@@ -148,7 +160,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         getCustomPrint()
-        postcustomItemBuy(8)
+        postcustomItemBuy(14)
 
 
         val savedData = viewModel.getSavedButtonInfo()
@@ -310,24 +322,40 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "Savedata",
                 "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}"
             )
-            val itemIds: List<Int> = if (temdata.selectedColorButtonInfo?.serverID == null) {
+            val itemIds: List<String> = if (temdata.selectedColorButtonInfo?.serverID == null) {
                 listOf(
-                    10,
-                    temdata.selectedClothButtonInfo?.serverID,
-                    temdata.selectedItemButtonInfo?.serverID,
-                    temdata.selectedBackgroundButtonInfo?.serverID
+                    "10",
+                    temdata.selectedClothButtonInfo?.serverID.toString(),
+                    temdata.selectedItemButtonInfo?.serverID.toString(),
+                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
                 ).filterNotNull()
-                    .filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null }
+                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
             } else {
                 listOf(
-                    temdata.selectedColorButtonInfo?.serverID,
-                    temdata.selectedClothButtonInfo?.serverID,
-                    temdata.selectedItemButtonInfo?.serverID,
-                    temdata.selectedBackgroundButtonInfo?.serverID
+                    temdata.selectedColorButtonInfo?.serverID.toString(),
+                    temdata.selectedClothButtonInfo?.serverID.toString(),
+                    temdata.selectedItemButtonInfo?.serverID.toString(),
+                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
                 ).filterNotNull()
-                    .filter { it != 900 && it != 800 && it != 700 && it != 0 && it != null }
+                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
             }
             patchCustomItemChange(itemIds)
+
+
+            val httpUrlBuilder = HttpUrl.Builder().scheme("http").host("15.165.210.13").port(8080)
+                .addPathSegments("api/custom/change")
+
+
+            itemIds.forEach { itemId ->
+                httpUrlBuilder.addQueryParameter("item_id", itemId)
+            }
+
+            val httpUrl = httpUrlBuilder.build()
+
+            Log.d("URL_Log", "Complete URL: ${httpUrl.toString()}")
+
+
+
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -538,13 +566,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     }
 
 
-    fun patchCustomItemChange(itemIds: List<Int>) {
+    fun patchCustomItemChange(itemIds: List<String>) {
         val call: Call<Void> = service.customItemChange(token, itemIds)
 
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val responseCode = response.code()
-                Log.d("patchCustomItemChange", "Response Code: $responseCode")
+                if (response.isSuccessful) {
+                    Log.d("patchCustomItemChange", "Response Code: $responseCode")
+                }
+                else{
+                    Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
+
+                }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
@@ -614,6 +648,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private fun showBackConfirmationDialog() {
         alertDialog.show()
     }
+
+
+
 
 }
 
