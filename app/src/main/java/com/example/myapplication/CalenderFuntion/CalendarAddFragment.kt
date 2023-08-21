@@ -496,7 +496,31 @@ class CalendarAddFragment : Fragment() {
         }
 
         binding.submitBtn.setOnClickListener {
-            if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())) {
+            if(binding.textTitle.text.toString()=="") {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = "일정 이름을 입력해 주십시오"
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+            }
+            else if(compareDates(nextSchedule.text.toString(),preSchedule.text.toString())) {
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)
@@ -551,9 +575,6 @@ class CalendarAddFragment : Fragment() {
                 }
                 else {
                     if (binding.switch2.isChecked) {
-                        binding.preScheldule2.text = "  오전 12:00  "
-                        binding.nextScheldule2.text = "  오전 12:00  "
-                    } else {
                         binding.preScheldule2.text = "  오전 12:00  "
                         binding.nextScheldule2.text = "  오전 12:00  "
                     }
@@ -664,12 +685,12 @@ class CalendarAddFragment : Fragment() {
         }
     }
     fun compareTimes(time1: String, time2: String): Boolean {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US")) // 수정된 형식
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US")) // 수정된 형식
         val calendar1 = Calendar.getInstance()
         val calendar2 = Calendar.getInstance()
 
-        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM")
-        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM")
+        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM").replace(" ","")
+        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar1.time = inputFormat.parse(time1Modified)
         calendar2.time = inputFormat.parse(time2Modified)
@@ -680,17 +701,17 @@ class CalendarAddFragment : Fragment() {
         val hour2 = calendar2.get(Calendar.HOUR_OF_DAY)
         val minute2 = calendar2.get(Calendar.MINUTE)
 
-        if (hour1 > hour2 || (hour1 == hour2 && minute1 > minute2)) {
+        if (hour1 > hour2 || (hour1 == hour2 && minute1 >= minute2)) {
             return true
         } else {
             return false
         }
     }
     fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale("en","US"))
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar.time = inputFormat.parse(timeModified)
 

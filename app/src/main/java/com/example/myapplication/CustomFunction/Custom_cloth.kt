@@ -107,9 +107,7 @@ class custom_cloth() : Fragment() {
             selectedButton = clickedButton
         }
     }
-    public fun resetCloth() {
-        selectedButton?.setImageResource(getUnselectedImageResource(selectedButton!!))
-    }
+
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
@@ -210,6 +208,9 @@ class custom_cloth() : Fragment() {
         checkInfo?.data?.forEach { item ->
             buttonLockMap[item.id] = !item.have
         }
+        for(data in buttonLockMap) {
+            Log.d("btb", data.toString())
+        }
         Log.d("initbtnlock","button lock init success")
         applyButtonLockStates()
     }
@@ -231,7 +232,7 @@ class custom_cloth() : Fragment() {
             button.isEnabled = !isLocked
             button.setImageResource(
                 if (isLocked) {
-                    // Use lock image for locked buttons
+                    Log.d("lock", buttonLockMap[buttonId].toString())
                     when (buttonId) {
                         R.id.btn_cloth_v -> R.drawable.set_v_lock
                         R.id.btn_cloth_astronauts -> R.drawable.set_astronauts_lock
@@ -243,6 +244,7 @@ class custom_cloth() : Fragment() {
                     }
                 } else {
                     // Use regular or unlocked image for enabled buttons
+                    Log.d("!lock", buttonLockMap[buttonId].toString())
                     when (buttonId) {
                         R.id.btn_cloth_v -> R.drawable.set_v_s
                         R.id.btn_cloth_astronauts -> R.drawable.set_astronauts_s

@@ -157,7 +157,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 else {
                     addCalendar(
                         CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
-                            ,"#E1E9F5","No","N" , "","10:00:00","11:00:00"))
+                            ,"#89A9D9","No","N" , "","10:00:00","11:00:00"))
                 }
                 mBuilder.dismiss()
             })

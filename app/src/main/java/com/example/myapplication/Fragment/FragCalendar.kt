@@ -212,7 +212,7 @@ class FragCalendar : Fragment(){
             dayList.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH,1)
             if(i==36&&curMon.toString()!=SimpleDateFormat("M", Locale.ENGLISH).format(date)) {
-                Log.d("breeeak","${SimpleDateFormat("M", Locale.ENGLISH).format(date)} ${curMon}")
+                //Log.d("breeeak","${SimpleDateFormat("M", Locale.ENGLISH).format(date)} ${curMon}")
                 break
             }
         }
@@ -281,7 +281,7 @@ class FragCalendar : Fragment(){
                                         -1,false,"${data.memo}","CAL",data.id)
                                     arrays.add(tmp)
                                 }
-                                Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
+                                //Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
                             }
                         }
                     }
@@ -309,7 +309,7 @@ class FragCalendar : Fragment(){
                                     "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                     -1,true,"${data.memo}","CAL",data.id)
                                 ddayDatas.add(tmp)
-                                Log.d("111","datas: ${data.name} ${data.color}")
+                                //Log.d("111","datas: ${data.name} ${data.color}")
                                 // ...
                             }
                         }
@@ -317,7 +317,7 @@ class FragCalendar : Fragment(){
 
                         for (i in 0 until min(ddayDatas.size, 3)) {
                             val color = ddayDatas[i].color
-                            Log.d("color",color)
+                            //Log.d("color",color)
                             val imageResource = when (color) {
                                 "#E1E9F5" -> R.drawable.calendar_ddayblue_smallbackground
                                 "#FFE7EB" -> R.drawable.calendar_ddaypink_smallbackground
@@ -526,11 +526,11 @@ class FragCalendar : Fragment(){
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
-                        val datas = apiResponse.datas
+                        val datas = apiResponse.data.datas
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)
-                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
                                 if(data.itemType=="color") {
                                     Picasso.get()
                                         .load(data.filePath)
@@ -569,8 +569,8 @@ class FragCalendar : Fragment(){
                     val responseBody = response.body()
                     if(responseBody!=null) {
                         //Log.d("del1",responseBody.datas.name.toString())
-                    }else
-                        Log.d("del2","${response.code()}")
+                    }
+                        //Log.d("del2","${response.code()}")
 
                 } else {
                     //Log.d("del3","itemType: ${response.code()} ${id} ")

@@ -48,7 +48,7 @@ class HomeTimetableFragment : Fragment() {
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
-    var today = "2023-08-18"
+    var today = "2023-06-01"
 
     var dataArray= ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
     override fun onCreate(savedInstanceState: Bundle?) {

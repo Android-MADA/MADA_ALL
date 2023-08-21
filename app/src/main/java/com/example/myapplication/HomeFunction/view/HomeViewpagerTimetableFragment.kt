@@ -68,7 +68,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
     val service = retrofit.create(HomeApi::class.java)
     var token = ""
 
-    var today = "2023-08-18"
+    var today = "2023-06-01"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -261,7 +261,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     bundle.putString("Token",token)
                     bundle.putString("today",today)
                     Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-                } else if(lastSelectedEntry>=0) {
+                } else if(lastSelectedEntry>=0&&lastSelectedEntry<900) {
                     val bundle = Bundle()
                     bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                     bundle.putSerializable("pieChartDataArray", pieChartDataArray)
