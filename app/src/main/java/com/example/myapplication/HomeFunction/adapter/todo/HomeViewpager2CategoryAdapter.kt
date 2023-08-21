@@ -68,15 +68,6 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 repeatAdapter!!.viewModel = viewModel
                 repeatAdapter!!.api = api
 
-//                repeatAdapter!!.setItemClickListener(object :
-//                    HomeViewpager2TodoAdapter.OnItemClickListener {
-//                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
-//                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
-//                        viewModel!!.updateCompleteTodo()
-//                        viewModel!!.updateTodoNum()
-//                    }
-//
-//                })
                 holder.todoRv.apply {
                     adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
