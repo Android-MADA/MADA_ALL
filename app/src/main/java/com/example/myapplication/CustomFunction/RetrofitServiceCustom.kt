@@ -12,6 +12,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface RetrofitServiceCustom {
 
@@ -28,9 +29,10 @@ interface RetrofitServiceCustom {
     fun customItemCheck(@Header("Authorization") token : String?, @Path("item_type") item_type : String
     ) : Call<customItemCheckDATA>
 
-    @PATCH("/api/custom/change/{item_id}/")
-    fun customItemChange(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
-    ) : Call<Void>
+
+
+    @PATCH("/api/custom/change/")
+    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Int>): Call<Void>
 
     @POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
