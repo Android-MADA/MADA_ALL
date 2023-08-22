@@ -46,6 +46,7 @@ class HomeTimetableFragment : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
     var token = ""
+    lateinit var today : String
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 

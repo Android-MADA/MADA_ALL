@@ -45,14 +45,17 @@ class HomeViewModel : ViewModel() {
         Log.d("HomeViewModel todo 값 확인", todo.toString())
         _todoList.value = todo.data.TodoList
         if(todo.data.TodoList.isNullOrEmpty() != true){
+////            _completeBottomFlag.value = todo.data.TodoList[0].endTodoBackSetting
+//            _completeBottomFlag.value = true
+//            _todoTopFlag.value = todo.data.TodoList[0].newTodoStartSetting
             changeStartDay(todo.data.TodoList[0].startTodoAtMonday)
-            _completeBottomFlag.value = todo.data.TodoList[0].endTodoBackSetting
         }
         userName = todo.data.nickname
         classifyTodo()
-        if(completeBottomFlag.value == true){
-            arrangeTodo()
-        }
+//        if(_completeBottomFlag.value == true){
+//            arrangeTodo()
+//            Log.d("completeBottom", todoCateList.toString())
+//        }
         updateTodoNum(null)
         updateCateTodoList()
         updateCompleteTodo(null)
@@ -379,7 +382,7 @@ class HomeViewModel : ViewModel() {
     }
 
     //새로운 투두 상단 표시 flag
-    private var _todoTopFlag = MutableLiveData<Boolean>(true)
+    private var _todoTopFlag = MutableLiveData<Boolean>(false)
     val todoTopFlag: LiveData<Boolean>
         get() = _todoTopFlag
 
@@ -389,8 +392,13 @@ class HomeViewModel : ViewModel() {
 
     //todo추가
     var todoId = 0
-    fun addTodo(position: Int, todo: Todo) {
-        _cateTodoList!!.value!![position].add(todo)
+    fun addTodo(position: Int, todo: Todo, flag : Boolean) {
+        if(flag == true){
+            _cateTodoList!!.value!![position].add(0, todo)
+        }
+        else{
+            _cateTodoList!!.value!![position].add(todo)
+        }
         updateTodoNum("add")
         //updateCompleteTodo("add")
     }
@@ -406,9 +414,9 @@ class HomeViewModel : ViewModel() {
     //flag에 따른 todo정렬
     fun arrangeTodo() {
         //catetodo 가져와서 각 array마다 complete 확인해서 변경...?
-        if (cateTodoList.value?.isEmpty() != true) {
-            for (i in cateTodoList.value!!) {
-                if (i.isNotEmpty()  || i.size > 1) {
+        if (todoCateList!!.isEmpty() != true) {
+            for (i in todoCateList!!) {
+                if (i.isNotEmpty()  && i.size > 1) {
                     for (j in 0..i.size!!.minus(1)) {
                         if (i[j].complete) {
                             var todoMove = i[j]
@@ -418,7 +426,9 @@ class HomeViewModel : ViewModel() {
                     }
                 }
             }
+            Log.d("arrangetodo", todoCateList.toString())
         }
+
     }
 
     //todo삭제
