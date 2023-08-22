@@ -136,7 +136,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 //                                viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!)
                                 viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!  )
                                 binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
-                                //투두 개수 업데이트
+
                             }
                             else {
                                 Log.d("todo post", "안드 쪽 오류")

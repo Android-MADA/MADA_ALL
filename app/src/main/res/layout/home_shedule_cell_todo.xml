@@ -7,17 +7,15 @@
     android:layout_marginVertical="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1">
+        android:layout_gravity="center">
 
 
         <ImageView
-
             android:id="@+id/catImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
             android:src="@drawable/home_ic_home_time"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
