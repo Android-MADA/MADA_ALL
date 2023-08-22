@@ -4,15 +4,19 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.navigation.fragment.findNavController
+import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.nickName
 import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData2
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
+import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MyProfileNickBinding
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class MyProfileNickActivity : AppCompatActivity() {
@@ -35,24 +39,7 @@ class MyProfileNickActivity : AppCompatActivity() {
             finish()
         }
         binding.myNickBtn.setOnClickListener {
-            api.changeNickname(token).enqueue(object : retrofit2.Callback<MyChangeNicknameData>{
-                override fun onResponse(
-                    call: Call<MyChangeNicknameData>,
-                    response: Response<MyChangeNicknameData>
-                ) {
-                    val responseCode = response.code()
-
-                    if(response.isSuccessful){
-                        Log.d("닉네임을 ${response.body()?.data!!.nickname}으로 변경 성공", "Response Code: $responseCode")
-                    }
-                    else{
-                        Log.d("닉네임을 ${response.body()?.data!!.nickname}으로 변경 실패", "Response Code: $responseCode")
-                    }
-                }
-                override fun onFailure(call: Call<MyChangeNicknameData>, t: Throwable) {
-                    Log.d("서버 오류", "닉네임 변경 실패")
-                }
-            })
+            changeNickname(binding.editNickname.text.toString())
 //            val intent = Intent(this, FragMy::class.java)
 //            startActivity(intent)
 //            finish()
@@ -63,5 +50,31 @@ class MyProfileNickActivity : AppCompatActivity() {
 
 
 
+
+
+    }
+
+    private fun changeNickname(nickName: String){
+        val call1 = api.changeNickname(token,nickName)
+
+        call1.enqueue(object : Callback<MyChangeNicknameData> {
+
+            override fun onResponse(call: Call<MyChangeNicknameData>, response: Response<MyChangeNicknameData>) {
+                val responseCode = response.code()
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        Log.d("닉네임 ${response.body()?.data!!.nickname}으로 변경 성공", "Response Code: $responseCode")
+                    }else
+                        Log.d("닉네임 ${response.body()?.data!!.nickname}으로 변경 실패", "Response Code: $responseCode")
+                } else {
+                    Log.d("닉네임 변경 실패","Response Code: ${response.code()} ")
+                }
+            }
+
+            override fun onFailure(call: Call<MyChangeNicknameData>, t: Throwable) {
+                Log.d("서버 오류","닉네임 변경 실패")
+            }
+        })
     }
 }
