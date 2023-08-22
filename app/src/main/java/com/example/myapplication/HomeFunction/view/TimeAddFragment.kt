@@ -57,11 +57,11 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today ="2023-06-01"
-    var today = viewModel.homeDate.value.toString()
+    var today = ""
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initColorArray()
@@ -72,7 +72,7 @@ class TimeAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
-        hideBottomNavigation(bottomFlag, activity)
+        hideBottomNavigation(bottomFlag,  requireActivity())
 
 
         return binding.root
@@ -104,7 +104,7 @@ class TimeAddFragment : Fragment() {
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
         viewpager = arguments?.getBoolean("viewpager")?: false
-        today = arguments?.getString("today")?: "2023-08-18"
+        today = arguments?.getString("today")?: "2023-06-01"
         token= arguments?.getString("Token")?: ""
         var id = 0
 
@@ -351,12 +351,14 @@ class TimeAddFragment : Fragment() {
 
         }
         binding.ivHomeAddTimeBack.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("today",today)
             if(viewpager) {
                 bottomFlag = false
                 findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
             }
             else
-                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
         }
         btnDelete.setOnClickListener {
             delTimeDatas(id)
@@ -416,12 +418,14 @@ class TimeAddFragment : Fragment() {
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
+                val bundle = Bundle()
+                bundle.putString("today",today)
                 if(viewpager) {
                     bottomFlag = false
                     findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                 }
                 else
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
@@ -441,12 +445,14 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
+                    val bundle = Bundle()
+                    bundle.putString("today",today)
                     if(viewpager) {
                         bottomFlag = false
                         findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                     }
                     else
-                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
@@ -469,11 +475,13 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
+                    val bundle = Bundle()
+                    bundle.putString("today",today)
                     if(viewpager) {
                         findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                     }
                     else
-                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }

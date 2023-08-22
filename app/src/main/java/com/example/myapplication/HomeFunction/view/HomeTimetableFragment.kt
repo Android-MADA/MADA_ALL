@@ -62,6 +62,7 @@ class HomeTimetableFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
         hideBottomNavigation(bottomFlag, activity)
         token = MyWebviewActivity.prefs.getString("token","")
+        today = arguments?.getString("today")?: "2023-06-01"
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
         val currentTime = Calendar.getInstance()
@@ -78,6 +79,7 @@ class HomeTimetableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.textHomeTimeName.text = today
 
         binding.ivHomeTimetableBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)

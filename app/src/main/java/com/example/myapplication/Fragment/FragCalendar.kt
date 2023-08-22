@@ -25,6 +25,7 @@ import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.CalendarData3
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
@@ -251,13 +252,13 @@ class FragCalendar : Fragment(){
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
         val call2 = service.monthCalRequest(token,year,month)
         var startMon = false
-        call2.enqueue(object : Callback<CalendarDatas> {
-            override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
+        call2.enqueue(object : Callback<CalendarData3> {
+            override fun onResponse(call2: Call<CalendarData3>, response: Response<CalendarData3>) {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
-                        val datas = apiResponse.datas
-                        startMon = apiResponse.startMon
+                        val datas = apiResponse.data.datas
+                        startMon = apiResponse.data.startMon
                         if(datas != null) {
                             for (data in datas) {
                                 val dura : Boolean
@@ -281,15 +282,15 @@ class FragCalendar : Fragment(){
                                         -1,false,"${data.memo}","CAL",data.id)
                                     arrays.add(tmp)
                                 }
-                                //Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
+                                Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
                             }
                         }
                     }
                 }
                 setMonthView(arrays,startMon)
             }
-            override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
-                //Log.d("444","itemType: ${t.message}")
+            override fun onFailure(call: Call<CalendarData3>, t: Throwable) {
+                Log.d("444","itemType: ${t.message}")
                 setMonthView(arrays,startMon)
             }
         })
