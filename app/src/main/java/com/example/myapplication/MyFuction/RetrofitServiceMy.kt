@@ -62,26 +62,27 @@ interface RetrofitServiceMy {
     fun myGetNotices(@Header("Authorization") token: String?
     ): Call<MyGetNoticesData>
 
-    // 화면 설정 저장 -> 미확인
-    @POST("/user/pageInfo")
-    fun mySetPage(@Header("Authorization") token: String?, @Body is_set: Boolean
-    ): Call<MySetPageData2>
-
     // 화면 설정 조회 -> 확인
     @GET("/user/pageInfo")
     fun myGetSettingPage(@Header("Authorization") token: String?
     ): Call<MySetPageData>
 
-    // 알림 설정 저장-> 미확인
-    @PATCH("/user/alarmInfo")
-    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm1: Boolean,
-                   @Body is_alarm2: Boolean, @Body is_alarm3: Boolean
-    ): Call<MyAlarmData2>
+    // 화면 설정 저장 -> 미확인
+    @POST("/user/pageInfo")
+    fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: Boolean
+    ): Call<MySetPageData>
 
     // 알림 설정 조회 -> 확인
     @GET("/user/alarmInfo")
     fun myGetAlarm(@Header("Authorization") token: String?
     ): Call<MyAlarmData>
+
+    // 알림 설정 저장-> 미확인
+    @PATCH("/user/alarmInfo")
+    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
+    ): Call<MyAlarmData>
+
+
 
     // 프리미엄 구독 저장-> 미확인
     @PATCH("/user/subscribe")

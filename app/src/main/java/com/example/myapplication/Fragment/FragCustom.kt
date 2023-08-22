@@ -618,21 +618,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-
-    /*private fun showBackConfirmationDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Unsaved Changes")
-            .setMessage("You have unsaved changes. Are you sure you want to go back?")
-            .setPositiveButton("Discard") { _, _ ->
-                // Discard changes and navigate back
-                requireActivity().onBackPressed()
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-
-        alertDialog.show()
-    }*/
-
     private fun navigateToSelectedFragment(itemId: Int) {
         if (unsavedChanges) {
             showBackConfirmationDialog()
