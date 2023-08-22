@@ -387,20 +387,10 @@ class FragCalendar : Fragment(){
                                 //mDialogView.findViewById<ImageButton>(R.id.plus).setImageResource(R.drawable.)
 
                             } else {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
+                                val bundle = Bundle()
+                                bundle.putString("Token",token)
+                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
 
-                                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                                    val bundle = Bundle()
-                                    bundle.putString("Token",token)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                })
                             }
                         }
                         binding.dday2.setOnClickListener {
@@ -442,19 +432,9 @@ class FragCalendar : Fragment(){
                                     mBuilder.dismiss()
                                 }
                             } else {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
-                                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                                    val bundle = Bundle()
-                                    bundle.putString("Token",token)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                })
+                                val bundle = Bundle()
+                                bundle.putString("Token",token)
+                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
                             }
 
                         }
@@ -497,19 +477,9 @@ class FragCalendar : Fragment(){
                                     mBuilder.dismiss()
                                 }
                             } else {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_blank, null)
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
-                                mDialogView.findViewById<AppCompatImageButton>(R.id.blank).setOnClickListener( {
-                                    val bundle = Bundle()
-                                    bundle.putString("Token",token)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                })
+                                val bundle = Bundle()
+                                bundle.putString("Token",token)
+                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
                             }
 
                         }
