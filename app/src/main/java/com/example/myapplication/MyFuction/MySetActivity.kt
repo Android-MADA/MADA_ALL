@@ -31,7 +31,7 @@ class MySetActivity : AppCompatActivity() {
         GetSetPage()
 
         binding.backBtn.setOnClickListener {
-            PatchSetPage(binding.mySetSwitch1.isChecked)
+            PostSetPage(binding.mySetSwitch1.isChecked)
             finish()
         }
     }
@@ -46,10 +46,16 @@ class MySetActivity : AppCompatActivity() {
                 val responseCode = response.code()
 
                 if (response.isSuccessful) {
-                    Log.d("GetSetPage 성공", "Response Code: $responseCode")
-                    binding.mySetSwitch1.isChecked = response.body()?.data!!.endTodobackSetting
-                    binding.mySetSwitch2.isChecked = response.body()?.data!!.newTodoStartSetting
-                    binding.mySetSwitch3.isChecked = response.body()?.data!!.startTodoAtMonday
+                    if (response != null){
+                        Log.d("GetSetPage 성공", "Response Code: $responseCode"+"")
+//                        binding.mySetSwitch1.isChecked = response.body()?.data!!.endTodobackSetting
+//                        binding.mySetSwitch2.isChecked = response.body()?.data!!.newTodoStartSetting
+//                        binding.mySetSwitch3.isChecked = response.body()?.data!!.startTodoAtMonday
+                    }
+                    else{
+                        Log.d("response null ", "Response Code: $responseCode")
+                    }
+
                 } else {
                     Log.d("GetSetPage 실패", "Response Code: $responseCode")
                 }
@@ -63,22 +69,22 @@ class MySetActivity : AppCompatActivity() {
 
 
     // 서버에 세팅 저장하기
-    private fun PatchSetPage(isSetting: Boolean) {
-        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySetPageData> {
+    private fun PostSetPage(isSetting: Boolean) {
+        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySetPageData2> {
             override fun onResponse(
-                call: Call<MySetPageData>,
-                response: Response<MySetPageData>
+                call: Call<MySetPageData2>,
+                response: Response<MySetPageData2>
             ) {
                 val responseCode = response.code()
 
                 if (response.isSuccessful) {
-                    Log.d("PatchSetPage 성공", "Response Code: $responseCode")
+                    Log.d("PostSetPage 성공", "Response Code: $responseCode")
                 } else {
-                    Log.d("PatchSetPage 실패", "Response Code: $responseCode")
+                    Log.d("PostSetPage 실패", "Response Code: $responseCode")
                 }
             }
-            override fun onFailure(call: Call<MySetPageData>, t: Throwable) {
-                Log.d("서버 오류", "PatchSetPage 실패")
+            override fun onFailure(call: Call<MySetPageData2>, t: Throwable) {
+                Log.d("서버 오류", "PostSetPage 실패")
             }
         })
     }

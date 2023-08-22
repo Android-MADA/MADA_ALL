@@ -68,9 +68,9 @@ interface RetrofitServiceMy {
     ): Call<MySetPageData>
 
     // 화면 설정 저장 -> 미확인
-    @POST("/user/pageInfo")
+    @POST("/user/pageInfo/change")
     fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: Boolean
-    ): Call<MySetPageData>
+    ): Call<MySetPageData2>
 
     // 알림 설정 조회 -> 확인
     @GET("/user/alarmInfo")
