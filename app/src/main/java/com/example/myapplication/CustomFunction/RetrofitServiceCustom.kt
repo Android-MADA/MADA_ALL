@@ -31,8 +31,8 @@ interface RetrofitServiceCustom {
 
 
 
-    @PATCH("/api/custom/change/")
-    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Int>): Call<Void>
+    @PATCH("/api/custom/change")
+    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<String>): Call<Void>
 
     @POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int
