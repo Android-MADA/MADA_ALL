@@ -407,8 +407,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             override fun onResponse(call: Call<customPrintDATA>, response: Response<customPrintDATA>) {
                 val printInfo = response.body()
                 val responseCode = response.code()
-                val datas = printInfo?.data
-                printInfo?.data?.forEachIndexed { index, item ->
+                val datas = printInfo?.data?.wearingItems
+                datas?.forEachIndexed { index, item ->
                     printId = item.id
                     printfilePath = item.filePath
                     Log.d(
@@ -531,6 +531,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
+        alertDialog.show()
+    }
 
 }
+
+
+}
+
 
