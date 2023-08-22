@@ -9,6 +9,8 @@ import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
+import com.example.myapplication.MyFuction.Model.MySettingData2
+import com.example.myapplication.MyFuction.Model.MySettingData3
 import com.example.myapplication.databinding.MySetBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -27,12 +29,16 @@ class MySetActivity : AppCompatActivity() {
         binding = MySetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        GetSetPage()
+        //GetSetPage()
 
         binding.backBtn.setOnClickListener {
-            PatchSetPage(binding.mySetSwitch1.isChecked)
-            PatchSetPage(binding.mySetSwitch2.isChecked)
-            PatchSetPage(binding.mySetSwitch3.isChecked)
+//            PatchSetPage(binding.mySetSwitch1.isChecked)
+//            PatchSetPage(binding.mySetSwitch2.isChecked)
+//            PatchSetPage(binding.mySetSwitch3.isChecked)
+
+            PatchSetPage(MySettingData2(true, true, true))
+
+
             finish()
         }
     }
@@ -49,9 +55,9 @@ class MySetActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     Log.d("GetSetPage 성공", response.body().toString())
-                    binding.mySetSwitch1.isChecked = response.body()!!.data.endTodobackString
-                    binding.mySetSwitch2.isChecked = response.body()!!.data.newTodoStartSetting
-                    binding.mySetSwitch3.isChecked = response.body()!!.data.startTodoAtMonday
+//                    binding.mySetSwitch1.isChecked = response.body()!!.data.endTodobackString
+//                    binding.mySetSwitch2.isChecked = response.body()!!.data.newTodoStartSetting
+//                    binding.mySetSwitch3.isChecked = response.body()!!.data.startTodoAtMonday
                 } else {
                     Log.d("GetSetPage 실패", response.body().toString())
                 }
@@ -64,22 +70,19 @@ class MySetActivity : AppCompatActivity() {
 
 
     // 서버에 알림 저장하기
-    private fun PatchSetPage(isSetting: Boolean){
-        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySetPageData2> {
+    private fun PatchSetPage(isSetting: MySettingData2){
+        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySettingData3> {
             override fun onResponse(
-                call: Call<MySetPageData2>,
-                response: Response<MySetPageData2>
+                call: Call<MySettingData3>,
+                response: Response<MySettingData3>
             ) {
-                val responseCode = response.code()
-                Log.d("PatchSetPage", "Response Code: $responseCode")
-
                 if (response.isSuccessful) {
                     Log.d("PatchSetPage 성공", response.body().toString())
                 } else {
                     Log.d("PatchSetPage 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MySetPageData2>, t: Throwable) {
+            override fun onFailure(call: Call<MySettingData3>, t: Throwable) {
                 Log.d("서버 오류", "PatchSetPage 실패")
             }
         })

@@ -26,6 +26,7 @@
         app:layout_constraintTop_toTopOf="@id/ic_repeat_category"
         app:layout_constraintBottom_toBottomOf="@id/ic_repeat_category"
         app:layout_constraintStart_toEndOf="@id/ic_repeat_category"
+
         />
     <ImageView
         android:id="@+id/btn_repeat_add_todo"

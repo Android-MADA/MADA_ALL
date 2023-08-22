@@ -117,7 +117,7 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, dataSet[position].id, holder.edtTodo, holder.todoAdd)
+                //itemClickListener.onClick(view, position, dataSet[position].id, holder.edtTodo, holder.todoAdd)
                 true
             }
 
