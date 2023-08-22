@@ -123,9 +123,19 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
                 viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(dataSet[position].todoName, dataSet[position].repeat, dataSet[position].repeatWeek, dataSet[position].repeatMonth, dataSet[position].startRepeatDate, dataSet[position].endRepeatDate, isChecked), cateIndex, position, null )
                 if(buttonView.isChecked == true){
                     viewModel!!.updateCompleteTodo("add")
+//                    if(completeFlag == true){
+//                        var completeTodo = dataSet[position]
+//                        dataSet.removeAt(position)
+//                        dataSet.add(completeTodo)
+//                    }
                 }
                 else if(buttonView.isChecked == false){
                     viewModel!!.updateCompleteTodo("delete")
+//                    if(completeFlag == true){
+//                        var completeTodo = dataSet[position]
+//                        dataSet.removeAt(position)
+//                        dataSet.add(0, completeTodo)
+//                    }
                 }
                 //patch, completenum
 

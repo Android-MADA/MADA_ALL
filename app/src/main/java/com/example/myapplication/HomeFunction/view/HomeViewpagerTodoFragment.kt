@@ -108,6 +108,7 @@ class HomeViewpagerTodoFragment : Fragment() {
         cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
         cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
         cateAdapter!!.viewModel = viewModel
+        cateAdapter!!.completeFlag = viewModel.completeBottomFlag.value!!
 
         cateAdapter!!.setItemClickListener(object :
             HomeViewpager2CategoryAdapter.OnItemClickListener {
