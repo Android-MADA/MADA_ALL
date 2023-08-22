@@ -84,6 +84,7 @@
                     app:tint="@color/sub2" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="15dp"
                     android:visibility="gone"
                     android:id="@+id/rv_home_time_color"
                     android:layout_width="match_parent"
@@ -107,9 +108,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+
                     android:id="@+id/iv_home_schedule_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/home_ic_home_time"
                     android:textSize="16sp"
@@ -119,8 +121,9 @@
                 <TextView
                     android:textColor="@color/black"
                     android:id="@+id/tv_home_time_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:text="  오전 10:00  "
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@id/iv_home_schedule_time"
@@ -131,17 +134,19 @@
                     android:textColor="@color/black"
                     android:id="@+id/tv_home_time_tilde"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:textSize="16sp"
                     android:text="    ~    "
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/tv_home_time_start"
                     app:layout_constraintTop_toTopOf="parent"
                     />
                 <TextView
                     android:textColor="@color/black"
                     android:id="@+id/tv_home_time_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:textSize="16sp"
                     android:text="  오전 11:00  "
                     app:layout_constraintStart_toEndOf="@id/tv_home_time_tilde"

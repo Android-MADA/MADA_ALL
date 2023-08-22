@@ -71,7 +71,6 @@ class MyRecordDayActivity : AppCompatActivity() {
         binding = MyRecordDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         token = MyWebviewActivity.prefs.getString("token","")
-
         binding.backBtn.setOnClickListener {
             finish()
         }
@@ -101,6 +100,7 @@ class MyRecordDayActivity : AppCompatActivity() {
             val intent = Intent(this, MyRecordWeekActivity::class.java)
             startActivity(intent)
         }
+
         binding.todayInfo.setOnClickListener {
             getTimeDatas(binding.todayInfo.text.toString())
             findRv(binding.todayInfo.text.toString())
@@ -116,7 +116,10 @@ class MyRecordDayActivity : AppCompatActivity() {
         // in rv 연결하기
 
         findRv(LocalDate.now().toString())
-
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val todayDate = Date()
+        val formattedDate = dateFormat.format(todayDate)
+        getTimeDatas(formattedDate)
 
     }
     private fun setMonthView() {
