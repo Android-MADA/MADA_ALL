@@ -60,30 +60,6 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
 
-        //서버연결 시작
-        /*
-        viewModel.getCategory(viewModel.userToken)
-        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
-        api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
-            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                Log.d("getTodo", response.isSuccessful.toString())
-            }
-
-            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                Log.d("getTodo", "todoGet 실패")
-            }
-
-        })
-        viewModel.todoList.observe(viewLifecycleOwner, Observer {
-            viewModel.classifyTodo()
-            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                Log.d("FragHome 서버", viewModel.cateTodoList.toString())
-            })
-        })*/
-
-        //viewModel.updateTodoNum()
-        //viewModel.updateCompleteTodo()
-
         return view
     }
 

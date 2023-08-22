@@ -71,7 +71,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/iv_home_round"
-                app:layout_constraintEnd_toStartOf="@id/iv_home_character"
+                app:layout_constraintEnd_toStartOf="@id/iv_home_ramdi"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_home_sentence">
 
@@ -134,24 +134,14 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
-                android:id="@+id/iv_home_character"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/home_character"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"
-                android:visibility="invisible"/>
-
-            <ImageView
                 android:id="@+id/iv_home_ramdi"
                 android:layout_width="145dp"
                 android:layout_height="181dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"
-                android:src="@drawable/calendar_character"
                 />
+
 
             <ImageView
                 android:id="@+id/iv_home_cloth"
@@ -160,13 +150,14 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"/>
+
             <ImageView
                 android:id="@+id/iv_home_item"
                 android:layout_width="145dp"
                 android:layout_height="181dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_home_sentence" />
 
             <TextView
                 android:id="@+id/tv_home_calendar"
@@ -177,7 +168,7 @@
                 android:textColor="@color/font"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/iv_home_character"
+                app:layout_constraintBottom_toBottomOf="@id/iv_home_ramdi"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

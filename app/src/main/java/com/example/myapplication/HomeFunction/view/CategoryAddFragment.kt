@@ -86,6 +86,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![2].toInt()))
             binding.edtHomeCategoryName.setText(argsArray!![1])
             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
+            colorAdapter.selecetedColor = argsArray!![3]
+            iconAdapter.selectedIcon = findIcon(argsArray!![2].toInt()).toString()
             // 수정버튼 활성화
             binding.btnHomeCateAddSave.text = "수정"
             //삭제버튼 활성화
