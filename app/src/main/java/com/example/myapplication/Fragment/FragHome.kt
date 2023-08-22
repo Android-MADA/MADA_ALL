@@ -83,8 +83,8 @@ class FragHome : Fragment() {
             })
         })*/
 
-        viewModel.updateTodoNum()
-        viewModel.updateCompleteTodo()
+        //viewModel.updateTodoNum()
+        //viewModel.updateCompleteTodo()
 
         return view
     }

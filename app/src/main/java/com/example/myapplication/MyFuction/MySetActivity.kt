@@ -32,6 +32,7 @@ class MySetActivity : AppCompatActivity() {
         binding.mySetSwitch2.isChecked  = false
         binding.mySetSwitch3.isChecked = true
 
+        /*
         api.setPage(token).enqueue(object : retrofit2.Callback<MySetPageData>{
             override fun onResponse(
                 call: Call<MySetPageData>,
@@ -58,5 +59,7 @@ class MySetActivity : AppCompatActivity() {
                 Log.d("서버 오류", "화면 설정 변경 실패")
             }
         })
+        */
+
     }
 }

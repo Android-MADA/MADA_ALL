@@ -2,7 +2,6 @@ package com.example.myapplication.MyFuction
 
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.MyFuction.Model.FragMyData
-import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MyGetNoticesData

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.databinding.MyAlarmBinding
 import retrofit2.Call
