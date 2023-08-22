@@ -103,7 +103,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        cateAdapter = HomeViewpager2CategoryAdapter()
+        cateAdapter = HomeViewpager2CategoryAdapter(null)
         cateAdapter!!.dataSet = viewModel.categoryList.value!!
         cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
         cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!

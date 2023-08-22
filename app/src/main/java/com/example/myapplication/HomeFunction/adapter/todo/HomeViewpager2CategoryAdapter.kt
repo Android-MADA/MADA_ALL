@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
-class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
+class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.Adapter<HomeViewpager2CategoryAdapter.viewHolder>(){
 
     lateinit var dataSet : ArrayList<Category>
     var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
@@ -61,7 +62,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
         if(cateTodoSet != null){
             if(cateTodoSet!![position].isNotEmpty()){
 
-                repeatAdapter = HomeViewpager2TodoAdapter()
+                repeatAdapter = HomeViewpager2TodoAdapter(flag)
                 repeatAdapter!!.cateIndex = position
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
@@ -76,6 +77,11 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
+
+        if(flag == "my"){
+            holder.addBtn.isInvisible = true
+        }
+
         holder.cateIcon.setImageResource(findIcon(dataSet[position].iconId))
         holder.cateTv.text = dataSet[position].categoryName
 

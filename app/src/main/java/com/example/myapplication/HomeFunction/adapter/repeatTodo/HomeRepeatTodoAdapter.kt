@@ -13,6 +13,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
-class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
+class HomeRepeatTodoAdapter (private var view : View?, private var flag : String? ) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
 
     lateinit var dataSet : ArrayList<repeatTodo>
     var topFlag = false
@@ -61,6 +62,9 @@ class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<Hom
 
         if(dataSet.isNotEmpty()){
             holder.tvTodo.text = dataSet[position].todoName
+            if(flag == "my"){
+                holder.todoMenu.isInvisible = true
+            }
 
             holder.todoMenu.setOnClickListener {
                 val popup = PopupMenu(holder.itemView.context, it)
@@ -81,7 +85,7 @@ class HomeRepeatTodoAdapter (private var view : View) : RecyclerView.Adapter<Hom
                             position.toString()
                         ))
 
-                        Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+                        Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
                     }
                     else{
                         val todoId = dataSet[position].id

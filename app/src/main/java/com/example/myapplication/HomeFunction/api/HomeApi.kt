@@ -34,6 +34,12 @@ interface HomeApi {
         @Path("date", encoded = true) date: String
     ): TodoList
 
+    @GET("/api/home/todo/date/{date}")
+    fun getAllMyTodo(
+        @Header("Authorization") token: String?,
+        @Path("date", encoded = true) date: String
+    ): Call<TodoList>
+
 
     //todo추가
 //    @POST("/api/home/todo")
@@ -101,6 +107,11 @@ interface HomeApi {
     suspend fun getCategory(
         @Header("Authorization") token : String?
     ): CategoryList1
+
+    @GET("/api/home/category")
+    fun getMyCategory(
+        @Header("Authorization") token : String?
+    ): Call<CategoryList1>
 
     //카테고리 추가 -> 확인 완
     @POST("/api/home/category")
