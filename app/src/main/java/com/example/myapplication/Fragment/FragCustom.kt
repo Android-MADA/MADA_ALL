@@ -51,6 +51,8 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
@@ -106,9 +108,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
 
+
     private var colorFragment: custom_color? = null
     private var clothFragment: custom_cloth? = null
+    private var itemFragment: custom_item? = null
     private var backgroundFragment: custom_background? = null
+
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
@@ -154,6 +159,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
         viewPager = binding.CustomBottomSheetViewPager
 
+        val colorFragment = custom_color()
+        val clothFragment = custom_cloth()
+        val itemFragment = custom_item()
+        val backgroundFragment = custom_background()
+
+
 
         customBottomSheet = binding.CustomBottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(customBottomSheet)
@@ -163,7 +174,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         postcustomItemBuy(14)
 
 
-        val savedData = viewModel.getSavedButtonInfo()
+        /*val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
@@ -182,7 +193,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
             )
-        }
+        }*/
 
 
         /*val fragmentManager: FragmentManager = childFragmentManager
@@ -294,21 +305,25 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
         binding.btnCustomReset.setOnClickListener {
-            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
+            /*val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             selectedColorButtonInfo = colorbtninfo
             val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             selectedClothButtonInfo = clothbtninfo
             val itembtninfo = ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
             val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
-            selectedBackgroundButtonInfo = backgroundbtninfo
+            selectedBackgroundButtonInfo = backgroundbtninfo*/
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
             binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
+            val color_resetinfo = true
+            val cloth_resetinfo = true
+            val item_resetinfo = true
+            val background_resetinfo = true
             onResetButtonClicked()
             getcustomReset()
-
+            getCustomPrint()
 
         }
 
@@ -339,6 +354,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 ).filterNotNull()
                     .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
             }
+
             patchCustomItemChange(itemIds)
 
 
@@ -375,7 +391,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         btnYes.setOnClickListener {
             alertDialog.dismiss()
-            requireActivity().supportFragmentManager.beginTransaction()
+            val navController = findNavController()
+            navController.navigate(R.id.fragHome)
+
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -460,18 +478,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
 
-        val bottomNavigationView =
-            view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        //이윤소의 생각: 여기서 바텀네비게이션이 제대로 안 만들어진 것 아니냐.
 
-        bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView?.setOnItemSelectedListener{ menuItem ->
+            Log.d("savebottom", bottomNavigationView.toString())
             if (unsavedChanges) {
                 showBackConfirmationDialog()
-                false // 사용자 확인 대화상자를 보여주기 위해 false 반환
+                false
             } else {
-                navigateToSelectedFragment(menuItem.itemId) // 변경사항 없으면 프래그먼트로 이동
+                navigateToSelectedFragment(menuItem.itemId)
                 true
             }
         }
+
 
         /*val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
@@ -636,9 +656,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         if (unsavedChanges) {
             showBackConfirmationDialog()
         } else {
-            val navController = requireActivity().findNavController(R.id.bottomNavigationView)
+            val navController = findNavController()
             when (itemId) {
-                R.id.fragHome -> navController.navigate(R.id.fragHome)
+                R.id.fragHome -> {
+                    /*FragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fl_con, fragHome)
+                        .commit()*/
+                    navController.navigate(R.id.fragHome)
+                }
                 R.id.fragCalendar -> navController.navigate(R.id.fragCalendar)
                 R.id.fragMy -> navController.navigate(R.id.fragMy)
             }

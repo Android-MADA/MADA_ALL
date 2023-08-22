@@ -71,6 +71,8 @@ class custom_cloth() : Fragment() {
         fragbinding = FragCustomBinding.inflate(inflater)
         getCustomItemCheck("set")
 
+
+
         binding.btnClothBasic.setOnClickListener {
             onImageButtonClick(binding.btnClothBasic)
             onClothButtonClick(it as ImageButton)
