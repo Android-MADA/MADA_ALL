@@ -60,33 +60,6 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
 
-        //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-        /*
-        viewModel.getCategory(viewModel.userToken)
-        //viewModel.getTodo(viewModel.userToken, "2023-08-16")
-        api.getAllTodo(viewModel.userToken, "2023-08-15").enqueue(object :Callback<TodoList>{
-            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                Log.d("getTodo", response.isSuccessful.toString())
-            }
-
-            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                Log.d("getTodo", "todoGet 실패")
-            }
-
-        })
-        viewModel.todoList.observe(viewLifecycleOwner, Observer {
-            viewModel.classifyTodo()
-            viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-                Log.d("FragHome 서버", viewModel.cateTodoList.toString())
-            })
-        })*/
-
-        //viewModel.updateTodoNum()
-        //viewModel.updateCompleteTodo()
-
         return view
     }
 
@@ -94,10 +67,11 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            binding.tvHomeUsername.text = "${viewModel.userName}님,"
 
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
+
+        viewModel.getUsername(binding.tvHomeUsername)
 
         val calendarLayout = binding.layoutCalendarviewHome
         binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -162,10 +136,9 @@ class FragHome : Fragment() {
 
 
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
             getCustomChar()
-            //viewModel.updateCateTodoList()
+            viewModel.getUsername(binding.tvHomeUsername)
         })
 
         viewModel.startDay.observe(viewLifecycleOwner, Observer{

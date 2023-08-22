@@ -4,6 +4,7 @@ package com.example.myapplication.HomeFunction.api
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
+import com.example.myapplication.HomeFunction.Model.HomeUserData1
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
@@ -33,6 +34,12 @@ interface HomeApi {
         @Header("Authorization") token: String?,
         @Path("date", encoded = true) date: String
     ): TodoList
+
+    @GET("/api/home/todo/date/{date}")
+    fun getAllMyTodo(
+        @Header("Authorization") token: String?,
+        @Path("date", encoded = true) date: String
+    ): Call<TodoList>
 
 
     //todo추가
@@ -102,6 +109,11 @@ interface HomeApi {
         @Header("Authorization") token : String?
     ): CategoryList1
 
+    @GET("/api/home/category")
+    fun getMyCategory(
+        @Header("Authorization") token : String?
+    ): Call<CategoryList1>
+
     //카테고리 추가 -> 확인 완
     @POST("/api/home/category")
     suspend fun postCategory(
@@ -134,4 +146,9 @@ interface HomeApi {
     fun getHomeRamdi(
         @Header("Authorization") token : String?
     ) : Call<HomeCharacData>
+
+    @GET("/my")
+    suspend fun getUsername(
+        @Header("Authorization") token : String?
+    ) : HomeUserData1
 }
