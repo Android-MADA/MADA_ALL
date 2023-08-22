@@ -59,6 +59,8 @@ data class CharacterResponse2 (
     @SerializedName("wearingItems") val datas: List<Item>
 )
 
+
+
 data class CharacterResponse (
     @SerializedName("data") val data: CharacterResponse2
 ) {

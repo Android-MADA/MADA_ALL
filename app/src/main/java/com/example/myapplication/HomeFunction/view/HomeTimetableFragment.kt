@@ -256,6 +256,7 @@ class HomeTimetableFragment : Fragment() {
                         bundle.putSerializable("pieChartData", pieChartDataArray[label.toInt()])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
                         bundle.putString("Token",token)
+                        bundle.putString("today",today)
                         Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
                     } else {
                         pieDataSet.selectionShift = 1f //하이라이트 크기

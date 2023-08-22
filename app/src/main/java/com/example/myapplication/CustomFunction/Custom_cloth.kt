@@ -130,10 +130,6 @@ class custom_cloth() : Fragment() {
     }
 
 
-    public fun resetCloth() {
-        selectedButton?.setImageResource(getUnselectedImageResource(selectedButton!!))
-    }
-
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
@@ -196,6 +192,7 @@ class custom_cloth() : Fragment() {
     }
 
     fun resetButtonCloth() {
+
         binding.btnClothBasic.setImageResource(R.drawable.custom_null)
         binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
         binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
