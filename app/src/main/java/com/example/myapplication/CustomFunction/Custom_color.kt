@@ -41,7 +41,6 @@ class custom_color : Fragment() {
 
     val token = MyWebviewActivity.prefs.getString("token","")
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 부모 프래그먼트로 캐스팅하여 인터페이스 객체를 가져옴
@@ -61,7 +60,6 @@ class custom_color : Fragment() {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
         getCustomItemCheck("color")
-
 
 
         binding.btnColorBasic.setOnClickListener{

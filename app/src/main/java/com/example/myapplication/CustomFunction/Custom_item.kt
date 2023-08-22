@@ -52,6 +52,10 @@ class custom_item : Fragment() {
         binding = CustomItemBinding.inflate(inflater, container, false)
         getCustomItemCheck("item")
 
+        /*val defaultButton = binding.btnItemBasic
+        onImageButtonClick(defaultButton)
+        onItemButtonClick(defaultButton)*/
+
 
         binding.btnItemBasic.setOnClickListener{
             onImageButtonClick(binding.btnItemBasic)
