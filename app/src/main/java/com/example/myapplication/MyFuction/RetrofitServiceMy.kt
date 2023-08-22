@@ -74,7 +74,8 @@ interface RetrofitServiceMy {
 
     // 알림 설정 저장-> 미확인
     @PATCH("/user/alarmInfo")
-    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm: Boolean
+    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm1: Boolean,
+                   @Body is_alarm2: Boolean, @Body is_alarm3: Boolean
     ): Call<MyAlarmData2>
 
     // 알림 설정 조회 -> 미확인
