@@ -82,14 +82,9 @@ interface RetrofitServiceMy {
     fun myGetAlarm(@Header("Authorization") token: String?
     ): Call<MyAlarmData>
 
-    // 프리미엄 설정 -> 미확인
+    // 프리미엄 구독 저장-> 미확인
     @PATCH("/user/subscribe")
-    fun setPremium(@Header("Authorization") token: String?
+    fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
-
-
-
-
-
 
 }
