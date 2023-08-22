@@ -91,10 +91,11 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            binding.tvHomeUsername.text = "${viewModel.userName}님,"
 
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
+
+        viewModel.getUsername(binding.tvHomeUsername)
 
         val calendarLayout = binding.layoutCalendarviewHome
         binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -159,11 +160,9 @@ class FragHome : Fragment() {
 
 
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
             getCustomChar()
-            binding.tvHomeUsername.text = "${viewModel.userName}님,"
-            //viewModel.updateCateTodoList()
+            viewModel.getUsername(binding.tvHomeUsername)
         })
 
         viewModel.startDay.observe(viewLifecycleOwner, Observer{

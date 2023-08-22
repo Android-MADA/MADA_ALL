@@ -4,6 +4,7 @@ package com.example.myapplication.HomeFunction.api
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
+import com.example.myapplication.HomeFunction.Model.HomeUserData1
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
@@ -145,4 +146,9 @@ interface HomeApi {
     fun getHomeRamdi(
         @Header("Authorization") token : String?
     ) : Call<HomeCharacData>
+
+    @GET("/my")
+    suspend fun getUsername(
+        @Header("Authorization") token : String?
+    ) : HomeUserData1
 }
