@@ -11,7 +11,6 @@ import com.example.myapplication.databinding.MySignup2Binding
 class MySignup2Activity : AppCompatActivity() {
 
     private lateinit var binding: MySignup2Binding
-    private var isButtonClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +18,6 @@ class MySignup2Activity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signup2Btn.setOnClickListener {
-            isButtonClicked = !isButtonClicked
-            binding.signup2Btn.setBackgroundResource(R.drawable.my_btn_ok)
-
             val intent = Intent(this@MySignup2Activity, MainActivity::class.java)
             startActivity(intent)
             finish()
