@@ -61,9 +61,6 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
         /*
         viewModel.getCategory(viewModel.userToken)
         //viewModel.getTodo(viewModel.userToken, "2023-08-16")
@@ -165,6 +162,7 @@ class FragHome : Fragment() {
             //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
             getCustomChar()
+            binding.tvHomeUsername.text = "${viewModel.userName}님,"
             //viewModel.updateCateTodoList()
         })
 
