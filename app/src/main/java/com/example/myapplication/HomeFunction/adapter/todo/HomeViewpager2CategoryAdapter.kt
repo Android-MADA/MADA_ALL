@@ -25,7 +25,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
     var repeatAdapter : HomeViewpager2TodoAdapter? = null
     var topFlag = false
     var viewModel : HomeViewModel? = null
-    //var completeFlag = false
+    var completeFlag = false
     var api : HomeApi? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
@@ -67,6 +67,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.viewModel = viewModel
                 repeatAdapter!!.api = api
+                repeatAdapter!!.completeFlag = completeFlag
 
                 holder.todoRv.apply {
                     adapter = repeatAdapter

@@ -1,5 +1,7 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.Dialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.util.Calendar
@@ -10,11 +12,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.example.myapplication.HomeFunction.HomeBackCustomDialog
+import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -26,11 +31,25 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoField
 
-class RepeatTodoAddFragment : Fragment() {
+class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var binding: FragmentRepeatTodoAddBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
+    private lateinit var backDialog: HomeBackCustomDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //할일 작성
+                customBackDialog()
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,6 +201,21 @@ class RepeatTodoAddFragment : Fragment() {
             else -> day
         }
         return repeatDay
+    }
+
+    private fun customBackDialog() {
+        backDialog = HomeBackCustomDialog(requireActivity(), this)
+        backDialog.show()
+    }
+
+    // 커스텀 다이얼로그에서 버튼 클릭 시
+    override fun onYesButtonClicked(dialog: Dialog, flag: String) {
+            Navigation.findNavController(requireView()).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+        dialog.dismiss()
+    }
+
+    override fun onNoButtonClicked(dialog: Dialog) {
+        dialog.dismiss()
     }
 
 
