@@ -71,7 +71,7 @@ class CalendarAddFragment : Fragment() {
     var dday ="N"
 
     var curColor ="#89A9D9"
-    var curDday ="N"
+    var curDday ='N'
     var curRepeat = "No"
     var id2 : Int = 0
     var ddayId : Int = -1
@@ -130,7 +130,8 @@ class CalendarAddFragment : Fragment() {
             binding.layoutColorSelector1.visibility = View.GONE
             binding.preScheldule.visibility = View.GONE
             binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-            curDday = "Y"
+            curColor = "#89A9D9"
+            curDday = 'Y'
         } else {
 
             binding.textDday.visibility= View.GONE
@@ -208,7 +209,8 @@ class CalendarAddFragment : Fragment() {
                 binding.layoutColorSelector1.visibility = View.GONE
                 binding.preScheldule.visibility = View.GONE
                 binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-                curDday = "Y"
+
+                curDday = 'Y'
             } else {
                 binding.textDday.visibility= View.GONE
                 binding.clockAndCycle.visibility = View.VISIBLE
@@ -216,9 +218,9 @@ class CalendarAddFragment : Fragment() {
                 binding.layoutColorSelector1.visibility = View.VISIBLE
                 binding.preScheldule.visibility = View.VISIBLE
                 binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
-                curDday = "N"
+                curDday = 'N'
             }
-
+            curColor ="#89A9D9"
         }
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
@@ -924,23 +926,31 @@ class CalendarAddFragment : Fragment() {
                                 } else {
                                     mBuilder.dismiss()
                                     deleteCalendar(ddayId)
-                                    addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                                        curColor,curRepeat,curDday,binding.textMemo.text.toString(),
-                                        timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
+                                    if(binding.submitBtn.text =="등록") {
+                                        addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                                            curColor,curRepeat,'Y',binding.textMemo.text.toString(),
+                                            timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
+                                    } else if(binding.submitBtn.text =="수정") {
+                                        //dasdasd
+                                        eidtCalendar(
+                                            CalendarData2(binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
+                                                curColor,curRepeat, 'Y',binding.textMemo.text.toString(),timeChange(binding.preScheldule2.text.toString()),
+                                                timeChange(binding.nextScheldule2.text.toString()) ), id2)
+                                    }
 
                                 }
                             })
                         } else {
                             if(binding.submitBtn.text =="등록") {
                                 addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                                    curColor,curRepeat,"Y",binding.textMemo.text.toString(),
+                                    curColor,curRepeat,'Y',binding.textMemo.text.toString(),
                                     timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ) )
 
                             } else if(binding.submitBtn.text =="수정"){
-                                //dasdasd
+                                Log.d("yyyyyy","이건가?")
                                 eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                                    curColor,curRepeat,"Y",binding.textMemo.text.toString(),
+                                    curColor,curRepeat,'Y',binding.textMemo.text.toString(),
                                     timeChange(binding.preScheldule2.text.toString()),timeChange(binding.nextScheldule2.text.toString()) ),id2 )
 
 
@@ -980,6 +990,4 @@ class CalendarAddFragment : Fragment() {
             }
         })
     }
-
-
 }

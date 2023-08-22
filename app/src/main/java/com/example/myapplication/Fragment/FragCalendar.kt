@@ -347,12 +347,12 @@ class FragCalendar : Fragment(){
                         binding.dday1.setOnClickListener {
                             if(ddayDatas.size>=1) {
                                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[0].color == "#E1E9F5") {
+                                if(ddayDatas[0].color == "#89A9D9") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
 
-                                } else if(ddayDatas[0].color == "#FFE7EB") {
+                                } else if(ddayDatas[0].color == "#F0768C") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[0].color == "#F5EED1"){
+                                } else if(ddayDatas[0].color == "#F8D141"){
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                                 }
                                 mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[0].title
@@ -406,11 +406,11 @@ class FragCalendar : Fragment(){
                         binding.dday2.setOnClickListener {
                             if(ddayDatas.size>=2) {
                                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[1].color == "#E1E9F5") {
+                                if(ddayDatas[1].color == "#89A9D9") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
                                 } else if(ddayDatas[1].color == "#F0768C") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[1].color == "#F5EED1"){
+                                } else if(ddayDatas[1].color == "#F8D141"){
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                                 }
                                 mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[1].title
@@ -461,11 +461,11 @@ class FragCalendar : Fragment(){
                         binding.dday3.setOnClickListener {
                             if(ddayDatas.size==3) {
                                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[2].color == "#E1E9F5") {
+                                if(ddayDatas[2].color == "#89A9D9") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
                                 } else if(ddayDatas[2].color == "#F0768C") {
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[2].color == "#F5EED1"){
+                                } else if(ddayDatas[2].color == "#F8D141"){
                                     mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
                                 }
                                 mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[2].title
