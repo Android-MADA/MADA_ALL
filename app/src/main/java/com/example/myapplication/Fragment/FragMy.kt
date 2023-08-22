@@ -4,10 +4,10 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,19 +17,24 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MyFuction.Model.FragMyData
 import com.example.myapplication.MyFuction.MyListAdapter
 import com.example.myapplication.MyFuction.MyListItem
 import com.example.myapplication.MyFuction.MyLogoutPopupActivity
 import com.example.myapplication.MyFuction.MyNoticeActivity
-import com.example.myapplication.MyFuction.MyNoticeSetActivity
+import com.example.myapplication.MyFuction.MyAlarmActivity
 import com.example.myapplication.MyFuction.MyPremiumActivity
 import com.example.myapplication.MyFuction.MyProfileActivity
 import com.example.myapplication.MyFuction.MyRecordDayActivity
+import com.example.myapplication.MyFuction.MyRecordWeekActivity
 import com.example.myapplication.MyFuction.MySetActivity
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
-import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -37,10 +42,13 @@ class FragMy : Fragment() {
 
     private lateinit var binding: FragMyBinding
 
+    //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(RetrofitServiceMy::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
+
+    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    val token = MyWebviewActivity.prefs.getString("token", "")
+
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -54,11 +62,13 @@ class FragMy : Fragment() {
             startActivity(intent)
         }
 
+        getCustomChar()
+
         // 리스트
-        val MyList = arrayListOf(
-            MyListItem("프로필 편집",  MyProfileActivity::class.java),
+        val MyList = arrayListOf (
+            MyListItem("프로필 편집", MyProfileActivity::class.java),
             MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림", MyNoticeSetActivity::class.java),
+            MyListItem("알림", MyAlarmActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
             MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
@@ -89,10 +99,80 @@ class FragMy : Fragment() {
                 }
             }
         }
-        binding.rvMyitem.addItemDecoration(dividerItemDecoration)
 
+        // 서버 데이터 연결
+        api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
+            override fun onResponse(
+                call: Call<FragMyData>,
+                response: Response<FragMyData>
+            ) {
+                val responseCode = response.code()
+                Log.d("selectfragMy", "Response Code: $responseCode")
+
+                if (response.isSuccessful) {
+                    Log.d("selectfragMy 성공", response.body().toString())
+                    if (response.body()!!.data.subscribe == true) binding.userType.text = "프리미엄 유저"
+                    else binding.userType.text = "일반 유저"
+                    binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
+                    binding.sayingContent.text = response.body()!!.data.saying[0].content
+                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
+                } else {
+                    Log.d("selectfragMy 실패", response.body().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Log.d("서버 오류", "selectfragMy 실패")
+            }
+        })
+
+
+
+        binding.rvMyitem.addItemDecoration(dividerItemDecoration)
         return binding.root
 
     }
-
+    // 캐릭터 커스텀 불러오기
+    private fun getCustomChar() {
+        val call2 = api.characterRequest(token)
+        call2.enqueue(object : Callback<CharacterResponse> {
+            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.data.datas
+                        if(datas != null) {
+                            for (data in datas) {
+                                //arrays.add(data)
+                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                if(data.itemType=="color") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.myRamdi)
+                                } else if(data.itemType=="set") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgMyCloth)
+                                } else if(data.itemType=="item") {
+                                    Picasso.get()
+                                        .load(data.filePath)
+                                        .into(binding.imgMyItem)
+                                }
+                                // ...
+                            }
+                        } else {
+                            //Log.d("2221","${response.code()}")
+                        }
+                    } else {
+                        //Log.d("222","Request was not successful. Message: hi")
+                    }
+                } else {
+                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+                //Log.d("444","itemType: ${t.message}")
+            }
+        })
+    }
 }

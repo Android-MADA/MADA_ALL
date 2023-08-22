@@ -6,5 +6,5 @@ data class Category(
     @SerializedName("id") val id: Int,
     @SerializedName("categoryName") var categoryName: String,
     @SerializedName("color") var color: String,
-    //@SerializedName("iconId") var iconId : Int
+    @SerializedName("iconId") var iconId : Int
 )

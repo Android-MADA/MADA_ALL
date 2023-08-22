@@ -17,12 +17,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Field
 
-class  CustomBottomSheetViewPager (fragment : FragCustom) : FragmentStateAdapter(fragment){
+class  CustomBottomSheetViewPager (customCloth : custom_cloth,customColor : custom_color,
+                                   customItem : custom_item,customBackground : custom_background,fragment : FragCustom)
+    : FragmentStateAdapter(fragment){
     override fun getItemCount(): Int = 4
-    val custom_color  = custom_color()
-    val custom_cloth  = custom_cloth()
-    val custom_item  = custom_item()
-    val custom_background  = custom_background()
+    val custom_color  = customColor
+    val custom_cloth  = customCloth
+    val custom_item  = customItem
+    val custom_background  = customBackground
     private val registeredFragments = mutableMapOf<Int, Fragment>(
         0 to custom_color,
         1 to custom_cloth,

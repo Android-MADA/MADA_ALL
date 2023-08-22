@@ -53,6 +53,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
@@ -118,6 +119,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private var printId: Int = 0
     private var printfilePath: String = "z"
+    private var curMenuItem : Int = 0
 
     private var unsavedChanges = false
 
@@ -155,14 +157,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding = FragCustomBinding.inflate(inflater, container, false)
         var view = binding.root
         var customtabLayout = binding.CustomPagetabLayout
-        binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(this)
-        viewPager = binding.CustomBottomSheetViewPager
-
         val colorFragment = custom_color()
         val clothFragment = custom_cloth()
         val itemFragment = custom_item()
         val backgroundFragment = custom_background()
+        binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
+        viewPager = binding.CustomBottomSheetViewPager
+
+
 
 
 
@@ -199,7 +202,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         /*val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()*/
-        adapter = CustomBottomSheetViewPager(this)
+        adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
         binding.CustomBottomSheetViewPager.adapter = adapter
 
         fun Int.dpToPx(context: Context): Int {
@@ -396,8 +399,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         btnYes.setOnClickListener {
             alertDialog.dismiss()
-            val navController = findNavController()
-            navController.navigate(R.id.fragHome)
+            unsavedChanges = false
+            findNavController().navigate(curMenuItem)
 
         }
 
@@ -483,58 +486,26 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         super.onViewCreated(view, savedInstanceState)
         viewPager = binding.CustomBottomSheetViewPager
 
-        val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         //이윤소의 생각: 여기서 바텀네비게이션이 제대로 안 만들어진 것 아니냐.
 
         bottomNavigationView?.setOnItemSelectedListener{ menuItem ->
-            Log.d("savebottom", bottomNavigationView.toString())
+            curMenuItem = menuItem.itemId
             if (unsavedChanges) {
                 showBackConfirmationDialog()
                 false
             } else {
-                navigateToSelectedFragment(menuItem.itemId)
+                findNavController().navigate(menuItem.itemId)
                 true
             }
         }
 
 
-        /*val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
-        bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.fragHome -> {
-                    if (unsavedChanges) {
-                        showBackConfirmationDialog()
-                    }
-                    true
-                }
-                R.id.fragCalendar -> {
-                    if (unsavedChanges) {
-                        showBackConfirmationDialog()
-                    }
-                    true
-                }
-                R.id.fragMy -> {
-                    if (unsavedChanges) {
-                        showBackConfirmationDialog()
-                    }
-                    true
-                }
-                else -> false
-            }
-        }*/
     }
 
     override fun onResetButtonClicked() {
         Log.d("FragCustom", "onResetButtonClicked()")
-        val colorFragment =
-            (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(0) as? custom_color
-        val clothFragment =
-            (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(1) as? custom_cloth
-        val itemFragment =
-            (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(2) as? custom_item
-        val backgroundFragment =
-            (viewPager.adapter as? CustomBottomSheetViewPager)?.getFragmentAtPosition(1) as? custom_background
         colorFragment?.resetButtonColor()
         clothFragment?.resetButtonCloth()
         itemFragment?.resetButtonItem()
@@ -684,4 +655,3 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 }
-

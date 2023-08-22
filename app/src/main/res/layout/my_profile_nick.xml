@@ -61,12 +61,13 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_my">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="16sp"
             android:background="@drawable/my_custom_edittext"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:padding="10dp"
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <android.widget.Button

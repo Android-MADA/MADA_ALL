@@ -1,32 +1,43 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.HomeFunction.HomeBackCustomDialog
+import com.example.myapplication.HomeFunction.HomeCustomDialogListener
+import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
@@ -40,19 +51,39 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
-class TimeAddFragment : Fragment() {
+class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     private lateinit var binding : HomeFragmentTimeAddBinding
     private var bottomFlag = true
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
+    private val viewModel : HomeViewModel by activityViewModels()
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today ="2023-08-16"
+    lateinit var today: String
+
     var curColor = "#89A9D9"
     lateinit var token : String
+    var viewpager = false
+
+
+    private lateinit var backDialog: HomeBackCustomDialog
+    //private lateinit var deleteDialog: HomeDeleteCustomDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //할일 작성
+                customBackDialog()
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +95,9 @@ class TimeAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
-        hideBottomNavigation(bottomFlag, activity)
+        hideBottomNavigation(bottomFlag,  requireActivity())
+
+        today = viewModel.homeDate.value.toString()
 
 
         return binding.root
@@ -95,6 +128,7 @@ class TimeAddFragment : Fragment() {
         val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<HomeViewpagerTimetableFragment.PieChartData>?: null
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
+        viewpager = arguments?.getBoolean("viewpager")?: false
         today = arguments?.getString("today")?: "2023-06-01"
         token= arguments?.getString("Token")?: ""
         var id = 0
@@ -105,11 +139,12 @@ class TimeAddFragment : Fragment() {
 
             textTitle.setText(recievedPieData.title)
             ivColor.imageTintList =  ColorStateList.valueOf(Color.parseColor(recievedPieData.colorCode))
+            curColor = recievedPieData.colorCode
             //ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
             colorSelector.isGone = true
 
-            times[0].text = convertTo12HourFormat(recievedPieData.startHour,recievedPieData.startMin)
-            times[1].text = convertTo12HourFormat(recievedPieData.endHour,recievedPieData.endMin)
+            times[0].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.startHour, recievedPieData.startMin))
+            times[1].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.endHour, recievedPieData.endMin))
             id = recievedPieData.id
             textMemo.setText(recievedPieData.memo)
         }
@@ -239,6 +274,8 @@ class TimeAddFragment : Fragment() {
         btnSubmit.setOnClickListener {
             var start = timePlusMinutes(binding.tvHomeTimeStart.text.toString())
             var end = timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
+            if(end == 0)
+                end =24*60
             var check = true
             if (receivedData != null) {
                 for (data in receivedData) {
@@ -251,28 +288,10 @@ class TimeAddFragment : Fragment() {
                             check = false
                     }
                 }
-                Log.d("receivedData", "!null")
             } else {
-                Log.d("receivedData", "null!")
+
             }
-            if (check) {
-                val preClock = timeChange(binding.tvHomeTimeStart.toString())
-                var nextClock = timeChange(binding.tvHomeTimeEnd.toString())
-                Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
-                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
-                    timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-
-                if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
-                    addTimeDatas(tmp)
-                } else {
-                    editTimeData(id,tmp)
-                }
-
-
-                //만약 수정 상태라면 해당 데이터 수정 해야함!!!
-                //등록 상태라면 데이터 등록
-
-            } else {            //이미 해당 시간에 일정이 있을 때
+            if(binding.edtHomeCategoryName.text.toString()=="") {
                 val mDialogView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.home_fragment_time_add_warningsign, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
@@ -281,22 +300,94 @@ class TimeAddFragment : Fragment() {
                 mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
                 mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                mDialogView.findViewById<TextView>(R.id.nickname).setText("스케줄명을 입력하시오")
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
+            } else if(compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
+                val mDialogView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                mDialogView.findViewById<TextView>(R.id.nickname).setText("올바른 시간을 입력해 주십시오")
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
+                    mBuilder.dismiss()
+                })
+            } else if(!check){            //이미 해당 시간에 일정이 있을 때
+                val mDialogView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
+                    mBuilder.dismiss()
+                })
+            } else if (check&&!compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
+            //Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
+            val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
+                timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+
+            if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
+                addTimeDatas(tmp)
+            } else {
+                editTimeData(id,tmp)
             }
 
-            // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
+            }
+
+        // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
             //2. 시간표 화면으로 이동
 
         }
         binding.ivHomeAddTimeBack.setOnClickListener {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+            val bundle = Bundle()
+            bundle.putString("today",today)
+            if(viewpager) {
+                bottomFlag = false
+                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+            }
+            else
+                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
         }
         btnDelete.setOnClickListener {
             delTimeDatas(id)
-
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
@@ -353,7 +444,14 @@ class TimeAddFragment : Fragment() {
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
-                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                val bundle = Bundle()
+                bundle.putString("today",today)
+                if(viewpager) {
+                    bottomFlag = false
+                    findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                }
+                else
+                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
@@ -373,7 +471,13 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                    val bundle = Bundle()
+                    bundle.putString("today",today)
+                    if(viewpager) {
+                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                    }
+                    else
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
@@ -396,7 +500,13 @@ class TimeAddFragment : Fragment() {
                     } else {
                         Log.d("222","Request was not successful. Message: hi")
                     }
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+                    val bundle = Bundle()
+                    bundle.putString("today",today)
+                    if(viewpager) {
+                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                    }
+                    else
+                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                 } else {
                     Log.d("333213","itemType: ${response.code()}")
                 }
@@ -422,28 +532,25 @@ class TimeAddFragment : Fragment() {
                         if(datas != null) {
                             for(data in datas.todoList) {
                                 arrays.add(CalendarDATA("","","","","",
-                                                    "","","",data.todoName,1,false,"","TODO",7))
+                                    "","","",data.todoName,1,false,"","TODO",7))
                             }
 
                             for(data in datas.calendarList) {
-                                Log.d("todo","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color}")
-                                arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
-                                    data.color,"","",data.CalendarName,1,false,"","CAL",7))
+                                Log.d("cal","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color} ${data.dday}" )
+                                if(data.dday=="N")
+                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                        data.color,"","N",data.CalendarName,1,false,"","CAL",7))
+                                else
+                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                        data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
                             }
+
                             val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
                             var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                             binding.homeTimeTodoList.layoutManager = manager
                             binding.homeTimeTodoList.adapter = adapter
-                        } else {
-
-                            Log.d("2222","Request was not successful. Message: hi")
                         }
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
                     }
-                } else {
-                    Log.d("333","itemType: ${response.code()} ${response.message()}")
-                    Log.d("333213",response.errorBody()?.string()!!)
                 }
             }
             override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
@@ -451,25 +558,11 @@ class TimeAddFragment : Fragment() {
             }
         })
     }
-    fun convertTo12HourFormat(hour24: Int, minute: Int): String {
-        val amPm: String
-        val hour12: Int
-        if (hour24 >= 12) {
-            amPm = "오후"
-            hour12 = if (hour24 > 12) hour24 - 12 else hour24
-        } else {
-            amPm = "오전"
-            hour12 = if (hour24 == 0) 12 else hour24
-        }
-
-        val minuteStr = if (minute < 10) "0$minute" else minute.toString()
-        return "  $amPm $hour12:$minuteStr  "
-    }
     fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
         val calendar = Calendar.getInstance()
 
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar.time = inputFormat.parse(timeModified)
 
@@ -478,11 +571,44 @@ class TimeAddFragment : Fragment() {
 
         return String.format("%02d:%02d:00", hour, minute)
     }
-    fun timePlusMinutes(time: String): Int {
-        val inputFormat = SimpleDateFormat("  a h:mm  ", Locale.getDefault())
+    fun compareTimes(time1: String, time2: String): Boolean {
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US")) // 수정된 형식
+        val calendar1 = Calendar.getInstance()
+        val calendar2 = Calendar.getInstance()
+
+        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM").replace(" ","")
+        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM").replace(" ","")
+
+        calendar1.time = inputFormat.parse(time1Modified)
+        calendar2.time = inputFormat.parse(time2Modified)
+
+        val hour1 = calendar1.get(Calendar.HOUR_OF_DAY)
+        val minute1 = calendar1.get(Calendar.MINUTE)
+
+        val hour2 = calendar2.get(Calendar.HOUR_OF_DAY)
+        val minute2 = calendar2.get(Calendar.MINUTE)
+
+        if (hour1 > hour2 || (hour1 == hour2 && minute1 >= minute2)) {
+            return true
+        } else {
+            return false
+        }
+    }
+    fun timeChangeReverse(time: String): String {
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat(" a h:mm ", Locale("en", "US"))
         val calendar = Calendar.getInstance()
 
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM")
+        calendar.time = inputFormat.parse(time)
+
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
+    }
+
+    fun timePlusMinutes(time: String): Int {
+        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
+        val calendar = Calendar.getInstance()
+
+        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
 
         calendar.time = inputFormat.parse(timeModified)
 
@@ -491,7 +617,25 @@ class TimeAddFragment : Fragment() {
 
         val totalMinutes = hour * 60 + minute
 
+
         return totalMinutes
+    }
+
+    private fun customBackDialog() {
+        backDialog = HomeBackCustomDialog(requireActivity(), this)
+        backDialog.show()
+    }
+
+
+
+    // 커스텀 다이얼로그에서 버튼 클릭 시
+    override fun onYesButtonClicked(dialog: Dialog, flag: String) {
+            Navigation.findNavController(requireView()).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        dialog.dismiss()
+    }
+
+    override fun onNoButtonClicked(dialog: Dialog) {
+        dialog.dismiss()
     }
 
 }
