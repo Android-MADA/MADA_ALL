@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_con) as NavHostFragment
-        val navController =navHostFragment.findNavController()
+        val navController = navHostFragment.findNavController()
         binding.bottomNavigationView.setupWithNavController(navController)
 
     }
