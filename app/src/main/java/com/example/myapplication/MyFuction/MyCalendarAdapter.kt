@@ -76,8 +76,10 @@ class MyCalendarAdapter(private val dayList: ArrayList<Date>,private val realMon
             }
 
             holder.itemView.setOnClickListener {
-                preText.setBackgroundResource(android.R.color.transparent)
-                preText.setTextColor(Color.BLACK)
+                if(::preText.isInitialized) {
+                    preText.setBackgroundResource(android.R.color.transparent)
+                    preText.setTextColor(Color.BLACK)
+                }
                 holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background2)
                 holder.textDay.setTextColor(Color.WHITE)
                 preText = holder.textDay

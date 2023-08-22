@@ -127,7 +127,7 @@
             </LinearLayout>
 
             <Switch
-                android:id="@+id/my_set_switch3"
+                android:id="@+id/my_set_switch2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
@@ -170,7 +170,7 @@
             </LinearLayout>
 
             <Switch
-                android:id="@+id/my_set_switch2"
+                android:id="@+id/my_set_switch3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
