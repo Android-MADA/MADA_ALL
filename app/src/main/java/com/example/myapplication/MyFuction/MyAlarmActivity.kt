@@ -23,16 +23,44 @@ class MyAlarmActivity : AppCompatActivity() {
         binding = MyAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        GetSetAlarm()
+
         binding.backBtn.setOnClickListener {
+            PatchSetAlarm(binding.mySetSwitch1.isChecked)
+            PatchSetAlarm(binding.mySetSwitch2.isChecked)
+            PatchSetAlarm(binding.mySetSwitch3.isChecked)
             finish()
         }
-
-        MysetAlarm(binding.mySetSwitch1.isChecked)
-
     }
 
+    // 서버에서 알림 저장하기
+    private fun GetSetAlarm(){
+        api.myGetAlarm(token).enqueue(object : retrofit2.Callback<MyAlarmData> {
+            override fun onResponse(
+                call: Call<MyAlarmData>,
+                response: Response<MyAlarmData>
+            ) {
+                val responseCode = response.code()
+                Log.d("getAlarm", "Response Code: $responseCode")
+
+                if (response.isSuccessful) {
+                    Log.d("getAlarm 성공", response.body().toString())
+                    binding.mySetSwitch1.isChecked = response.body()!!.data.calendarAlarmSetting
+                    binding.mySetSwitch2.isChecked = response.body()!!.data.dDayAlarmSetting
+                    binding.mySetSwitch3.isChecked = response.body()!!.data.timetableAlarmSetting
+                } else {
+                    Log.d("getAlarm 실패", response.body().toString())
+                }
+            }
+            override fun onFailure(call: Call<MyAlarmData>, t: Throwable) {
+                Log.d("서버 오류", "getAlarm 실패")
+            }
+        })
+    }
+
+
     // 서버에 알림 저장하기
-    private fun MysetAlarm(isAlarm: Boolean){
+    private fun PatchSetAlarm(isAlarm: Boolean){
         api.mySetAlarm(token, isAlarm).enqueue(object : retrofit2.Callback<MyAlarmData2> {
             override fun onResponse(
                 call: Call<MyAlarmData2>,
@@ -43,9 +71,6 @@ class MyAlarmActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     Log.d("setAlarm 성공", response.body().toString())
-                    binding.mySetSwitch1.isChecked = response.body()!!.calendarAlarmSetting
-                    binding.mySetSwitch2.isChecked = response.body()!!.dDayAlarmSetting
-                    binding.mySetSwitch3.isChecked = response.body()!!.timetableAlarmSetting
                 } else {
                     Log.d("setAlarm 실패", response.body().toString())
                 }
@@ -55,5 +80,6 @@ class MyAlarmActivity : AppCompatActivity() {
             }
         })
     }
+
 
 }
