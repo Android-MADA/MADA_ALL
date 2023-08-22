@@ -87,7 +87,8 @@ class MyRecordDayActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.todayInfo.setOnClickListener {
-            getTimeDatas(binding.todayInfo.text.toString())
+            getTimeDatas(binding.todayInfo.text.toString())     //"2023-08-13"
+
         }
 
         // 홈 투두 받아오기
