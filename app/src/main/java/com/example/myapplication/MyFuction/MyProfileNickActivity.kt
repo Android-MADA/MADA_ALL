@@ -51,7 +51,10 @@ class MyProfileNickActivity : AppCompatActivity() {
         val call1 = api.changeNickname(token,nickName)
         call1.enqueue(object : Callback<MyChangeNicknameData> {
 
-            override fun onResponse(call: Call<MyChangeNicknameData>, response: Response<MyChangeNicknameData>) {
+            override fun onResponse(
+                call: Call<MyChangeNicknameData>,
+                response: Response<MyChangeNicknameData>
+            ) {
                 val responseCode = response.code()
                 if (response.isSuccessful) {
                     val responseBody = response.body()

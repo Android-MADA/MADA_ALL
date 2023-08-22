@@ -11,3 +11,4 @@ data class MyAlarmData2(
     @SerializedName ("dDayAlarmSetting") val dDayAlarmSetting: Boolean,
     @SerializedName ("timetableAlarmSetting") val timetableAlarmSetting: Boolean,
 )
+

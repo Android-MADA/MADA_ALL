@@ -7,7 +7,7 @@ data class MySetPageData(
     @SerializedName ("date") val data: MySetPageData2
 )
 data class MySetPageData2(
-    @SerializedName("endTodobackString") val endTodobackString: Boolean,
+    @SerializedName("endTodobackString") val endTodobackSetting: Boolean,
     @SerializedName("newTodoStartSetting") val newTodoStartSetting: Boolean,
     @SerializedName("startTodoAtMonday")  val startTodoAtMonday: Boolean,
 )
