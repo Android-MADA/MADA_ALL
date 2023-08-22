@@ -46,7 +46,7 @@ interface RetrofitServiceMy {
 
     // 닉네임 변경 -> 미확인
     @PATCH("/user/profile/change/nickname")
-    fun changeNickname(@Header("Authorization") token: String?
+    fun changeNickname(@Header("Authorization") token: String?, @Body nickname: String
     ): Call<MyChangeNicknameData>
 
 
@@ -57,12 +57,12 @@ interface RetrofitServiceMy {
 
     // 화면 설정 -> 미확인
     @POST("/user/pageInfo")
-    fun setPage(@Header("Authorization") token: String?
+    fun setPage(@Header("Authorization") token: String?, @Body data: MySetPageData
     ): Call<MySetPageData>
 
     // 알림 설정 -> 미확인
     @PATCH("/user/alarmInfo")
-    fun setAlarm(@Header("Authorization") token: String?
+    fun setAlarm(@Header("Authorization") token: String?, @Body data: MyAlarmData
     ): Call<MyAlarmData>
 
     // 프리미엄 설정 -> 미확인
