@@ -1,30 +1,19 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.app.Dialog
-import android.content.Context
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFunction.HomeBackCustomDialog
-import com.example.myapplication.HomeFunction.HomeCustomDialogListener
-import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
@@ -86,6 +75,8 @@ class HomeCategoryFragment : Fragment() {
             }
             else {
                 cateAdapter = null
+                binding.rvHomeCategory.adapter = cateAdapter
+                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
             }
         })
 
