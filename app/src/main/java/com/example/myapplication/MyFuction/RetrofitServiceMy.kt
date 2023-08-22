@@ -10,6 +10,8 @@ import com.example.myapplication.MyFuction.Model.MyGetProfileData
 import com.example.myapplication.MyFuction.Model.MyPremiumData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
+import com.example.myapplication.MyFuction.Model.MySettingData2
+import com.example.myapplication.MyFuction.Model.MySettingData3
 import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
@@ -64,8 +66,10 @@ interface RetrofitServiceMy {
 
     // 화면 설정 저장 -> 미확인
     @POST("/user/pageInfo")
-    fun mySetPage(@Header("Authorization") token: String?, @Body is_set: Boolean
-    ): Call<MySetPageData2>
+    fun mySetPage(
+        @Header("Authorization") token: String?,
+        @Body data : MySettingData2
+    ): Call<MySettingData3>
 
     // 화면 설정 조회 -> 미확인
     @GET("/user/pageInfo")

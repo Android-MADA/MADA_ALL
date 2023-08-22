@@ -9,5 +9,15 @@ data class MyAlarmData(
 data class MyAlarmData2(
     @SerializedName ("calendarAlarmSetting") val calendarAlarmSetting: Boolean,
     @SerializedName ("dDayAlarmSetting") val dDayAlarmSetting: Boolean,
-    @SerializedName ("timetableAlarmSetting") val timetableAlarmSetting: Boolean,
+    @SerializedName ("timetableAlarmSetting") val timetableAlarmSetting: Boolean
+)
+
+data class MySettingData2(
+    @SerializedName("endTodoBackSetting") val endTodoBackSetting : Boolean,
+    @SerializedName("newTodoStartSetting") val newTodoStartSetting : Boolean,
+    @SerializedName("startTodoAtMonday") val startTodoAtMonday : Boolean
+)
+
+data class MySettingData3(
+    @SerializedName("data") val data : MySettingData2
 )
