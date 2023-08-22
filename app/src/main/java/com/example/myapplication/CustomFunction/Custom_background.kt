@@ -97,15 +97,15 @@ class custom_background : Fragment() {
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_back_basic -> R.drawable.custom_nullchoice
-            R.id.btn_back_brid_s -> R.drawable.back_brid_choice
+            R.id.btn_back_brid_s -> R.drawable.back_bird_choice
             R.id.btn_back_n_s -> R.drawable.back_n_choice
             R.id.btn_back_win_s -> R.drawable.back_win_choice
             R.id.btn_back_normal_s -> R.drawable.back_normal_choice
             R.id.btn_back_store_s -> R.drawable.back_store_choice
             R.id.btn_back_zzim_s -> R.drawable.back_zzim_choice
-            R.id.btn_back_uni_s -> R.drawable.back_uni_choice
+            R.id.btn_back_uni_s -> R.drawable.back_sp_choice
             R.id.btn_back_cin_s -> R.drawable.back_cin_choice
-            R.id.btn_back_sum_s -> R.drawable.back_sum_choice
+            R.id.btn_back_sum_s -> R.drawable.back_sr_choice
 
             else -> throw IllegalArgumentException("Unknown button ID")
         }
@@ -114,15 +114,15 @@ class custom_background : Fragment() {
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_back_basic -> R.drawable.custom_null
-            R.id.btn_back_brid_s -> R.drawable.back_brid_s_1
+            R.id.btn_back_brid_s -> R.drawable.back_bird_s_1
             R.id.btn_back_n_s -> R.drawable.back_n_s_1
             R.id.btn_back_win_s -> R.drawable.back_win_s_1
             R.id.btn_back_normal_s -> R.drawable.back_normal_s_1
             R.id.btn_back_store_s -> R.drawable.back_store_s_1
             R.id.btn_back_zzim_s -> R.drawable.back_zzim_s_1
-            R.id.btn_back_uni_s -> R.drawable.back_uni_s_1
+            R.id.btn_back_uni_s -> R.drawable.back_sp_s_1
             R.id.btn_back_cin_s -> R.drawable.back_cin_s_1
-            R.id.btn_back_sum_s -> R.drawable.back_sum_s_1
+            R.id.btn_back_sum_s -> R.drawable.back_sr_s_1
 
             else -> throw IllegalArgumentException("Unknown button ID")
         }
@@ -147,15 +147,15 @@ class custom_background : Fragment() {
     }
     fun resetButtonBackground() {
         binding.btnBackBasic.setImageResource(R.drawable.custom_null)
-        binding.btnBackBridS.setImageResource(R.drawable.back_brid_s_1)
+        binding.btnBackBridS.setImageResource(R.drawable.back_bird_s_1)
         binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
         binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)
         binding.btnBackNormalS.setImageResource(R.drawable.back_normal_s_1)
         binding.btnBackStoreS.setImageResource(R.drawable.back_store_s_1)
         binding.btnBackZzimS.setImageResource(R.drawable.back_zzim_s_1)
-        binding.btnBackUniS.setImageResource(R.drawable.back_uni_s_1)
+        binding.btnBackUniS.setImageResource(R.drawable.back_sp_s_1)
         binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
-        binding.btnBackSumS.setImageResource(R.drawable.back_sum_s_1)
+        binding.btnBackSumS.setImageResource(R.drawable.back_sr_s_1)
 
     }
 

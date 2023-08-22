@@ -136,12 +136,12 @@ class custom_item : Fragment() {
             R.id.btn_item_hat_ipod -> R.drawable.hat_ipod_choice
             R.id.btn_item_glass_sunR -> R.drawable.g_sunr_choice
             R.id.btn_item_glass_sunB -> R.drawable.g_sunb_choice
-            R.id.btn_item_hat_flower -> R.drawable.hat_flower_chocie
+            R.id.btn_item_hat_flower -> R.drawable.hat_flower_choice
             R.id.btn_item_hat_v -> R.drawable.hat_v_choice
             R.id.btn_item_hat_dinof -> R.drawable.hat_dinof_choice
             R.id.btn_item_hat_sheep -> R.drawable.hat_sheep_choice
-            R.id.btn_item_bag_e -> R.drawable.back_e_choice
-            R.id.btn_item_bag_luck -> R.drawable.back_luck_choice
+            R.id.btn_item_bag_e -> R.drawable.bag_e_choice
+            R.id.btn_item_bag_luck -> R.drawable.bag_luck_choice
             R.id.btn_item_hat_heart -> R.drawable.hat_heart_choice
             R.id.btn_item_hat_bee -> R.drawable.hat_bee_choice
             R.id.btn_item_hat_heads -> R.drawable.heads_choice
