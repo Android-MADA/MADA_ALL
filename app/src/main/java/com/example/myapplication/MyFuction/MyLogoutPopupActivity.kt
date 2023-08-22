@@ -29,6 +29,7 @@ class MyLogoutPopupActivity(context: Context) : Dialog(context) {
             Log.d("로그아웃 취소", "로그아웃 취소")
         }
         binding.yesbutton.setOnClickListener{
+            Log.d("로그아웃 성공", "로그아웃 성공")
 //            val intent = Intent(this, Splash2Activity::class.java)
 //            startActivity(intent)
         }

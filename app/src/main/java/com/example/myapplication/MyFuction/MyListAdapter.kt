@@ -1,34 +1,23 @@
 package com.example.myapplication.MyFuction
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.nickName
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<MyListAdapter.CustomViewHolder>() {
 
     // retrofit
     var token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
+    private lateinit var dialogView: AlertDialog
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyListAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.my_list_item, parent, false)
@@ -44,26 +33,30 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
         holder.item.text = itemData.item
 
         holder.item.setOnClickListener {
+            val targetActivity = itemData.targetActivity
+
             if(holder.item.text == "로그아웃") {
-                var mDialogView = LayoutInflater.from(holder.itemView.context)
-                    .inflate(R.layout.my_logout_popup, null)
-                var mBuilder = AlertDialog.Builder(holder.itemView.context)
-                    .setView(mDialogView)
+                val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.my_logout_popup, null)
+                val alertDialogBuilder = AlertDialog.Builder(holder.itemView.context)
+                    .setView(dialogView)
                     .create()
 
-                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                val btnNo = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
+                val btnYes = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
 
-                val alertDialog = mBuilder.show()
-                val display =
-                    (holder.itemView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                mBuilder?.window?.setGravity(Gravity.CENTER)
+                btnNo.setOnClickListener {
+                    Log.d("로그아웃 취소", "로그아웃 취소")
+                    alertDialogBuilder.dismiss()
+                }
+                btnYes.setOnClickListener {
+                    val intent = Intent(holder.itemView.context, Splash2Activity::class.java)
+                    Log.d("로그아웃 취소", "로그아웃 취소")
+                }
             }
-            val targetActivity = itemData.targetActivity
-            val intent = Intent(holder.itemView.context, targetActivity)
-            // 다음 액티비티로 넘길 데이터가 있다면 아래와 같이 추가
-            // intent.putExtra("key", value)
-            holder.itemView.context.startActivity(intent)
+            else{
+                val intent = Intent(holder.itemView.context, targetActivity)
+                holder.itemView.context.startActivity(intent)
+            }
         }
     }
 
