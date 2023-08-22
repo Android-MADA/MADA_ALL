@@ -49,8 +49,6 @@ class HomeCategoryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
-        //서버연결 - 카테고리 리스트 조회 후 리스트에 넣어서 어댑터에 연결
-         viewModel.getCategory(viewModel.userToken)
         return binding.root
     }
 
@@ -85,6 +83,9 @@ class HomeCategoryFragment : Fragment() {
 
                 binding.rvHomeCategory.adapter = cateAdapter
                 binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            }
+            else {
+                cateAdapter = null
             }
         })
 

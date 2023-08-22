@@ -63,6 +63,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                 if (cateAdapter != null) {
                     if (viewModel.categoryList.value!!.isNotEmpty() == true) {
                         Log.d("viewpager cate", "어댑터 연결 갱신")
+                        Log.d("viewpager cate", viewModel.todoList.value.toString())
                     }
                 } else {
                     if (viewModel.categoryList.value?.isNotEmpty() == true) {

@@ -330,7 +330,7 @@ class MyRecordDayActivity : AppCompatActivity() {
             override fun onResponse(call: Call<CategoryList1>, response: Response<CategoryList1>) {
                 val category = response.body()?.data?.CategoryList
                 if(category?.isEmpty() != true){
-                    Log.d("findrv", response.body()?.data?.CategoryList.toString())
+                    Log.d("findrvcate", response.body()?.data?.CategoryList.toString())
                     val cate = response.body()?.data?.CategoryList
                     service.getAllMyTodo(token, date).enqueue(object : Callback<TodoList>{
                         override fun onResponse(
