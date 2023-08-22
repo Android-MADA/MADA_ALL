@@ -67,6 +67,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
+    var haveTodoCalDatas = false
 
 
     private lateinit var backDialog: HomeBackCustomDialog
@@ -403,7 +404,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
 
         binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
+            if (hasFocus&&haveTodoCalDatas) {
                 binding.homeTimeTodoListView.visibility = View.VISIBLE
             } else
                 binding.homeTimeTodoListView.visibility = View.GONE
@@ -531,8 +532,9 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for(data in datas.todoList) {
+
                                 arrays.add(CalendarDATA("","","","","",
-                                    "","","",data.todoName,1,false,"","TODO",7))
+                                    "","","",data.todoName,data.iconId,false,"","TODO",7))
                             }
 
                             for(data in datas.calendarList) {
@@ -544,7 +546,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                                     arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
                                         data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
                             }
-
+                            if(!arrays.isEmpty())
+                                haveTodoCalDatas = true
                             val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
                             var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                             binding.homeTimeTodoList.layoutManager = manager

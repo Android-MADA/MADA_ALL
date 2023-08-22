@@ -34,6 +34,7 @@ import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.FragMyBinding
+import com.example.myapplication.databinding.Splash2Binding
 import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -71,13 +72,15 @@ class FragMy : Fragment() {
             MyListItem("알림", MyAlarmActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
+            MyListItem("로그아웃", Splash2Binding::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 
         binding.rvMyitem.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL,false)
         binding.rvMyitem.setHasFixedSize(true)
         binding.rvMyitem.adapter = MyListAdapter(MyList)
+
+
 
         // 구분선 커스텀
         val dividerItemDecoration = object : DividerItemDecoration(binding.rvMyitem.getContext(),

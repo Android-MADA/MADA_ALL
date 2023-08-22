@@ -93,7 +93,7 @@
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/layout_color_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,8 +110,8 @@
                         android:id="@+id/calendar_color1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/calendar_color_select"
-                        app:tint="@color/sub5"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/main"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         />
@@ -120,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub6"
+                        app:tint="@color/sub3"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"/>
                     <ImageButton
@@ -129,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#F5EED1"
+                        app:tint="@color/sub1"
                         android:background="@android:color/transparent"
                         />
 

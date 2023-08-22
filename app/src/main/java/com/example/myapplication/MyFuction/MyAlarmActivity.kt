@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyAlarmData2
+import com.example.myapplication.MyFuction.Model.MySetPageData
+import com.example.myapplication.MyFuction.Model.MySetPageData2
 import com.example.myapplication.databinding.MyAlarmBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -26,7 +28,7 @@ class MyAlarmActivity : AppCompatActivity() {
         GetSetAlarm()
 
         binding.backBtn.setOnClickListener {
-            PatchSetAlarm(binding.mySetSwitch1.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch3.isChecked)
+            PatchSetAlarm(MyAlarmData2(binding.mySetSwitch1.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch3.isChecked))
             finish()
         }
     }
@@ -58,8 +60,8 @@ class MyAlarmActivity : AppCompatActivity() {
 
 
     // 서버에 알림 저장하기
-    private fun PatchSetAlarm(isAlarm1: Boolean, isAlarm2: Boolean, isAlarm3: Boolean){
-        api.mySetAlarm(token, isAlarm1, isAlarm2, isAlarm3).enqueue(object : retrofit2.Callback<MyAlarmData2> {
+    private fun PatchSetAlarm(is_setting: MyAlarmData2){
+        api.mySetAlarm(token, is_setting).enqueue(object : retrofit2.Callback<MyAlarmData2> {
             override fun onResponse(
                 call: Call<MyAlarmData2>,
                 response: Response<MyAlarmData2>
@@ -69,6 +71,7 @@ class MyAlarmActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     Log.d("PatchSetAlarm 성공", response.body().toString())
+
                 } else {
                     Log.d("PatchSetAlarm 실패", response.body().toString())
                 }

@@ -63,6 +63,7 @@ class HomeViewpagerTodoFragment : Fragment() {
                 if (cateAdapter != null) {
                     if (viewModel.categoryList.value!!.isNotEmpty() == true) {
                         Log.d("viewpager cate", "어댑터 연결 갱신")
+                        Log.d("viewpager cate", viewModel.todoList.value.toString())
                     }
                 } else {
                     if (viewModel.categoryList.value?.isNotEmpty() == true) {
@@ -103,7 +104,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        cateAdapter = HomeViewpager2CategoryAdapter()
+        cateAdapter = HomeViewpager2CategoryAdapter(null)
         cateAdapter!!.dataSet = viewModel.categoryList.value!!
         cateAdapter!!.cateTodoSet = viewModel.cateTodoList.value
         cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!
@@ -135,7 +136,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 //                                viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!)
                                 viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!  )
                                 binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
-                                //투두 개수 업데이트
+
                             }
                             else {
                                 Log.d("todo post", "안드 쪽 오류")
