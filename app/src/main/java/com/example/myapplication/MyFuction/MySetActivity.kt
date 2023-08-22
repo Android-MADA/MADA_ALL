@@ -84,5 +84,4 @@ class MySetActivity : AppCompatActivity() {
             }
         })
     }
-    }
 }
