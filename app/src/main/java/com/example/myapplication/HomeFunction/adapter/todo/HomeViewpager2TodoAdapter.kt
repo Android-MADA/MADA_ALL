@@ -1,5 +1,6 @@
 package com.example.myapplication.HomeFunction.adapter.todo
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -72,6 +73,24 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
 
             var cbColor = R.drawable.home_checkbox1
 
+            fun findRes(color : String) : Int {
+                var colorr : Int = when(color){
+                    "#E1E9F5" -> {R.drawable.home_checkbox1}
+                    "#89A9D9" -> {R.drawable.home_checkbox2}
+                    "#486DA3" -> {R.drawable.home_checkbox3}
+                    "#FFE7EB" -> {R.drawable.home_checkbox4}
+                    "#FDA4B4" -> {R.drawable.home_checkbox5}
+                    "#F0768C" -> {R.drawable.home_checkbox6}
+                    "#D4ECF1" -> {R.drawable.home_checkbox7}
+                    "#7FC7D4" -> {R.drawable.home_checkbox8}
+                    "#2AA1B7" -> {R.drawable.home_checkbox9}
+                    "#FDF3CF" -> {R.drawable.home_checkbox10}
+                    "#F8D141" -> {R.drawable.home_checkbox11}
+                    else -> {R.drawable.home_checkbox12}
+                }
+                return colorr
+            }
+
             when(dataSet[position].category.color){
                 "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
                 "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
@@ -100,6 +119,9 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
                     holder.todoMenu.isGone = true
                     holder.todoCheckBox.isInvisible = true
                     holder.ivIcon.isVisible = true
+                    if(dataSet[position].complete == true) {
+                        holder.ivIcon.setImageResource(findRes(dataSet[position].category.color))
+                    }
                 }
                 else {
                     holder.todoCheckBox.isVisible = true
@@ -113,6 +135,9 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
                     holder.todoMenu.isGone = true
                     holder.todoCheckBox.isInvisible = true
                     holder.ivIcon.isVisible = true
+                    if(dataSet[position].complete == true) {
+                        holder.ivIcon.setImageResource(findRes(dataSet[position].category.color))
+                    }
                 }
                 else {
                     holder.todoCheckBox.isVisible = true
