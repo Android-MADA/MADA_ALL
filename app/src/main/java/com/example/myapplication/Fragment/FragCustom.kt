@@ -47,7 +47,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.graphics.Point
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
@@ -97,7 +96,7 @@ interface OnResetButtonClickListener {
 }
 
 data class IdAndItemType(
-    val id: Int,
+    val id: String,
     val itemType: String
 )
 
@@ -123,7 +122,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
-    private val printIds = mutableListOf<IdAndItemType>()
+    private val printIds = mutableListOf<String>()
     private var itemType: String = "z"
     private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
@@ -411,10 +410,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
-        alertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-
 
         val btnNo = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_no)
         val btnYes = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_yes)
@@ -550,7 +545,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printInfo = response.body()
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
-
+                val printIds: MutableList<IdAndItemType> = mutableListOf() // Create a mutable list of IdAndItemType objects
 
 
 
@@ -566,9 +561,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
 
                 datas?.forEachIndexed { index, item ->
-                    val idAndItemType = IdAndItemType(item.id, item.itemType)
+                    val idAndItemType = IdAndItemType(item.id.toString(), item.itemType)
                     printIds.add(idAndItemType)
-
+                    // ...
                 }
                 if (datas != null) {
                     for (item in datas) {
@@ -651,6 +646,21 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
+
+    /*private fun showBackConfirmationDialog() {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Unsaved Changes")
+            .setMessage("You have unsaved changes. Are you sure you want to go back?")
+            .setPositiveButton("Discard") { _, _ ->
+                // Discard changes and navigate back
+                requireActivity().onBackPressed()
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        alertDialog.show()
+    }*/
+
     private fun navigateToSelectedFragment(itemId: Int) {
         if (unsavedChanges) {
             showBackConfirmationDialog()
@@ -672,16 +682,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private fun showBackConfirmationDialog() {
         alertDialog.show()
-
-        //사이즈 조절
-        val displayMetrics = DisplayMetrics()
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        display.getSize(size)
-        val screenWidth = size.x
-        val popupWidth = (screenWidth * 0.8).toInt()
-        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
 

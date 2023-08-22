@@ -33,7 +33,7 @@
 
             <ImageButton
                 android:id="@+id/btn_back_brid_s"
-                android:src="@drawable/back_brid_s_1"
+                android:src="@drawable/back_bird_s_1"
                 android:layout_margin ="10dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
@@ -95,7 +95,7 @@
 
             <ImageButton
                 android:id="@+id/btn_back_uni_s"
-                android:src="@drawable/back_uni_s_1"
+                android:src="@drawable/back_sp_s_1"
                 android:layout_margin ="10dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
@@ -118,7 +118,7 @@
 
             <ImageButton
                 android:id="@+id/btn_back_sum_s"
-                android:src="@drawable/back_sum_s_1"
+                android:src="@drawable/back_sr_s_1"
                 android:layout_margin ="10dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"

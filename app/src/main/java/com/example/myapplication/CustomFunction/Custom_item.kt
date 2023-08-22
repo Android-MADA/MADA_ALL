@@ -128,7 +128,7 @@ class custom_item : Fragment() {
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_item_basic -> R.drawable.custom_nullchoice
-            R.id.btn_item_glass_normal -> R.drawable.gh_normal_choice
+            R.id.btn_item_glass_normal -> R.drawable.g_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice
             R.id.btn_item_glass_8bit -> R.drawable.g_8bit_choice
