@@ -123,7 +123,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
-    private val printIds = mutableListOf<String>()
+    private val printIds = mutableListOf<IdAndItemType>()
     private var itemType: String = "z"
     private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
@@ -358,11 +358,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
             val uniqueItemIds = mutableSetOf<String>()
 
-            uniqueItemIds.addAll(printIds)
-            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
-            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
-            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
-            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
+            printIds.forEach { idAndItemType ->
+                uniqueItemIds.add(this.id.toString())
+            }
+
+            val isColorMissing = printIds.none { idAndItemType -> this.itemType == "color" }
+            val isSetMissing = printIds.none { idAndItemType -> this.itemType == "set" }
+            val isItemMissing = printIds.none { idAndItemType -> this.itemType == "item" }
+            val isBackgroundMissing = printIds.none { idAndItemType -> this.itemType == "background" }
 
             if(isColorMissing){
                 temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
@@ -547,13 +550,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printInfo = response.body()
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
-                val printIds: MutableList<IdAndItemType> = mutableListOf() // Create a mutable list of IdAndItemType objects
 
-                datas?.forEachIndexed { index, item ->
-                    val idAndItemType = IdAndItemType(item.id, item.itemType)
-                    printIds.add(idAndItemType)
-                    // ...
-                }
+
+
 
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
@@ -564,6 +563,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
                     )
                     Log.d("getCustomPrint", "Response Code: $responseCode")
+                }
+
+                datas?.forEachIndexed { index, item ->
+                    val idAndItemType = IdAndItemType(item.id, item.itemType)
+                    printIds.add(idAndItemType)
+
                 }
                 if (datas != null) {
                     for (item in datas) {
