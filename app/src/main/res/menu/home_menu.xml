@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/home_menu_category"
-        android:title="카테고리 추가하기"
+        android:title="카테고리 설정하기"
         />
 
     <item
