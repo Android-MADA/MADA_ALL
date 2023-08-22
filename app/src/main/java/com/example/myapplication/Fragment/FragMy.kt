@@ -133,7 +133,7 @@ class FragMy : Fragment() {
 
     }
     // 캐릭터 커스텀 불러오기
-    fun getCustomChar() {
+    private fun getCustomChar() {
         val call2 = api.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
@@ -144,7 +144,7 @@ class FragMy : Fragment() {
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)
-                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
                                 if(data.itemType=="color") {
                                     Picasso.get()
                                         .load(data.filePath)
