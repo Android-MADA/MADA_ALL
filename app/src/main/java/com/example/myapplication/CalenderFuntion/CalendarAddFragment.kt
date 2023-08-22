@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -135,17 +136,17 @@ class CalendarAddFragment : Fragment() {
         calendar = Calendar.getInstance()
 
         binding.calendarColor1.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
             curColor ="#89A9D9"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor2.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
             curColor ="#2AA1B7"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor3.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.point_main), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
             curColor ="#F5EED1"
             toggleLayout(false,binding.layoutColorSelectors)
         }
@@ -165,17 +166,17 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor7.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
             curColor ="#89A9D9"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor8.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
             curColor ="#F0768C"
             toggleLayout(false,binding.layoutColorSelectors)
         }
         binding.calendarColor9.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
             curColor ="#F8D141"
             toggleLayout(false,binding.layoutColorSelectors)
         }
@@ -190,7 +191,7 @@ class CalendarAddFragment : Fragment() {
                 binding.layoutColorSelector2.visibility = View.VISIBLE
                 binding.layoutColorSelector1.visibility = View.GONE
                 binding.preScheldule.visibility = View.GONE
-                binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+                binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
                 curDday = "Y"
             } else {
                 binding.textDday.visibility= View.GONE
@@ -198,7 +199,7 @@ class CalendarAddFragment : Fragment() {
                 binding.layoutColorSelector2.visibility = View.GONE
                 binding.layoutColorSelector1.visibility = View.VISIBLE
                 binding.preScheldule.visibility = View.VISIBLE
-                binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
+                binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
                 curDday = "N"
             }
 
@@ -793,12 +794,12 @@ class CalendarAddFragment : Fragment() {
     private fun getDdayDataArray() {
         val ddayDatas = ArrayList<CalendarDATA>()
         val call2 = service.getAllDday(token)
-        call2.enqueue(object : Callback<CalendarDatas> {
-            override fun onResponse(call2: Call<CalendarDatas>, response: Response<CalendarDatas>) {
+        call2.enqueue(object : Callback<CalendarDataDday> {
+            override fun onResponse(call2: Call<CalendarDataDday>, response: Response<CalendarDataDday>) {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
-                        val datas = apiResponse.datas
+                        val datas = apiResponse.datas.datas
                         if(datas != null) {
                             for (data in datas) {
                                 val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
@@ -915,7 +916,7 @@ class CalendarAddFragment : Fragment() {
                     }
                 }
             }
-            override fun onFailure(call: Call<CalendarDatas>, t: Throwable) {
+            override fun onFailure(call: Call<CalendarDataDday>, t: Throwable) {
                 //Log.d("444","itemType: ${t.message}")
             }
         })
