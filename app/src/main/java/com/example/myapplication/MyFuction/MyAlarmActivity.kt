@@ -27,30 +27,30 @@ class MyAlarmActivity : AppCompatActivity() {
             finish()
         }
 
-        setAlarm(MyAlarmData(MyAlarmData2(binding.mySetSwitch1.isChecked))
+        MysetAlarm(binding.mySetSwitch1.isChecked)
 
     }
 
     // 서버에 알림 저장하기
-    private fun setAlarm(data: MyAlarmData){
-        api.setAlarm(token, data).enqueue(object : retrofit2.Callback<MyAlarmData> {
+    private fun MysetAlarm(isAlarm: Boolean){
+        api.mySetAlarm(token, isAlarm).enqueue(object : retrofit2.Callback<MyAlarmData2> {
             override fun onResponse(
-                call: Call<MyAlarmData>,
-                response: Response<MyAlarmData>
+                call: Call<MyAlarmData2>,
+                response: Response<MyAlarmData2>
             ) {
                 val responseCode = response.code()
                 Log.d("setAlarm", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
                     Log.d("setAlarm 성공", response.body().toString())
-                    binding.mySetSwitch1.isChecked = response.body()!!.data.calendarAlarmSetting
-                    binding.mySetSwitch2.isChecked = response.body()!!.data.dDayAlarmSetting
-                    binding.mySetSwitch3.isChecked = response.body()!!.data.timetableAlarmSetting
+                    binding.mySetSwitch1.isChecked = response.body()!!.calendarAlarmSetting
+                    binding.mySetSwitch2.isChecked = response.body()!!.dDayAlarmSetting
+                    binding.mySetSwitch3.isChecked = response.body()!!.timetableAlarmSetting
                 } else {
                     Log.d("setAlarm 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MyAlarmData>, t: Throwable) {
+            override fun onFailure(call: Call<MyAlarmData2>, t: Throwable) {
                 Log.d("서버 오류", "setAlarm 실패")
             }
         })

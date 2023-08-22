@@ -3,6 +3,7 @@ package com.example.myapplication.MyFuction
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.MyFuction.Model.FragMyData
 import com.example.myapplication.MyFuction.Model.MyAlarmData
+import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MyGetNoticesData
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
@@ -57,13 +58,13 @@ interface RetrofitServiceMy {
 
     // 화면 설정 -> 미확인
     @POST("/user/pageInfo")
-    fun setPage(@Header("Authorization") token: String?, @Body data: MySetPageData
+    fun mySetPage(@Header("Authorization") token: String?, @Body data: MySetPageData
     ): Call<MySetPageData>
 
     // 알림 설정 -> 미확인
     @PATCH("/user/alarmInfo")
-    fun setAlarm(@Header("Authorization") token: String?, @Body data: MyAlarmData
-    ): Call<MyAlarmData>
+    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm: Boolean
+    ): Call<MyAlarmData2>
 
     // 프리미엄 설정 -> 미확인
     @PATCH("/user/subscribe")
