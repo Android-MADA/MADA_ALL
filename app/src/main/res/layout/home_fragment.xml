@@ -138,7 +138,6 @@
                 android:layout_width="145dp"
                 android:layout_height="181dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/calendar_character"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_home_sentence"
                 />
