@@ -1,5 +1,7 @@
 package com.example.myapplication.MyFuction.Model
 
+import com.google.gson.annotations.SerializedName
+
 data class MyPremiumData(
-    val is_subscribe: Boolean,
+    @SerializedName("is_subscribe") val is_subscribe: Boolean,
 )
