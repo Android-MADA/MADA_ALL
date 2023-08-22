@@ -1,18 +1,25 @@
 package com.example.myapplication.MyFuction
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MainActivity
 import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
 import com.example.myapplication.databinding.MySetBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 
 class MySetActivity : AppCompatActivity() {
     private lateinit var binding: MySetBinding
@@ -28,15 +35,19 @@ class MySetActivity : AppCompatActivity() {
         binding = MySetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //GetSetPage()
+        GetSetPage()
+
 
         binding.backBtn.setOnClickListener {
 
-            finish()
+            GlobalScope.launch {
+                patchSetting(token, MySetPageData2(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
+                finish()
+            }
         }
     }
 
-    // 서버에서 세팅 불러오기
+     //서버에서 세팅 불러오기
     private fun GetSetPage() {
         api.myGetSettingPage(token).enqueue(object : retrofit2.Callback<MySetPageData> {
             override fun onResponse(
@@ -47,10 +58,10 @@ class MySetActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     if (response != null){
-                        Log.d("GetSetPage 성공", "Response Code: $responseCode"+"")
-                        binding.mySetSwitch1.isChecked = response.body()?.data!!.endTodobackSetting
+                        Log.d("GetSetPage 성공", response.body()?.data.toString())
+                        binding.mySetSwitch1.isChecked = response.body()?.data!!.startTodoAtMonday
                         binding.mySetSwitch2.isChecked = response.body()?.data!!.newTodoStartSetting
-                        binding.mySetSwitch3.isChecked = response.body()?.data!!.startTodoAtMonday
+                        binding.mySetSwitch3.isChecked = response.body()?.data!!.endTodoBackSetting
                     }
                     else{
                         Log.d("response null ", "Response Code: $responseCode")
@@ -70,5 +81,30 @@ class MySetActivity : AppCompatActivity() {
 
 
     // 서버에 세팅 저장하기
+    fun patchSetting(token : String, data : MySetPageData2) : String{
+        var a = "fail"
+        val aapi = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+        aapi.mySetPage(token, data)
+            .enqueue(object : Callback<MySetPageData>{
+                override fun onResponse(
+                    call: Call<MySetPageData>,
+                    response: Response<MySetPageData>
+                ) {
+                    if(response.isSuccessful){
+                    }
+                    else {
+
+                    }
+                }
+
+                override fun onFailure(call: Call<MySetPageData>, t: Throwable) {
+                    Log.d("서버 연결 실패", "실패")
+
+                }
+
+            })
+
+        return a
+    }
 
 }
