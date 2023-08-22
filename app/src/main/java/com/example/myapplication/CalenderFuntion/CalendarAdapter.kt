@@ -13,6 +13,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
@@ -96,7 +97,22 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                         cal.setImageResource(R.drawable.calendar_line_center)
                     }
                 } else {
-                    holder.lines[data.floor].setImageResource(R.drawable.calendar_point)
+                    if(data.startTime=="00:00:00"&&data.endTime=="00:00:00") {
+
+                        cal .viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                            override fun onGlobalLayout() {
+                                cal .viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                                val parentWidth = holder.itemView.width
+                                val layoutParams = cal .layoutParams
+                                layoutParams.width = (parentWidth * 0.8).toInt()
+                                cal .layoutParams = layoutParams
+                            }
+                        })
+                        cal.setImageResource(R.drawable.calendar_line_center2)
+                    }
+                    else
+                        cal.setImageResource(R.drawable.calendar_point)
                 }
             } else {
 
@@ -141,7 +157,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 else {
                     addCalendar(
                         CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
-                            ,"#E1E9F5","No","N" , "","10:00:00","11:00:00"))
+                            ,"#89A9D9","No","N" , "","10:00:00","11:00:00"))
                 }
                 mBuilder.dismiss()
             })

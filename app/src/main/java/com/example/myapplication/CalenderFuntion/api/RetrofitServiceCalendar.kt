@@ -2,6 +2,7 @@ package com.example.myapplication.CalenderFuntion.api
 
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
+import com.example.myapplication.CalenderFuntion.Model.CalendarData3
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
@@ -21,9 +22,11 @@ interface RetrofitServiceCalendar {
     @GET("/api/calendar/")
     fun allCalRequest(@Header("Authorization") token : String?
     ) : Call<CalendarDatas>
+
+
     @GET("/api/calendar/")
     fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: String, @Query("month") month: String
-    ) : Call<CalendarDatas>
+    ) : Call<CalendarData3>
     @DELETE("/api/calendar/edit/{id}")
     fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int
     ) : Call<AddCalendarData>

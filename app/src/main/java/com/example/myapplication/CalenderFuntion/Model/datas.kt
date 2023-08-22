@@ -42,22 +42,25 @@ data class AddCalendarData (
 }
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,
-    @SerializedName("data") val datas: List<CalendarDataId> // 생성자, getter, setter 등의 메서드를 정의해주세요.
+    @SerializedName("calendar") val datas: List<CalendarDataId> // 생성자, getter, setter 등의 메서드를 정의해주세요.
 
-) {
+)
+data class CalendarData3 (
+    @SerializedName("data") val data : CalendarDatas
 
-}
+)
 
 data class Item (
     @SerializedName("id") val id: Int,
     @SerializedName("itemType") val itemType: String,
     @SerializedName("filePath") val filePath: String
-) {
-
-}
+)
+data class CharacterResponse2 (
+    @SerializedName("wearingItems") val datas: List<Item>
+)
 
 data class CharacterResponse (
-    @SerializedName("data") val datas: List<Item>
+    @SerializedName("data") val data: CharacterResponse2
 ) {
 
 }

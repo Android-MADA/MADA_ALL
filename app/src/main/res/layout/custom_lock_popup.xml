@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+
+<layout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/calendar_dday_popup_size"
-    android:backgroundTint="@color/white"
-    android:orientation="vertical">
+    android:background="@drawable/home_dialog_background"
+    android:layout_gravity="center"
+    >
 
     <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="match_parent"
+        android:id="@+id/tv_home_dialog_back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:text="잠긴 아이템은 저장할 수 없습니다."
         android:textSize="16sp"
-        android:layout_margin="30dp"
         android:textColor="@color/black"
-        android:text="잠긴 아이템은 저장할 수 없습니다." />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_custom_locksave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="80dp"
-                android:text="확인"
-                android:background="@drawable/my_btn_ok"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="16dp" />
-    </LinearLayout>
 
-</LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_lock_yes"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:background="@drawable/home_dialog_btn_background"
+        android:backgroundTint="@color/sub4"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="확인"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_home_dialog_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="25dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
