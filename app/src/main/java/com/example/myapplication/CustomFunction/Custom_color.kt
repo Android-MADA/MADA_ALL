@@ -108,8 +108,8 @@ class custom_color : Fragment() {
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_color_basic -> R.drawable.color_basic_choice
-            R.id.btn_color_blue -> R.drawable.color_rblue_choice
-            R.id.btn_color_Rblue -> R.drawable.color_blue_choice
+            R.id.btn_color_blue -> R.drawable.color_blue_choice
+            R.id.btn_color_Rblue -> R.drawable.color_rblue_choice
             R.id.btn_color_bluepurple -> R.drawable.color_bluepurple_choice
             R.id.btn_color_green -> R.drawable.color_green_choice
             R.id.btn_color_orange -> R.drawable.color_orange_choice
