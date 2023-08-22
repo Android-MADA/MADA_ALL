@@ -395,8 +395,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         btnYes.setOnClickListener {
             alertDialog.dismiss()
             unsavedChanges = false
-            //val navController = findNavController()
-            //navController.navigate(R.id.fragHome)
+            findNavController().navigate(curMenuItem)
 
         }
 
@@ -492,17 +491,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 showBackConfirmationDialog()
                 false
             } else {
-
-                val navHostFragment = activity?.findViewById<View>(R.id.fl_con)
-                val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-                val navController = navHostFragment?.findNavController()
-                if (navController != null) {
-                    bottomNavigationView?.setupWithNavController(navController)
-
-                    //findNavController().navigate(menuItem.itemId)
-
-                }
-
+                findNavController().navigate(menuItem.itemId)
                 true
             }
         }
