@@ -7,6 +7,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyAlarmData
 import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
+import com.example.myapplication.MyFuction.Model.MyPostSetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
 import com.example.myapplication.databinding.MySetBinding
@@ -31,7 +32,7 @@ class MySetActivity : AppCompatActivity() {
         GetSetPage()
 
         binding.backBtn.setOnClickListener {
-            PostSetPage(binding.mySetSwitch1.isChecked)
+            PostSetPage(MyPostSetPageData( binding.mySetSwitch1.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch3.isChecked))
             finish()
         }
     }
@@ -69,21 +70,20 @@ class MySetActivity : AppCompatActivity() {
 
 
     // 서버에 세팅 저장하기
-    private fun PostSetPage(isSetting: Boolean) {
-        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySetPageData2> {
+    private fun PostSetPage(isSettings: MyPostSetPageData) {
+        api.mySetPage(token, isSettings).enqueue(object : retrofit2.Callback<MyPostSetPageData> {
             override fun onResponse(
-                call: Call<MySetPageData2>,
-                response: Response<MySetPageData2>
+                call: Call<MyPostSetPageData>,
+                response: Response<MyPostSetPageData>
             ) {
                 val responseCode = response.code()
-
                 if (response.isSuccessful) {
-                    Log.d("PostSetPage 성공", "Response Code: $responseCode")
+                    Log.d("PostSetPage 성공", "1:")
                 } else {
                     Log.d("PostSetPage 실패", "Response Code: $responseCode")
                 }
             }
-            override fun onFailure(call: Call<MySetPageData2>, t: Throwable) {
+            override fun onFailure(call: Call<MyPostSetPageData>, t: Throwable) {
                 Log.d("서버 오류", "PostSetPage 실패")
             }
         })

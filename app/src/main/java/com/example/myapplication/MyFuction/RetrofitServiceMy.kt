@@ -7,6 +7,7 @@ import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MyGetNoticesData
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
+import com.example.myapplication.MyFuction.Model.MyPostSetPageData
 import com.example.myapplication.MyFuction.Model.MyPremiumData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
@@ -69,8 +70,8 @@ interface RetrofitServiceMy {
 
     // 화면 설정 저장 -> 미확인
     @POST("/user/pageInfo/change")
-    fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: Boolean
-    ): Call<MySetPageData2>
+    fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: MyPostSetPageData
+    ): Call<MyPostSetPageData>
 
     // 알림 설정 조회 -> 확인
     @GET("/user/alarmInfo")
@@ -79,8 +80,8 @@ interface RetrofitServiceMy {
 
     // 알림 설정 저장-> 미확인
     @PATCH("/user/alarmInfo")
-    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
-    ): Call<MyAlarmData>
+    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: MyAlarmData2
+    ): Call<MyAlarmData2>
 
 
 
