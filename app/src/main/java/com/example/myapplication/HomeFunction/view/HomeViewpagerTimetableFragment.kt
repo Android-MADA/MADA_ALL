@@ -75,6 +75,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
     var today = "2023-06-01"
     override fun onCreate(savedInstanceState: Bundle?) {
+        today = viewModel.homeDate.value.toString()
         super.onCreate(savedInstanceState)
 
     }
@@ -174,7 +175,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             }
         })
     }
-    private fun pirChartOn(arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
+    private fun pirChartOn(arrays : ArrayList<PieChartData>) {
         val tmp2 = arrays.sortedWith(compareBy(
             { it.startHour },
             { it.startMin }
@@ -183,7 +184,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         var tmp = 0     //시작 시간
 
-        var dataArray = tmp2.toMutableList() as ArrayList<HomeViewpagerTimetableFragment.PieChartData>
+        var dataArray = tmp2.toMutableList() as ArrayList<PieChartData>
         val pieChartDataArray = dataArray
         //Pi Chart
         var chart = binding.chart

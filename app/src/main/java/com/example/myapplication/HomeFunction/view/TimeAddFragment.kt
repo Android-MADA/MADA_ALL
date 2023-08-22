@@ -284,7 +284,7 @@ class TimeAddFragment : Fragment() {
                 val popupWidth = (screenWidth * 0.8).toInt()
                 mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
-                mDialogView.findViewById<TextView>(R.id.textView4).setText("스케줄명을 입력하시오")
+                mDialogView.findViewById<TextView>(R.id.nickname).setText("스케줄명을 입력하시오")
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
@@ -307,7 +307,7 @@ class TimeAddFragment : Fragment() {
                 val popupWidth = (screenWidth * 0.8).toInt()
                 mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
-                mDialogView.findViewById<TextView>(R.id.textView4).setText("올바른 시간을 입력해 주십시오")
+                mDialogView.findViewById<TextView>(R.id.nickname).setText("올바른 시간을 입력해 주십시오")
                 mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
                     mBuilder.dismiss()
                 })
@@ -448,7 +448,6 @@ class TimeAddFragment : Fragment() {
                     val bundle = Bundle()
                     bundle.putString("today",today)
                     if(viewpager) {
-                        bottomFlag = false
                         findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                     }
                     else
