@@ -122,7 +122,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
-    private val printIds = mutableListOf<String>()
+    private val printIds = mutableListOf<IdAndItemType>()
     private var itemType: String = "z"
     private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
@@ -357,14 +357,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
             val uniqueItemIds = mutableSetOf<String>()
 
-            printIds.forEach { idAndItemType ->
-                uniqueItemIds.add(this.id.toString())
-            }
+            val isColorMissing = printIds.none { IdAndItemType -> this.itemType == "color" }
+            val isSetMissing = printIds.none { IdAndItemType -> this.itemType == "set" }
+            val isItemMissing = printIds.none { IdAndItemType -> this.itemType == "item" }
+            val isBackgroundMissing = printIds.none { IdAndItemType -> this.itemType == "background" }
+            Log.d("getCustomPrint", "$isColorMissing $isSetMissing $isItemMissing $isBackgroundMissing")
 
-            val isColorMissing = printIds.none { idAndItemType -> this.itemType == "color" }
-            val isSetMissing = printIds.none { idAndItemType -> this.itemType == "set" }
-            val isItemMissing = printIds.none { idAndItemType -> this.itemType == "item" }
-            val isBackgroundMissing = printIds.none { idAndItemType -> this.itemType == "background" }
 
             if(isColorMissing){
                 temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
@@ -376,16 +374,50 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         uniqueItemIds.add("10")
                     }
                 }
+            }else{
+                if (temdata.selectedColorButtonInfo?.serverID != 900 &&
+                    temdata.selectedColorButtonInfo?.serverID != 800 &&
+                    temdata.selectedColorButtonInfo?.serverID != 700 &&
+                    temdata.selectedColorButtonInfo?.serverID != 0  &&
+                    temdata.selectedColorButtonInfo?.serverID != null
+                ) {
+                    temdata.selectedColorButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                        uniqueItemIds.add(it.toString())
+                    }
+                }
             }
 
             if(isSetMissing){
                 temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
                 uniqueItemIds.add(it.toString())
-            }}
+            }
+            }else{
+                if (temdata.selectedClothButtonInfo?.serverID != 900 &&
+                    temdata.selectedClothButtonInfo?.serverID != 800 &&
+                    temdata.selectedClothButtonInfo?.serverID != 700 &&
+                    temdata.selectedClothButtonInfo?.serverID != 0  &&
+                    temdata.selectedClothButtonInfo?.serverID != null
+                ) {
+                    temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                        uniqueItemIds.add(it.toString())
+                    }
+                }
+            }
 
             if(isItemMissing){
                 temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
                     uniqueItemIds.add(it.toString())
+                }
+            }else{
+                if (temdata.selectedItemButtonInfo?.serverID != 900 &&
+                    temdata.selectedItemButtonInfo?.serverID != 800 &&
+                    temdata.selectedItemButtonInfo?.serverID != 700 &&
+                    temdata.selectedItemButtonInfo?.serverID != 0  &&
+                    temdata.selectedItemButtonInfo?.serverID != null
+                ) {
+                    temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                        uniqueItemIds.add(it.toString())
+                    }
                 }
             }
 
@@ -394,9 +426,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     uniqueItemIds.add(it.toString())
                 }
             }
+            else{
+                if (temdata.selectedBackgroundButtonInfo?.serverID != 900 &&
+                    temdata.selectedBackgroundButtonInfo?.serverID != 800 &&
+                    temdata.selectedBackgroundButtonInfo?.serverID != 700 &&
+                    temdata.selectedBackgroundButtonInfo?.serverID != 0  &&
+                    temdata.selectedBackgroundButtonInfo?.serverID != null
+                ) {
+                    temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                            uniqueItemIds.add(it.toString())
+                        };
+                    else if{printIds.IdAndItemType.itemType == "background"}
+                }
+            }
 
-
-// Convert uniqueItemIds set back to a list
             val combinedIds = uniqueItemIds.toList()
 
 // Now you can use combinedIds as needed
@@ -548,7 +591,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printIds: MutableList<IdAndItemType> = mutableListOf() // Create a mutable list of IdAndItemType objects
 
 
-
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
                     itemType = item.itemType
@@ -561,9 +603,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
 
                 datas?.forEachIndexed { index, item ->
-                    val idAndItemType = IdAndItemType(item.id.toString(), item.itemType)
-                    printIds.add(idAndItemType)
-                    // ...
+                    val IdAndItemType = IdAndItemType(item.id.toString(), item.itemType)
+                    printIds.add(IdAndItemType)
                 }
                 if (datas != null) {
                     for (item in datas) {
