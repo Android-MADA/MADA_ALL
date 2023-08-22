@@ -113,7 +113,7 @@ class FragMy : Fragment() {
                     Log.d("selectfragMy 성공", response.body().toString())
                     if (response.body()!!.data.subscribe == true) binding.userType.text = "프리미엄 유저"
                     else binding.userType.text = "일반 유저"
-                    binding.myNickname.text = "안녕하세요"+" ${response.body()!!.data.nickname}"+"님!"
+                    binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
                     binding.sayingContent.text = response.body()!!.data.saying[0].content
                     binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
