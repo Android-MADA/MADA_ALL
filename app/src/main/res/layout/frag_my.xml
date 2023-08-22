@@ -34,16 +34,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
                 android:src="@drawable/custom_empty"></ImageView>
 
             <ImageView
                 android:id="@+id/img_my_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:src="@drawable/custom_empty"></ImageView>
+                android:layout_gravity="center_horizontal"></ImageView>
 
         </FrameLayout>
 
