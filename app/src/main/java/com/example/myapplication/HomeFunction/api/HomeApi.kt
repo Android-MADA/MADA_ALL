@@ -1,7 +1,9 @@
 package com.example.myapplication.HomeFunction.api
 
 
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.Model.CategoryList1
+import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
@@ -127,4 +129,9 @@ interface HomeApi {
     suspend fun getRepeatTodo(
         @Header("Authorization") token : String?
     ) : RepeatData1
+
+    @GET("/api/custom/")
+    fun getHomeRamdi(
+        @Header("Authorization") token : String?
+    ) : Call<HomeCharacData>
 }

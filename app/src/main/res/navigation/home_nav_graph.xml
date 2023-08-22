@@ -94,7 +94,8 @@
         android:label="CategoryAddFragment" >
         <action
             android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment"
-            app:destination="@id/homeCategoryFragment" />
+            app:destination="@id/homeCategoryFragment"
+            app:popUpTo="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/homeTimetableFragment"
@@ -114,7 +115,8 @@
         android:label="TimeAddFragment" >
         <action
             android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
-            app:destination="@id/homeTimetableFragment" />
+            app:destination="@id/homeTimetableFragment"
+            app:popUpTo="@id/fragHome" />
         <action
             android:id="@+id/action_timeAddFragment_to_fragHome"
             app:destination="@id/fragHome" />
@@ -124,11 +126,12 @@
         android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
         android:label="HomeRepeatTodoFragment" >
         <action
-            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
-            app:destination="@id/fragHome" />
-        <action
             android:id="@+id/action_homeRepeatTodoFragment_to_repeatTodoAddFragment"
             app:destination="@id/repeatTodoAddFragment" />
+        <action
+            android:id="@+id/action_homeRepeatTodoFragment_to_fragHome"
+            app:destination="@id/fragHome"
+            app:popUpTo="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/repeatTodoAddFragment"
@@ -136,6 +139,7 @@
         android:label="RepeatTodoAddFragment" >
         <action
             android:id="@+id/action_repeatTodoAddFragment_to_homeRepeatTodoFragment"
-            app:destination="@id/homeRepeatTodoFragment" />
+            app:destination="@id/homeRepeatTodoFragment"
+            app:popUpTo="@id/fragHome" />
     </fragment>
 </navigation>

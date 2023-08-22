@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
@@ -16,6 +17,7 @@ import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
@@ -37,8 +39,7 @@ import java.util.Calendar
 class HomeTimetableFragment : Fragment() {
 
     lateinit var binding : HomeFragmentTimetableBinding
-
-
+    private val viewModel : HomeViewModel by activityViewModels()
     private var bottomFlag = true
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -47,8 +48,6 @@ class HomeTimetableFragment : Fragment() {
     var token = ""
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
-
-    var today = "2023-06-01"
 
     var dataArray= ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +70,10 @@ class HomeTimetableFragment : Fragment() {
         val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
         customCircleBarView.setProgress(progressPercentage.toInt())
 
+        //var today = viewModel.homeDate.value.toString()
+
         //파이차트
-        getTimeDatas(today)
+        getTimeDatas(viewModel.homeDate.value.toString())
 
         return binding.root
     }
@@ -88,8 +89,8 @@ class HomeTimetableFragment : Fragment() {
 
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("today",today)
-            bundle.putString("Token",token)
+            bundle.putString("today",viewModel.homeDate.value.toString())
+            bundle.putString("Token",viewModel.userToken)
             if(dataArray!=null) {
                 bundle.putSerializable("pieChartDataArray", dataArray)
                 Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
