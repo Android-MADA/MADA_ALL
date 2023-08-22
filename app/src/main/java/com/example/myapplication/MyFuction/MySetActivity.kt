@@ -9,8 +9,6 @@ import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
-import com.example.myapplication.MyFuction.Model.MySettingData2
-import com.example.myapplication.MyFuction.Model.MySettingData3
 import com.example.myapplication.databinding.MySetBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,10 +31,6 @@ class MySetActivity : AppCompatActivity() {
         //GetSetPage()
 
         binding.backBtn.setOnClickListener {
-
-            PatchSetPage(binding.mySetSwitch1.isChecked)
-         PatchSetPage(binding.mySetSwitch2.isChecked)
-PatchSetPage(binding.mySetSwitch3.isChecked)
 
             finish()
         }
@@ -76,25 +70,5 @@ PatchSetPage(binding.mySetSwitch3.isChecked)
 
 
     // 서버에 세팅 저장하기
-    private fun PostSetPage(isSetting: Boolean) {
-        api.mySetPage(token, isSetting).enqueue(object : retrofit2.Callback<MySetPageData2> {
 
-            override fun onResponse(
-                call: Call<MySettingData3>,
-                response: Response<MySettingData3>
-            ) {
-                val responseCode = response.code()
-
-                if (response.isSuccessful) {
-                    Log.d("PostSetPage 성공", "Response Code: $responseCode")
-                } else {
-                    Log.d("PostSetPage 실패", "Response Code: $responseCode")
-                }
-            }
-            override fun onFailure(call: Call<MySetPageData2>, t: Throwable) {
-                Log.d("서버 오류", "PostSetPage 실패")
-
-            }
-        })
-    }
 }

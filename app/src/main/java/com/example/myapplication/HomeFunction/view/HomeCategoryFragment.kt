@@ -17,8 +17,6 @@ import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.Model.MySettingData2
-import com.example.myapplication.MyFuction.Model.MySettingData3
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
@@ -52,26 +50,7 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val myApi = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
 
-        myApi.mySetPage(viewModel.userToken, MySettingData2(true, true, true)).enqueue(object : Callback<MySettingData3>{
-            override fun onResponse(
-                call: Call<MySettingData3>,
-                response: Response<MySettingData3>
-            ) {
-                if(response.isSuccessful){
-                    Log.d("myPost성공", response.body().toString())
-                }
-                else{
-                    Log.d("myPost 안드 잘못", response.body().toString())
-                }
-            }
-
-            override fun onFailure(call: Call<MySettingData3>, t: Throwable) {
-                Log.d("myPost실패", "서버 ㅇ녀결 실패")
-            }
-
-        })
 
         val bundle = Bundle()
 
