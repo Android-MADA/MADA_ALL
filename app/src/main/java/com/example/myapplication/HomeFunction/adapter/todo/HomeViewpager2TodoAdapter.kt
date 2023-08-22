@@ -13,6 +13,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
@@ -22,7 +23,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
-class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
+class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapter<HomeViewpager2TodoAdapter.viewHolder>() {
 
     lateinit var dataSet : ArrayList<Todo>
     var cateIndex = 0
@@ -40,6 +41,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
         val edtTodo : EditText
         val todoLayout : ConstraintLayout
         val repeatIcon : ImageView
+        val ivIcon : ImageView
 
         init {
             todoCheckBox = view.findViewById(R.id.iv_repeat_todo)
@@ -49,6 +51,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
             edtTodo = view.findViewById(R.id.edt_home_viewpager2_todo_edit)
             todoLayout = view.findViewById(R.id.layout_viewpager_todo)
             repeatIcon = view.findViewById(R.id.iv_home_repeat)
+            ivIcon = view.findViewById(R.id.iv_my_todo)
         }
     }
 
@@ -62,6 +65,7 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
+
 
         if(dataSet.isNotEmpty()){
 
@@ -84,18 +88,38 @@ class HomeViewpager2TodoAdapter() : RecyclerView.Adapter<HomeViewpager2TodoAdapt
 
             }
 
+
+
             holder.todoCheckBox.setBackgroundResource(cbColor)
             //menu창 누르면 메뉴창 오픈, 각 메뉴 별로 행동 설정
             holder.tvTodo.text = dataSet[position].todoName
             holder.todoCheckBox.isChecked = dataSet[position].complete
 
             if(dataSet[position].repeat != "N"){
-                holder.todoMenu.isGone = true
-                holder.repeatIcon.isVisible = true
+                if(flag == "my"){
+                    holder.todoMenu.isGone = true
+                    holder.todoCheckBox.isInvisible = true
+                    holder.ivIcon.isVisible = true
+                }
+                else {
+                    holder.todoCheckBox.isVisible = true
+                    holder.ivIcon.isGone = true
+                    holder.todoMenu.isGone = true
+                    holder.repeatIcon.isVisible = true
+                }
             }
             else {
-                holder.todoMenu.isVisible = true
-                holder.repeatIcon.isGone = true
+                if(flag == "my"){
+                    holder.todoMenu.isGone = true
+                    holder.todoCheckBox.isInvisible = true
+                    holder.ivIcon.isVisible = true
+                }
+                else {
+                    holder.todoCheckBox.isVisible = true
+                    holder.ivIcon.isGone = true
+                    holder.todoMenu.isVisible = true
+                    holder.repeatIcon.isGone = true
+                }
             }
 
             holder.todoMenu.setOnClickListener {

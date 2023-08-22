@@ -6,15 +6,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.isGone
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
 import com.example.myapplication.Fragment.FragHome
+import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.CategoryList1
+import com.example.myapplication.HomeFunction.Model.PostRequestTodo
+import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
+import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
+import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.Model.repeatTodo
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
@@ -41,19 +57,18 @@ import java.util.Locale
 
 class MyRecordDayActivity : AppCompatActivity() {
     private lateinit var binding: MyRecordDayBinding
-    lateinit var homeFragmentBinding: HomeFragmentBinding
     private lateinit var calendar: Calendar
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var token = ""
-    var today = "2023-08-18"        //default값
+    var token = MyWebviewActivity.prefs.getString("token", "")
+    var today = LocalDate.now().toString()        //default값
 
+    private var cateAdapter : HomeViewpager2CategoryAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MyRecordDayBinding.inflate(layoutInflater)
-        homeFragmentBinding = HomeFragmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         token = MyWebviewActivity.prefs.getString("token","")
 
@@ -87,12 +102,21 @@ class MyRecordDayActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.todayInfo.setOnClickListener {
-            getTimeDatas(binding.todayInfo.text.toString())     //"2023-08-13"
-
+            getTimeDatas(binding.todayInfo.text.toString())
+            findRv(binding.todayInfo.text.toString())
         }
 
         // 홈 투두 받아오기
-        val homeViewPager = homeFragmentBinding.homeViewpager2
+        //카테 데이터 받아오기
+        //카태 데이터 있는지 확인하고
+        //카테 어댑터 연결
+
+        //투두 데이터 있는지 확인하고
+        //out rv 연결하고
+        // in rv 연결하기
+
+        findRv(LocalDate.now().toString())
+
 
     }
     private fun setMonthView() {
@@ -272,6 +296,110 @@ class MyRecordDayActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun attachAdapter( dataSet : ArrayList<Category>, cateTodoSet : ArrayList<ArrayList<Todo>>) {
+
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+        cateAdapter = HomeViewpager2CategoryAdapter("my")
+        cateAdapter!!.dataSet = dataSet
+        cateAdapter!!.cateTodoSet = cateTodoSet
+
+        cateAdapter!!.setItemClickListener(object :
+            HomeViewpager2CategoryAdapter.OnItemClickListener {
+            override fun onClick(
+                v: View,
+                position: Int,
+                cate: Int,
+                edt: EditText,
+                layout: LinearLayout
+            ) {
+
+            }
+            })
+
+
+        binding.myViewpager2.adapter = cateAdapter
+        binding.myViewpager2.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun findRv(date : String) {
+        Log.d("findrv", "함수 시작")
+        service.getMyCategory(token).enqueue(object : Callback<CategoryList1>{
+            override fun onResponse(call: Call<CategoryList1>, response: Response<CategoryList1>) {
+                val category = response.body()?.data?.CategoryList
+                if(category?.isEmpty() != true){
+                    Log.d("findrvcate", response.body()?.data?.CategoryList.toString())
+                    val cate = response.body()?.data?.CategoryList
+                    service.getAllMyTodo(token, date).enqueue(object : Callback<TodoList>{
+                        override fun onResponse(
+                            call: Call<TodoList>,
+                            response: Response<TodoList>
+                        ) {
+                            val cateTodo = classifyTodo(category!!, response.body()!!.data.TodoList)
+                            Log.d("findrv", cateTodo.toString())
+                            attachAdapter(category, cateTodo)
+                        }
+
+                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                }
+
+            }
+
+            override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+                Log.d("cate", "실패 ")
+            }
+
+        })
+    }
+
+    private fun classifyTodo(dataSet : ArrayList<Category>, todo : ArrayList<Todo>) : ArrayList<ArrayList<Todo>> {
+
+        var size = if (dataSet.size != 0) {
+            dataSet.size.minus(1)
+        } else {
+            -1
+        }
+
+        var todoCateList : ArrayList<ArrayList<Todo>> = arrayListOf(
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
+
+        )
+        if (size > 0) {
+            for (i in todo) {
+                for (j in 0..size) {
+                    if (i.category.id == dataSet[j].id) {
+                        todoCateList[j].add(i)
+                    }
+                }
+            }
+
+        } else if (size == 0) {
+            for (i in todo) {
+                todoCateList[0].add(i)
+            }
+        }
+        Log.d("mytodo", todoCateList.toString())
+        return todoCateList
     }
 
 
