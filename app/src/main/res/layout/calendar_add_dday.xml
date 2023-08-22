@@ -208,6 +208,7 @@
                     app:srcCompat="@drawable/calendar_calendar_image" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/preScheldule"
                     android:layout_width="wrap_content"
