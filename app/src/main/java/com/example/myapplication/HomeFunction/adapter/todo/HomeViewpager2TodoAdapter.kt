@@ -73,23 +73,7 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
 
             var cbColor = R.drawable.home_checkbox1
 
-            fun findRes(color : String) : Int {
-                var colorr : Int = when(color){
-                    "#E1E9F5" -> {R.drawable.home_checkbox1}
-                    "#89A9D9" -> {R.drawable.home_checkbox2}
-                    "#486DA3" -> {R.drawable.home_checkbox3}
-                    "#FFE7EB" -> {R.drawable.home_checkbox4}
-                    "#FDA4B4" -> {R.drawable.home_checkbox5}
-                    "#F0768C" -> {R.drawable.home_checkbox6}
-                    "#D4ECF1" -> {R.drawable.home_checkbox7}
-                    "#7FC7D4" -> {R.drawable.home_checkbox8}
-                    "#2AA1B7" -> {R.drawable.home_checkbox9}
-                    "#FDF3CF" -> {R.drawable.home_checkbox10}
-                    "#F8D141" -> {R.drawable.home_checkbox11}
-                    else -> {R.drawable.home_checkbox12}
-                }
-                return colorr
-            }
+
 
             when(dataSet[position].category.color){
                 "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
@@ -115,37 +99,20 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
             holder.todoCheckBox.isChecked = dataSet[position].complete
 
             if(dataSet[position].repeat != "N"){
-                if(flag == "my"){
-                    holder.todoMenu.isGone = true
-                    holder.todoCheckBox.isInvisible = true
-                    holder.ivIcon.isVisible = true
-                    if(dataSet[position].complete == true) {
-                        holder.ivIcon.setImageResource(findRes(dataSet[position].category.color))
-                    }
-                }
-                else {
+
                     holder.todoCheckBox.isVisible = true
                     holder.ivIcon.isGone = true
                     holder.todoMenu.isGone = true
                     holder.repeatIcon.isVisible = true
-                }
             }
             else {
-                if(flag == "my"){
-                    holder.todoMenu.isGone = true
-                    holder.todoCheckBox.isInvisible = true
-                    holder.ivIcon.isVisible = true
-                    if(dataSet[position].complete == true) {
-                        holder.ivIcon.setImageResource(findRes(dataSet[position].category.color))
-                    }
-                }
-                else {
                     holder.todoCheckBox.isVisible = true
                     holder.ivIcon.isGone = true
                     holder.todoMenu.isVisible = true
                     holder.repeatIcon.isGone = true
-                }
             }
+
+
 
             holder.todoMenu.setOnClickListener {
                 val popup = PopupMenu(holder.itemView.context, it)
@@ -172,37 +139,13 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
                 viewModel!!.patchTodo(dataSet[position].id, PatchRequestTodo(dataSet[position].todoName, dataSet[position].repeat, dataSet[position].repeatWeek, dataSet[position].repeatMonth, dataSet[position].startRepeatDate, dataSet[position].endRepeatDate, isChecked), cateIndex, position, null )
                 if(buttonView.isChecked == true){
                     viewModel!!.updateCompleteTodo("add")
-//                    if(completeFlag == true){
-//                        var completeTodo = dataSet[position]
-//                        dataSet.removeAt(position)
-//                        dataSet.add(completeTodo)
-//                    }
+
                 }
                 else if(buttonView.isChecked == false){
                     viewModel!!.updateCompleteTodo("delete")
-//                    if(completeFlag == true){
-//                        var completeTodo = dataSet[position]
-//                        dataSet.removeAt(position)
-//                        dataSet.add(0, completeTodo)
-//                    }
-                }
-                //patch, completenum
 
-//                if(isChecked){
-//                    if(completeFlag){
-//                        var todoMove = dataSet[position]
-//                        dataSet.removeAt(position)
-//                        dataSet.add(todoMove)
-//                    }
-//                }
-//                else {
-//                    if(completeFlag){
-//                        var todoMove = dataSet[position]
-//                        dataSet.removeAt(position)
-//                        dataSet.add(0, todoMove)
-//                    }
-//
-//                }
+                }
+
                 notifyDataSetChanged()
             }
 
@@ -237,4 +180,22 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
     }
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
+
+    fun findRes(color : String) : Int {
+        var colorr : Int = when(color){
+            "#E1E9F5" -> {R.drawable.ch_checked_color1}
+            "#89A9D9" -> {R.drawable.ch_checked_color2}
+            "#486DA3" -> {R.drawable.ch_checked_color3}
+            "#FFE7EB" -> {R.drawable.ch_checked_color4}
+            "#FDA4B4" -> {R.drawable.ch_checked_color5}
+            "#F0768C" -> {R.drawable.ch_checked_color6}
+            "#D4ECF1" -> {R.drawable.ch_checked_color7}
+            "#7FC7D4" -> {R.drawable.ch_checked_color8}
+            "#2AA1B7" -> {R.drawable.ch_checked_color9}
+            "#FDF3CF" -> {R.drawable.ch_checked_color10}
+            "#F8D141" -> {R.drawable.ch_checked_color11}
+            else -> {R.drawable.ch_checked_color12}
+        }
+        return colorr
+    }
 }
