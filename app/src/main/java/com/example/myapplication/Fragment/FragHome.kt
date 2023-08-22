@@ -193,7 +193,7 @@ class FragHome : Fragment() {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
-                        val datas = apiResponse.datas
+                        val datas = apiResponse.data.datas
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)

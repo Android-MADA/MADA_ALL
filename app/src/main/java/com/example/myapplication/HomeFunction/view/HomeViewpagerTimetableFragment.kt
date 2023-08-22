@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.Model.ScheduleList
@@ -110,6 +111,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             val bundle = Bundle()
             bundle.putBoolean("viewpager",true)
             bundle.putString("Token",token)
+            bundle.putString("today",today)
             Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
         }
 
@@ -274,7 +276,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     bundle.putBoolean("viewpager",true)
                     bundle.putString("Token",token)
                     bundle.putString("today",today)
-                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                 } else if(lastSelectedEntry>=0&&lastSelectedEntry<900) {
                     val bundle = Bundle()
                     bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
@@ -282,7 +284,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
                     bundle.putBoolean("viewpager",true)
                     bundle.putString("Token",token)
-                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                 }
                 lastSelectedEntry =-1
             }
