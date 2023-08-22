@@ -3,6 +3,7 @@ package com.example.myapplication.CalenderFuntion.api
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarData3
+import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
@@ -42,9 +43,10 @@ interface RetrofitServiceCalendar {
     @PATCH("/api/calendar/edit/{id}")
     fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarData2
     ) : Call<CalendarData2>
+
     @GET("/api/calendar/dday")
     fun getAllDday(@Header("Authorization") token : String?
-    ) : Call<CalendarDatas>
+    ) : Call<CalendarDataDday>
 
 
     @GET("/api/calendar/date/{date}")           //최 후순위

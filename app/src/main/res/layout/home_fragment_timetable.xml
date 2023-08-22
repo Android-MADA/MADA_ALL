@@ -8,6 +8,7 @@
     >
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -117,18 +118,18 @@
         </LinearLayout>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/fab_home_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="right"
-            android:layout_margin="16dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="30dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_home_time_add"
-            app:maxImageSize="24dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.MediumComponent" />
-
+            android:src="@drawable/calendar_plus_btn"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            />
     </LinearLayout>
 
 </layout>

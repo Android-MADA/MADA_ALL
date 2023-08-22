@@ -101,6 +101,7 @@
 
             <ImageView
                 android:layout_width="30dp"
+                android:paddingHorizontal="3dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/my_premium_ic_check" />
 

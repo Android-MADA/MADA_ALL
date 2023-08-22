@@ -93,6 +93,7 @@ class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>
                 if(item.memo!="")
                     bundle.putString("memo",item.memo)
                 bundle.putString("color",item.color)
+                bundle.putString("dday",item.dDay)
                 bundle.putString("Token",token)
                 bundle.putInt("id",item.id)
                 Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)

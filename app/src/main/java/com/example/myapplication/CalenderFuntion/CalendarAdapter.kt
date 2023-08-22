@@ -157,8 +157,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 else {
                     addCalendar(
                         CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
-                            ,"#89A9D9","No","N" , "","10:00:00","11:00:00"))
-                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_fragCalendar)
+                            ,"#89A9D9","No",'N' , "","10:00:00","11:00:00"),holder.itemView)
+
                 }
                 mBuilder.dismiss()
             })
@@ -182,7 +182,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
         return dayList.size
     }
 
-    private fun addCalendar(data : CalendarData2) {
+    private fun addCalendar(data : CalendarData2, view : View) {
         val call1 = service.addCal(token,data)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
@@ -196,7 +196,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 } else {
                     Log.d("666","itemType: ${response.code()} ")
                 }
-                // 페이지 이동
+                Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
             }
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {

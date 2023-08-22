@@ -86,8 +86,8 @@ class CalendarAddDdayFragment : Fragment() {
         binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule.text.toString())
         dayString = binding.preScheldule.text.toString()
         binding.textDday.text = "D - "+(arguments?.getInt("dday") ?:"0").toString()
-        binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#E1E9F5"), PorterDuff.Mode.SRC_IN)
-        curColor = arguments?.getString("color") ?: "#E1E9F5"
+        binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#89A9D9"), PorterDuff.Mode.SRC_IN)
+        curColor = arguments?.getString("color") ?: "#89A9D9"
         binding.layoutColorSelector.visibility = View.GONE
         binding.textMemo.setText(arguments?.getString("memo"))
         binding.cal.visibility= View.GONE
@@ -101,18 +101,18 @@ class CalendarAddDdayFragment : Fragment() {
 
 
         binding.calendarColor1.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub5), PorterDuff.Mode.SRC_IN)
-            curColor = "#E1E9F5"
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.main), PorterDuff.Mode.SRC_IN)
+            curColor = "#89A9D9"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor2.setOnClickListener {
-            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub6), PorterDuff.Mode.SRC_IN)
-            curColor = "#FFE7EB"
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub3), PorterDuff.Mode.SRC_IN)
+            curColor = "#F0768C"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor3.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
-            curColor = "#F5EED1"
+            binding.calendarColor.setColorFilter(resources.getColor(R.color.sub1), PorterDuff.Mode.SRC_IN)
+            curColor = "#F8D141"
             toggleLayout(false,binding.layoutColorSelector)
         }
         binding.calendarColor.setOnClickListener {
@@ -203,11 +203,11 @@ class CalendarAddDdayFragment : Fragment() {
             }  else {
                 if(binding.addBtn.text.toString()=="수정") {
                     eidtCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                        curColor,"No","Y",binding.textMemo.text.toString(),
+                        curColor,"No",'Y',binding.textMemo.text.toString(),
                         "10:00:00","11:00:00"),id2)
                 } else {            //등록
                     addCalendar( CalendarData2( binding.textTitle.text.toString(),convertToDateKoreanFormat2(nextSchedule.text.toString()),convertToDateKoreanFormat2(nextSchedule.text.toString()),
-                        curColor,"No","Y",binding.textMemo.text.toString(),
+                        curColor,"No",'Y',binding.textMemo.text.toString(),
                         "10:00:00","11:00:00"))
                 }
             }

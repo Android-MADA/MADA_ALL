@@ -1,33 +1,28 @@
 package com.example.myapplication.HomeFunction.view
 
-import android.app.Dialog
-import android.content.Context
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFunction.HomeBackCustomDialog
-import com.example.myapplication.HomeFunction.HomeCustomDialogListener
-import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.hideBottomNavigation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeCategoryFragment : Fragment() {
 
@@ -49,13 +44,13 @@ class HomeCategoryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
-        //서버연결 - 카테고리 리스트 조회 후 리스트에 넣어서 어댑터에 연결
-         viewModel.getCategory(viewModel.userToken)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         val bundle = Bundle()
 
@@ -83,6 +78,11 @@ class HomeCategoryFragment : Fragment() {
                     }
                 })
 
+                binding.rvHomeCategory.adapter = cateAdapter
+                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
+            }
+            else {
+                cateAdapter = null
                 binding.rvHomeCategory.adapter = cateAdapter
                 binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
             }

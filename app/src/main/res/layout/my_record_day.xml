@@ -206,7 +206,7 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
+
         android:id="@+id/record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                 android:layout_height="wrap_content">
 
 
-                <androidx.viewpager2.widget.ViewPager2
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/my_viewpager2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -266,6 +266,10 @@
                     android:layout_width="225dp"
                     android:layout_height="225dp"
                     android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/my_time_circle"
                     />
                 <com.github.mikephil.charting.charts.PieChart
