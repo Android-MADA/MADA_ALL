@@ -354,13 +354,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
             }
-            val itemIds = mutableListOf<String>()
+            val itemIds = arrayOf("10", "900", "800", "700")
 
-            val uniqueItemIds = mutableSetOf<String>()
+            val uniqueItemIds = mutableListOf<String>()
 
             printIds.forEach { idAndItemType ->
-
-                uniqueItemIds.add(idAndItemType.id.toString())
+                if(idAndItemType.itemType=="color") {
+                    itemIds[0]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="set") {
+                    itemIds[1]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="item") {
+                    itemIds[2]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="background") {
+                    itemIds[3]=(idAndItemType.id.toString())
+                }
             }
 
             val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
@@ -368,33 +375,32 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
             val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
 
-            if(isColorMissing){
-                temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
-                    if (colorServerID != null) {
-                        if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
-                            uniqueItemIds.add(colorServerID.toString())
-                        } else {}
-                    } else {
-                        uniqueItemIds.add("10")
-                    }
-                }
+
+            if(temdata.selectedColorButtonInfo?.serverID == null) {
+                uniqueItemIds.add(itemIds[0])
+            } else {
+                uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
             }
-
-            if(isSetMissing){
-                temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                uniqueItemIds.add(it.toString())
-            }}
-
-            if(isItemMissing){
-                temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                    uniqueItemIds.add(it.toString())
-                }
+            if(temdata.selectedClothButtonInfo?.serverID == null) {
+                if(itemIds[1]!="900")
+                    uniqueItemIds.add(itemIds[1])
+            } else {
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                    uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
             }
-
-            if(isBackgroundMissing){
-                temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0}?.let {
-                    uniqueItemIds.add(it.toString())
-                }
+            if(temdata.selectedItemButtonInfo?.serverID == null) {
+                if(itemIds[2]!="800")
+                    uniqueItemIds.add(itemIds[2])
+            } else {
+                if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
+                    uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
+                if(itemIds[3]!="700")
+                    uniqueItemIds.add(itemIds[3])
+            } else {
+                if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
+                    uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
             }
 
 
