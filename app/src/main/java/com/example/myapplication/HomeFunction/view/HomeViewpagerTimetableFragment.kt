@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
 import com.example.myapplication.HomeFunction.Model.ScheduleList
@@ -72,8 +73,9 @@ class HomeViewpagerTimetableFragment : Fragment() {
     val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
     var token = ""
 
-    var today = "2023-08-18"
+    var today = "2023-06-01"
     override fun onCreate(savedInstanceState: Bundle?) {
+        today = viewModel.homeDate.value.toString()
         super.onCreate(savedInstanceState)
 
     }
@@ -110,6 +112,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             val bundle = Bundle()
             bundle.putBoolean("viewpager",true)
             bundle.putString("Token",token)
+            bundle.putString("today",today)
             Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
         }
 
@@ -172,7 +175,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
             }
         })
     }
-    private fun pirChartOn(arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
+    private fun pirChartOn(arrays : ArrayList<PieChartData>) {
         val tmp2 = arrays.sortedWith(compareBy(
             { it.startHour },
             { it.startMin }
@@ -181,7 +184,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         var tmp = 0     //시작 시간
 
-        var dataArray = tmp2.toMutableList() as ArrayList<HomeViewpagerTimetableFragment.PieChartData>
+        var dataArray = tmp2.toMutableList() as ArrayList<PieChartData>
         val pieChartDataArray = dataArray
         //Pi Chart
         var chart = binding.chart
@@ -274,15 +277,15 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     bundle.putBoolean("viewpager",true)
                     bundle.putString("Token",token)
                     bundle.putString("today",today)
-                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-                } else if(lastSelectedEntry>=0) {
+                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                } else if(lastSelectedEntry>=0&&lastSelectedEntry<900) {
                     val bundle = Bundle()
                     bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                     bundle.putSerializable("pieChartDataArray", pieChartDataArray)
 
                     bundle.putBoolean("viewpager",true)
                     bundle.putString("Token",token)
-                    Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                 }
                 lastSelectedEntry =-1
             }
