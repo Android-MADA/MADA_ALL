@@ -40,6 +40,9 @@ class MyProfileNickActivity : AppCompatActivity() {
         }
         binding.myNickBtn.setOnClickListener {
             changeNickname(binding.editNickname.text.toString())
+            val intent = Intent(this, FragMy::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }
@@ -67,8 +70,6 @@ class MyProfileNickActivity : AppCompatActivity() {
                 Log.d("서버 오류","닉네임 변경 실패")
             }
         })
-        val intent = Intent(this, FragMy::class.java)
-        startActivity(intent)
-        finish()
+
     }
 }
