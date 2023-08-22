@@ -1,12 +1,12 @@
 package com.example.myapplication.MyFuction
 
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.MyFuction.Model.FragMyData
 import com.example.myapplication.MyFuction.Model.MyAlarmData
+import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
-import com.example.myapplication.MyFuction.Model.MyChangeNicknameData2
 import com.example.myapplication.MyFuction.Model.MyGetNoticesData
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
-import com.example.myapplication.MyFuction.Model.MyNoticesData
 import com.example.myapplication.MyFuction.Model.MyPremiumData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import retrofit2.http.GET
@@ -15,8 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.Header
 import retrofit2.http.PATCH
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.POST
 
 
 interface RetrofitServiceMy {
@@ -35,40 +34,49 @@ interface RetrofitServiceMy {
     fun withdraw(@Header("Authorization") token: String?
     ) : Call<Void>
 
-    // 프로필 편집창 닉네임, 이메일 불러오기 -> 확인
-    @GET("/user/profile/change")
-    fun myGetProfile(@Header("Authorization") token : String?
-    ): Call<MyGetProfileData>
-
     // FragMy 데이터 불러오기 -> 미확인
     @GET("/my")
     fun selectfragMy(@Header("Authorization") token : String?
     ): Call<FragMyData>
 
 
-    // 공지사항 -> 미확인
+    // 프로필 편집창 닉네임, 이메일 불러오기 -> 확인
+    @GET("/user/profile/change")
+    fun myGetProfile(@Header("Authorization") token : String?
+    ): Call<MyGetProfileData>
+
+    // 닉네임 변경 -> 미확인
+    @PATCH("/user/profile/change/nickname")
+    fun changeNickname(@Header("Authorization") token: String?, @Body nickname: String
+    ): Call<MyChangeNicknameData>
+
+
+    // 공지사항 -> 확인
     @GET("/allnotice")
     fun myGetNotices(@Header("Authorization") token: String?
-    ): Call<List<MyGetNoticesData>>
+    ): Call<MyGetNoticesData>
 
     // 화면 설정 -> 미확인
-    @PATCH("/user/pageInfo")
-    fun setPage(@Header("Authorization") token: String?, @Body data: MySetPageData
+    @POST("/user/pageInfo")
+    fun mySetPage(@Header("Authorization") token: String?, @Body data: MySetPageData
     ): Call<MySetPageData>
 
     // 알림 설정 -> 미확인
     @PATCH("/user/alarmInfo")
-    fun setAlarm(@Header("Authorization") token: String?, @Body data: MyAlarmData
-    ): Call<MyAlarmData>
+    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm: Boolean
+    ): Call<MyAlarmData2>
 
     // 프리미엄 설정 -> 미확인
     @PATCH("/user/subscribe")
-    fun setPremium(@Header("Authorization") token: String?, @Body data: MyPremiumData
+    fun setPremium(@Header("Authorization") token: String?
     ): Call<MyPremiumData>
 
-    // 닉네임 변경 -> 미확인
-    @PATCH("/user/profile/change/nickname")
-    fun changeNickname(@Header("Authorization") token: String?
-    ): Call<MyChangeNicknameData2>
+
+    // 커스텀 캐릭터
+    @GET("/api/custom/")
+    fun characterRequest(@Header("Authorization") token : String?
+    ) : Call<CharacterResponse>
+
+
 
 }

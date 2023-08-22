@@ -62,7 +62,7 @@
             android:name=".MyFuction.MySetActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyNoticeSetActivity"
+            android:name=".MyFuction.MyAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".MyFuction.MyProfileNickActivity"
