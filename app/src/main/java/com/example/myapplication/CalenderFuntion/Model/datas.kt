@@ -9,7 +9,7 @@ data class CalendarData2(
     @SerializedName("endDate") val end_date: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("dday") val d_day: String,
+    @SerializedName("dday") val d_day: Char,
     @SerializedName("memo") val memo: String,
     @SerializedName("startTime") val start_time: String,
     @SerializedName("endTime") val end_time: String

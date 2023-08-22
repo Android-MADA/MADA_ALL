@@ -33,7 +33,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 
 class HomeTimetableFragment : Fragment() {
@@ -81,7 +83,9 @@ class HomeTimetableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textHomeTimeName.text = today
+        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
+        val outputDateFormat = SimpleDateFormat("yyyy년 M월 d일", Locale("ko", "KR"))
+        binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(today))
 
         binding.ivHomeTimetableBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
