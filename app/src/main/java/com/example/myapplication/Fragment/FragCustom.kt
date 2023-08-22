@@ -96,6 +96,10 @@ interface OnResetButtonClickListener {
     fun onResetButtonClicked()
 }
 
+data class IdAndItemType(
+    val id: Int,
+    val itemType: String
+)
 
 
 
@@ -119,6 +123,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
+    private val printIds = mutableListOf<String>()
+    private var itemType: String = "z"
     private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
 
@@ -128,6 +134,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var customBottomSheet: ViewGroup
 
     private lateinit var alertDialog: AlertDialog
+
 
 
     val baseUrl = "http://15.165.210.13:8080/"
@@ -333,53 +340,65 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
+
+
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
             var temdata = getSelectedButtonInfo()
+
             Log.d(
                 "Savedata",
                 "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}"
             )
+            printIds.forEachIndexed { index, itemId ->
+                Log.d("getCustomPrint", "printIds[$index]: $itemId")
+            }
             val itemIds = mutableListOf<String>()
 
-            temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
-                if (colorServerID == null) {
-                    itemIds.add("10")
-                } else {
-                    if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
-                        itemIds.add(colorServerID.toString())
+            val uniqueItemIds = mutableSetOf<String>()
+
+            uniqueItemIds.addAll(printIds)
+            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
+            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
+            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
+            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
+
+            if(isColorMissing){
+                temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
+                    if (colorServerID != null) {
+                        if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
+                            uniqueItemIds.add(colorServerID.toString())
+                        }else{}
+                    } else {
+                        uniqueItemIds.add("10")
                     }
-                    else{}
                 }
-
-            }
-            temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                itemIds.add(it.toString())
-            }
-            temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                itemIds.add(it.toString())
-            }
-            temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0}?.let {
-                itemIds.add(it.toString())
             }
 
-            patchCustomItemChange(itemIds)
+            if(isSetMissing){
+                temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                uniqueItemIds.add(it.toString())
+            }}
 
-
-            val httpUrlBuilder = HttpUrl.Builder().scheme("http").host("15.165.210.13").port(8080)
-                .addPathSegments("api/custom/change")
-
-
-            itemIds.forEach { itemId ->
-                httpUrlBuilder.addQueryParameter("item_id", itemId)
+            if(isItemMissing){
+                temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                    uniqueItemIds.add(it.toString())
+                }
             }
 
-            val httpUrl = httpUrlBuilder.build()
+            if(isBackgroundMissing){
+                temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0}?.let {
+                    uniqueItemIds.add(it.toString())
+                }
+            }
 
-            Log.d("URL_Log", "Complete URL: ${httpUrl.toString()}")
 
+// Convert uniqueItemIds set back to a list
+            val combinedIds = uniqueItemIds.toList()
 
+// Now you can use combinedIds as needed
+            patchCustomItemChange(combinedIds)
 
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
@@ -528,8 +547,17 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printInfo = response.body()
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
+                val printIds: MutableList<IdAndItemType> = mutableListOf() // Create a mutable list of IdAndItemType objects
+
+                datas?.forEachIndexed { index, item ->
+                    val idAndItemType = IdAndItemType(item.id, item.itemType)
+                    printIds.add(idAndItemType)
+                    // ...
+                }
+
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
+                    itemType = item.itemType
                     printfilePath = item.filePath
                     Log.d(
                         "getCustomPrint",
