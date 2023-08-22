@@ -531,8 +531,9 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for(data in datas.todoList) {
+
                                 arrays.add(CalendarDATA("","","","","",
-                                    "","","",data.todoName,1,false,"","TODO",7))
+                                    "","","",data.todoName,data.iconId,false,"","TODO",7))
                             }
 
                             for(data in datas.calendarList) {

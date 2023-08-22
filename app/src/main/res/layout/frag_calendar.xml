@@ -353,8 +353,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/calendar_character"/>
+                        app:layout_constraintTop_toTopOf="parent"/>
                     <ImageView
                         android:id="@+id/img_calendar_cloth"
                         android:layout_width="wrap_content"

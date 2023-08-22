@@ -71,6 +71,7 @@ class CalendarAddSFragment : Fragment() {
         val cycle = processInput(arguments?.getString("cycle")?:"No")
         val memo = arguments?.getString("memo")
         val color = arguments?.getString("color")
+        val dday = arguments?.getString("dday")
         id2 = arguments?.getInt("id")?: -1
 
         token = arguments?.getString("Token")?: ""
@@ -86,6 +87,14 @@ class CalendarAddSFragment : Fragment() {
             binding.clcckLayoutBar.visibility = View.GONE
             binding.clockLayout.visibility = View.GONE
         }
+        if(dday =="Y") {
+            binding.ddayLayout.visibility = View.VISIBLE
+            binding.preScheldule.visibility = View.GONE
+            binding.textDday.text = "D - ${daysRemainingToDate(nextSchedule)}"
+        } else {
+
+        }
+
 
         binding.cycle.text = cycle
         if(memo != null)
@@ -117,6 +126,7 @@ class CalendarAddSFragment : Fragment() {
                     bundle.putString("memo", arguments?.getString("memo"))
                     bundle.putString("color", arguments?.getString("color"))
                     bundle.putBoolean("edit", true)
+                    bundle.putString("dday", arguments?.getString("dday"))
                     bundle.putInt("id",id2)
                     bundle.putString("Token",token)
                     Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
@@ -218,6 +228,13 @@ class CalendarAddSFragment : Fragment() {
                 //Log.d("del4","itemType: ${t.message}")
             }
         })
+    }
+    fun daysRemainingToDate(targetDate: String): Int {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val today = LocalDate.now()
+        val target = LocalDate.parse(targetDate, dateFormatter)
+        val daysRemaining = target.toEpochDay() - today.toEpochDay()
+        return daysRemaining.toInt()
     }
 
 

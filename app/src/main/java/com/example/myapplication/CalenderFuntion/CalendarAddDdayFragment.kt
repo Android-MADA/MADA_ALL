@@ -86,7 +86,7 @@ class CalendarAddDdayFragment : Fragment() {
         binding.nextScheldule.text = convertToDateKoreanFormat(nextSchedule.text.toString())
         dayString = binding.preScheldule.text.toString()
         binding.textDday.text = "D - "+(arguments?.getInt("dday") ?:"0").toString()
-        binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#E1E9F5"), PorterDuff.Mode.SRC_IN)
+        binding.calendarColor.setColorFilter(Color.parseColor(arguments?.getString("color") ?: "#89A9D9"), PorterDuff.Mode.SRC_IN)
         curColor = arguments?.getString("color") ?: "#89A9D9"
         binding.layoutColorSelector.visibility = View.GONE
         binding.textMemo.setText(arguments?.getString("memo"))
