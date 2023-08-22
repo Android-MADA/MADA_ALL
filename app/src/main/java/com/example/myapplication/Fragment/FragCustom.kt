@@ -175,7 +175,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         getCustomPrint()
-        postcustomItemBuy(14)
+        //postcustomItemBuy(14)
 
 
         val savedData = viewModel.getSavedButtonInfo()
