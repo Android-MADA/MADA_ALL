@@ -85,4 +85,6 @@ dependencies {
     // 이미지 불러오기
     implementation 'com.squareup.picasso:picasso:2.71828'  // 최신 버전 확인
 
+    //
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 }
