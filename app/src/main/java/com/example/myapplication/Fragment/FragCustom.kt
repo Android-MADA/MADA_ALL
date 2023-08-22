@@ -174,14 +174,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         postcustomItemBuy(14)
 
 
-        /*val savedData = viewModel.getSavedButtonInfo()
+        val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
             selectedItemButtonInfo = savedData.selectedItemButtonInfo
             selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
 
-            binding.customRamdi.setImageResource(
+            /*binding.customRamdi.setImageResource(
                 selectedColorButtonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomCloth.setImageResource(
@@ -192,8 +192,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
-            )
-        }*/
+            )*/
+        }
 
 
         /*val fragmentManager: FragmentManager = childFragmentManager
@@ -337,22 +337,27 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "Savedata",
                 "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}"
             )
-            val itemIds: List<String> = if (temdata.selectedColorButtonInfo?.serverID == null) {
-                listOf(
-                    "10",
-                    temdata.selectedClothButtonInfo?.serverID.toString(),
-                    temdata.selectedItemButtonInfo?.serverID.toString(),
-                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
-                ).filterNotNull()
-                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
-            } else {
-                listOf(
-                    temdata.selectedColorButtonInfo?.serverID.toString(),
-                    temdata.selectedClothButtonInfo?.serverID.toString(),
-                    temdata.selectedItemButtonInfo?.serverID.toString(),
-                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
-                ).filterNotNull()
-                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
+            val itemIds = mutableListOf<String>()
+
+            temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
+                if (colorServerID == null) {
+                    itemIds.add("10")
+                } else {
+                    if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
+                        itemIds.add(colorServerID.toString())
+                    }
+                    else{}
+                }
+
+            }
+            temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                itemIds.add(it.toString())
+            }
+            temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
+                itemIds.add(it.toString())
+            }
+            temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0}?.let {
+                itemIds.add(it.toString())
             }
 
             patchCustomItemChange(itemIds)
