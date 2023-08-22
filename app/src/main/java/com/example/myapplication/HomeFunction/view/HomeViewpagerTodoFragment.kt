@@ -77,7 +77,7 @@ class HomeViewpagerTodoFragment : Fragment() {
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             if (viewModel.cateTodoList.value!!.isNotEmpty()) {
-                Log.d("viewpager todo", viewModel._cateTodoList.value.toString())
+                Log.d("viewpager todo", viewModel.todoCateList.toString())
                 if(cateAdapter != null){
                     attachCateAdapter()
                 }
@@ -132,7 +132,8 @@ class HomeViewpagerTodoFragment : Fragment() {
                         ) {
                             if(response.isSuccessful){
                                 Log.d("todo post", response.body()!!.data.toString())
-                                viewModel.addTodo(position, response.body()!!.data.Todo)
+//                                viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!)
+                                viewModel.addTodo(position, response.body()!!.data.Todo, viewModel.todoTopFlag.value!!  )
                                 binding.rvHomeCategory.post { cateAdapter!!.notifyDataSetChanged() }
                                 //투두 개수 업데이트
                             }
@@ -155,8 +156,6 @@ class HomeViewpagerTodoFragment : Fragment() {
                             "viewpagerTodo",
                             "catetodo변경 확인 ${viewModel.cateTodoList.toString()}"
                         )
-                        //viewModel.updateCompleteTodo()
-                        //viewModel.updateTodoNum()
                     })
 
                 }

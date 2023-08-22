@@ -95,7 +95,7 @@ class FragHome : Fragment() {
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${viewModel.userName}님,"
-            getCustomChar()
+
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
 
@@ -164,6 +164,7 @@ class FragHome : Fragment() {
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
+            getCustomChar()
             //viewModel.updateCateTodoList()
         })
 
