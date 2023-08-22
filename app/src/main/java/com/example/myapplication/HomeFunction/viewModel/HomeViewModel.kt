@@ -14,6 +14,7 @@ import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.repeatTodo
+import com.example.myapplication.HomeFunction.Model.todoData
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -35,9 +36,7 @@ class HomeViewModel : ViewModel() {
         val response = api.getCategory(token)
         val category = response.data.CategoryList
         Log.d("HomeViewModel 카테고리 값 확인", category.toString())
-        //서버에서 받은 카테고리 데이터를 livedata에 넣기
         _categoryList.value = category
-        //Log.d("viewmodel 값 넣기", _categoryList.value.toString())
     }
 
     var userName = "김마다"
@@ -45,8 +44,15 @@ class HomeViewModel : ViewModel() {
         val todo = api.getAllTodo(token, date)
         Log.d("HomeViewModel todo 값 확인", todo.toString())
         _todoList.value = todo.data.TodoList
+        if(todo.data.TodoList.isNullOrEmpty() != true){
+            changeStartDay(todo.data.TodoList[0].startTodoAtMonday)
+            _completeBottomFlag.value = todo.data.TodoList[0].endTodoBackSetting
+        }
         userName = todo.data.nickname
         classifyTodo()
+        if(completeBottomFlag.value == true){
+            arrangeTodo()
+        }
         updateTodoNum(null)
         updateCateTodoList()
         updateCompleteTodo(null)
@@ -402,7 +408,7 @@ class HomeViewModel : ViewModel() {
         //catetodo 가져와서 각 array마다 complete 확인해서 변경...?
         if (cateTodoList.value?.isEmpty() != true) {
             for (i in cateTodoList.value!!) {
-                if (i.isNotEmpty()) {
+                if (i.isNotEmpty()  || i.size > 1) {
                     for (j in 0..i.size!!.minus(1)) {
                         if (i[j].complete) {
                             var todoMove = i[j]
@@ -444,7 +450,7 @@ class HomeViewModel : ViewModel() {
     }
 
     //calendarview 시작 요일
-    private var _startDay = MutableLiveData<Int>(1)
+    private var _startDay = MutableLiveData<Int>(2)
     val startDay: LiveData<Int>
         get() = _startDay
 

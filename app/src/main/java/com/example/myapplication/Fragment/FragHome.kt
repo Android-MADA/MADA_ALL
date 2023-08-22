@@ -68,7 +68,7 @@ class FragHome : Fragment() {
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${viewModel.userName}님,"
-            //getCustomChar()
+            getCustomChar()
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
 
@@ -137,8 +137,12 @@ class FragHome : Fragment() {
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
-            getCustomChar()
             //viewModel.updateCateTodoList()
+        })
+
+        viewModel.startDay.observe(viewLifecycleOwner, Observer{
+            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
+            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
         })
 
         //date를 통해서 todo가 변경되었을 때 실행
