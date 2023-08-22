@@ -172,7 +172,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
         viewPager = binding.CustomBottomSheetViewPager
-
+        postcustomItemBuy(23)
 
 
 
@@ -359,20 +359,21 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             val uniqueItemIds = mutableSetOf<String>()
 
             printIds.forEach { idAndItemType ->
-                uniqueItemIds.add(this.id.toString())
+
+                uniqueItemIds.add(idAndItemType.id.toString())
             }
 
-            val isColorMissing = printIds.none { idAndItemType -> this.itemType == "color" }
-            val isSetMissing = printIds.none { idAndItemType -> this.itemType == "set" }
-            val isItemMissing = printIds.none { idAndItemType -> this.itemType == "item" }
-            val isBackgroundMissing = printIds.none { idAndItemType -> this.itemType == "background" }
+            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
+            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
+            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
+            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
 
             if(isColorMissing){
                 temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
                     if (colorServerID != null) {
                         if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
                             uniqueItemIds.add(colorServerID.toString())
-                        }else{}
+                        } else {}
                     } else {
                         uniqueItemIds.add("10")
                     }
@@ -399,6 +400,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 // Convert uniqueItemIds set back to a list
             val combinedIds = uniqueItemIds.toList()
+            Log.d("combined",combinedIds.toString())
 
 // Now you can use combinedIds as needed
             patchCustomItemChange(combinedIds)
@@ -551,9 +553,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
 
-
-
-
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
                     itemType = item.itemType
@@ -591,6 +590,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         }
                     }
                 }
+
+
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -611,10 +612,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
                 else{
                     Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
-
                 }
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("patchCustomItemChange", t.message.toString())
             }
