@@ -1,6 +1,8 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,6 +14,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -22,6 +25,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.HomeFunction.HomeBackCustomDialog
+import com.example.myapplication.HomeFunction.HomeCustomDialogListener
+import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
@@ -42,7 +48,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
-class TimeAddFragment : Fragment() {
+class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     private lateinit var binding : HomeFragmentTimeAddBinding
     private var bottomFlag = true
@@ -53,10 +59,27 @@ class TimeAddFragment : Fragment() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var today = viewModel.homeDate.value.toString()
+    lateinit var today: String
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
+
+    private lateinit var backDialog: HomeBackCustomDialog
+    //private lateinit var deleteDialog: HomeDeleteCustomDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //할일 작성
+                customBackDialog()
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initColorArray()
@@ -68,6 +91,8 @@ class TimeAddFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
         hideBottomNavigation(bottomFlag, activity)
+
+        today = viewModel.homeDate.value.toString()
 
 
         return binding.root
@@ -516,6 +541,23 @@ class TimeAddFragment : Fragment() {
 
 
         return totalMinutes
+    }
+
+    private fun customBackDialog() {
+        backDialog = HomeBackCustomDialog(requireActivity(), this)
+        backDialog.show()
+    }
+
+
+
+    // 커스텀 다이얼로그에서 버튼 클릭 시
+    override fun onYesButtonClicked(dialog: Dialog, flag: String) {
+            Navigation.findNavController(requireView()).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+        dialog.dismiss()
+    }
+
+    override fun onNoButtonClicked(dialog: Dialog) {
+        dialog.dismiss()
     }
 
 }
