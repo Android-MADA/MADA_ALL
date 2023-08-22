@@ -67,21 +67,21 @@ class HomeRepeatTodoFragment : Fragment(){
         viewModel.getRepeatTodo()
 
         viewModel.repeatList.observe(viewLifecycleOwner, Observer {
-            if(cateAdapter != null){
-                if(viewModel.repeatList.value!!.isEmpty() != true){
-                    cateAdapter!!.cateTodoSet = viewModel.repeatList.value
-                    binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
-                }
-                //카테고리를 다 지우고 왔을 때
-                else {
-                    cateAdapter = null
-                }
+                    if(cateAdapter != null){
+                        if(viewModel.repeatList.value!!.isEmpty() != true){
+                            cateAdapter!!.cateTodoSet = viewModel.repeatList.value
+                            binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
+                        }
+                        //카테고리를 다 지우고 왔을 때
+                        else {
+                            cateAdapter = null
+                        }
 
-            }
-            else{
-                if (viewModel.categoryList.value?.isNotEmpty() == true) {
-                    //rv연결
-                    attachAdapter(view)
+                    }
+                    else{
+                        if (viewModel.categoryList.value?.isNotEmpty() == true) {
+                            //rv연결
+                            attachAdapter(view)
                 }
             }
             Log.d("repeatTodo 데이터 확인 중", "cateTodoList observer 작동")
@@ -102,7 +102,7 @@ class HomeRepeatTodoFragment : Fragment(){
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        cateAdapter = HomeRepeatCategoryAdapter(view)
+        cateAdapter = HomeRepeatCategoryAdapter(view, null)
         cateAdapter!!.dataSet = viewModel.categoryList.value!!
         cateAdapter!!.cateTodoSet = viewModel.repeatList.value
         cateAdapter!!.topFlag = viewModel.todoTopFlag.value!!

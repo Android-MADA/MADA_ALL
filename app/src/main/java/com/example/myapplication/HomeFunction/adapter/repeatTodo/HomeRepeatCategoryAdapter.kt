@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
-class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
+class HomeRepeatCategoryAdapter(private var view : View?, private var flag : String?) : RecyclerView.Adapter<HomeRepeatCategoryAdapter.viewHolder>(){
 
     lateinit var dataSet : ArrayList<Category>
     var cateTodoSet : ArrayList<ArrayList<repeatTodo>>? = null
@@ -62,13 +63,19 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
 
         if(cateTodoSet != null){
             if(cateTodoSet!![position].isNotEmpty()){
+                if(flag == "my"){
+                    repeatAdapter = HomeRepeatTodoAdapter(view, flag)
+                }
+                else {
+                    repeatAdapter = HomeRepeatTodoAdapter(view, null)
+                }
 
-                repeatAdapter = HomeRepeatTodoAdapter(view)
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.cateIndex = position
                 repeatAdapter!!.viewModel = viewModel
                 repeatAdapter!!.api = api
+
 
                 holder.todoRv.apply {
                     adapter = repeatAdapter
@@ -80,6 +87,10 @@ class HomeRepeatCategoryAdapter(private var view : View) : RecyclerView.Adapter<
 
         //holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
         holder.cateTv.text = dataSet[position].categoryName
+
+        if(flag == "my"){
+            holder.addBtn.isInvisible = true
+        }
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
