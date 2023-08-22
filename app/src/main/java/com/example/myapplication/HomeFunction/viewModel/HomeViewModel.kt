@@ -3,6 +3,7 @@ package com.example.myapplication.HomeFunction.viewModel
 import android.util.Log
 import android.view.View
 import android.widget.Adapter
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +33,14 @@ class HomeViewModel : ViewModel() {
 
     //var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
     var userToken = MyWebviewActivity.prefs.getString("token", "")
+
+    var userHomeName = "김마다"
+
+    fun getUsername(text : TextView) = viewModelScope.launch {
+        val response = api.getUsername(userToken)
+        userHomeName = response.data.nickname
+        text.text = "${userHomeName}님, "
+    }
     fun getCategory(token: String?) = viewModelScope.launch {
         val response = api.getCategory(token)
         val category = response.data.CategoryList
@@ -39,7 +48,7 @@ class HomeViewModel : ViewModel() {
         _categoryList.value = category
     }
 
-    var userName = "김마다"
+
     fun getTodo(token: String?, date: String) = viewModelScope.launch {
         val todo = api.getAllTodo(token, date)
         Log.d("HomeViewModel todo 값 확인", todo.toString())
@@ -50,7 +59,6 @@ class HomeViewModel : ViewModel() {
 //            _todoTopFlag.value = todo.data.TodoList[0].newTodoStartSetting
             changeStartDay(todo.data.TodoList[0].startTodoAtMonday)
         }
-        userName = todo.data.nickname
         classifyTodo()
 //        if(_completeBottomFlag.value == true){
 //            arrangeTodo()
