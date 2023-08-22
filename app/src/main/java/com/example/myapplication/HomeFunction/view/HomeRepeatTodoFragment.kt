@@ -1,5 +1,7 @@
 package com.example.myapplication.HomeFunction.view
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,12 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.HomeFunction.HomeBackCustomDialog
+import com.example.myapplication.HomeFunction.HomeCustomDialogListener
+import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
@@ -30,12 +36,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeRepeatTodoFragment : Fragment() {
+class HomeRepeatTodoFragment : Fragment(){
 
     lateinit var binding: HomeFragmentRepeatTodoBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
     private var cateAdapter : HomeRepeatCategoryAdapter? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,4 +154,5 @@ class HomeRepeatTodoFragment : Fragment() {
         binding.rvHomeRepeatTodo.adapter = cateAdapter
         binding.rvHomeRepeatTodo.layoutManager = LinearLayoutManager(this.activity)
     }
+
 }

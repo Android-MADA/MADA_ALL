@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -94,7 +95,8 @@ class FragHome : Fragment() {
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${viewModel.userName}님,"
-            getCustomChar()
+
+            Log.d("home캐릭", "뎅이터 넘어오기")
         })
 
         val calendarLayout = binding.layoutCalendarviewHome
@@ -162,7 +164,13 @@ class FragHome : Fragment() {
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
+            getCustomChar()
             //viewModel.updateCateTodoList()
+        })
+
+        viewModel.startDay.observe(viewLifecycleOwner, Observer{
+            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
+            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
         })
 
         //date를 통해서 todo가 변경되었을 때 실행
@@ -213,47 +221,63 @@ class FragHome : Fragment() {
 
     private fun getCustomChar() {
 
-        val service = RetrofitInstance.getInstance().create(RetrofitServiceCalendar::class.java)
-        val call2 = service.characterRequest(viewModel.userToken)
-        call2.enqueue(object : Callback<CharacterResponse> {
-            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.data.datas
-                        if(datas != null) {
-                            for (data in datas) {
-                                //arrays.add(data)
-                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
-                                if(data.itemType=="color") {
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+        api.getHomeRamdi(viewModel.userToken).enqueue(object : Callback<HomeCharacData>{
+            //            override fun onResponse(
+//                call: Call<CharacterResponse>,
+//                response: Response<CharacterResponse>
+//            ) {
+//                if(response.isSuccessful){
+//                    Log.d("home캐릭터 성공", "성공")
+//                }
+//                else {
+//                    Log.d("home캐릭터 안드 잘못", "실패")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+//                Log.d("home캐릭터 연결 실패", "실패")
+//            }
+            override fun onResponse(
+                call: Call<HomeCharacData>,
+                response: Response<HomeCharacData>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("home캐릭터 성공", "성공 ${response.body()!!.data.wearingItems}")
+                    val apiResponse = response.body()!!.data.wearingItems
+                    if(apiResponse.isEmpty() != true){
+                        for(i in apiResponse){
+                            if(i != null) {
+                                if(i.itemType=="color") {
                                     Picasso.get()
-                                        .load(data.filePath)
+                                        .load(i.filePath)
                                         .into(binding.ivHomeRamdi)
-                                } else if(data.itemType=="set") {
+                                } else if(i.itemType=="set") {
                                     Picasso.get()
-                                        .load(data.filePath)
+                                        .load(i.filePath)
                                         .into(binding.ivHomeCloth)
-                                } else if(data.itemType=="item") {
+                                } else if(i.itemType=="item") {
                                     Picasso.get()
-                                        .load(data.filePath)
+                                        .load(i.filePath)
                                         .into(binding.ivHomeItem)
                                 }
-                                // ...
                             }
-                        } else {
-                            //Log.d("2221","${response.code()}")
                         }
-                    } else {
-                        //Log.d("222","Request was not successful. Message: hi")
                     }
-                } else {
-                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
+                }
+                else {
+                    Log.d("home캐릭터 안드 잘못", "실패")
                 }
             }
-            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
-                //Log.d("444","itemType: ${t.message}")
+
+            override fun onFailure(call: Call<HomeCharacData>, t: Throwable) {
+                Log.d("home캐릭터 연결 실패", "실패")
             }
+
         })
+
+//
     }
 
 }

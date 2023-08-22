@@ -1,6 +1,7 @@
 package com.example.myapplication.HomeFunction.view
 
 import android.app.Dialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -41,6 +43,19 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     private lateinit var backDialog: HomeBackCustomDialog
     private lateinit var deleteDialog: HomeDeleteCustomDialog
     private lateinit var argsArray: java.util.ArrayList<String>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //할일 작성
+                customBackDialog()
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
