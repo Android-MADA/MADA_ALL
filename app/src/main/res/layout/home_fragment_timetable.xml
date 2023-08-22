@@ -40,15 +40,17 @@
             android:layout_weight="100"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edt_home_time_name"
+            <TextView
+                android:id="@+id/text_home_time_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="시간표 제목"
+                android:text="2023년 6월 1일"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

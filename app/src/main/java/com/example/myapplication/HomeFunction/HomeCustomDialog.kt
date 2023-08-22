@@ -3,9 +3,11 @@ package com.example.myapplication.HomeFunction
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import com.example.myapplication.R
 import com.example.myapplication.databinding.NoticeHomeBackBinding
@@ -35,9 +37,11 @@ class HomeBackCustomDialog(context: Context, private val listener: HomeCustomDia
     }
 }
 
+
 class HomeDeleteCustomDialog(context: Context, private val listener: HomeCustomDialogListener): Dialog(context) {
 
     private lateinit var binding : NoticeHomeDeleteBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,4 +61,5 @@ class HomeDeleteCustomDialog(context: Context, private val listener: HomeCustomD
             }
         }
     }
+
 }

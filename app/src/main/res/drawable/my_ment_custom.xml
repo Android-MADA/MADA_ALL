@@ -1,11 +1,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 배경 이미지 -->
-
+    <item>
+        <bitmap
+            android:src="@drawable/my_ment"
+            android:gravity="fill_horizontal" />
+    </item>
     <!-- 둥근 네모 모서리 -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" /> <!-- 배경 색상 설정 -->
-            <corners android:radius="18dp" /> <!-- 둥근 모서리의 반지름을 18dp로 지정 -->
+            <corners android:radius="40dp" /> <!-- 둥근 모서리의 반지름을 18dp로 지정 -->
         </shape>
     </item>
 </layer-list>

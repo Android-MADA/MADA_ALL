@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 
@@ -24,7 +25,8 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
     var repeatAdapter : HomeViewpager2TodoAdapter? = null
     var topFlag = false
     var viewModel : HomeViewModel? = null
-    //var completeFlag = false
+    var completeFlag = false
+    var api : HomeApi? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -60,19 +62,13 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
             if(cateTodoSet!![position].isNotEmpty()){
 
                 repeatAdapter = HomeViewpager2TodoAdapter()
+                repeatAdapter!!.cateIndex = position
                 repeatAdapter!!.dataSet = cateTodoSet!![position]
                 repeatAdapter!!.topFlag = topFlag
                 repeatAdapter!!.viewModel = viewModel
+                repeatAdapter!!.api = api
+                repeatAdapter!!.completeFlag = completeFlag
 
-                repeatAdapter!!.setItemClickListener(object :
-                    HomeViewpager2TodoAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int, dataSet : ArrayList<Todo>) {
-                        //viewmodel에게 데이터ㅏ 달라뎠다고 알려주기
-                        viewModel!!.updateCompleteTodo()
-                        viewModel!!.updateTodoNum()
-                    }
-
-                })
                 holder.todoRv.apply {
                     adapter = repeatAdapter
                     layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
@@ -80,7 +76,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
                 }
             }
         }
-        //holder.cateIcon.setImageResource(dataSet[position].iconId.toInt())
+        holder.cateIcon.setImageResource(findIcon(dataSet[position].iconId))
         holder.cateTv.text = dataSet[position].categoryName
 
         //클릭 리스너
@@ -96,7 +92,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-                itemClickListener.onClick(view, position, dataSet[position].categoryName, holder.edtTodo, holder.todoAdd)
+                itemClickListener.onClick(view, position, dataSet[position].id, holder.edtTodo, holder.todoAdd)
                 true
             }
 
@@ -104,7 +100,7 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
         }
 }
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, cate : String, edt : EditText, layout : LinearLayout)
+        fun onClick(v: View, position: Int, cate : Int, edt : EditText, layout : LinearLayout)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -112,4 +108,28 @@ class HomeViewpager2CategoryAdapter() : RecyclerView.Adapter<HomeViewpager2Categ
     }
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
+
+    fun findIcon(iconId : Int) : Int {
+        val icon = when(iconId){
+            1 -> {R.drawable.ic_home_cate_burn}
+            2 -> {R.drawable.ic_home_cate_chat1}
+            3 -> {R.drawable.ic_home_cate_health}
+            4 -> {R.drawable.ic_home_cate_heart}
+            5 -> {R.drawable.ic_home_cate_laptop}
+            6 -> {R.drawable.ic_home_cate_lightout}
+            7 -> {R.drawable.ic_home_cate_lightup}
+            8 -> {R.drawable.ic_home_cate_meal2}
+            9 -> {R.drawable.ic_home_cate_meal1}
+            10 -> {R.drawable.ic_home_cate_mic}
+            11 -> {R.drawable.ic_home_cate_music}
+            12 -> {R.drawable.ic_home_cate_pen}
+            13 -> {R.drawable.ic_home_cate_phone}
+            14 -> {R.drawable.ic_home_cate_plan}
+            15 -> {R.drawable.ic_home_cate_rest}
+            16 -> {R.drawable.ic_home_cate_sony}
+            17 -> {R.drawable.ic_home_cate_study}
+            else -> {R.drawable.ic_home_cate_work}
+        }
+        return icon
+    }
 }

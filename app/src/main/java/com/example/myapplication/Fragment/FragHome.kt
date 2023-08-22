@@ -11,21 +11,23 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.CategoryList
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
+import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentBinding
+import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.util.Calendar
+import com.squareup.picasso.Picasso
 
 class FragHome : Fragment() {
 
@@ -35,7 +37,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
     }
 
 
@@ -46,8 +48,8 @@ class FragHome : Fragment() {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        hideBottomNavigation(false, activity)
         //서버에서 cateogry, todo받아오기
-
 
 
         val homeViewPager = binding.homeViewpager2
@@ -59,7 +61,7 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
 
         //서버연결 시작
-        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
+        val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         /*
@@ -82,14 +84,20 @@ class FragHome : Fragment() {
             })
         })*/
 
-        viewModel.updateTodoNum()
-        viewModel.updateCompleteTodo()
+        //viewModel.updateTodoNum()
+        //viewModel.updateCompleteTodo()
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+            binding.tvHomeUsername.text = "${viewModel.userName}님,"
+
+            Log.d("home캐릭", "뎅이터 넘어오기")
+        })
 
         val calendarLayout = binding.layoutCalendarviewHome
         binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -109,9 +117,17 @@ class FragHome : Fragment() {
         //actinobar 설정
         binding.toolbarHome.inflateMenu(R.menu.home_menu)
         binding.toolbarHome.setOnMenuItemClickListener {
+            //달력에 지정된 날짜 다음 프래그먼트로 전달
+            val year = viewModel.homeDate.value!!.year
+            val month = String.format("%02d", viewModel.homeDate.value!!.monthValue)
+            val day = String.format("%02d", viewModel.homeDate.value!!.dayOfMonth)
+            val bundle = Bundle()
+            bundle.putString("today","${year}-${month}-${day}")
+
             when(it.itemId){
+
                 R.id.home_menu_timetable -> {
-                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeTimetableFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeTimetableFragment,bundle)
                     true
                 }
                 R.id.home_menu_category -> {
@@ -139,25 +155,22 @@ class FragHome : Fragment() {
             var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
-            viewModel.changeDate(year, (month +1), dayOfMonth)
+            viewModel.changeDate(year, (month +1), dayOfMonth, "home")
+            Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
         }
 
-        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            //서버에서 category 새로 받아오기(date)
-            //서버에서 Tood 새로 받아오기(date)
-            //서버에서 ment 새로 받아오기(date)
 
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            //viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
             Log.d("date변경", binding.tvHomeCalendar.text.toString())
-            viewModel.updateCateTodoList()
+            getCustomChar()
+            //viewModel.updateCateTodoList()
         })
 
-
-        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            //todoNum 업데이트
-            //completeNum 업데이트
-            viewModel.updateTodoNum()
-            viewModel.updateCompleteTodo()
+        viewModel.startDay.observe(viewLifecycleOwner, Observer{
+            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
+            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
         })
 
         //date를 통해서 todo가 변경되었을 때 실행
@@ -171,6 +184,12 @@ class FragHome : Fragment() {
             binding.progressBar.progress = viewModel.completeTodoNum.value!!
         })
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideBottomNavigation(false, activity)
     }
 
     private fun findDayOfWeek(y : Int, m : Int, d : Int, selected : Calendar) : String {
@@ -189,15 +208,76 @@ class FragHome : Fragment() {
 
     private fun homeMent(day : String) : String {
         var homeMent = when(day){
-            "월요일" -> "월요일 입니다."
-            "화요일" -> "화요일 입니다."
-            "수요일" -> "수요일 입니다."
-            "목요일" -> "목요일 입니다."
-            "금요일" -> "금요일 입니다."
-            "토요일" -> "토요일 입니다."
-            else -> "일요일 입니다."
+            "월요일" -> "월요병 날려버리고 화이팅!"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
+            "목요일" -> "오늘도 열심히 달려 봐요"
+            "금요일" -> "오늘도 열심히 달려 봐요"
+            "토요일" -> "주말을 알차게!"
+            else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
+    }
+
+    private fun getCustomChar() {
+
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+        api.getHomeRamdi(viewModel.userToken).enqueue(object : Callback<HomeCharacData>{
+            //            override fun onResponse(
+//                call: Call<CharacterResponse>,
+//                response: Response<CharacterResponse>
+//            ) {
+//                if(response.isSuccessful){
+//                    Log.d("home캐릭터 성공", "성공")
+//                }
+//                else {
+//                    Log.d("home캐릭터 안드 잘못", "실패")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+//                Log.d("home캐릭터 연결 실패", "실패")
+//            }
+            override fun onResponse(
+                call: Call<HomeCharacData>,
+                response: Response<HomeCharacData>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("home캐릭터 성공", "성공 ${response.body()!!.data.wearingItems}")
+                    val apiResponse = response.body()!!.data.wearingItems
+                    if(apiResponse.isEmpty() != true){
+                        for(i in apiResponse){
+                            if(i != null) {
+                                if(i.itemType=="color") {
+                                    Picasso.get()
+                                        .load(i.filePath)
+                                        .into(binding.ivHomeRamdi)
+                                } else if(i.itemType=="set") {
+                                    Picasso.get()
+                                        .load(i.filePath)
+                                        .into(binding.ivHomeCloth)
+                                } else if(i.itemType=="item") {
+                                    Picasso.get()
+                                        .load(i.filePath)
+                                        .into(binding.ivHomeItem)
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    Log.d("home캐릭터 안드 잘못", "실패")
+                }
+            }
+
+            override fun onFailure(call: Call<HomeCharacData>, t: Throwable) {
+                Log.d("home캐릭터 연결 실패", "실패")
+            }
+
+        })
+
+//
     }
 
 }

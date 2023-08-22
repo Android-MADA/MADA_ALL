@@ -129,9 +129,6 @@ class custom_cloth() : Fragment() {
         }
     }
 
-    public fun resetCloth() {
-        selectedButton?.setImageResource(getUnselectedImageResource(selectedButton!!))
-    }
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
@@ -195,6 +192,7 @@ class custom_cloth() : Fragment() {
     }
 
     fun resetButtonCloth() {
+
         binding.btnClothBasic.setImageResource(R.drawable.custom_null)
         binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
         binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
@@ -245,6 +243,10 @@ class custom_cloth() : Fragment() {
             Log.d("initbtnlock", "Button ID: ${item.id}, Is Locked: $isLocked")
         }
 
+        for(data in buttonLockMap) {
+            Log.d("btb", data.toString())
+        }
+        Log.d("initbtnlock","button lock init success")
         applyButtonLockStates()
     }
 
