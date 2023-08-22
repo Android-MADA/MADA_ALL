@@ -8,6 +8,7 @@ import com.example.myapplication.MyFuction.Model.MyGetNoticesData
 import com.example.myapplication.MyFuction.Model.MyGetProfileData
 import com.example.myapplication.MyFuction.Model.MyPremiumData
 import com.example.myapplication.MyFuction.Model.MySetPageData
+import com.example.myapplication.MyFuction.Model.MySetPageData2
 import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
@@ -33,10 +34,15 @@ interface RetrofitServiceMy {
     fun withdraw(@Header("Authorization") token: String?
     ) : Call<Void>
 
-    // FragMy 데이터 불러오기 -> 미확인
+    // FragMy 데이터 불러오기 -> 확인
     @GET("/my")
     fun selectfragMy(@Header("Authorization") token : String?
     ): Call<FragMyData>
+
+    // FragMy 커스텀 캐릭터 불러오기
+    @GET("/api/custom/")
+    fun characterRequest(@Header("Authorization") token : String?
+    ) : Call<CharacterResponse>
 
 
     // 프로필 편집창 닉네임, 이메일 불러오기 -> 확인
@@ -44,26 +50,36 @@ interface RetrofitServiceMy {
     fun myGetProfile(@Header("Authorization") token : String?
     ): Call<MyGetProfileData>
 
-    // 닉네임 변경 -> 미확인
+    // 닉네임 변경 저장 -> 확인
     @PATCH("/user/profile/change/nickname")
     fun changeNickname(@Header("Authorization") token: String?, @Body nickname: String
     ): Call<MyChangeNicknameData>
 
 
-    // 공지사항 -> 확인
+    // 공지사항 조회 -> 확인
     @GET("/allnotice")
     fun myGetNotices(@Header("Authorization") token: String?
     ): Call<MyGetNoticesData>
 
-    // 화면 설정 -> 미확인
+    // 화면 설정 저장 -> 미확인
     @POST("/user/pageInfo")
-    fun mySetPage(@Header("Authorization") token: String?, @Body data: MySetPageData
+    fun mySetPage(@Header("Authorization") token: String?, @Body is_set: Boolean
+    ): Call<MySetPageData2>
+
+    // 화면 설정 조회 -> 미확인
+    @GET("/user/pageInfo")
+    fun myGetSettingPage(@Header("Authorization") token: String?
     ): Call<MySetPageData>
 
-    // 알림 설정 -> 미확인
+    // 알림 설정 저장-> 미확인
     @PATCH("/user/alarmInfo")
     fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm: Boolean
     ): Call<MyAlarmData2>
+
+    // 알림 설정 조회 -> 미확인
+    @GET("/user/alarmInfo")
+    fun myGetAlarm(@Header("Authorization") token: String?
+    ): Call<MyAlarmData>
 
     // 프리미엄 설정 -> 미확인
     @PATCH("/user/subscribe")
@@ -71,10 +87,7 @@ interface RetrofitServiceMy {
     ): Call<MyPremiumData>
 
 
-    // 커스텀 캐릭터
-    @GET("/api/custom/")
-    fun characterRequest(@Header("Authorization") token : String?
-    ) : Call<CharacterResponse>
+
 
 
 
