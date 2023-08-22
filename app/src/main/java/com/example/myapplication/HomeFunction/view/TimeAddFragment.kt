@@ -139,6 +139,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
             textTitle.setText(recievedPieData.title)
             ivColor.imageTintList =  ColorStateList.valueOf(Color.parseColor(recievedPieData.colorCode))
+            curColor = recievedPieData.colorCode
             //ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
             colorSelector.isGone = true
 

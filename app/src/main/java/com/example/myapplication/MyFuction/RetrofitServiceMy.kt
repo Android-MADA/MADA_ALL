@@ -64,36 +64,33 @@ interface RetrofitServiceMy {
     fun myGetNotices(@Header("Authorization") token: String?
     ): Call<MyGetNoticesData>
 
-    // 화면 설정 저장 -> 미확인
-    @POST("/user/pageInfo")
-    fun mySetPage(
-        @Header("Authorization") token: String?,
-        @Body data : MySettingData2
-    ): Call<MySettingData3>
 
-    // 화면 설정 조회 -> 미확인
+    // 화면 설정 조회 -> 확인
+
     @GET("/user/pageInfo")
     fun myGetSettingPage(@Header("Authorization") token: String?
     ): Call<MySetPageData>
 
-    // 알림 설정 저장-> 미확인
-    @PATCH("/user/alarmInfo")
-    fun mySetAlarm(@Header("Authorization") token: String?, @Body is_alarm: Boolean
-    ): Call<MyAlarmData2>
+    // 화면 설정 저장 -> 미확인
+    @POST("/user/pageInfo/change")
+    fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: Boolean
+    ): Call<MySetPageData2>
 
-    // 알림 설정 조회 -> 미확인
+    // 알림 설정 조회 -> 확인
     @GET("/user/alarmInfo")
     fun myGetAlarm(@Header("Authorization") token: String?
     ): Call<MyAlarmData>
 
-    // 프리미엄 설정 -> 미확인
+    // 알림 설정 저장-> 미확인
+    @PATCH("/user/alarmInfo")
+    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
+    ): Call<MyAlarmData>
+
+
+
+    // 프리미엄 구독 저장-> 미확인
     @PATCH("/user/subscribe")
-    fun setPremium(@Header("Authorization") token: String?
+    fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
-
-
-
-
-
 
 }

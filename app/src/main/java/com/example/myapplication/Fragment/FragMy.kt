@@ -34,6 +34,7 @@ import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.FragMyBinding
+import com.example.myapplication.databinding.Splash2Binding
 import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -71,13 +72,15 @@ class FragMy : Fragment() {
             MyListItem("알림", MyAlarmActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", MyLogoutPopupActivity::class.java),
+            MyListItem("로그아웃", Splash2Binding::class.java),
             MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
         )
 
         binding.rvMyitem.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL,false)
         binding.rvMyitem.setHasFixedSize(true)
         binding.rvMyitem.adapter = MyListAdapter(MyList)
+
+
 
         // 구분선 커스텀
         val dividerItemDecoration = object : DividerItemDecoration(binding.rvMyitem.getContext(),
@@ -113,7 +116,7 @@ class FragMy : Fragment() {
                     Log.d("selectfragMy 성공", response.body().toString())
                     if (response.body()!!.data.subscribe == true) binding.userType.text = "프리미엄 유저"
                     else binding.userType.text = "일반 유저"
-                    binding.myNickname.text = "안녕하세요"+" ${response.body()!!.data.nickname}"+"님!"
+                    binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
                     binding.sayingContent.text = response.body()!!.data.saying[0].content
                     binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
@@ -133,7 +136,7 @@ class FragMy : Fragment() {
 
     }
     // 캐릭터 커스텀 불러오기
-    fun getCustomChar() {
+    private fun getCustomChar() {
         val call2 = api.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
@@ -144,7 +147,7 @@ class FragMy : Fragment() {
                         if(datas != null) {
                             for (data in datas) {
                                 //arrays.add(data)
-                                Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
+                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
                                 if(data.itemType=="color") {
                                     Picasso.get()
                                         .load(data.filePath)

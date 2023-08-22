@@ -7,6 +7,7 @@ import android.util.Log
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MyPremiumData
+import com.example.myapplication.MyFuction.Model.MySetPageData2
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MyPremiumBinding
@@ -34,28 +35,29 @@ class MyPremiumActivity : AppCompatActivity() {
         }
 
         binding.myPremiumBtn.setOnClickListener {
-            api.setPremium(token).enqueue(object : retrofit2.Callback<MyPremiumData>{
-                override fun onResponse(
-                    call: Call<MyPremiumData>,
-                    response: Response<MyPremiumData>
-                ) {
-                    val responseCode = response.code()
-
-                    if(response.isSuccessful){
-                        Log.d("프리미엄 변경 성공, ${response.body()?.is_subscribe}", "Response Code: $responseCode")
-                    }
-                    else{
-                        Log.d("프리미엄 변경 실패", "Response Code: $responseCode")
-                    }
-                }
-                override fun onFailure(call: Call<MyPremiumData>, t: Throwable) {
-                    Log.d("서버 오류", "프리미엄 변경 실패")
-                }
-
-            })
+            patchPremiumSetting(binding.myPremiumBtn.isSelected)
             finish()
         }
 
+
+    }
+    private fun patchPremiumSetting(isSetting: Boolean){
+        api.mySetPremium(token, isSetting).enqueue(object : retrofit2.Callback<MyPremiumData>{
+            override fun onResponse(
+                call: Call<MyPremiumData>, response: Response<MyPremiumData>
+            ) {
+                val responseCode = response.code()
+
+                if(response.isSuccessful){
+                    Log.d("프리미엄 변경 성공, ${response.body()?.is_subscribe}", "Response Code: $responseCode")
+                }
+                else{
+                    Log.d("프리미엄 변경 실패", "Response Code: $responseCode")
+                }
+            }
+            override fun onFailure(call: Call<MyPremiumData>, t: Throwable) {
+                Log.d("서버 오류", "프리미엄 변경 실패")
+            }
+        })
     }
 }
-

@@ -10,24 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        android:paddingTop="60dp"
+        android:paddingTop="30dp"
         tools:layout_editor_absoluteX="18dp"
         tools:layout_editor_absoluteY="0dp">
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="120dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="150dp"
+            android:layout_height="180dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/my_record_btn"
             app:layout_constraintTop_toTopOf="parent">
 
 
             <ImageView
                 android:id="@+id/my_ramdi"
-                android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="top|center"
                 android:src="@drawable/c_ramdi"></ImageView>
 
@@ -53,14 +51,13 @@
             android:id="@+id/my_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
             android:layout_marginTop="20dp"
             android:text="안녕하세요, 김마다님!"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/frameLayout"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -89,20 +86,20 @@
 
         <TextView
             android:id="@+id/saying_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="40dp"
-            android:layout_marginHorizontal="100dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/my_ment_custom"
             android:gravity="start|center_horizontal"
             android:padding="16dp"
             android:text="@string/ment_1"
             android:textColor="@color/black"
             android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/my_bottom_sheet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_record_btn"
-            app:layout_constraintBottom_toTopOf="@+id/my_bottom_sheet"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
             tools:ignore="NotSibling" />
 
         <TextView
@@ -126,7 +123,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="1010dp"
+        android:layout_height="350dp"
         android:background="@drawable/calendar_dday_background"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -139,7 +136,6 @@
             android:paddingBottom="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

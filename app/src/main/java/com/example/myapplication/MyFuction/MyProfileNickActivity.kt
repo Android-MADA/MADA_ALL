@@ -43,23 +43,18 @@ class MyProfileNickActivity : AppCompatActivity() {
 //            val intent = Intent(this, FragMy::class.java)
 //            startActivity(intent)
 //            finish()
-
         }
-
-
-
-
-
-
 
     }
 
     private fun changeNickname(nickName: String){
         val call1 = api.changeNickname(token,nickName)
-
         call1.enqueue(object : Callback<MyChangeNicknameData> {
 
-            override fun onResponse(call: Call<MyChangeNicknameData>, response: Response<MyChangeNicknameData>) {
+            override fun onResponse(
+                call: Call<MyChangeNicknameData>,
+                response: Response<MyChangeNicknameData>
+            ) {
                 val responseCode = response.code()
                 if (response.isSuccessful) {
                     val responseBody = response.body()
@@ -71,10 +66,10 @@ class MyProfileNickActivity : AppCompatActivity() {
                     Log.d("닉네임 변경 실패","Response Code: ${response.code()} ")
                 }
             }
-
             override fun onFailure(call: Call<MyChangeNicknameData>, t: Throwable) {
                 Log.d("서버 오류","닉네임 변경 실패")
             }
         })
+        finish()
     }
 }
