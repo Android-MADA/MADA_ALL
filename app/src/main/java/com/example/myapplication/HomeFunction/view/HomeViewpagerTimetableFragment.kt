@@ -64,7 +64,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val endHour: Int,
         val endMin: Int,
         val colorCode: String,
-        val divisionNumber: Int,
+        var divisionNumber: Int,
         val id : Int
     ) : Serializable
 
@@ -180,6 +180,10 @@ class HomeViewpagerTimetableFragment : Fragment() {
             { it.startHour },
             { it.startMin }
         ))
+        var i=0
+        for(data in tmp2) {
+            data.divisionNumber = i++
+        }
 
 
         var tmp = 0     //시작 시간
