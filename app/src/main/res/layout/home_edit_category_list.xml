@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:text="카테고리명"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:layout_gravity="center"
         />
 
