@@ -282,8 +282,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         val imgCustomBackground = binding.imgCustomBackground
         val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 2000 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 2000 // 원하는 높이(dp 단위)
+        imgCustomBackground_layoutParams.width = 1500 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 1500 // 원하는 높이(dp 단위)
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
@@ -306,9 +306,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 2000).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground_layoutParams.height =
-                    (height * (1 - slideOffset) + 2000).toInt()
+                    (height * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
@@ -316,14 +316,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
         binding.btnCustomReset.setOnClickListener {
-            /*val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
+            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             selectedColorButtonInfo = colorbtninfo
             val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             selectedClothButtonInfo = clothbtninfo
             val itembtninfo = ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
             val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
-            selectedBackgroundButtonInfo = backgroundbtninfo*/
+            selectedBackgroundButtonInfo = backgroundbtninfo
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
