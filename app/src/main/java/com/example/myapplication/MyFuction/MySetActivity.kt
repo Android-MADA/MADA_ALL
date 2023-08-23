@@ -1,9 +1,11 @@
 package com.example.myapplication.MyFuction
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MainActivity
@@ -27,7 +29,6 @@ class MySetActivity : AppCompatActivity() {
     //서버연결 시작
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = MyWebviewActivity.prefs.getString("token", "")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
