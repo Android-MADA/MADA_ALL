@@ -539,7 +539,8 @@ class CalendarAddFragment : Fragment() {
                     mBuilder.dismiss()
                 })
             }
-            else if((!binding.checkBox.isChecked&&compareDates(nextSchedule.text.toString(),preSchedule.text.toString())||binding.textDday.text.toString()=="D - 0")) {
+            else if((!binding.checkBox.isChecked&&compareDates(nextSchedule.text.toString(),preSchedule.text.toString())||(binding.checkBox.isChecked&&binding.textDday.text.toString()=="D - 0"))) {
+
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup_one, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)

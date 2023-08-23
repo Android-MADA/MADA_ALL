@@ -72,7 +72,11 @@
     <fragment
         android:id="@+id/fragCustom"
         android:name="com.example.myapplication.Fragment.FragCustom"
-        android:label="FragCustom" />
+        android:label="FragCustom">
+        <action
+            android:id="@+id/action_fragCustom_to_fragCustom"
+            app:destination="@id/fragCustom" />
+    </fragment>
     <fragment
         android:id="@+id/fragMy"
         android:name="com.example.myapplication.Fragment.FragMy"

@@ -633,6 +633,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val responseCode = response.code()
                 Log.d("putcustomReset", "Response Code: $responseCode")
+                findNavController().navigate(R.id.action_fragCustom_to_fragCustom)
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
