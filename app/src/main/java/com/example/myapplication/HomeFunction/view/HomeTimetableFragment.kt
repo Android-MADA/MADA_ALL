@@ -20,6 +20,7 @@ import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
@@ -63,7 +64,7 @@ class HomeTimetableFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
         hideBottomNavigation(bottomFlag, activity)
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = Splash2Activity.prefs.getString("token","")
         today = viewModel.homeDate.value.toString()
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)

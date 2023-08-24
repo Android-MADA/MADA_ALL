@@ -76,7 +76,11 @@
     <fragment
         android:id="@+id/fragMy"
         android:name="com.example.myapplication.Fragment.FragMy"
-        android:label="FragMy" />
+        android:label="FragMy" >
+        <action
+            android:id="@+id/action_My_to_My"
+            app:destination="@id/fragMy" />
+    </fragment>
     <fragment
         android:id="@+id/homeCategoryFragment"
         android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"

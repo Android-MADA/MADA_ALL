@@ -15,6 +15,7 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.MainActivity
 import com.example.myapplication.PreferenceUtil
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MyWebviewBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,9 +34,7 @@ import java.net.URL
 
 
 class MyWebviewActivity : AppCompatActivity() {
-    companion object {
-        lateinit var prefs: PreferenceUtil
-    }
+
 
     private lateinit var binding: MyWebviewBinding
 
@@ -45,11 +44,12 @@ class MyWebviewActivity : AppCompatActivity() {
     val service = retrofit.create(RetrofitServiceMy::class.java)
     val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
     override fun onCreate(savedInstanceState: Bundle?) {
-        prefs = PreferenceUtil(applicationContext)
+        Splash2Activity.prefs = PreferenceUtil(applicationContext)
         super.onCreate(savedInstanceState)
         binding = MyWebviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //웹 페이지 속성 설정
         binding.myWebview.apply {
             webViewClient = WebViewClient()
             settings.javaScriptEnabled = true
@@ -57,7 +57,6 @@ class MyWebviewActivity : AppCompatActivity() {
             settings.javaScriptCanOpenWindowsAutomatically = true
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
         }
-        var isPageLoaded = false;
         binding.myWebview.loadUrl("http://15.165.210.13:8080/oauth2/authorization/naver")
         binding.myWebview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -65,15 +64,15 @@ class MyWebviewActivity : AppCompatActivity() {
                 //Log.d("url",url)
                 binding.myWebview.loadUrl(url)
                 if (url.startsWith("http://15.165.210.13:8080/user/test?")) {
+                    //회원가입 한 상태라면
                     val intent = Intent(this@MyWebviewActivity, MainActivity::class.java)
-                    getResponse(url)
+                    getResponseLogin(url)
                     startActivity(intent)
                     finish()
                     return true // 처리됨
                 } else if (url.startsWith("http://15.165.210.13:8080/user/signup")) {
-
-                    getResponse2(url)
-
+                    //회원가입 안한 상태라면
+                    getResponseSign(url)
                     return true // 처리됨
                 } else {
                     return true
@@ -96,30 +95,27 @@ class MyWebviewActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun getResponse(url : String) {
+    private fun getResponseLogin(url : String) {
         GlobalScope.launch(Dispatchers.IO) {
             val headers = fetchHeadersFromUrl(url)
             withContext(Dispatchers.Main) {
                 for ((key, value) in headers) {
                     if(key!=null&&key.equals("Authorization")) {
-                        //Log.d("dsa",value.toString())
-                        prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
+                        Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
-
                 }
             }
         }
     }
-    private fun getResponse2(url : String) {
+    private fun getResponseSign(url : String) {
         GlobalScope.launch(Dispatchers.IO) {
             val headers = fetchHeadersFromUrl(url)
+
             withContext(Dispatchers.Main) {
                 for ((key, value) in headers) {
                     if(key!=null&&key.equals("Authorization")) {
-                        //Log.d("dsa",value.toString())
-                        prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
+                        Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
-
                 }
                 val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
                 startActivity(intent)

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Model.MyGetNoticesData
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MyNoticeBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -24,7 +25,7 @@ class MyNoticeActivity : AppCompatActivity() {
 
         //서버연결 시작
         val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-        val token = MyWebviewActivity.prefs.getString("token", "")
+        val token = Splash2Activity.prefs.getString("token", "")
 
 
         // 서버에서 공지사항 불러오기

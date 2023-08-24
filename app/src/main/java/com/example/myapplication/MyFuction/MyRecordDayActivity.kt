@@ -34,6 +34,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.databinding.MyRecordDayBinding
@@ -62,7 +63,7 @@ class MyRecordDayActivity : AppCompatActivity() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var token = MyWebviewActivity.prefs.getString("token", "")
+    var token = Splash2Activity.prefs.getString("token", "")
     var today = LocalDate.now().toString()        //default값
 
     private var cateAdapter : HomeViewpager2CategoryAdapter? = null
@@ -70,7 +71,7 @@ class MyRecordDayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyRecordDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = Splash2Activity.prefs.getString("token","")
         binding.backBtn.setOnClickListener {
             finish()
         }

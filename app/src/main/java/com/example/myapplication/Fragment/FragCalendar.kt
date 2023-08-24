@@ -40,6 +40,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import retrofit2.Call
@@ -88,7 +89,7 @@ class FragCalendar : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         //binding.bottomSheet
-        token = MyWebviewActivity.prefs.getString("token","")?: "123"
+        token = Splash2Activity.prefs.getString("token","")?: "123"
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1

@@ -60,6 +60,7 @@ import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import okhttp3.HttpUrl
@@ -142,7 +143,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
 
