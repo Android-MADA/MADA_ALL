@@ -39,7 +39,7 @@ class custom_color : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token","")
+    val token = Splash2Activity.prefs.getString("token","")
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

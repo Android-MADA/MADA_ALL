@@ -1,5 +1,6 @@
 package com.example.myapplication.MyFuction
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
@@ -54,8 +56,8 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
 //                }
 //            }
             //else{
-                val intent = Intent(holder.itemView.context, targetActivity)
-                holder.itemView.context.startActivity(intent)
+            val intent = Intent(holder.itemView.context, targetActivity)
+            holder.itemView.context.startActivity(intent)
             //}
         }
     }

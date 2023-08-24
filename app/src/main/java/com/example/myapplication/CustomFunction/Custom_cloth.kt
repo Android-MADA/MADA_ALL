@@ -37,7 +37,7 @@ class custom_cloth() : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
     private val serverIdToDrawableMap = mapOf(
         900 to R.drawable.custom_empty,
