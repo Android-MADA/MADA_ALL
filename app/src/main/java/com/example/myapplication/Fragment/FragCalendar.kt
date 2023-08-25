@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -23,16 +24,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarData3
 import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.FragCalendarBinding
 import java.time.LocalDate
@@ -60,13 +63,13 @@ import java.util.Locale
 class FragCalendar : Fragment(){
 
     lateinit var binding: FragCalendarBinding
+    private val viewModelCal : CalendarViewModel by activityViewModels()
+    private val viewModel: CustomViewModel by viewModels()
     private lateinit var calendar: Calendar
     data class sche(var startMonth: Int, var endMonth: Int, var startDay: Int, var endDay: Int)
     val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
-    var preStartToEnd : sche = sche(0, 0, 0, 0)
-    var nextStartToEnd : sche = sche(0, 0, 0, 0)
 
-    private val viewModel: CustomViewModel by viewModels()
+
     private var todayMonth = 6
     private var todayYear =2023
 
@@ -88,29 +91,27 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //binding.bottomSheet
+
         token = Splash2Activity.prefs.getString("token","")?: "123"
         CalendarUtil.selectedDate = LocalDate.now()
         calendar = Calendar.getInstance()
         todayMonth = calendar.get(Calendar.MONTH) + 1
         todayYear = calendar.get(Calendar.YEAR)
+
         binding = FragCalendarBinding.inflate(inflater, container, false)
-        val datas = ArrayList<CalendarDATA>()
-        var formatterM = DateTimeFormatter.ofPattern("M")
-        var formatterY = DateTimeFormatter.ofPattern("YYYY")
-        getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
+
+
+        //getMonthDataArray(CalendarUtil.selectedDate.format(viewModelCal.formatterM),CalendarUtil.selectedDate.format(viewModelCal.formatterYYYY),datas)
 
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
-            datas.clear()
-            getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
+            //getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
-            datas.clear()
-            getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
+            //getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
         }
         return binding.root
     }
@@ -118,11 +119,11 @@ class FragCalendar : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val savedData = viewModel.getSavedButtonInfo()
+        //val savedData = viewModel.getSavedButtonInfo()
 
-        getCustomChar()
+        //getCustomChar()
 
-        getDdayDataArray()
+        //getDdayDataArray()
 
 
         binding.calendarDdayPlusBtn.setOnClickListener {
@@ -143,8 +144,8 @@ class FragCalendar : Fragment(){
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
     }
-    private fun setMonthView(datas : ArrayList<CalendarDATA>, startMon : Boolean) {
-        val dataArray = Array<ArrayList<CalendarDATA?>>(42) { ArrayList() }
+    private fun setMonthView(datas : ArrayList<AndroidCalendarData>, startMon : Boolean) {
+        val dataArray = Array<ArrayList<AndroidCalendarData?>>(42) { ArrayList() }
         var formatter = DateTimeFormatter.ofPattern("M")
         binding.textMonth.text = CalendarUtil.selectedDate.format(formatter)+"월"
         formatter = DateTimeFormatter.ofPattern("yyyy년")
@@ -250,7 +251,7 @@ class FragCalendar : Fragment(){
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
-    private fun getMonthDataArray(month : String,year : String, arrays : ArrayList<CalendarDATA>) {
+    private fun getMonthDataArray(month : String,year : String, arrays : ArrayList<AndroidCalendarData>) {
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
         val call2 = service.monthCalRequest(token,year,month)
         var startMon = false
@@ -268,7 +269,7 @@ class FragCalendar : Fragment(){
                                 if(data.start_date==data.end_date) dura = false
                                 else dura = true
                                 if(data.d_day=="N") {
-                                    val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                    val tmp = AndroidCalendarData("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
                                         "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                         -1,dura,"${data.memo}","CAL",data.id)
                                     if(dura) {
@@ -279,7 +280,7 @@ class FragCalendar : Fragment(){
                                 } else if(daysRemainingToDate(data.end_date)<0){
                                     deleteCalendar(data.id)
                                 } else {
-                                    val tmp = CalendarDATA("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
+                                    val tmp = AndroidCalendarData("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
                                         "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                         -1,false,"${data.memo}","CAL",data.id)
                                     arrays.add(tmp)
@@ -298,7 +299,7 @@ class FragCalendar : Fragment(){
         })
     }
     private fun getDdayDataArray() {
-        val ddayDatas = ArrayList<CalendarDATA>()
+        val ddayDatas = ArrayList<AndroidCalendarData>()
         val call2 = service.getAllDday(token)
         call2.enqueue(object : Callback<CalendarDataDday> {
             override fun onResponse(call2: Call<CalendarDataDday>, response: Response<CalendarDataDday>) {
@@ -308,7 +309,7 @@ class FragCalendar : Fragment(){
                         val datas = apiResponse.datas.datas
                         if(datas != null) {
                             for (data in datas) {
-                                val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                val tmp = AndroidCalendarData("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
                                     "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                     -1,true,"${data.memo}","CAL",data.id)
                                 ddayDatas.add(tmp)
