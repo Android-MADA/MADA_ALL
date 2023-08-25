@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
-class CalendarScheduleAdapter(private val myDataArray:  ArrayList<CalendarDATA?>, private val today: Int
+class CalendarScheduleAdapter(private val myDataArray:  ArrayList<AndroidCalendarData?>, private val today: Int
                               , private val parentView : View, private val parentDialog : AlertDialog, private val token : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")

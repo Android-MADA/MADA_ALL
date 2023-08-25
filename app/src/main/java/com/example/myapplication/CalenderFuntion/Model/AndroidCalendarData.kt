@@ -1,6 +1,6 @@
 package com.example.myapplication.CalenderFuntion.Model
 
-data class CalendarDATA(
+data class AndroidCalendarData(
     val startDate: String,
     var startDate2: String,
     val endDate: String,

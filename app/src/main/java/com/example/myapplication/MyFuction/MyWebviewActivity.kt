@@ -1,18 +1,12 @@
 package com.example.myapplication.MyFuction
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.MainActivity
 import com.example.myapplication.PreferenceUtil
 import com.example.myapplication.Splash2Activity
@@ -21,14 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
