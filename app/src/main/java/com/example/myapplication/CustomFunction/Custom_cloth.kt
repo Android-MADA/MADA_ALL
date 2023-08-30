@@ -37,7 +37,7 @@ class custom_cloth() : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
     private val serverIdToDrawableMap = mapOf(
         900 to R.drawable.custom_empty,
@@ -223,6 +223,8 @@ class custom_cloth() : Fragment() {
                             )
                         }
                     }
+                    //initButtonLockStates(response.body())
+
                 } else {
                     Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
@@ -237,9 +239,11 @@ class custom_cloth() : Fragment() {
     private fun initButtonLockStates(checkInfo: customItemCheckDATA?) {
         val itemList = checkInfo?.data?.itemList ?: emptyList()
 
+        val btnIdList  = ArrayList<Int>()
         itemList.forEach { item ->
             val isLocked = !item.have
             buttonLockMap[item.id] = isLocked
+            btnIdList.add(item.id)
             Log.d("initbtnlock", "Button ID: ${item.id}, Is Locked: $isLocked")
         }
 
@@ -247,42 +251,43 @@ class custom_cloth() : Fragment() {
             Log.d("btb", data.toString())
         }
         Log.d("initbtnlock","button lock init success")
-        applyButtonLockStates()
+        applyButtonLockStates(btnIdList)
     }
 
-    private fun applyButtonLockStates() {
+    private fun applyButtonLockStates(btnIdList : ArrayList<Int>) {
         val buttons = arrayOf(
-            binding.btnClothBasic,
-            binding.btnClothDev,
-            binding.btnClothMovie,
-            binding.btnClothCaffK,
-            binding.btnClothV,
             binding.btnClothAstronauts,
-            binding.btnClothZzim,
+            binding.btnClothCaffK,
+            binding.btnClothDev,
             binding.btnClothHanbokF,
             binding.btnClothHanbokM,
-            binding.btnClothSnowman
+            binding.btnClothMovie,
+            binding.btnClothSnowman,
+            binding.btnClothV,
+            binding.btnClothZzim,
+            //binding.btnClothBasic
         )
 
-        for (button in buttons) {
-            val buttonId = button.id
+
+        for (i in 0 until btnIdList.size) {
+            val buttonId = btnIdList[i]
             val isLocked = buttonLockMap[buttonId] ?: false
 
-            val serverId = buttonLockMap.keys.firstOrNull { buttonLockMap[it] == isLocked } ?: -1
-            val drawableId = serverIdToDrawableMap[serverId] ?: throw IllegalArgumentException("Unknown server ID")
+            //val serverId = buttonLockMap.keys.firstOrNull { buttonLockMap[buttonId] == isLocked } ?: -1
+            val drawableId = serverIdToDrawableMap[buttonId] ?: throw IllegalArgumentException("Unknown server ID")
 
-            Log.d("applyButtonLockStates", "Button ID: $buttonId, Server ID: $serverId, Drawable ID: $drawableId, Is Locked: $isLocked")
+            Log.d("applyButtonLockStates", "Button ID: $buttonId, Server ID: $buttonId, Drawable ID: $drawableId, Is Locked: $isLocked")
 
-            button.isEnabled = !isLocked
-            button.setImageResource(if (isLocked) getLockedDrawable(drawableId) else drawableId)
+            buttons[i].isEnabled = !isLocked
+            buttons[i].setImageResource(if (isLocked) getLockedDrawable(drawableId) else drawableId)
         }
     }
 
     private fun getLockedDrawable(drawableId: Int): Int {
         val lockedDrawableMap = mapOf(
-            //R.id.btn_cloth_dev to R.drawable.set_dev_lock,
-            //R.id.btn_cloth_movie to R.drawable.set_v_lock,
-            //R.id.btn_cloth_caffK to R.drawable.set_v_lock,
+            R.id.btn_cloth_dev to R.drawable.set_dev,
+            R.id.btn_cloth_movie to R.drawable.set_v_lock,
+            R.id.btn_cloth_caffK to R.drawable.set_v_lock,
             R.drawable.set_v to R.drawable.set_v_lock,
             R.drawable.set_astronauts to R.drawable.set_astronauts_lock,
             R.drawable.set_zzim to R.drawable.set_zzim_lock,

@@ -14,6 +14,7 @@ import com.example.myapplication.MyFuction.Model.MyAlarmData2
 import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Model.MySetPageData
 import com.example.myapplication.MyFuction.Model.MySetPageData2
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MySetBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -28,7 +29,7 @@ class MySetActivity : AppCompatActivity() {
 
     //서버연결 시작
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -174,6 +174,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/calendarViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                />
 
         </LinearLayout>
 
@@ -234,25 +240,25 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="17dp"
-                            android:layout_marginBottom="20dp"
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="@id/dday1"
                             app:layout_constraintBottom_toBottomOf="@id/dday1"
                             app:layout_constraintLeft_toLeftOf="@id/dday1" />
 
                         <TextView
                             android:id="@+id/dday1_text_info"
-                            android:layout_width="100dp"
+                            android:layout_width="124dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="85dp"
-                            android:layout_marginBottom="20dp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/dday1"
                             app:layout_constraintBottom_toBottomOf="@id/dday1"
                             app:layout_constraintLeft_toLeftOf="@id/dday1" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -276,10 +282,10 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:layout_marginLeft="17dp"
-                            android:layout_marginBottom="20dp"
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="@id/dday2"
                             app:layout_constraintBottom_toBottomOf="@id/dday2"
                             app:layout_constraintLeft_toLeftOf="@id/dday2"/>
 
@@ -288,12 +294,12 @@
                             android:layout_width="124dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="85dp"
-                            android:layout_marginBottom="20dp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/dday2"
                             app:layout_constraintBottom_toBottomOf="@id/dday2"
                             app:layout_constraintLeft_toLeftOf="@id/dday2" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -316,11 +322,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="17dp"
-                            android:layout_marginBottom="20dp"
                             android:text=""
                             android:textStyle="bold"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/dday3"
                             app:layout_constraintBottom_toBottomOf="@id/dday3"
                             app:layout_constraintLeft_toLeftOf="@id/dday3" />
 
@@ -329,12 +335,12 @@
                             android:layout_width="124dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="85dp"
-                            android:layout_marginBottom="20dp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:text=""
                             android:textColor="@color/black"
                             android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/dday3"
                             app:layout_constraintBottom_toBottomOf="@id/dday3"
                             app:layout_constraintLeft_toLeftOf="@id/dday3" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -353,8 +359,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/calendar_character"/>
+                        app:layout_constraintTop_toTopOf="parent"/>
                     <ImageView
                         android:id="@+id/img_calendar_cloth"
                         android:layout_width="wrap_content"

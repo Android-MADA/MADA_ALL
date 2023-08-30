@@ -33,7 +33,7 @@ class custom_item : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token","")
+    val token = Splash2Activity.prefs.getString("token","")
 
 
     override fun onAttach(context: Context) {
@@ -128,7 +128,7 @@ class custom_item : Fragment() {
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
             R.id.btn_item_basic -> R.drawable.custom_nullchoice
-            R.id.btn_item_glass_normal -> R.drawable.gh_normal_choice
+            R.id.btn_item_glass_normal -> R.drawable.g_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice
             R.id.btn_item_glass_8bit -> R.drawable.g_8bit_choice
@@ -136,12 +136,12 @@ class custom_item : Fragment() {
             R.id.btn_item_hat_ipod -> R.drawable.hat_ipod_choice
             R.id.btn_item_glass_sunR -> R.drawable.g_sunr_choice
             R.id.btn_item_glass_sunB -> R.drawable.g_sunb_choice
-            R.id.btn_item_hat_flower -> R.drawable.hat_flower_chocie
+            R.id.btn_item_hat_flower -> R.drawable.hat_flower_choice
             R.id.btn_item_hat_v -> R.drawable.hat_v_choice
             R.id.btn_item_hat_dinof -> R.drawable.hat_dinof_choice
             R.id.btn_item_hat_sheep -> R.drawable.hat_sheep_choice
-            R.id.btn_item_bag_e -> R.drawable.back_e_choice
-            R.id.btn_item_bag_luck -> R.drawable.back_luck_choice
+            R.id.btn_item_bag_e -> R.drawable.bag_e_choice
+            R.id.btn_item_bag_luck -> R.drawable.bag_luck_choice
             R.id.btn_item_hat_heart -> R.drawable.hat_heart_choice
             R.id.btn_item_hat_bee -> R.drawable.hat_bee_choice
             R.id.btn_item_hat_heads -> R.drawable.heads_choice

@@ -9,12 +9,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
+class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<AndroidCalendarData>, private  val today : Int, private val editTextTitle : EditText,
                                  private val textPreClock : TextView, private val textNextClock : TextView, private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
@@ -77,15 +77,8 @@ class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>,
                 }
                 VIEW_TYPE_TODO -> {
                     val viewHolderTodo = holder as ItemViewHolderTodo
-                    if(item.floor==0) {
-                        viewHolderTodo.catImage.setImageResource(R.drawable.ic_home_cate_plan)
-                    } else if(item.floor==1){
-                        viewHolderTodo.catImage.setImageResource(R.drawable.ic_home_cate_health)
-                    } else if(item.floor==2){
-                        viewHolderTodo.catImage.setImageResource(R.drawable.ic_home_cate_study)
-                    } else {
-                        viewHolderTodo.catImage.setImageResource(R.drawable.ic_home_cate_burn)
-                    }
+
+                    viewHolderTodo.catImage.setImageResource(findIcon(item.floor))
                     viewHolderTodo.textTitle.text = item.title
                 }
             }
@@ -138,6 +131,29 @@ class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>,
         val ampm = if (hour > 12&&hour<24) "오후" else if(hour <12 && hour>0) "오전" else if(hour ==12) "오후" else "오전"
 
         return "  $ampm $convertedHour:$minute  "
+    }
+    fun findIcon(iconId : Int) : Int {
+        val icon = when(iconId){
+            1 -> {R.drawable.ic_home_cate_burn}
+            2 -> {R.drawable.ic_home_cate_chat1}
+            3 -> {R.drawable.ic_home_cate_health}
+            4 -> {R.drawable.ic_home_cate_heart}
+            5 -> {R.drawable.ic_home_cate_laptop}
+            6 -> {R.drawable.ic_home_cate_lightout}
+            7 -> {R.drawable.ic_home_cate_lightup}
+            8 -> {R.drawable.ic_home_cate_meal2}
+            9 -> {R.drawable.ic_home_cate_meal1}
+            10 -> {R.drawable.ic_home_cate_mic}
+            11 -> {R.drawable.ic_home_cate_music}
+            12 -> {R.drawable.ic_home_cate_pen}
+            13 -> {R.drawable.ic_home_cate_phone}
+            14 -> {R.drawable.ic_home_cate_plan}
+            15 -> {R.drawable.ic_home_cate_rest}
+            16 -> {R.drawable.ic_home_cate_sony}
+            17 -> {R.drawable.ic_home_cate_study}
+            else -> {R.drawable.ic_home_cate_work}
+        }
+        return icon
     }
 
 }

@@ -23,6 +23,7 @@ import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
@@ -93,7 +94,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         binding = HomeFragmentViewpagerTimetableBinding.inflate((layoutInflater))
         customCircleBarView = binding.progressbar
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = Splash2Activity.prefs.getString("token","")
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
         val currentTime = Calendar.getInstance()
         val hour = currentTime.get(Calendar.HOUR_OF_DAY)

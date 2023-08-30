@@ -1,5 +1,6 @@
 package com.example.myapplication.MyFuction
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
@@ -35,28 +37,28 @@ class MyListAdapter(val MyList: ArrayList<MyListItem>) : RecyclerView.Adapter<My
         holder.item.setOnClickListener {
             val targetActivity = itemData.targetActivity
 
-            if(holder.item.text == "로그아웃") {
-                val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.my_logout_popup, null)
-                val alertDialogBuilder = AlertDialog.Builder(holder.itemView.context)
-                    .setView(dialogView)
-                    .create()
-
-                val btnNo = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
-                val btnYes = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
-
-                btnNo.setOnClickListener {
-                    Log.d("로그아웃 취소", "로그아웃 취소")
-                    alertDialogBuilder.dismiss()
-                }
-                btnYes.setOnClickListener {
-                    val intent = Intent(holder.itemView.context, Splash2Activity::class.java)
-                    Log.d("로그아웃 취소", "로그아웃 취소")
-                }
-            }
-            else{
-                val intent = Intent(holder.itemView.context, targetActivity)
-                holder.itemView.context.startActivity(intent)
-            }
+//            if(holder.item.text == "로그아웃") {
+//                val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.my_logout_popup, null)
+//                val alertDialogBuilder = AlertDialog.Builder(holder.itemView.context)
+//                    .setView(dialogView)
+//                    .create()
+//
+//                val btnNo = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
+//                val btnYes = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
+//
+//                btnNo.setOnClickListener {
+//                    Log.d("로그아웃 취소", "로그아웃 취소")
+//                    alertDialogBuilder.dismiss()
+//                }
+//                btnYes.setOnClickListener {
+//                    val intent = Intent(holder.itemView.context, Splash2Activity::class.java)
+//                    Log.d("로그아웃 취소", "로그아웃 취소")
+//                }
+//            }
+            //else{
+            val intent = Intent(holder.itemView.context, targetActivity)
+            holder.itemView.context.startActivity(intent)
+            //}
         }
     }
 
