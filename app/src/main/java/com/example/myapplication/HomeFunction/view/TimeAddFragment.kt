@@ -27,7 +27,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
@@ -67,6 +67,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     var curColor = "#89A9D9"
     lateinit var token : String
     var viewpager = false
+    var haveTodoCalDatas = false
 
 
     private lateinit var backDialog: HomeBackCustomDialog
@@ -394,7 +395,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             binding.homeFragmentTimeAddLayout.requestFocus()
         }
 
-        val datas = ArrayList<CalendarDATA>()
+        val datas = ArrayList<AndroidCalendarData>()
         getTodoCalDatas(today,datas)
 
 
@@ -403,7 +404,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
 
         binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
+            if (hasFocus&&haveTodoCalDatas) {
                 binding.homeTimeTodoListView.visibility = View.VISIBLE
             } else
                 binding.homeTimeTodoListView.visibility = View.GONE
@@ -521,7 +522,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     //                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
     //                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
     //            ),
-    private fun getTodoCalDatas(date : String,arrays: ArrayList<CalendarDATA>) {
+    private fun getTodoCalDatas(date : String,arrays: ArrayList<AndroidCalendarData>) {
         val call = service.getCalendarTodo(token,date)
         call.enqueue(object : Callback<ScheduleTodoCalList> {
             override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
@@ -531,20 +532,22 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                         val datas = apiResponse.datas
                         if(datas != null) {
                             for(data in datas.todoList) {
-                                arrays.add(CalendarDATA("","","","","",
-                                    "","","",data.todoName,1,false,"","TODO",7))
+
+                                arrays.add(AndroidCalendarData("","","","","",
+                                    "","","",data.todoName,data.iconId,false,"","TODO",7))
                             }
 
                             for(data in datas.calendarList) {
                                 Log.d("cal","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color} ${data.dday}" )
                                 if(data.dday=="N")
-                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                    arrays.add(AndroidCalendarData("","","",data.startTime,data.endTime,
                                         data.color,"","N",data.CalendarName,1,false,"","CAL",7))
                                 else
-                                    arrays.add(CalendarDATA("","","",data.startTime,data.endTime,
+                                    arrays.add(AndroidCalendarData("","","",data.startTime,data.endTime,
                                         data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
                             }
-
+                            if(!arrays.isEmpty())
+                                haveTodoCalDatas = true
                             val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
                             var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                             binding.homeTimeTodoList.layoutManager = manager

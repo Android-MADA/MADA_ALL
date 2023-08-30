@@ -47,6 +47,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Point
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
@@ -59,6 +60,7 @@ import com.example.myapplication.CustomFunction.CustomItemChangeDATA
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import okhttp3.HttpUrl
@@ -95,6 +97,10 @@ interface OnResetButtonClickListener {
     fun onResetButtonClicked()
 }
 
+data class IdAndItemType(
+    val id: Int,
+    val itemType: String
+)
 
 
 
@@ -118,6 +124,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var adapter: CustomBottomSheetViewPager? = null
 
     private var printId: Int = 0
+    private val printIds = mutableListOf<IdAndItemType>()
+    private var itemType: String = "z"
     private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
 
@@ -129,12 +137,13 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var alertDialog: AlertDialog
 
 
+
     val baseUrl = "http://15.165.210.13:8080/"
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
 
@@ -174,17 +183,17 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         getCustomPrint()
-        postcustomItemBuy(14)
+        //postcustomItemBuy(14)
 
 
-        /*val savedData = viewModel.getSavedButtonInfo()
+        val savedData = viewModel.getSavedButtonInfo()
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
             selectedClothButtonInfo = savedData.selectedClothButtonInfo
             selectedItemButtonInfo = savedData.selectedItemButtonInfo
             selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
 
-            binding.customRamdi.setImageResource(
+            /*binding.customRamdi.setImageResource(
                 selectedColorButtonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomCloth.setImageResource(
@@ -195,8 +204,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
-            )
-        }*/
+            )*/
+        }
 
 
         /*val fragmentManager: FragmentManager = childFragmentManager
@@ -274,8 +283,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         val imgCustomBackground = binding.imgCustomBackground
         val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 2000 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 2000 // 원하는 높이(dp 단위)
+        imgCustomBackground_layoutParams.width = 1500 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 1500 // 원하는 높이(dp 단위)
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
@@ -298,9 +307,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 2000).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground_layoutParams.height =
-                    (height * (1 - slideOffset) + 2000).toInt()
+                    (height * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
@@ -308,14 +317,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
         binding.btnCustomReset.setOnClickListener {
-            /*val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
+            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             selectedColorButtonInfo = colorbtninfo
             val clothbtninfo = ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             selectedClothButtonInfo = clothbtninfo
             val itembtninfo = ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
             val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
-            selectedBackgroundButtonInfo = backgroundbtninfo*/
+            selectedBackgroundButtonInfo = backgroundbtninfo
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
@@ -332,48 +341,76 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
+
+
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
             var temdata = getSelectedButtonInfo()
+
             Log.d(
                 "Savedata",
                 "${temdata.selectedColorButtonInfo?.serverID} ${temdata.selectedClothButtonInfo?.serverID} ${temdata.selectedItemButtonInfo?.serverID} ${temdata.selectedBackgroundButtonInfo?.serverID}"
             )
-            val itemIds: List<String> = if (temdata.selectedColorButtonInfo?.serverID == null) {
-                listOf(
-                    "10",
-                    temdata.selectedClothButtonInfo?.serverID.toString(),
-                    temdata.selectedItemButtonInfo?.serverID.toString(),
-                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
-                ).filterNotNull()
-                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
+            printIds.forEachIndexed { index, itemId ->
+                Log.d("getCustomPrint", "printIds[$index]: $itemId")
+            }
+            val itemIds = arrayOf("10", "900", "800", "700")
+
+            val uniqueItemIds = mutableListOf<String>()
+
+            printIds.forEach { idAndItemType ->
+                if(idAndItemType.itemType=="color") {
+                    itemIds[0]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="set") {
+                    itemIds[1]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="item") {
+                    itemIds[2]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="background") {
+                    itemIds[3]=(idAndItemType.id.toString())
+                }
+            }
+
+            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
+            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
+            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
+            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
+
+
+            if(temdata.selectedColorButtonInfo?.serverID == null) {
+                uniqueItemIds.add(itemIds[0])
             } else {
-                listOf(
-                    temdata.selectedColorButtonInfo?.serverID.toString(),
-                    temdata.selectedClothButtonInfo?.serverID.toString(),
-                    temdata.selectedItemButtonInfo?.serverID.toString(),
-                    temdata.selectedBackgroundButtonInfo?.serverID.toString()
-                ).filterNotNull()
-                    .filter { it != "900" && it != "800" && it != "700" && it != "0" && it != null }
+                uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedClothButtonInfo?.serverID == null) {
+                if(itemIds[1]!="900")
+                    uniqueItemIds.add(itemIds[1])
+            } else {
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                    uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedItemButtonInfo?.serverID == null) {
+                if(itemIds[2]!="800")
+                    uniqueItemIds.add(itemIds[2])
+            } else {
+                if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
+                    uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
+                if(itemIds[3]!="700")
+                    uniqueItemIds.add(itemIds[3])
+            } else {
+                if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
+                    uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
             }
 
-            patchCustomItemChange(itemIds)
 
+// Convert uniqueItemIds set back to a list
+            val combinedIds = uniqueItemIds.toList()
+            Log.d("combined",combinedIds.toString())
 
-            val httpUrlBuilder = HttpUrl.Builder().scheme("http").host("15.165.210.13").port(8080)
-                .addPathSegments("api/custom/change")
-
-
-            itemIds.forEach { itemId ->
-                httpUrlBuilder.addQueryParameter("item_id", itemId)
-            }
-
-            val httpUrl = httpUrlBuilder.build()
-
-            Log.d("URL_Log", "Complete URL: ${httpUrl.toString()}")
-
-
+// Now you can use combinedIds as needed
+            patchCustomItemChange(combinedIds)
 
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
@@ -383,6 +420,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
+        alertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+
 
         val btnNo = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_no)
         val btnYes = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_yes)
@@ -518,14 +559,22 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printInfo = response.body()
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
+
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
+                    itemType = item.itemType
                     printfilePath = item.filePath
                     Log.d(
                         "getCustomPrint",
                         "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
                     )
                     Log.d("getCustomPrint", "Response Code: $responseCode")
+                }
+
+                datas?.forEachIndexed { index, item ->
+                    val idAndItemType = IdAndItemType(item.id, item.itemType)
+                    printIds.add(idAndItemType)
+
                 }
                 if (datas != null) {
                     for (item in datas) {
@@ -548,6 +597,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         }
                     }
                 }
+
+
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -568,10 +619,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
                 else{
                     Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
-
                 }
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("patchCustomItemChange", t.message.toString())
             }
@@ -629,6 +678,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private fun showBackConfirmationDialog() {
         alertDialog.show()
+
+        //사이즈 조절
+        val displayMetrics = DisplayMetrics()
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
 

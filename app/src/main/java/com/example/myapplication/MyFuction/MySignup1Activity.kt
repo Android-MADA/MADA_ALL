@@ -10,6 +10,7 @@ import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.Model.nickName
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.MySignup1Binding
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +30,7 @@ class MySignup1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MySignup1Binding.inflate(layoutInflater)
         setContentView(binding.root)
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = Splash2Activity.prefs.getString("token","")
         binding.signup1Btn.setOnClickListener {
             isButtonClicked = !isButtonClicked
             binding.signup1Btn.setBackgroundResource(R.drawable.my_btn_ok)
@@ -47,7 +48,7 @@ class MySignup1Activity : AppCompatActivity() {
         val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(RetrofitServiceCalendar::class.java)
-        token = MyWebviewActivity.prefs.getString("token","")
+        token = Splash2Activity.prefs.getString("token","")
         val call = service.singup(token, nickName(id))
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

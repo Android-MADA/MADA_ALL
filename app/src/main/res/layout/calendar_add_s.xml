@@ -96,6 +96,31 @@
                 android:layout_marginVertical="15dp"/>
 
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ddayLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textDday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
+                    android:gravity="center"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/point_main"
+                    android:text="D - 0" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginVertical="15dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:orientation="horizontal">

@@ -25,7 +25,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -39,7 +39,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataArray:  Array<ArrayList<CalendarDATA?>>, private val token : String)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataArray:  Array<ArrayList<AndroidCalendarData?>>, private val token : String)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
@@ -157,8 +157,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 else {
                     addCalendar(
                         CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
-                            ,"#89A9D9","No","N" , "","10:00:00","11:00:00"))
-                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_fragCalendar)
+                            ,"#89A9D9","No",'N' , "","10:00:00","11:00:00"),holder.itemView)
+
                 }
                 mBuilder.dismiss()
             })
@@ -182,7 +182,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
         return dayList.size
     }
 
-    private fun addCalendar(data : CalendarData2) {
+    private fun addCalendar(data : CalendarData2, view : View) {
         val call1 = service.addCal(token,data)
         call1.enqueue(object : Callback<ResponseSample> {
             override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
@@ -196,7 +196,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 } else {
                     Log.d("666","itemType: ${response.code()} ")
                 }
-                // 페이지 이동
+                Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
             }
 
             override fun onFailure(call: Call<ResponseSample>, t: Throwable) {

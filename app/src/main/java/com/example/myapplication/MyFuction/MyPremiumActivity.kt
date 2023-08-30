@@ -21,7 +21,7 @@ class MyPremiumActivity : AppCompatActivity() {
     //서버연결 시작
     //val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM2NTA3OCwiZXhwIjoxNjkyNDAxMDc4fQ.mGHNHLuTpJRc5mFrahf6RCKKVBxfcnvH9B4TDPOA-nEoY-9E8Kl9bw9jH_DjxERx9I3wHg4dwiWqjIImYD1dYQ"
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

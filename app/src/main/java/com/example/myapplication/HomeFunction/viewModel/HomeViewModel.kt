@@ -22,6 +22,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -32,7 +33,7 @@ class HomeViewModel : ViewModel() {
 
 
     //var userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyUldNdDc0LVN2aUljMnh6SE5pQXJQNzZwRnB5clNaXzgybWJNMTJPR000IiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM1NTkyOCwiZXhwIjoxNjkyMzkxOTI4fQ.uSwbzX81QGrWSE44LxkX700sGN_NycpkXKMWBQ_gzfXdDFYJbVGYGtOz78YfJiU66ZrZ3y3SPY6F_xwYlP8hag"
-    var userToken = MyWebviewActivity.prefs.getString("token", "")
+    var userToken = Splash2Activity.prefs.getString("token", "")
 
     var userHomeName = "김마다"
 

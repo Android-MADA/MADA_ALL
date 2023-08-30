@@ -40,7 +40,7 @@ class MyWithdraw1Activity : AppCompatActivity() {
                 val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
                     .addConverterFactory(GsonConverterFactory.create()).build()
                 val api = retrofit.create(RetrofitServiceMy::class.java)
-                token = MyWebviewActivity.prefs.getString("token","")
+                token = Splash2Activity.prefs.getString("token","")
                 val call = api.withdraw(token)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {

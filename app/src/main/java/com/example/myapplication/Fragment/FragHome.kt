@@ -20,6 +20,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
@@ -37,7 +38,7 @@ class FragHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.userToken = MyWebviewActivity.prefs.getString("token","")
+        viewModel.userToken = Splash2Activity.prefs.getString("token","")
     }
 
 

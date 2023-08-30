@@ -77,7 +77,7 @@
                 android:id="@+id/textCalendar"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="2023년 6월"
+                android:text="2023년 8월"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -266,6 +266,10 @@
                     android:layout_width="225dp"
                     android:layout_height="225dp"
                     android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/my_time_circle"
                     />
                 <com.github.mikephil.charting.charts.PieChart

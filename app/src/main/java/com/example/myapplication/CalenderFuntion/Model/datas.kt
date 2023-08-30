@@ -9,11 +9,12 @@ data class CalendarData2(
     @SerializedName("endDate") val end_date: String,
     @SerializedName("color") val color: String,
     @SerializedName("repeat") val repeat: String,
-    @SerializedName("dday") val d_day: String,
+    @SerializedName("dday") val d_day: Char,
     @SerializedName("memo") val memo: String,
     @SerializedName("startTime") val start_time: String,
     @SerializedName("endTime") val end_time: String
-){
+)
+{
     fun toJson(): String {
         val gson = Gson()
         return gson.toJson(this)
@@ -31,6 +32,7 @@ data class CalendarDataId(
     @SerializedName("memo") val memo: String,
     @SerializedName("calendarId") val id: Int
 )
+
 data class AddCalendarData (
     @SerializedName("data") val datas: CalendarData2
 
@@ -42,13 +44,24 @@ data class AddCalendarData (
 }
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,
-    @SerializedName("calendar") val datas: List<CalendarDataId> // 생성자, getter, setter 등의 메서드를 정의해주세요.
-
+    @SerializedName("calendar") val datas: List<CalendarDataId>
 )
+
+
 data class CalendarData3 (
     @SerializedName("data") val data : CalendarDatas
 
 )
+
+//Dday 모든 정보 요청
+data class CalendarDataDday (
+    @SerializedName("startTodoAtMonday") val startMon : Boolean ,
+    @SerializedName("data") val datas: DdayCalendar
+)
+data class DdayCalendar (
+    @SerializedName("calendar") val datas: List<CalendarDataId>
+)
+
 
 data class Item (
     @SerializedName("id") val id: Int,

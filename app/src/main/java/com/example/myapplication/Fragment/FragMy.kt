@@ -14,6 +14,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,8 @@ import com.example.myapplication.MyFuction.MySetActivity
 import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.MyFuction.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
+import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
 import com.example.myapplication.databinding.Splash2Binding
 import com.squareup.picasso.Picasso
@@ -48,7 +52,7 @@ class FragMy : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
 
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
     @RequiresApi(Build.VERSION_CODES.O)

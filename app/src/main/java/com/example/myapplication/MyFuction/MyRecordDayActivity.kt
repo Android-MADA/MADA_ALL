@@ -13,20 +13,12 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.CalendarAdapter
 import com.example.myapplication.CalenderFuntion.CalendarUtil
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
-import com.example.myapplication.Fragment.FragHome
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.PostRequestTodo
-import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
-import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
-import com.example.myapplication.HomeFunction.Model.repeatTodo
-import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -34,6 +26,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
+import com.example.myapplication.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.databinding.MyRecordDayBinding
@@ -62,7 +55,7 @@ class MyRecordDayActivity : AppCompatActivity() {
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(HomeApi::class.java)
-    var token = MyWebviewActivity.prefs.getString("token", "")
+    var token = Splash2Activity.prefs.getString("token", "")
     var today = LocalDate.now().toString()        //default값
 
     private var cateAdapter : HomeViewpager2CategoryAdapter? = null
@@ -70,8 +63,7 @@ class MyRecordDayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MyRecordDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        token = MyWebviewActivity.prefs.getString("token","")
-
+        token = Splash2Activity.prefs.getString("token","")
         binding.backBtn.setOnClickListener {
             finish()
         }
@@ -101,6 +93,7 @@ class MyRecordDayActivity : AppCompatActivity() {
             val intent = Intent(this, MyRecordWeekActivity::class.java)
             startActivity(intent)
         }
+
         binding.todayInfo.setOnClickListener {
             getTimeDatas(binding.todayInfo.text.toString())
             findRv(binding.todayInfo.text.toString())
@@ -116,7 +109,10 @@ class MyRecordDayActivity : AppCompatActivity() {
         // in rv 연결하기
 
         findRv(LocalDate.now().toString())
-
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val todayDate = Date()
+        val formattedDate = dateFormat.format(todayDate)
+        getTimeDatas(formattedDate)
 
     }
     private fun setMonthView() {
