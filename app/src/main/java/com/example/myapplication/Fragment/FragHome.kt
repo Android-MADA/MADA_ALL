@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -67,6 +68,8 @@ class FragHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.layoutHome.setBackgroundResource(R.drawable.color_purple)
+
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
 
             Log.d("home캐릭", "뎅이터 넘어오기")
@@ -90,31 +93,33 @@ class FragHome : Fragment() {
         binding.tvHomeSentence.text = homeMent(currentDay)
 
         //actinobar 설정
-        binding.toolbarHome.inflateMenu(R.menu.home_menu)
-        binding.toolbarHome.setOnMenuItemClickListener {
-            //달력에 지정된 날짜 다음 프래그먼트로 전달
-            val year = viewModel.homeDate.value!!.year
-            val month = String.format("%02d", viewModel.homeDate.value!!.monthValue)
-            val day = String.format("%02d", viewModel.homeDate.value!!.dayOfMonth)
-            val bundle = Bundle()
-            bundle.putString("today","${year}-${month}-${day}")
+        binding.ivHomeMenu.setOnClickListener {
+            val popup = PopupMenu(context, it)
+            popup.menuInflater.inflate(R.menu.home_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.home_menu_timetable -> {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_fragHome_to_homeTimetableFragment)
+                        true
+                    }
 
-            when(it.itemId){
+                    R.id.home_menu_category -> {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_fragHome_to_homeCategoryFragment)
+                        true
+                    }
 
-                R.id.home_menu_timetable -> {
-                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeTimetableFragment,bundle)
-                    true
+                    R.id.home_menu_repeatTodo -> {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_fragHome_to_homeRepeatTodoFragment)
+                        true
+                    }
+
+                    else -> false
                 }
-                R.id.home_menu_category -> {
-                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
-                    true
-                }
-                R.id.home_menu_repeatTodo -> {
-                    Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeRepeatTodoFragment)
-                    true
-                }
-                else -> false
             }
+            popup.show()
         }
 
 
@@ -198,21 +203,6 @@ class FragHome : Fragment() {
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         api.getHomeRamdi(viewModel.userToken).enqueue(object : Callback<HomeCharacData>{
-            //            override fun onResponse(
-//                call: Call<CharacterResponse>,
-//                response: Response<CharacterResponse>
-//            ) {
-//                if(response.isSuccessful){
-//                    Log.d("home캐릭터 성공", "성공")
-//                }
-//                else {
-//                    Log.d("home캐릭터 안드 잘못", "실패")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
-//                Log.d("home캐릭터 연결 실패", "실패")
-//            }
             override fun onResponse(
                 call: Call<HomeCharacData>,
                 response: Response<HomeCharacData>
