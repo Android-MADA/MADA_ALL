@@ -80,12 +80,14 @@ class HomeViewModel : ViewModel() {
         Log.d("repeatTodo", repeatList.value.toString())
     }
 
-    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view: View) =
+    fun patchCategory(token: String?, categoryId: Int, data: PostRequestCategory, view: View?) =
         viewModelScope.launch {
             val response = api.editCategory(token, categoryId, data)
             Log.d("카테고리 patch", response.toString())
-            Navigation.findNavController(view)
-                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            if(view != null){
+                Navigation.findNavController(view!!)
+                    .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
         }
 
     fun postCategory(token: String?, data: PostRequestCategory, view: View) =

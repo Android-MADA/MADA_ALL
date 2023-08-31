@@ -49,10 +49,23 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //할일 작성
-                customBackDialog()
-            }
+                //cateogry 수정 상황 일 때
+                if(binding.btnHomeCateAddSave.text == "삭제"){
+                    //수정 사항 저장
+                    val data = PostRequestCategory(
+                        binding.edtHomeCategoryName.text.toString(),
+                        colorAdapter.selecetedColor,
+                        findIconId(iconAdapter.selectedIcon)
+                    )
+                    Log.d("cateAdd 뒤로가기", data.toString())
+                  viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, null)
 
+                }
+                //카테고리 추가 상황 일 때
+                else {
+                    customBackDialog()
+                }
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
@@ -67,10 +80,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category_add, container, false)
         hideBottomNavigation(bottomFlag, activity)
-
 
         return binding.root
     }
@@ -80,7 +91,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
 
         if (arguments != null) {
-            //데이터 뿌리기
+            //카테고리 수정 시 데이터 뿌리기
             argsArray = requireArguments().getStringArrayList("key")!!
             Log.d("argsArray", argsArray!!.toString())
             binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![2].toInt()))
@@ -88,19 +99,19 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
             colorAdapter.selecetedColor = argsArray!![3]
             iconAdapter.selectedIcon = findIcon(argsArray!![2].toInt()).toString()
-            // 수정버튼 활성화
-            binding.btnHomeCateAddSave.text = "수정"
-            //삭제버튼 활성화
-            binding.btnHomeTimeEditDelete.isVisible = true
+            // 삭제버튼으로 변경
+            binding.btnHomeCateAddSave.text = "삭제"
 
-        } else {
+        }
+        //카텍리 추가시
+        else {
             colorAdapter.selecetedColor = "#89A9D9"
             iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
         }
 
+        // 아이콘, 색상 선택창
         val iconListManager = GridLayoutManager(this.activity, 6)
         val colorListManager = GridLayoutManager(this.activity, 6)
-
 
         iconAdapter.setItemClickListener(object : HomeCateIconAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
@@ -119,41 +130,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 colorAdapter.selecetedColor = cateColorArray[position]
             }
         })
-
-        binding.ivHomeCateAddBack.setOnClickListener {
-            //다이얼로그
-            customBackDialog()
-        }
-
-        binding.btnHomeCateAddSave.setOnClickListener {
-
-
-            if (binding.edtHomeCategoryName.text.isBlank()) {
-                Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
-            } else {
-                val data = PostRequestCategory(
-                    binding.edtHomeCategoryName.text.toString(),
-                    colorAdapter.selecetedColor,
-                    findIconId(iconAdapter.selectedIcon)
-                )
-
-                //데이터 변경
-                if (binding.btnHomeCateAddSave.text == "수정") {
-                    //서버 전송(PATCH)
-                    viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, view)
-                    Log.d("cateEdit", "확인")
-                } else {
-                    Log.d("addCAte", data.toString())
-                    viewModel.postCategory(viewModel.userToken, data, view)
-
-                }
-
-            }
-        }
-
-        binding.btnHomeTimeEditDelete.setOnClickListener {
-            customDeleteDialog()
-        }
 
         var iconRecyclerList = binding.rvHomeCateIcon.apply {
             setHasFixedSize(true)
@@ -182,11 +158,52 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 binding.rvHomeCateColor.isVisible = true
             }
         }
+
+        val data = PostRequestCategory(
+            binding.edtHomeCategoryName.text.toString(),
+            colorAdapter.selecetedColor,
+            findIconId(iconAdapter.selectedIcon)
+        )
+
+        //좌상단 뒤로가기 버튼 클릭 시
+        binding.ivHomeCateAddBack.setOnClickListener {
+            //cateogry 수정 상황 일 때
+            if(binding.btnHomeCateAddSave.text == "삭제"){
+                //수정 사항 저장
+                viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, view)
+            }
+            //카테고리 추가 상황 일 때
+            else {
+                customBackDialog()
+            }
+        }
+
+        //등록 버튼, 삭제 버튼 클릭 시
+        binding.btnHomeCateAddSave.setOnClickListener {
+
+            //카테고리명 빈칸 확인
+            if (binding.edtHomeCategoryName.text.isBlank()) {
+                Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+            } else {
+
+                //데이터 삭제
+                if (binding.btnHomeCateAddSave.text == "삭제") {
+                    customDeleteDialog()
+                }
+                //데이터 추가
+                else {
+                    Log.d("addCAte", data.toString())
+                    viewModel.postCategory(viewModel.userToken, data, view)
+                }
+
+            }
+        }
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.btnHomeTimeEditDelete.isGone = true
     }
 
     private fun initArrayList() {

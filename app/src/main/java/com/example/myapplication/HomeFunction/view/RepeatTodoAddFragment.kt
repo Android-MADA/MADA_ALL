@@ -43,8 +43,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //할일 작성
-                customBackDialog()
+                    customBackDialog()
             }
 
         }
