@@ -254,7 +254,7 @@ class CalendarViewModel : ViewModel(){
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,dura,"${data.memo}","CAL",data.id,data.repeatDate)
+                                                -1,dura,"${data.memo}","CAL",data.id,"")
                                             if(dura) {
                                                 monthArray.add(0,tmp)
                                             } else {
@@ -265,7 +265,7 @@ class CalendarViewModel : ViewModel(){
                                         } else {
                                             val tmp = AndroidCalendarData("${(data.end_date)}","${(data.end_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,false,"${data.memo}","CAL",data.id,data.repeatDate)
+                                                -1,false,"${data.memo}","CAL",data.id,"")
                                             monthArray2.add(tmp)
                                         }
                                     }
@@ -325,7 +325,7 @@ class CalendarViewModel : ViewModel(){
             } else if(data.repeat=="Month") {
                 val clone = data.copy()
                 var todayTmp =""
-                if(data.repeatDate=="마지막 날") {
+                if(data.repeatDate=="32") {
                     val calendar = Calendar.getInstance()
                     calendar.clear()
                     calendar.set(Calendar.YEAR, Year.toInt())
@@ -461,7 +461,7 @@ class CalendarViewModel : ViewModel(){
                             if(datas != null) {
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
-                                        data.color,data.repeat,data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatDate)
+                                        data.color,data.repeat,data.d_day,data.name, -1,false,data.memo,"CAL",data.id,"")
                                     ddayArrayList.add(tmp)
                                 }
                             }
@@ -476,7 +476,7 @@ class CalendarViewModel : ViewModel(){
                     callback(2)
                 }
             })
-        }
+        } else callback(1)
 
     }
     /*

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.Calendar.DayDataItemView
 import com.example.myapplication.CalenderFuntion.Calendar.DdayAdapter
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -32,7 +33,7 @@ class HomeViewpagerDdayFragment : Fragment() {
         CalendarViewModel.getDdayDataArray { result ->
             when (result) {
                 1 -> {
-                    val adapter = DdayAdapter(CalendarViewModel)
+                    val adapter = DdayAdapter(CalendarViewModel,this)
                     var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
                     binding.ddayRecyclerview.layoutManager = manager
                     binding.ddayRecyclerview.adapter = adapter
@@ -44,6 +45,21 @@ class HomeViewpagerDdayFragment : Fragment() {
         }
 
         return binding.root
+    }
+    public fun updateDdayData() {
+        CalendarViewModel.getDdayDataArray { result ->
+            when (result) {
+                1 -> {
+                    val adapter = DdayAdapter(CalendarViewModel,this)
+                    var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
+                    binding.ddayRecyclerview.layoutManager = manager
+                    binding.ddayRecyclerview.adapter = adapter
+                }
+                2 -> {
+                    Toast.makeText(context, "서버와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     companion object {

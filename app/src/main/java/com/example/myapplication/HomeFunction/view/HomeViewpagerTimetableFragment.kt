@@ -82,10 +82,10 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         customCircleBarView.setProgress(progressPercentage)
         //파이차트
-        viewModelTime.getTimeDatas(today) { result ->
+        viewModelTime.getScheduleDatas(today) { result ->
             when (result) {
                 1 -> {
-                    viewModelTime.hashMapArrayTime.get(today)?.let { pirChartOn(it) }
+                    pirChartOn(viewModelTime.getTimeDatas(today))
                 }
                 2 -> {
                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -93,19 +93,12 @@ class HomeViewpagerTimetableFragment : Fragment() {
             }
         }
 
-        binding.chart.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putBoolean("viewpager",true)
-            bundle.putString("today",today)
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-        }
-
         viewModelHome.homeDate.observe(viewLifecycleOwner, Observer {
             today = viewModelHome.homeDate.value.toString()
-            viewModelTime.getTimeDatas(today) { result ->
+            viewModelTime.getScheduleDatas(today) { result ->
                 when (result) {
                     1 -> {
-                        viewModelTime.hashMapArrayTime.get(today)?.let { pirChartOn(it) }
+                        pirChartOn(viewModelTime.getTimeDatas(today))
                     }
                     2 -> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -128,38 +121,52 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
-
         var tmp = 0     //시작 시간
         val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
 
-
         val pieDataSet = PieDataSet(entries, "")
-        pieDataSet.apply {
-            colors = colorsItems
-            setDrawValues(false) // 비율 숫자 없애기
-        }
         val pieData = PieData(pieDataSet)
         val smallXY = if(chart.width > chart.height) chart.height else chart.width
-        val range = smallXY/60f
-        chart.apply {
-            invalidate()
-            legend.isEnabled = false
-            data = pieData
-            isRotationEnabled = false                               //드래그로 회전 x
-            isDrawHoleEnabled = false                               //중간 홀 그리기 x
-            setExtraOffsets(range,range,range,range)    //크기 조절
-            setUsePercentValues(false)
-            setEntryLabelColor(Color.BLACK)
-            marker = marker_
-            setDrawEntryLabels(false) //라벨 끄기
-            //rotationAngle = 30f // 회전 각도, 굳이 필요 없을듯
-            description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
-        }
+
+        if(smallXY/60f > 0) viewModelTime.range = smallXY/60f
+        val range = viewModelTime.range
+        Log.d("dsadas","dddddddddddddddddddddddddddddddddddddd")
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             entries.add(PieEntry(10f, "999"))
             colorsItems.add(Color.parseColor("#F0F0F0"))
+            pieDataSet.apply {
+                colors = colorsItems
+                setDrawValues(false) // 비율 숫자 없애기
+            }
+            chart.clear()
+            chart.apply {
+                invalidate()
+                legend.isEnabled = false
+                data = pieData
+                isRotationEnabled = false                               //드래그로 회전 x
+                isDrawHoleEnabled = false                               //중간 홀 그리기 x
+                setExtraOffsets(range,range,range,range)    //크기 조절
+                setUsePercentValues(false)
+                setEntryLabelColor(Color.BLACK)
+                marker = marker_
+                setDrawEntryLabels(false) //라벨 끄기
+                description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+            }
+            chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    if (e is PieEntry) {
+                        val bundle = Bundle()
+                        bundle.putString("today",today)
+                        bundle.putBoolean("viewpager",true)
+                        findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+                    }
+                }
+                override fun onNothingSelected() {
+                }
+            })
+            binding.none.visibility = View.VISIBLE
         } else {
             binding.none.visibility = View.GONE
             for(data in pieChartDataArray) {
@@ -184,6 +191,24 @@ class HomeViewpagerTimetableFragment : Fragment() {
                 entries.add(PieEntry((h*60+m).toFloat(), "999"))
                 colorsItems.add(Color.parseColor("#FFFFFF"))
             }
+            pieDataSet.apply {
+                colors = colorsItems
+                setDrawValues(false) // 비율 숫자 없애기
+            }
+            chart.apply {
+                invalidate()
+                legend.isEnabled = false
+                data = pieData
+                isRotationEnabled = false                               //드래그로 회전 x
+                isDrawHoleEnabled = false                               //중간 홀 그리기 x
+                setExtraOffsets(range,range,range,range)    //크기 조절
+                setUsePercentValues(false)
+                setEntryLabelColor(Color.BLACK)
+                marker = marker_
+                setDrawEntryLabels(false) //라벨 끄기
+                description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+            }
+
             var lastSelectedEntry = -1
             chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {

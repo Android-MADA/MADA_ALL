@@ -32,6 +32,7 @@ import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
+import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
@@ -123,7 +124,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
         viewpager = arguments?.getBoolean("viewpager")?: false
         today = arguments?.getString("today")?: "2023-06-01"
-        var id = 0
+        var curId = 0
 
         if(recievedPieData != null) {
             btnSubmit.text = "삭제"
@@ -137,7 +138,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
             times[0].text = viewModelTime.timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.startHour, recievedPieData.startMin))
             times[1].text = viewModelTime.timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.endHour, recievedPieData.endMin))
-            id = recievedPieData.id
+            curId = recievedPieData.id
             textMemo.setText(recievedPieData.memo)
         }
         //색상 선택창
@@ -285,10 +286,19 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             } else if (check&&!viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
                 val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
                     viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-                if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
+                if(btnSubmit.text.toString()=="등록") {
                     viewModelTime.addTimeDatas(tmp) { result ->
                         when (result) {
                             1 -> {
+                                val tmpId = 1532
+                                if(viewModelTime.hashMapArrayTime.get(today)==null) {
+                                    viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
+                                }
+                                viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                    Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                )
+
                                 val bundle = Bundle()
                                 bundle.putString("today",today)
                                 if(viewpager) {
@@ -302,10 +312,17 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                         }
                     }
-                } else {
-                    viewModelTime.delTimeDatas(id) { result ->
+                } else if(btnSubmit.text.toString()=="삭제"){
+                    viewModelTime.delTimeDatas(curId) { result ->
                         when (result) {
                             1 -> {
+                                val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                                for(data in tmpList) {
+                                    if(data.id==curId) {
+                                        tmpList.remove(data)
+                                        break
+                                    }
+                                }
                                 val bundle = Bundle()
                                 bundle.putString("today",today)
                                 if(viewpager) {

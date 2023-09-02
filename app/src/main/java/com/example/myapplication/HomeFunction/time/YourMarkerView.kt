@@ -28,7 +28,7 @@ class YourMarkerView(context: Context, layoutResource: Int, private val pieChart
         e?.let {
             val pieEntry = e as PieEntry
             val label = pieEntry.label
-            if (label.toString() != "999" && label.toString() != "998") {
+            if (label.toString() != "999" && pieChartDataArray.size>0) {
                 title.text = pieChartDataArray[label.toInt()].title
                 memo.text = pieChartDataArray[label.toInt()].memo
                 val startH = pieChartDataArray[label.toInt()].startHour

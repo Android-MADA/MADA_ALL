@@ -32,6 +32,7 @@ import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
+import org.joda.time.DateTime
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,12 +91,14 @@ class FragCalendar : Fragment(){
         tmp.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
             "10:00:00","11:00:00","#2AA1B7","No","N","9fhdfhdfhfdhd",
             -1,false,"","CAL",-1,""))
-        CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
-            "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
-            -1,false,"","CAL",-1,"3"))
-        CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
+        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
+        //    "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
+        //    -1,false,"","CAL",-1,"3"))
+        //CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
+        val currentDate = LocalDate.now()
         calendarAdapter = CalendarSliderAdapter(this,binding.textYear, binding.textMonth,viewPager)
-
+        binding.textYear.text = currentDate.year.toString() + "년"
+        binding.textMonth.text = currentDate.monthValue.toString() + "월"
         viewPager.adapter = calendarAdapter
         viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.calendarTodayText.text =  LocalDate.now().dayOfMonth.toString()

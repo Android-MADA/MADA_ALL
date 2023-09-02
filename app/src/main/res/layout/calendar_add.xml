@@ -94,133 +94,134 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="visible"
                 android:id="@+id/layout_color_selectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    >
+                    android:orientation="horizontal">
+
                     <ImageButton
                         android:id="@+id/calendar_color1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub1"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub1" />
+
                     <ImageButton
                         android:id="@+id/calendar_color2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#F68F30"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#F68F30" />
+
                     <ImageButton
                         android:id="@+id/calendar_color3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#F33E3E"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#F33E3E" />
+
                     <ImageButton
                         android:id="@+id/calendar_color4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#FDA4B4"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#FDA4B4" />
+
                     <ImageButton
                         android:id="@+id/calendar_color5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub3"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub3" />
+
                     <ImageButton
                         android:id="@+id/calendar_color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginStart="10dp"
-                        app:tint="@color/sub2"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub2" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    >
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
                     <ImageButton
                         android:id="@+id/calendar_color7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#7FC7D4"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#7FC7D4" />
+
                     <ImageButton
                         android:id="@+id/calendar_color8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/point_main"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/point_main" />
+
                     <ImageButton
                         android:id="@+id/calendar_color9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#21C362"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#21C362" />
+
                     <ImageButton
                         android:id="@+id/calendar_color10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#0E9746"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#0E9746" />
+
                     <ImageButton
                         android:id="@+id/calendar_color11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="@color/main"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/main" />
+
                     <ImageButton
                         android:id="@+id/calendar_color12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginStart="10dp"
-                        app:tint="@color/sub4"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub4" />
                 </LinearLayout>
 
             </LinearLayout>

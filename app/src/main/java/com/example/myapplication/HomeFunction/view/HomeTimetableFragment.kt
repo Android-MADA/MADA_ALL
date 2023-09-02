@@ -72,21 +72,20 @@ class HomeTimetableFragment : Fragment() {
         customCircleBarView.setProgress(progressPercentage)
 
         //파이차트
-        viewModelTime.getTimeDatas(today) { result ->
+        viewModelTime.getScheduleDatas(today) { result ->
             when (result) {
                 1 -> {
-                    viewModelTime.hashMapArrayTime.get(today)?.let {
-                        pirChartOn(it)
-                        val timeAdapter = HomeTimeAdapter(it)
-                        //rv adpter 연결
-                        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
-                            override fun onClick(v: View, position: Int) {
-                                //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-                            }
-                        })
-                        binding.rvHomeTimeSchedule.adapter = timeAdapter
-                        binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
-                    }
+                    val tmpList = viewModelTime.getTimeDatas(today)
+                    pirChartOn(tmpList)
+                    val timeAdapter = HomeTimeAdapter(tmpList)
+                    //rv adpter 연결
+                    timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
+                        override fun onClick(v: View, position: Int) {
+                            //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+                        }
+                    })
+                    binding.rvHomeTimeSchedule.adapter = timeAdapter
+                    binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
                 }
                 2 -> {
                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -167,8 +166,8 @@ class HomeTimetableFragment : Fragment() {
 
         val pieData = PieData(pieDataSet)
         val smallXY = if(chart.width > chart.height) chart.height else chart.width
-
-        val range = smallXY / 60.toFloat()
+        if(smallXY/60f > 0) viewModelTime.range = smallXY/60f
+        val range = viewModelTime.range
 
 
         chart.apply {
