@@ -96,9 +96,33 @@ class DayDataItemView @JvmOverloads constructor(
                                 val tmpId = 1532        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
 
+                                val inputYear = date.toString("yyyy").toInt() // 연도 정보
+                                val inputMonth = date.toString("M").toInt() // 월 정보 (예: 12는 12월을 나타냄)
+
+                                // 다음 월 계산
+                                val nextMonth: String
+
+                                if (inputMonth < 12) {
+                                    nextMonth = "${inputYear}-${inputMonth + 1}"
+                                } else {
+                                    nextMonth = "${inputYear + 1}-1"
+                                }
+                                val preMonth : String
+                                if (inputMonth >1) {
+                                    preMonth = "${inputYear}-${inputMonth - 1}"
+                                } else {
+                                    preMonth = "${inputYear - 1}-12"
+                                }
+                                CalendarViewModel.hashMapArrayCal.get(nextMonth)?.add(AndroidCalendarData(today,today,today,
+                                    "10:00:00","11:00:00","#89A9D9","No","N",title,
+                                    -1,false,"","CAL",tmpId,""))
+                                CalendarViewModel.hashMapArrayCal.get(preMonth)?.add(AndroidCalendarData(today,today,today,
+                                    "10:00:00","11:00:00","#89A9D9","No","N",title,
+                                    -1,false,"","CAL",tmpId,""))
                                 CalendarViewModel.hashMapArrayCal.get(date.toString("yyyy-M"))?.add(AndroidCalendarData(today,today,today,
                                     "10:00:00","11:00:00","#89A9D9","No","N",title,
                                     -1,false,"","CAL",tmpId,""))
+
                                 //그 달 달력 재생성
                                 val parentCalendarView: CalendarView2? = getParent() as? CalendarView2
                                 parentCalendarView?.let {

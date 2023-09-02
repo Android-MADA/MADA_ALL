@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
@@ -49,6 +50,8 @@ class TimeViewModel : ViewModel() {
 
     //2023-08-01 형식
     val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
+    val hashMapArraySchedule = HashMap<String, ArrayList<Schedule>>()
+    var range : Float = 0.0f
 
     data class PieChartData(
         val title: String,
@@ -167,32 +170,20 @@ class TimeViewModel : ViewModel() {
         })
     }
 
-    fun getTimeDatas(date : String, callback: (Int) -> Unit) {
-        if(hashMapArrayTime.get(date)==null) {
+    fun getScheduleDatas(date : String, callback: (Int) -> Unit) {
+        if(hashMapArraySchedule.get(date)==null) {
             val call = service.getTimetable(token,date)
-            val arrays = ArrayList<PieChartData>()
+            val arrays = ArrayList<Schedule>()
             call.enqueue(object : Callback<ScheduleListData> {
                 override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
                         if (apiResponse != null) {
                             val datas = apiResponse.datas2.datas
-                            if(datas != null) {
-                                var i = 0
-                                for (data in datas) {
-                                    var end00 = 0
-                                    if(data.endTime=="00:00:00")
-                                        end00 = 24
-                                    val tmp = PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                        extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
-                                    arrays.add(tmp)
-                                }
+                            for (data in datas) {
+                               arrays.add(data)
                             }
-                            arrays.sortedWith(compareBy(
-                                { it.startHour },
-                                { it.startMin }
-                            ))
-                            hashMapArrayTime.put(date,arrays)
+                            hashMapArraySchedule.put(date,arrays)
                             callback(1)
                         } else callback(2)
                     } else callback(2)
@@ -203,6 +194,26 @@ class TimeViewModel : ViewModel() {
             })
         } else callback(1)
     }
+    fun getTimeDatas(date : String) :  ArrayList<PieChartData>{
+        val arrays = ArrayList<PieChartData>()
+        if(hashMapArraySchedule.get(date) != null) {
+            var i = 0
+            for (data in hashMapArraySchedule.get(date)!!) {
+                var end00 = 0
+                if(data.endTime=="00:00:00")
+                    end00 = 24
+                val tmp = PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
+                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
+                arrays.add(tmp)
+            }
+            arrays.sortedWith(compareBy(
+                { it.startHour },
+                { it.startMin }
+            ))
+        }
+        return arrays
+    }
+
     fun addTimeDatas(data : ScheduleAdd, callback: (Int) -> Unit) {
         service.addTime(token,data).enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {

@@ -159,7 +159,7 @@ class CalendarAddSFragment : Fragment() {
         val endDate = LocalDate.parse(calData.endDate, DateTimeFormatter.ISO_DATE)
 
         var currentDate = startDate.plusMonths(-1)
-        val endDatePlusOne = endDate.plusDays(1)  // Including the end date
+        val endDatePlusOne = endDate.plusDays(2)  // Including the end date
 
         while (currentDate.isBefore(endDatePlusOne)) {
             val yearMonth = YearMonth.from(currentDate)
