@@ -14,25 +14,21 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.Activity.MyAlarmActivity
 import com.example.myapplication.MyFuction.Data.FragMyData
 import com.example.myapplication.MyFuction.Adapter.MyListAdapter
 import com.example.myapplication.MyFuction.Adapter.MyListItem
-import com.example.myapplication.MyFuction.Activity.MyNoticeActivity
-import com.example.myapplication.MyFuction.Activity.MyPremiumActivity
-import com.example.myapplication.MyFuction.Activity.MyProfileActivity
 import com.example.myapplication.MyFuction.Activity.MyRecordDayActivity
-import com.example.myapplication.MyFuction.Activity.MySetActivity
-import com.example.myapplication.MyFuction.Activity.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
+import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
-import com.example.myapplication.databinding.Splash2Binding
 import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -40,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class FragMy : Fragment() {
 
     private lateinit var binding: FragMyBinding
+    lateinit var navController: NavController
 
     //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -56,6 +53,8 @@ class FragMy : Fragment() {
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         binding.myRecordBtn.setOnClickListener{
             val intent = Intent(requireContext(), MyRecordDayActivity::class.java)
             startActivity(intent)
@@ -65,15 +64,21 @@ class FragMy : Fragment() {
 
         // 리스트
         val MyList = arrayListOf (
-            MyListItem("프로필 편집", MyProfileActivity::class.java),
-            MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림 설정", MyAlarmActivity::class.java),
-            MyListItem("구글 캘린더 연동", MyAlarmActivity::class.java),
-            MyListItem("공지사항", MyNoticeActivity::class.java),
-            MyListItem("Premium 구독", MyPremiumActivity::class.java),
-            MyListItem("로그아웃", Splash2Binding::class.java),
-            MyListItem("회원탈퇴", MyWithdraw1Activity::class.java),
+            MyListItem("프로필 편집"),
+            MyListItem("화면 설정"),
+            MyListItem("알림"),
+            MyListItem("공지사항"),
+            MyListItem("Premium 구독"),
+            MyListItem("로그아웃"),
+            MyListItem("회원 탈퇴"),
         )
+
+        binding.rvMyitem.setOnClickListener {
+            if (MyList.toString() == "프로필편집"){
+                navController.navigate(R.id.action_fragMy_to_myProfileFragment)
+            }
+        }
+
 
         binding.rvMyitem.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL,false)
         binding.rvMyitem.setHasFixedSize(true)
@@ -122,7 +127,6 @@ class FragMy : Fragment() {
                     Log.d("selectfragMy 실패", response.body().toString())
                 }
             }
-
             override fun onFailure(call: Call<FragMyData>, t: Throwable) {
                 Log.d("서버 오류", "selectfragMy 실패")
             }

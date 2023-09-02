@@ -1,8 +1,11 @@
-package com.example.myapplication.MyFuction.Activity
+package com.example.myapplication.MyFuction.Fragment
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MyGetNoticesData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
@@ -11,23 +14,28 @@ import com.example.myapplication.databinding.MyNoticeBinding
 import retrofit2.Call
 import retrofit2.Response
 
-class MyNoticeActivity : AppCompatActivity() {
+class MyNoticeFragment : Fragment() {
+
     private lateinit var binding: MyNoticeBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = MyNoticeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = MyNoticeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.backBtn.setOnClickListener {
-            finish()
+            // nav
         }
 
-        //서버연결 시작
+        // 서버연결 시작
         val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
         val token = Splash2Activity.prefs.getString("token", "")
-
 
         // 서버에서 공지사항 불러오기
         api.myGetNotices(token).enqueue(object : retrofit2.Callback<MyGetNoticesData> {
@@ -55,9 +63,6 @@ class MyNoticeActivity : AppCompatActivity() {
             override fun onFailure(call: Call<MyGetNoticesData>, t: Throwable) {
                 Log.d("서버 오류", "GetNotices 실패")
             }
-
-
         })
-
     }
 }

@@ -71,7 +71,8 @@ data class IdAndItemType(
 
 
 
-class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
+    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
     private lateinit var viewPager: ViewPager2
     private var selectedColorButtonInfo: ButtonInfo? = null

@@ -1,8 +1,11 @@
-package com.example.myapplication.MyFuction.Activity
+package com.example.myapplication.MyFuction.Fragment
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MySetPageData
 import com.example.myapplication.MyFuction.Data.MySetPageData2
@@ -15,34 +18,34 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MySetActivity : AppCompatActivity() {
+class MySetFragment : Fragment() {
     private lateinit var binding: MySetBinding
+    private val token = Splash2Activity.prefs.getString("token", "")
+    private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
 
-    //서버연결 시작
-    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-    val token = Splash2Activity.prefs.getString("token", "")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = MySetBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        GetSetPage()
-
-
-        binding.backBtn.setOnClickListener {
-
-            GlobalScope.launch {
-                patchSetting(token, MySetPageData2(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
-                finish()
-            }
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = MySetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-     //서버에서 세팅 불러오기
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.backBtn.setOnClickListener {
+            GlobalScope.launch {
+                patchSetting(token, MySetPageData2(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
+                activity?.finish()
+            }
+        }
+
+        GetSetPage()
+    }
+
     private fun GetSetPage() {
-        api.myGetSettingPage(token).enqueue(object : retrofit2.Callback<MySetPageData> {
+        api.myGetSettingPage(token).enqueue(object : Callback<MySetPageData> {
             override fun onResponse(
                 call: Call<MySetPageData>,
                 response: Response<MySetPageData>
@@ -50,17 +53,14 @@ class MySetActivity : AppCompatActivity() {
                 val responseCode = response.code()
 
                 if (response.isSuccessful) {
-                    if (response != null){
+                    if (response.body() != null) {
                         Log.d("GetSetPage 성공", response.body()?.data.toString())
                         binding.mySetSwitch1.isChecked = response.body()?.data!!.startTodoAtMonday
                         binding.mySetSwitch2.isChecked = response.body()?.data!!.newTodoStartSetting
                         binding.mySetSwitch3.isChecked = response.body()?.data!!.endTodoBackSetting
-                    }
-                    else{
+                    } else {
                         Log.d("response null ", "Response Code: $responseCode")
                     }
-
-
                 } else {
                     Log.d("GetSetPage 실패", "Response Code: $responseCode")
                 }
@@ -72,32 +72,24 @@ class MySetActivity : AppCompatActivity() {
         })
     }
 
-
-    // 서버에 세팅 저장하기
-    fun patchSetting(token : String, data : MySetPageData2) : String{
-        var a = "fail"
+    private fun patchSetting(token: String, data: MySetPageData2) {
         val aapi = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
         aapi.mySetPage(token, data)
-            .enqueue(object : Callback<MySetPageData>{
+            .enqueue(object : Callback<MySetPageData> {
                 override fun onResponse(
                     call: Call<MySetPageData>,
                     response: Response<MySetPageData>
                 ) {
-                    if(response.isSuccessful){
-                    }
-                    else {
-
+                    if (response.isSuccessful) {
+                        // 서버에 세팅 저장 성공
+                    } else {
+                        // 서버에 세팅 저장 실패
                     }
                 }
 
                 override fun onFailure(call: Call<MySetPageData>, t: Throwable) {
                     Log.d("서버 연결 실패", "실패")
-
                 }
-
             })
-
-        return a
     }
-
 }

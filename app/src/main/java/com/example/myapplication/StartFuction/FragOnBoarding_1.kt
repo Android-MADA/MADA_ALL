@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.On1Binding
 
 class FragOnBoarding_1 : Fragment() {
-
     private lateinit var binding: On1Binding
 
     override fun onCreateView(
