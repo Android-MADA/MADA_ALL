@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#E8E8E8"
     android:orientation="vertical"
-    tools:context=".MyFuction.MyRecordDayActivity">
+    tools:context=".MyFuction.Activity.MyRecordDayActivity">
 
     <LinearLayout
         android:id="@+id/toolbar_my"

@@ -2,7 +2,6 @@ package com.example.myapplication.HomeFunction.viewModel
 
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,17 +11,14 @@ import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
-import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.repeatTodo
-import com.example.myapplication.HomeFunction.Model.todoData
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
