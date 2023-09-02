@@ -59,6 +59,7 @@ class FragHome : Fragment() {
         //viewpager 연결, indicator 연결
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
+        homeViewPager.setCurrentItem(1,true)
         homeIndicator.setViewPager(homeViewPager)
 
         return view
@@ -68,7 +69,6 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
 

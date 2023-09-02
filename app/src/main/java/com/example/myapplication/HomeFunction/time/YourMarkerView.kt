@@ -6,14 +6,18 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
-class YourMarkerView(context: Context, layoutResource: Int, private val pieChartDataArray: ArrayList<HomeViewpagerTimetableFragment.PieChartData>) : MarkerView(context, layoutResource) {
+class YourMarkerView(context: Context, layoutResource: Int, private val pieChartDataArray: ArrayList<TimeViewModel.PieChartData>) : MarkerView(context, layoutResource) {
 
     private val title: TextView = findViewById(R.id.textLabel1)
     private val memo: TextView = findViewById(R.id.textLabel2)
@@ -31,8 +35,8 @@ class YourMarkerView(context: Context, layoutResource: Int, private val pieChart
                 val endH = pieChartDataArray[label.toInt()].endHour
                 val startM = pieChartDataArray[label.toInt()].startMin
                 val endM = pieChartDataArray[label.toInt()].endMin
-                val startTime = formatTime(startH, startM)
-                val endTime = formatTime(endH, endM)
+                val startTime = timeChangeReverse("${String.format("%02d", startH)}:${String.format("%02d", startM)}:00")
+                val endTime = timeChangeReverse("${String.format("%02d", endH)}:${String.format("%02d", endM)}:00")
                 time.text = "$startTime ~ $endTime"
                 color.setColorFilter(Color.parseColor(pieChartDataArray[label.toInt()].colorCode), PorterDuff.Mode.SRC_IN)
                 visibility = VISIBLE // 마커를 보이도록 설정
@@ -43,10 +47,14 @@ class YourMarkerView(context: Context, layoutResource: Int, private val pieChart
         super.refreshContent(e, highlight)
     }
 
-    private fun formatTime(hour: Int, minute: Int): String {
-        val amPm = if (hour < 12) "AM" else "PM"
-        val formattedHour = if (hour > 12) hour - 12 else hour
-        return "$amPm${String.format("%02d", formattedHour)}:${String.format("%02d", minute)}"
+    fun timeChangeReverse(time: String): String {
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat(" a h:mm ", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
+
+        calendar.time = inputFormat.parse(time)
+
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
     }
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
         if (visibility == VISIBLE) {

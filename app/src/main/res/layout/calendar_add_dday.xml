@@ -89,11 +89,11 @@
                     android:layout_gravity="right"
                     android:layout_weight="0"
                     android:scaleType="fitCenter"
-                    app:tint="@color/sub5"
+                    app:tint="@color/main"
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_color_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -195,6 +195,7 @@
                 android:layout_marginVertical="15dp"/>
 
             <LinearLayout
+                android:layout_marginHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal">
@@ -264,7 +265,7 @@
                         app:srcCompat="@drawable/calendar_arrow_left" />
 
                     <TextView
-                        android:id="@+id/textCalendar"
+                        android:id="@+id/textYearMonth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -362,12 +363,12 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                </androidx.viewpager2.widget.ViewPager2>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"

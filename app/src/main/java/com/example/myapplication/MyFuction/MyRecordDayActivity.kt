@@ -24,6 +24,7 @@ import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAda
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.SampleTimeData
+import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
@@ -172,7 +173,7 @@ class MyRecordDayActivity : AppCompatActivity() {
     }
     private fun getTimeDatas(date : String) {
         val call = service.getTimetable(token,date)
-        val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
+        val arrays = ArrayList<TimeViewModel.PieChartData>()
         val sampleTimeArray = ArrayList<SampleTimeData>()
         call.enqueue(object : Callback<ScheduleListData> {
             override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
@@ -186,7 +187,7 @@ class MyRecordDayActivity : AppCompatActivity() {
                                 var end00 = 0
                                 if(data.endTime=="00:00:00")
                                     end00 = 24
-                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
+                                val tmp = TimeViewModel.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
                                     extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
                                 arrays.add(tmp)
                                 sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
@@ -201,7 +202,7 @@ class MyRecordDayActivity : AppCompatActivity() {
             }
         })
     }
-    private fun pirChartOn(arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
+    private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
         val tmp2 = arrays.sortedWith(compareBy(
             { it.startHour },
             { it.startMin }
@@ -210,7 +211,7 @@ class MyRecordDayActivity : AppCompatActivity() {
 
         var tmp = 0     //시작 시간
 
-        var dataArray = tmp2.toMutableList() as ArrayList<HomeViewpagerTimetableFragment.PieChartData>
+        var dataArray = tmp2.toMutableList() as ArrayList<TimeViewModel.PieChartData>
         val pieChartDataArray = dataArray
         //Pi Chart
         var chart = binding.chart
