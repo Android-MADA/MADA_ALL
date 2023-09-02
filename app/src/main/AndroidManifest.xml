@@ -21,7 +21,7 @@
             android:required="false" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".StartFuction.Splash1Activity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
@@ -31,64 +31,67 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Splash2Activity"
+            android:name=".StartFuction.Splash2Activity"
             android:exported="false" />
         <activity
-            android:name=".On1Activity"
+            android:name=".StartFuction.OnBoardingActivity"
             android:exported="false" />
         <activity
-            android:name=".On2Activity"
+            android:name=".StartFuction.FragOnBoarding_1"
             android:exported="false" />
         <activity
-            android:name=".On3Activity"
+            android:name=".StartFuction.FragOnBoarding_2"
             android:exported="false" />
         <activity
-            android:name=".On4Activity"
+            android:name=".StartFuction.FragOnBoarding_3"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup1Activity"
+            android:name=".StartFuction.FragOnBoarding_4"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup2Activity"
+            android:name=".StartFuction.MyWebviewActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyWebviewActivity"
+            android:name=".StartFuction.MySignup1Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyNoticeActivity"
+            android:name=".StartFuction.MySignup2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".MyFuction.Activity.MyNoticeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MyFuction.MyListItem"
+            android:name=".MyFuction.Adapter.MyListItem"
             android:exported="false"
             android:label="@string/title_activity_my_list_item"
             android:theme="@style/Theme.MyApplication" />
         <activity
-            android:name=".MyFuction.MyWithdraw1Activity"
+            android:name=".MyFuction.Activity.MyWithdraw1Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyPremiumActivity"
+            android:name=".MyFuction.Activity.MyPremiumActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySetActivity"
+            android:name=".MyFuction.Activity.MySetActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyAlarmActivity"
+            android:name=".MyFuction.Activity.MyAlarmActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyProfileNickActivity"
+            android:name=".MyFuction.Activity.MyProfileNickActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyProfileActivity"
+            android:name=".MyFuction.Activity.MyProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyRecordMonthActivity"
+            android:name=".MyFuction.Activity.MyRecordMonthActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyRecordWeekActivity"
+            android:name=".MyFuction.Activity.MyRecordWeekActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyRecordDayActivity"
+            android:name=".MyFuction.Activity.MyRecordDayActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

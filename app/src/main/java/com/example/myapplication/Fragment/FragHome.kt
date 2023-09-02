@@ -11,22 +11,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 import java.util.Calendar
 import com.squareup.picasso.Picasso
 

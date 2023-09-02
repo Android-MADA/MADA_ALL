@@ -14,29 +14,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.Model.FragMyData
-import com.example.myapplication.MyFuction.MyListAdapter
-import com.example.myapplication.MyFuction.MyListItem
-import com.example.myapplication.MyFuction.MyLogoutPopupActivity
-import com.example.myapplication.MyFuction.MyNoticeActivity
-import com.example.myapplication.MyFuction.MyAlarmActivity
-import com.example.myapplication.MyFuction.MyPremiumActivity
-import com.example.myapplication.MyFuction.MyProfileActivity
-import com.example.myapplication.MyFuction.MyRecordDayActivity
-import com.example.myapplication.MyFuction.MyRecordWeekActivity
-import com.example.myapplication.MyFuction.MySetActivity
-import com.example.myapplication.MyFuction.MyWebviewActivity
-import com.example.myapplication.MyFuction.MyWithdraw1Activity
+import com.example.myapplication.MyFuction.Activity.MyAlarmActivity
+import com.example.myapplication.MyFuction.Data.FragMyData
+import com.example.myapplication.MyFuction.Adapter.MyListAdapter
+import com.example.myapplication.MyFuction.Adapter.MyListItem
+import com.example.myapplication.MyFuction.Activity.MyNoticeActivity
+import com.example.myapplication.MyFuction.Activity.MyPremiumActivity
+import com.example.myapplication.MyFuction.Activity.MyProfileActivity
+import com.example.myapplication.MyFuction.Activity.MyRecordDayActivity
+import com.example.myapplication.MyFuction.Activity.MySetActivity
+import com.example.myapplication.MyFuction.Activity.MyWithdraw1Activity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
-import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
 import com.example.myapplication.databinding.Splash2Binding
 import com.squareup.picasso.Picasso
@@ -73,11 +67,12 @@ class FragMy : Fragment() {
         val MyList = arrayListOf (
             MyListItem("프로필 편집", MyProfileActivity::class.java),
             MyListItem("화면 설정", MySetActivity::class.java),
-            MyListItem("알림", MyAlarmActivity::class.java),
+            MyListItem("알림 설정", MyAlarmActivity::class.java),
+            MyListItem("구글 캘린더 연동", MyAlarmActivity::class.java),
             MyListItem("공지사항", MyNoticeActivity::class.java),
             MyListItem("Premium 구독", MyPremiumActivity::class.java),
             MyListItem("로그아웃", Splash2Binding::class.java),
-            MyListItem("회원 탈퇴", MyWithdraw1Activity::class.java),
+            MyListItem("회원탈퇴", MyWithdraw1Activity::class.java),
         )
 
         binding.rvMyitem.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL,false)

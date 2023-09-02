@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8E8"
-    tools:context=".MyFuction.MyRecordMonthActivity">
+    tools:context=".MyFuction.Activity.MyRecordMonthActivity">
 
     <LinearLayout
         android:id="@+id/toolbar_my"

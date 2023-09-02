@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:background="#28374C">
 
-    <TextView
-        android:id="@+id/on_skipBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:text=""
-        android:textColor="#F5F5F5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/on_skipBtn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="30dp"-->
+<!--        android:text=""-->
+<!--        android:textColor="#F5F5F5"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/on_title"
@@ -25,7 +25,8 @@
         android:textColor="#F5F5F5"
         android:textStyle="bold"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/on_skipBtn"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -59,7 +60,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/on4_btn"
         android:text="마다 시작하기"
         android:textColor="#28374C"
