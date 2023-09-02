@@ -1,8 +1,11 @@
-package com.example.myapplication.MyFuction.Activity
+package com.example.myapplication.MyFuction.Fragment
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MyAlarmData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
@@ -11,29 +14,33 @@ import com.example.myapplication.databinding.MyAlarmBinding
 import retrofit2.Call
 import retrofit2.Response
 
-class MyAlarmActivity : AppCompatActivity() {
+class MyAlarmFragment : Fragment() {
+
     private lateinit var binding: MyAlarmBinding
+    private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private val token = Splash2Activity.prefs.getString("token", "")
 
-    //서버연결 시작
-    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-    val token = Splash2Activity.prefs.getString("token", "")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = MyAlarmBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = MyAlarmBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         GetSetAlarm()
 
         binding.backBtn.setOnClickListener {
             PatchSetAlarm(binding.mySetSwitch1.isChecked)
-            finish()
+            // nav
         }
     }
 
     // 서버에서 알림 불러오기
-    private fun GetSetAlarm(){
+    private fun GetSetAlarm() {
         api.myGetAlarm(token).enqueue(object : retrofit2.Callback<MyAlarmData> {
             override fun onResponse(
                 call: Call<MyAlarmData>,
@@ -51,15 +58,15 @@ class MyAlarmActivity : AppCompatActivity() {
                     Log.d("GetSetAlarm 실패", response.body().toString())
                 }
             }
+
             override fun onFailure(call: Call<MyAlarmData>, t: Throwable) {
                 Log.d("서버 오류", "GetSetAlarm 실패")
             }
         })
     }
 
-
     // 서버에 알림 저장하기
-    private fun PatchSetAlarm(is_setting: Boolean){
+    private fun PatchSetAlarm(is_setting: Boolean) {
         api.mySetAlarm(token, is_setting).enqueue(object : retrofit2.Callback<MyAlarmData> {
             override fun onResponse(
                 call: Call<MyAlarmData>,
@@ -70,16 +77,14 @@ class MyAlarmActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     Log.d("PatchSetAlarm 성공", response.body().toString())
-
                 } else {
                     Log.d("PatchSetAlarm 실패", response.body().toString())
                 }
             }
+
             override fun onFailure(call: Call<MyAlarmData>, t: Throwable) {
                 Log.d("서버 오류", "PatchSetAlarm 실패")
             }
         })
     }
-
-
 }
