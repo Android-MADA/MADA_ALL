@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.nickName
 import com.example.myapplication.Fragment.FragMy
 import com.example.myapplication.HomeFunction.api.RetrofitInstance

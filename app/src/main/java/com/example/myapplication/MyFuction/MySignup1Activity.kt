@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.Model.nickName
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R

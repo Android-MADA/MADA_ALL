@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_fragHome_to_timeAddFragment"
             app:destination="@id/timeAddFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_ddayAddFragment"
+            app:destination="@id/calendarAddDday" />
     </fragment>
     <fragment
         android:id="@+id/fragCalendar"
@@ -68,6 +71,9 @@
         <action
             android:id="@+id/action_calendarAddDday_to_fragCalendar"
             app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_calendarAddDday_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/fragCustom"

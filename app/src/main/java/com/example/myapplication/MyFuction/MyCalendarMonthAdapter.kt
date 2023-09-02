@@ -25,8 +25,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import retrofit2.Call

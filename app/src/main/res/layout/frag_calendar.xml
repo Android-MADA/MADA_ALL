@@ -8,400 +8,186 @@
 
     <!-- Your other views and layouts here -->
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E1E9F5"
-        android:gravity="bottom"
-        app:umanoInitialState="expanded"
-        app:umanoDragView="@+id/bottom_sheet"
-        app:umanoFadeColor="@android:color/transparent"
-        app:umanoShadowHeight="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
+        android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/preBtn"
-                    android:layout_width="13dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/calendar_arrow_left" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textYear"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="2023년"
-                        android:textAlignment="center"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textMonth"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="6월"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/nextBtn"
-                    android:layout_width="13dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/calendar_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/textYoil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="40dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textSun"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="S"
-                    android:textAlignment="center"
-                    android:textColor="#D92437"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textMon"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="M"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textTue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="T"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textWed"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="W"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textThu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="T"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textFri"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="F"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textSat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="S"
-                    android:textAlignment="center"
-                    android:textColor="#0041A3"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:background="?android:attr/listDivider" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp" />
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/calendarViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@drawable/calendar_dday_background"
-            android:orientation="vertical"
-
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textDday"
+                android:id="@+id/textYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:text="My D-Day"
+                android:text="2023년"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-            <View
-                android:id="@+id/line1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="15dp"
-                android:background="?android:attr/listDivider" />
-            <LinearLayout
-                android:layout_marginHorizontal="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
-                <LinearLayout
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/textMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6월"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/calendar_down_arrow"/>
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="5dp">
+
+                <ImageButton
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:id="@+id/calendar_today_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/calendar_today_button" />
+                <TextView
+                    android:id="@+id/calendar_today_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="31"
+                    android:textColor="@color/black"/>
 
-                    android:orientation="vertical">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/dday1"
-                            android:layout_width="204dp"
-                            android:layout_height="61dp"
-                            android:layout_margin="15dp"
-                            android:layout_marginHorizontal="30dp"
-                            android:background="@android:color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/calendar_dday_plus" />
-
-                        <TextView
-                            android:id="@+id/dday1_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="17dp"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:layout_constraintTop_toTopOf="@id/dday1"
-                            app:layout_constraintBottom_toBottomOf="@id/dday1"
-                            app:layout_constraintLeft_toLeftOf="@id/dday1" />
-
-                        <TextView
-                            android:id="@+id/dday1_text_info"
-                            android:layout_width="124dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="85dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/dday1"
-                            app:layout_constraintBottom_toBottomOf="@id/dday1"
-                            app:layout_constraintLeft_toLeftOf="@id/dday1" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/dday2"
-                            android:layout_width="204dp"
-                            android:layout_height="61dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@android:color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/calendar_dday_plus" />
-
-                        <TextView
-                            android:id="@+id/dday2_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:layout_marginLeft="17dp"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:layout_constraintTop_toTopOf="@id/dday2"
-                            app:layout_constraintBottom_toBottomOf="@id/dday2"
-                            app:layout_constraintLeft_toLeftOf="@id/dday2"/>
-
-                        <TextView
-                            android:id="@+id/dday2_text_info"
-                            android:layout_width="124dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="85dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/dday2"
-                            app:layout_constraintBottom_toBottomOf="@id/dday2"
-                            app:layout_constraintLeft_toLeftOf="@id/dday2" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/dday3"
-                            android:layout_width="204dp"
-                            android:layout_height="61dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@android:color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/calendar_dday_plus" />
-
-                        <TextView
-                            android:id="@+id/dday3_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="17dp"
-                            android:text=""
-                            android:textStyle="bold"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/dday3"
-                            app:layout_constraintBottom_toBottomOf="@id/dday3"
-                            app:layout_constraintLeft_toLeftOf="@id/dday3" />
-
-                        <TextView
-                            android:id="@+id/dday3_text_info"
-                            android:layout_width="124dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="85dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/dday3"
-                            app:layout_constraintBottom_toBottomOf="@id/dday3"
-                            app:layout_constraintLeft_toLeftOf="@id/dday3" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="180dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="35dp">
-                    <ImageView
-                        android:id="@+id/calendar_ramdi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-                    <ImageView
-                        android:id="@+id/img_calendar_cloth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-                    <ImageView
-                        android:id="@+id/img_calendar_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-
-
-
+            <ImageButton
+                android:id="@+id/calendar_dday_plus_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/calendar_plus_btn"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/textYoil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal">
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <TextView
+                android:id="@+id/textSun"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="일"
+                android:textAlignment="center"
+                android:textColor="#D92437"
+                android:textSize="14sp" />
 
-    <ImageButton
-        android:id="@+id/calendar_dday_plus_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/calendar_plus_btn"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        />
+            <TextView
+                android:id="@+id/textMon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="월"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textTue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="화"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textWed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="수"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textThu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="목"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textFri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="금"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textSat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="토"
+                android:textAlignment="center"
+                android:textColor="#0041A3"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="?android:attr/listDivider" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/calendarViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp" />
+
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

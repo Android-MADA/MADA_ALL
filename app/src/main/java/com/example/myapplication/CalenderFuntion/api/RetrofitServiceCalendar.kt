@@ -1,12 +1,12 @@
 package com.example.myapplication.CalenderFuntion.api
 
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
-import com.example.myapplication.CalenderFuntion.Model.CalendarData3
+import com.example.myapplication.CalenderFuntion.Model.CalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
+import com.example.myapplication.CalenderFuntion.Model.CalendarDataId
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
+import com.example.myapplication.CalenderFuntion.Model.CalendarDatasData
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.Model.nickName
 import retrofit2.Call
 import retrofit2.Response
@@ -27,7 +27,7 @@ interface RetrofitServiceCalendar {
 
     @GET("/api/calendar/")
     fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: String, @Query("month") month: String
-    ) : Call<CalendarData3>
+    ) : Call<CalendarDatasData>
     @DELETE("/api/calendar/edit/{id}")
     fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int
     ) : Call<AddCalendarData>
@@ -36,13 +36,13 @@ interface RetrofitServiceCalendar {
 
     //안해봄
     @POST("/api/calendar/add")
-    fun addCal(@Header("Authorization") token: String?, @Body data: CalendarData2
-    ) : Call<ResponseSample>
+    fun addCal(@Header("Authorization") token: String?, @Body data: CalendarData
+    ) : Call<CalendarDataId>
 
 
     @PATCH("/api/calendar/edit/{id}")
-    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarData2
-    ) : Call<CalendarData2>
+    fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarData
+    ) : Call<CalendarData>
 
     @GET("/api/calendar/dday")
     fun getAllDday(@Header("Authorization") token : String?

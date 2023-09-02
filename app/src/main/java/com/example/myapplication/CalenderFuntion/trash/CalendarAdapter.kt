@@ -1,4 +1,4 @@
-package com.example.myapplication.CalenderFuntion
+package com.example.myapplication.CalenderFuntion.trash
 
 import android.app.AlertDialog
 import android.content.Context
@@ -22,12 +22,12 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
+import com.example.myapplication.CalenderFuntion.Model.CalendarData
+import com.example.myapplication.CalenderFuntion.Model.CalendarDataId
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import retrofit2.Call
@@ -60,7 +60,6 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.calendar_cell,parent,false)
-
         return ItemViewHolder(view)
     }
     //데이터 설정
@@ -79,9 +78,10 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
             holder.textDay.setTextColor(colorMain)
         }
         if(iYear == y && iMonth == m && iDay == d) {
-            holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background)
+            //holder.textDay.setBackgroundResource(R.drawable.calendar_cell_background)
             holder.textDay.setTextColor(Color.WHITE)
         }
+
         for(data in myDataArray[position]) {
             if (data != null && data.floor !=-1) {
                 val cal =holder.lines[data.floor]
@@ -156,8 +156,8 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                     Navigation.findNavController(holder.itemView).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 else {
                     addCalendar(
-                        CalendarData2(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
-                            ,"#89A9D9","No",'N' , "","10:00:00","11:00:00"),holder.itemView)
+                        CalendarData(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString(),String.format("%d-%02d-%02d", iYear, iMonth, iDay),String.format("%d-%02d-%02d", iYear, iMonth, iDay)
+                            ,"#89A9D9","No","N" , "","10:00:00","11:00:00",""),holder.itemView)
 
                 }
                 mBuilder.dismiss()
@@ -168,10 +168,10 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
             if(myDataArray[position].isEmpty()) {
 
             } else {
-                val adapter = CalendarScheduleAdapter(myDataArray[position],iDay,holder.itemView,mBuilder,token)
+                //val adapter = CalendarScheduleAdapter(myDataArray[position],iDay,holder.itemView,mBuilder,token)
                 var manager: RecyclerView.LayoutManager = GridLayoutManager(holder.itemView.context,1)
                 mDialogView.findViewById<RecyclerView>(R.id.scheduleList).layoutManager = manager
-                mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
+                //mDialogView.findViewById<RecyclerView>(R.id.scheduleList).adapter = adapter
             }
 
         }
@@ -182,14 +182,13 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
         return dayList.size
     }
 
-    private fun addCalendar(data : CalendarData2, view : View) {
+    private fun addCalendar(data : CalendarData, view : View) {
         val call1 = service.addCal(token,data)
-        call1.enqueue(object : Callback<ResponseSample> {
-            override fun onResponse(call: Call<ResponseSample>, response: Response<ResponseSample>) {
+        call1.enqueue(object : Callback<CalendarDataId> {
+            override fun onResponse(call: Call<CalendarDataId>, response: Response<CalendarDataId>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        Log.d("status",responseBody.status.toString())
                     }else
                         Log.d("777","${response.code()}")
 
@@ -199,7 +198,7 @@ class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataAr
                 Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragCalendar)
             }
 
-            override fun onFailure(call: Call<ResponseSample>, t: Throwable) {
+            override fun onFailure(call: Call<CalendarDataId>, t: Throwable) {
                 Log.d("444","itemType: ${t.message}")
             }
         })

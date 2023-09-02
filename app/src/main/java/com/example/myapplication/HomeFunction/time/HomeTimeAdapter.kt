@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class HomeTimeAdapter(private val dataSet : ArrayList<SampleTimeData>) : RecyclerView.Adapter<HomeTimeAdapter.viewHolder>() {
+class HomeTimeAdapter(private val dataSet : ArrayList<TimeViewModel.PieChartData>) : RecyclerView.Adapter<HomeTimeAdapter.viewHolder>() {
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
@@ -35,8 +35,8 @@ class HomeTimeAdapter(private val dataSet : ArrayList<SampleTimeData>) : Recycle
 
     override fun onBindViewHolder(holder: HomeTimeAdapter.viewHolder, position: Int) {
 
-        holder.timeImageView.setColorFilter(Color.parseColor(dataSet[position].color), PorterDuff.Mode.SRC_IN)
-        holder.timeTextView.text = dataSet[position].name
+        holder.timeImageView.setColorFilter(Color.parseColor(dataSet[position].colorCode), PorterDuff.Mode.SRC_IN)
+        holder.timeTextView.text = dataSet[position].title
 
         holder.timeLayout.setOnClickListener {
             itemClickListener.onClick(it, position)

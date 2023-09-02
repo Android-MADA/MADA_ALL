@@ -1,4 +1,4 @@
-package com.example.myapplication.CalenderFuntion
+package com.example.myapplication.CalenderFuntion.Calendar
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -16,11 +16,12 @@ import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 
-class CalendarScheduleAdapter(private val myDataArray:  ArrayList<AndroidCalendarData?>, private val today: Int
-                              , private val parentView : View, private val parentDialog : AlertDialog, private val token : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendarData>, private val today: Int
+                              , private val parentView: View, private val parentDialog: AlertDialog) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
     companion object {
@@ -78,24 +79,8 @@ class CalendarScheduleAdapter(private val myDataArray:  ArrayList<AndroidCalenda
             holder.itemView.setOnClickListener {
                 //임시
                 val bundle = Bundle()
-                if(item.title!="")
-                    bundle.putString("title", item.title)
-                if(item.startDate!="")
-                    bundle.putString("preSchedule",item.startDate)
-                if(item.endDate!="")
-                    bundle.putString("nextSchedule",item.endDate)
-                if(item.startTime!="")
-                    bundle.putString("preClock",convertTo12HourFormat2(item.startTime))
-                if(item.endTime!="")
-                    bundle.putString("nextClock",convertTo12HourFormat2(item.endTime))
-                if(item.repeat!="")
-                    bundle.putString("cycle",item.repeat)
-                if(item.memo!="")
-                    bundle.putString("memo",item.memo)
-                bundle.putString("color",item.color)
-                bundle.putString("dday",item.dDay)
-                bundle.putString("Token",token)
-                bundle.putInt("id",item.id)
+                bundle.putSerializable("calData",item)
+                bundle.putBoolean("edit",true)
                 Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
                 parentDialog.dismiss()
 
