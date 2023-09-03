@@ -165,6 +165,9 @@
         <action
             android:id="@+id/action_fragMy_to_splash2Activity"
             app:destination="@id/splash2Activity" />
+        <action
+            android:id="@+id/action_fragMy_to_myRecordDayActivity"
+            app:destination="@id/myRecordDayActivity" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -233,4 +236,19 @@
         android:name="com.example.myapplication.StartFuction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
+    <activity
+        android:id="@+id/myRecordDayActivity"
+        android:name="com.example.myapplication.MyFuction.Activity.MyRecordDayActivity"
+        android:label="my_record_day"
+        tools:layout="@layout/my_record_day" />
+    <activity
+        android:id="@+id/myRecordMonthActivity"
+        android:name="com.example.myapplication.MyFuction.Activity.MyRecordMonthActivity"
+        android:label="my_record_month"
+        tools:layout="@layout/my_record_month" />
+    <activity
+        android:id="@+id/myRecordWeekActivity"
+        android:name="com.example.myapplication.MyFuction.Activity.MyRecordWeekActivity"
+        android:label="my_record_week"
+        tools:layout="@layout/my_record_week" />
 </navigation>
