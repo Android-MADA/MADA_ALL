@@ -2,6 +2,8 @@ package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
@@ -20,6 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -252,6 +255,19 @@ class CalendarAddFragment : Fragment() {
             } else {
                 binding.colck.visibility =View.VISIBLE
             }
+            // 스위치 색 변경
+            val trackColor = if (isChecked) {
+                ContextCompat.getColor(requireContext(), R.color.main)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.grey5)
+            }
+            val thumbColor = if (isChecked) {
+                ContextCompat.getColor(requireContext(),  R.color.sub4)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.grey2)
+            }
+            binding.switch2.trackDrawable?.setColorFilter(trackColor, PorterDuff.Mode.SRC_IN)
+            binding.switch2.thumbDrawable?.setColorFilter(thumbColor, PorterDuff.Mode.SRC_IN)
 
         }
         val schedules = arrayOf<TextView>(
