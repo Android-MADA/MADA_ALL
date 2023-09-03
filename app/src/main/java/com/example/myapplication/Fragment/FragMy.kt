@@ -202,24 +202,6 @@ class FragMy : Fragment() {
     }
 
 
-    private fun setLogoutPopup(){
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.my_logout_popup, null)
-        alertDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-        val btnNo = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
-        val btnYes = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
-
-        btnYes.setOnClickListener {
-            alertDialog.dismiss()
-            navController.navigate(R.id.action_fragMy_to_splash2Activity)
-        }
-        btnNo.setOnClickListener {
-            alertDialog.dismiss()
-            // Handle "No" button click if needed
-        }
-    }
 
     // 로그아웃 팝업창 함수
     private fun showLogoutPopup() {
@@ -234,8 +216,26 @@ class FragMy : Fragment() {
 
         // 버튼 클릭 리스너
         btnYes.setOnClickListener {
+
+            // 서버 연결
+            val call = api.logout(token)
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Log.d("로그아웃 성공", response.body().toString())
+                    } else {
+                        Log.d("로그아웃 실패", response.body().toString())
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("로그아웃 실패 ", "서버 오류")
+                }
+            })
+
+            // 뷰 설정
             alertDialog.dismiss()
             navController.navigate(R.id.action_fragMy_to_splash2Activity)
+
             Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
         }
         btnNo.setOnClickListener {
