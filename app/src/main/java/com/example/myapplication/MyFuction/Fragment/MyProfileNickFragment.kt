@@ -5,10 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MyChangeNicknameData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
+import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.MyProfileNickBinding
 import retrofit2.Call
@@ -18,6 +22,7 @@ import retrofit2.Response
 class MyProfileNickFragment : Fragment() {
 
     private lateinit var binding: MyProfileNickBinding
+    lateinit var navController: NavController
     private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     private val token = Splash2Activity.prefs.getString("token", "")
 
@@ -32,13 +37,16 @@ class MyProfileNickFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         binding.backBtn.setOnClickListener {
-            // nav
+            navController.navigate(R.id.action_myProfileNickFragment_to_fragMy)
         }
 
         binding.myNickBtn.setOnClickListener {
             changeNickname(binding.editNickname.text.toString())
-            // nav
+            navController.navigate(R.id.action_myProfileNickFragment_to_fragMy)
+            Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

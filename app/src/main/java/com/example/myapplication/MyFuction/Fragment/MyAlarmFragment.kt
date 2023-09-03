@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MyAlarmData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
@@ -21,6 +23,7 @@ import retrofit2.Response
 class MyAlarmFragment : Fragment() {
 
     private lateinit var binding: MyAlarmBinding
+    lateinit var navController: NavController
     private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     private val token = Splash2Activity.prefs.getString("token", "")
 
@@ -29,11 +32,14 @@ class MyAlarmFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyAlarmBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = binding.navHostFragmentContainer.findNavController()
 
         GetSetAlarm()
 
@@ -45,7 +51,7 @@ class MyAlarmFragment : Fragment() {
 
         binding.backBtn.setOnClickListener {
             PatchSetAlarm(binding.mySetSwitch1.isChecked)
-            // nav
+            navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
         }
     }
 

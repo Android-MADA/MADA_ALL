@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyFuction.Fragment.MyWithdrawFragment">
+    tools:context=".MyFuction.Fragment.MyWithdrawFragment"
+    android:id="@+id/nav_host_fragment_container"
+    app:navGraph="@navigation/home_nav_graph">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
