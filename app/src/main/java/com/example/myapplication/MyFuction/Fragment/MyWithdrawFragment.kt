@@ -31,7 +31,7 @@ class MyWithdrawFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = MyWithdraw1Binding.inflate(inflater, container, false)
         return binding.root
     }
@@ -71,8 +71,8 @@ class MyWithdrawFragment : Fragment() {
                     }
                 })
 
-                // 연결 후 처음 Splash2 화면으로 이동
-                // nav
+                // 탈퇴 후 처음 Splash2 화면으로 이동
+                navController.navigate(R.id.action_myWithdrawFragment_to_splash2Activity)
             }
         }
     }

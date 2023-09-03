@@ -222,6 +222,9 @@
         android:name="com.example.myapplication.MyFuction.Fragment.MyWithdrawFragment"
         android:label="MyWithdrawFragment" >
         <action
+            android:id="@+id/action_myWithdrawFragment_to_splash2Activity"
+            app:destination="@id/splash2Activity" />
+        <action
             android:id="@+id/action_myWithdrawFragment_to_fragMy"
             app:destination="@id/fragMy" />
     </fragment>

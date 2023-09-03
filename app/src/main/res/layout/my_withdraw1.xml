@@ -89,7 +89,7 @@
         app:layout_constraintBottom_toTopOf="@+id/my_withdraw_btn"
         app:layout_constraintEnd_toEndOf="@+id/divider6"
         app:layout_constraintStart_toStartOf="@+id/divider6"
-        android:button="@drawable/checkbox_custom"/>
+        android:background="@drawable/checkbox_custom"/>
 
     <Button
         android:id="@+id/my_withdraw_btn"
