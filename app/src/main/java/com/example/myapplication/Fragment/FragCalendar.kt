@@ -1,15 +1,19 @@
 package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -31,6 +35,7 @@ import com.example.myapplication.databinding.FragCalendarBinding
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.shawnlin.numberpicker.NumberPicker
 import com.squareup.picasso.Picasso
 import org.joda.time.DateTime
 import retrofit2.Call
@@ -40,6 +45,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Integer.min
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
 class FragCalendar : Fragment(){
@@ -48,6 +54,7 @@ class FragCalendar : Fragment(){
     private lateinit var calendarAdapter: CalendarSliderAdapter
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val viewModel: CustomViewModel by viewModels()
+    val today = LocalDate.now()
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -104,6 +111,41 @@ class FragCalendar : Fragment(){
         binding.calendarTodayText.text =  LocalDate.now().dayOfMonth.toString()
         binding.calendarTodayBtn.setOnClickListener {
             viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION, true)
+        }
+        binding.changeCal.setOnClickListener {
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_change_cal, null)
+            val mBuilder = AlertDialog.Builder(context)
+                .setView(mDialogView)
+                .create()
+
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+            mDialogView.findViewById<NumberPicker>(R.id.number_picker1).value = today.year
+            mDialogView.findViewById<NumberPicker>(R.id.number_picker2).value = today.monthValue
+            //팝업 사이즈 조절
+            DisplayMetrics()
+            context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val size = Point()
+            val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+            display.getSize(size)
+            val screenWidth = size.x
+            val popupWidth = (screenWidth * 0.9).toInt()
+            mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+            //팝업 타이틀 설정, 버튼 작용 시스템
+            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+
+                mBuilder.dismiss()
+            })
+            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                val yearTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker1).value
+                val monthTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker2).value
+                val comparisonResult =  ChronoUnit.MONTHS.between(today,LocalDate.parse(String.format("%02d-%02d",yearTmp, monthTmp)+"-01"))
+                viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt() , true)
+
+                mBuilder.dismiss()
+            })
         }
 
         //getMonthDataArray(CalendarUtil.selectedDate.format(viewModelCal.formatterM),CalendarUtil.selectedDate.format(viewModelCal.formatterYYYY),datas)

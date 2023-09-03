@@ -62,10 +62,10 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
                 holder.dday2.setColorFilter(Color.parseColor("#FFE7EB"), PorterDuff.Mode.SRC_IN)
             } else if(item.color == "#F8D141"){
                 holder.dday1.setColorFilter(Color.parseColor("#F8D141"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#F5EED1"), PorterDuff.Mode.SRC_IN)
+                holder.dday2.setColorFilter(Color.parseColor("#FEF9E6"), PorterDuff.Mode.SRC_IN)
             }  else {
                 holder.dday1.setColorFilter(Color.parseColor("#2AA1B7"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#E1E9F5"), PorterDuff.Mode.SRC_IN)
+                holder.dday2.setColorFilter(Color.parseColor("#EAF6F8"), PorterDuff.Mode.SRC_IN)
             }
             holder.ddayRemain.text = "D-${CalendarViewModel.daysRemainingToDate(item.endDate)}"
             holder.ddayText.text = item.title
@@ -97,12 +97,6 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
                             1 -> {
                                 for(data in CalendarViewModel.ddayArrayList) {
                                     if(data.id == item.id) {
-                                        holder.dday1.visibility = View.GONE
-                                        holder.dday2.setImageResource(R.drawable.dday_blank)
-                                        holder.dday2.setColorFilter(Color.TRANSPARENT)
-                                        holder.plus.visibility = View.VISIBLE
-                                        holder.ddayRemain.text =""
-                                        holder.ddayText.text =""
                                         CalendarViewModel.ddayArrayList.remove(data)
                                         break
                                     }

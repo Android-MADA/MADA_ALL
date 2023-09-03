@@ -142,7 +142,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             textMemo.setText(recievedPieData.memo)
         }
         //색상 선택창
-        val colorListManager = GridLayoutManager(this.activity, 6)
+        val colorListManager = GridLayoutManager(this.activity, 7)
         colorAdapter.setItemClickListener(object : HomeTimeColorAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 binding.ivHomeTimeColor.imageTintList =
@@ -158,6 +158,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         ivColor.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (colorSelector.isVisible) {
                 colorSelector.isGone = true
             } else {
@@ -172,6 +173,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         val regex = """\s*(오전|오후)\s+(\d{1,2}):(\d{2})\s*""".toRegex()
 
         times[0].setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             times[0].setBackgroundResource(R.drawable.calendar_prebackground)
             times[1].setBackgroundColor(Color.TRANSPARENT)
             timepicker.isVisible = true
@@ -193,6 +195,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             }
         }
         times[1].setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             times[1].setBackgroundResource(R.drawable.calendar_prebackground)
             times[0].setBackgroundColor(Color.TRANSPARENT)
             timepicker.isVisible = true
@@ -223,6 +226,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         ticker3.displayedValues = data2
 
         ticker1.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (newVal == 0) {
                 times[scheduleSelect].text =
                     times[scheduleSelect].text.toString().replace("오후", "오전")
@@ -233,6 +237,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         }
         var tmpCheck = true
         ticker2.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
@@ -246,9 +251,11 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 } else {
                     tmpCheck = true
                 }
+                times[scheduleSelect].text = "  "+ampm+" "+newVal+":"+minute+"  "
             }
         }
         ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
@@ -260,84 +267,116 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
         //등록 btn
         btnSubmit.setOnClickListener {
-            var start = viewModelTime.timePlusMinutes(binding.tvHomeTimeStart.text.toString())
-            var end = viewModelTime.timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
-            if(end == 0)
-                end =24*60
-            var check = true
-            if (receivedData != null) {
-                for (data in receivedData) {
-                    var tmpStart = data.startHour * 60 + data.startMin
-                    var tmpEnd = data.endHour * 60 + data.endMin
-                    if(tmpEnd==0)
-                        tmpEnd = 24*60
-                    if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
-                        if (data.divisionNumber != recievedPieData?.divisionNumber)
-                            check = false
-                    }
-                }
-            }
-            if(binding.edtHomeCategoryName.text.toString()=="") {
-                viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
-            } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                viewModelTime.setPopupOne(requireContext(),"올바른 시간을 입력하시오", view)
-            } else if(!check){            //이미 해당 시간에 일정이 있을 때
-                viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
-            } else if (check&&!viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                    viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-                if(btnSubmit.text.toString()=="등록") {
-                    viewModelTime.addTimeDatas(tmp) { result ->
-                        when (result) {
-                            1 -> {
-                                val tmpId = 1532
-                                if(viewModelTime.hashMapArrayTime.get(today)==null) {
-                                    viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
+            if(btnSubmit.text.toString()=="삭제"){
+                viewModelTime.delTimeDatas(curId) { result ->
+                    when (result) {
+                        1 -> {
+                            val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                            for(data in tmpList) {
+                                if(data.id==curId) {
+                                    tmpList.remove(data)
+                                    break
                                 }
-                                viewModelTime.hashMapArraySchedule.get(today)!!.add(
-                                    Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-                                )
-
-                                val bundle = Bundle()
-                                bundle.putString("today",today)
-                                if(viewpager) {
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                                }
-                                else
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                             }
-                            2 -> {
-                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            val bundle = Bundle()
+                            bundle.putString("today",today)
+                            if(viewpager) {
+                                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
                             }
+                            else
+                                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                         }
                     }
-                } else if(btnSubmit.text.toString()=="삭제"){
-                    viewModelTime.delTimeDatas(curId) { result ->
-                        when (result) {
-                            1 -> {
-                                val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
-                                for(data in tmpList) {
-                                    if(data.id==curId) {
-                                        tmpList.remove(data)
-                                        break
+                }
+            } else {
+                var start = viewModelTime.timePlusMinutes(binding.tvHomeTimeStart.text.toString())
+                var end = viewModelTime.timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
+                if(end == 0)
+                    end =24*60
+                var check = true
+                if (receivedData != null) {
+                    for (data in receivedData) {
+                        var tmpStart = data.startHour * 60 + data.startMin
+                        var tmpEnd = data.endHour * 60 + data.endMin
+                        if(tmpEnd==0)
+                            tmpEnd = 24*60
+                        if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
+                            if (data.divisionNumber != recievedPieData?.divisionNumber)
+                                check = false
+                        }
+                    }
+                }
+                if(binding.edtHomeCategoryName.text.toString()=="") {
+                    viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
+                } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
+                    viewModelTime.setPopupOne(requireContext(),"올바른 시간을 입력하시오", view)
+                } else if(!check){            //이미 해당 시간에 일정이 있을 때
+                    viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
+                } else {
+                    val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                    if(btnSubmit.text.toString()=="등록") {
+                        viewModelTime.addTimeDatas(tmp) { result ->
+                            when (result) {
+                                1 -> {
+                                    val tmpId = 1532
+                                    if(viewModelTime.hashMapArrayTime.get(today)==null) {
+                                        viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
                                     }
+                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                        Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                    )
+
+                                    val bundle = Bundle()
+                                    bundle.putString("today",today)
+                                    if(viewpager) {
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                                    }
+                                    else
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                                 }
-                                val bundle = Bundle()
-                                bundle.putString("today",today)
-                                if(viewpager) {
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                                 }
-                                else
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                             }
-                            2 -> {
-                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    } else if(btnSubmit.text.toString()=="수정") {
+                        viewModelTime.editTimeData(curId,tmp) { result ->
+                            when (result) {
+                                1 -> {
+                                    val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                                    for(data in tmpList) {
+                                        if(data.id==curId) {
+                                            tmpList.remove(data)
+                                            break
+                                        }
+                                    }
+                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                        Schedule(curId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                    )
+
+                                    val bundle = Bundle()
+                                    bundle.putString("today",today)
+                                    if(viewpager) {
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                                    }
+                                    else
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
         binding.ivHomeAddTimeBack.setOnClickListener {
             val bundle = Bundle()
@@ -373,27 +412,36 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (hasFocus&&haveTodoCalDatas) {
                 binding.homeTimeTodoListView.visibility = View.VISIBLE
             } else
                 binding.homeTimeTodoListView.visibility = View.GONE
         }
+        binding.timeLayout.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
+        }
+        binding.edtHomeScheduleMemo.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
+        }
     }
     private fun initColorArray(){
         with(timeColorArray){
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(android.graphics.Color.parseColor("#F68F30"))
+            timeColorArray.add(android.graphics.Color.parseColor("#F33E3E"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
             timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
-            timeColorArray.add(android.graphics.Color.parseColor("#D4ECF1"))
+
             timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
-            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(android.graphics.Color.parseColor("#21C362"))
+            timeColorArray.add(android.graphics.Color.parseColor("#0E9746"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
-
 
         }
     }
