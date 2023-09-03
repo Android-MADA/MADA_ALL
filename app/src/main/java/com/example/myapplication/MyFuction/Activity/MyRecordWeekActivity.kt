@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
@@ -18,8 +20,11 @@ import java.util.Locale
 class MyRecordWeekActivity : AppCompatActivity() {
     private lateinit var binding: MyRecordWeekBinding
     private lateinit var calendar: Calendar
+    lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        navController = binding.navHostFragmentContainer.findNavController()
 
         binding = MyRecordWeekBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -27,6 +32,12 @@ class MyRecordWeekActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener {
             finish()
         }
+
+        // 투두 부분
+        setTodoView()
+
+        // 시간표 부분
+        setTimetableView()
 
         //달력 부분
         val daysUntilSaturday = (Calendar.SATURDAY - CalendarUtil.selectedDate.dayOfWeek.value) % 7
@@ -37,7 +48,6 @@ class MyRecordWeekActivity : AppCompatActivity() {
         setWeekView()
 
         binding.preBtn.setOnClickListener {
-
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusWeeks(1)
             calendar.add(Calendar.WEEK_OF_YEAR, -1)
             setWeekView()
@@ -54,12 +64,48 @@ class MyRecordWeekActivity : AppCompatActivity() {
         }
 
     }
+    // 투두 뷰 설정
+    private fun setTodoView() {
+        val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
+        val weekOfMonth = CalendarUtil.selectedDate.get(WeekFields.of(Locale("en","US")).weekOfMonth()) // 주차를 가져옴
+        val todoCnt = 7.4 // 임시데이터
+        val todoPercent = 72.6 // 임시데이터
+
+
+        val formattedText1 = "${month}월 ${weekOfMonth}주 투두"
+        val formattedText2 = "${month}월 ${weekOfMonth}주차의 평균 투두는 ${todoCnt}개이고\n그 중 ${todoPercent}%를 클리어하셨어요"
+
+        binding.recordTitleTodo.text = formattedText1
+        binding.recordContextTodo.text = formattedText2
+
+    }
+    // 시간표 뷰 설정
+    private fun setTimetableView() {
+        val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
+        val weekOfMonth = CalendarUtil.selectedDate.get(WeekFields.of(Locale("en","US")).weekOfMonth()) // 주차를 가져옴
+        val nickname = "김마다" // 임시데이터
+        val category1 = "카테고리1" // 임시데이터
+        val category2 = "카테고리2"// 임시데이터
+        val category3 = "카테고리3" // 임시데이터
+
+
+        val formattedText1 = "${month}월 ${weekOfMonth}주 시간표"
+        val formattedText2 = "${nickname}님이 가장 많은 시간을 투자한 카테고리는\n${category1}, ${category2}, ${category3} 입니다."
+
+        binding.recordTitleTimetable.text = formattedText1
+        binding.recordContextTimetable.text = formattedText2
+
+    }
+    // 캘린더 뷰 설정
     private fun setWeekView() {
         val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
         val weekOfMonth = CalendarUtil.selectedDate.get(WeekFields.of(Locale("en","US")).weekOfMonth()) // 주차를 가져옴
 
         val formattedText = "${month}월 ${weekOfMonth}주차"
+        val formattedText3 = "${month}월 ${weekOfMonth}주 시간표"
+
         binding.textCalendar.text = formattedText
+        binding.recordTitleTimetable.text = formattedText3
 
         val weekList = getDatesInWeek()
 
