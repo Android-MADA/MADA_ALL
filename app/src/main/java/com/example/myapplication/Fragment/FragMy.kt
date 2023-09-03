@@ -1,14 +1,25 @@
 package com.example.myapplication.Fragment
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Point
 import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import retrofit2.Call
@@ -18,6 +29,7 @@ import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.FragMyData
@@ -34,6 +46,7 @@ class FragMy : Fragment() {
 
     private lateinit var binding: FragMyBinding
     lateinit var navController: NavController
+    private lateinit var alertDialog: AlertDialog
 
     //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -49,19 +62,6 @@ class FragMy : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
-
-        navController = binding.navHostFragmentContainer.findNavController()
-
-        binding.myRecordBtn.setOnClickListener{
-            val intent = Intent(requireContext(), MyRecordDayActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 캐릭터 커스텀 불러오는 함수 호출
-        getCustomChar()
-        // 스위치 색 설정 함수 호출
-        setupSwitchColor(binding.myGoogleCalSwitch)
-
 
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
@@ -87,8 +87,56 @@ class FragMy : Fragment() {
                 Log.d("서버 오류", "selectfragMy 실패")
             }
         })
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = binding.navHostFragmentContainer.findNavController()
+
+        // 캐릭터 커스텀 불러오는 함수 호출
+        getCustomChar()
+        // 스위치 색 설정 함수 호출
+        setupSwitchColor(binding.myGoogleCalSwitch)
+
+        // 바텀 시트 항목 선택 리스너
+        binding.myEditProfile.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myProfileFragment)
+        }
+        binding.mySetPage.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_mySetFragment)
+        }
+        binding.mySetAlarm.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myAlarmFragment)
+        }
+        binding.myNotice.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
+        }
+        binding.myGoogleCalSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), "연동 완료", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireContext(), "연동 해제", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.myPremium.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myPremiumFragment)
+        }
+        binding.myLogout.setOnClickListener {
+            showLogoutPopup()
+        }
+        binding.myWithdraw.setOnClickListener{
+            navController.navigate(R.id.action_fragMy_to_myWithdrawFragment)
+        }
+
+        // 내 기록 확인하기
+        binding.myRecordBtn.setOnClickListener {
+            val intent = Intent(requireContext(), MyRecordDayActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
     // 캐릭터 커스텀 불러오기
@@ -151,5 +199,61 @@ class FragMy : Fragment() {
             mySwitch.trackDrawable?.setColorFilter(trackColor, PorterDuff.Mode.SRC_IN)
             mySwitch.thumbDrawable?.setColorFilter(thumbColor, PorterDuff.Mode.SRC_IN)
         }
+    }
+
+
+    private fun setLogoutPopup(){
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.my_logout_popup, null)
+        alertDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        val btnNo = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
+        val btnYes = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
+
+        btnYes.setOnClickListener {
+            alertDialog.dismiss()
+            navController.navigate(R.id.action_fragMy_to_splash2Activity)
+        }
+        btnNo.setOnClickListener {
+            alertDialog.dismiss()
+            // Handle "No" button click if needed
+        }
+    }
+
+    // 로그아웃 팝업창 함수
+    private fun showLogoutPopup() {
+
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.my_logout_popup, null)
+        val btnNo = dialogView.findViewById<AppCompatButton>(R.id.nobutton)
+        val btnYes = dialogView.findViewById<AppCompatButton>(R.id.yesbutton)
+
+        alertDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        // 버튼 클릭 리스너
+        btnYes.setOnClickListener {
+            alertDialog.dismiss()
+            navController.navigate(R.id.action_fragMy_to_splash2Activity)
+            Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
+        }
+        btnNo.setOnClickListener {
+            alertDialog.dismiss()
+            // Handle "No" button click if needed
+        }
+
+        // 뷰 사이즈 조절
+        val displayMetrics = DisplayMetrics()
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        // 호출
+        alertDialog.show()
     }
 }

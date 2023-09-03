@@ -28,13 +28,13 @@ class MyProfileFragment : Fragment() {
     ): View? {
         binding = MyProfileBinding.inflate(inflater, container, false)
 
-        navController = binding.navHostFragmentContainer.findNavController()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = binding.navHostFragmentContainer.findNavController()
 
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myProfileFragment_to_fragMy)

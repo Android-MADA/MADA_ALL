@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
@@ -20,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyWithdrawFragment : Fragment() {
     private lateinit var binding: MyWithdraw1Binding
+    lateinit var navController: NavController
     private var isButtonClicked = false
 
     // retrofit
@@ -36,8 +39,10 @@ class MyWithdrawFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         binding.backBtn.setOnClickListener {
-            // nav
+            navController.navigate(R.id.action_myWithdrawFragment_to_fragMy)
         }
 
         binding.myWithdrawBtn.setOnClickListener {
