@@ -76,4 +76,9 @@
         <item name="android:popupBackground">@drawable/calendar_menu_style</item>
         <item name="android:dropDownWidth">30dp</item>
     </style>
+
+    <!-- 스위치 색 -->
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">#486DA3</item>
+    </style>
 </resources>

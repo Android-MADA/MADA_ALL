@@ -42,12 +42,14 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
             <ImageButton
+                android:id="@+id/change_cal"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:src="@drawable/calendar_down_arrow"/>
+                android:scaleType="fitCenter"
+                android:src="@drawable/calendar_down_arrow" />
             <TextView
                 android:layout_weight="1"
                 android:layout_width="wrap_content"

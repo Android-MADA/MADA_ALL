@@ -228,7 +228,6 @@ class CalendarAddFragment : Fragment() {
                 }
                 schedules[scheduleSelect].text = "  "+ampm+" "+newVal+":"+minute+"  "
             }
-
         }
         ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
             val matchResult = regex.find(schedules[scheduleSelect].text.toString())
@@ -292,27 +291,32 @@ class CalendarAddFragment : Fragment() {
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
         } else if(curCycle =="Week") {
             binding.cyclebtn.text = "매주"
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
         } else if(curCycle =="Month") {
             binding.cyclebtn.text = "매월"
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
+            binding.repeatYear.visibility = View.GONE
         } else if(curCycle =="Year") {
             binding.cyclebtn.text = "매년"
             binding.calAll.visibility = View.GONE
             updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.VISIBLE
         } else {
             binding.cyclebtn.text = "반복 안함"
             updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
         }
         binding.cyclebtn.setOnClickListener {
             if(binding.chipGroup.visibility ==View.VISIBLE) {
@@ -330,6 +334,7 @@ class CalendarAddFragment : Fragment() {
             updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
@@ -341,6 +346,7 @@ class CalendarAddFragment : Fragment() {
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
@@ -351,6 +357,7 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.calAll)
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.GONE
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
         }
         chip4.setOnClickListener {
@@ -363,6 +370,7 @@ class CalendarAddFragment : Fragment() {
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
+            binding.repeatYear.visibility = View.GONE
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
@@ -374,6 +382,7 @@ class CalendarAddFragment : Fragment() {
             updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
+            binding.repeatYear.visibility = View.VISIBLE
         }
         var selectedTextWeek = binding.textWeek1
 
@@ -425,6 +434,15 @@ class CalendarAddFragment : Fragment() {
             }
             TmpNum+=1
         }
+        binding.numberPickerMonth.value = todayMonth .monthValue
+        binding.numberPickerDay.value = todayMonth .dayOfMonth
+
+        binding.numberPickerMonth.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(newVal ==1 ||newVal ==3 ||newVal ==5 ||newVal ==7 ||newVal ==8 ||newVal ==10 ||newVal ==12)
+                binding.numberPickerDay.maxValue=31
+            else if(newVal == 2) binding.numberPickerDay.maxValue=29
+            else if(newVal ==3 ||newVal ==4 ||newVal ==6 ||newVal ==9 ||newVal ==11) binding.numberPickerDay.maxValue=30
+        }
 
         return binding.root
     }
@@ -444,6 +462,7 @@ class CalendarAddFragment : Fragment() {
             }
         }
         binding.submitBtn.setOnClickListener {
+            if(curCycle=="Year")  curRepeatText = String.format("%02d-%02d",binding.numberPickerMonth.value, binding.numberPickerDay.value)
             if(binding.textTitle.text.toString()=="") {
                 CalendarViewModel.setPopupOne(requireContext(),"일정 이름을 입력해 주십시오",view)
             }

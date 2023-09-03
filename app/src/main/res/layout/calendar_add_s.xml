@@ -12,7 +12,6 @@
         android:orientation="horizontal">
 
         <ImageButton
-
             android:id="@+id/backButton"
             android:layout_width="17dp"
             android:layout_height="17dp"

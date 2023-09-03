@@ -49,6 +49,7 @@ class HomeTimetableFragment : Fragment() {
     private var bottomFlag = true
 
     lateinit var today : String
+    lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
@@ -108,6 +109,7 @@ class HomeTimetableFragment : Fragment() {
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
+            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
         }
     }
@@ -117,7 +119,7 @@ class HomeTimetableFragment : Fragment() {
     }
 
     private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
-        val pieChartDataArray = arrays
+        pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
 
