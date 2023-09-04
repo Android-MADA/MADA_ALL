@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="#E8E8E8"
     android:orientation="vertical"
-    tools:context=".MyFuction.Activity.MyRecordDayActivity">
+    tools:context=".MyFuction.Fragment.MyRecordDayFragment"
+    android:id="@+id/nav_host_fragment_container"
+    app:navGraph="@navigation/home_nav_graph">
 
     <LinearLayout
         android:id="@+id/toolbar_my"

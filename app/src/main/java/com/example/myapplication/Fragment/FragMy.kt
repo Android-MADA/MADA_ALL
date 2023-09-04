@@ -1,9 +1,7 @@
 package com.example.myapplication.Fragment
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
@@ -29,11 +27,9 @@ import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.FragMyData
-import com.example.myapplication.MyFuction.Activity.MyRecordDayActivity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
@@ -133,8 +129,8 @@ class FragMy : Fragment() {
 
         // 내 기록 확인하기
         binding.myRecordBtn.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myRecordWeekActivity)
-            //navController.navigate(R.id.action_fragMy_to_myRecordDayActivity)
+            navController.navigate(R.id.action_fragMy_to_myRecordWeekFragment)
+            //navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
         }
 
 
