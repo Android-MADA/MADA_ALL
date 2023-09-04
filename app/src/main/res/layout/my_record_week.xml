@@ -241,7 +241,7 @@
                 android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:background="@drawable/my_record_todo"
-                android:text="n월 n주차의 평균 투두는 7.4개이고\n그 중 72.6%를 클리어하셨어요."
+                android:text="n월 n주차의 평균 투두는 n개이고\n그 중 n%를 클리어하셨어요."
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -271,6 +271,7 @@
                     android:layout_weight="3"/>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/my_category_recycler"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
