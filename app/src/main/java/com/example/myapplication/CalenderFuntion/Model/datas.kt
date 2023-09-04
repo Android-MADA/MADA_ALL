@@ -13,7 +13,7 @@ data class CalendarData(
     @SerializedName("memo") val memo: String,
     @SerializedName("startTime") val start_time: String,
     @SerializedName("endTime") val end_time: String,
-    @SerializedName("repeatDate") val repeatDate: String
+    @SerializedName("repeatInfo") val repeatInfo: String
 )
 {
     fun toJson(): String {
@@ -42,7 +42,7 @@ data class CalendarDataId(
     @SerializedName("dday") val d_day: String,
     @SerializedName("memo") val memo: String,
     @SerializedName("calendarId") val id: Int,
-    @SerializedName("repeatDate") val repeatDate: String
+    @SerializedName("repeatInfo") val repeatInfo: String
 )
 
 data class AddCalendarData (

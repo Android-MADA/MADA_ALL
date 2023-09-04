@@ -483,7 +483,7 @@ class CalendarAddFragment : Fragment() {
                         CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curRepeatText ) ) { result ->
                         when (result) {
                             1 -> {
-                                val tmpId = 1532        //서버로 부터 얻은 아이디
+                                val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
                                 addCal(tmpId)
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
