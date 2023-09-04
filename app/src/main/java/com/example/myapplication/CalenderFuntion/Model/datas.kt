@@ -23,7 +23,7 @@ data class CalendarData(
 }
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,
-    @SerializedName("calendar") val datas: List<CalendarDataId>
+    @SerializedName("calendars") val datas: List<CalendarDataId>
 )
 
 

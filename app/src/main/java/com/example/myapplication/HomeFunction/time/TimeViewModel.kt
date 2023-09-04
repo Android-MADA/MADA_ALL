@@ -29,7 +29,7 @@ import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
