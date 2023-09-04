@@ -9,7 +9,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
+import com.example.myapplication.HomeFunction.Model.categorylist2
 import com.example.myapplication.MyFuction.Adapter.MyCalendarWeekAdapter
+import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
+import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
+import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordWeekBinding
 import java.time.LocalDate
 import java.time.temporal.WeekFields
@@ -21,10 +25,12 @@ class MyRecordWeekActivity : AppCompatActivity() {
     private lateinit var binding: MyRecordWeekBinding
     private lateinit var calendar: Calendar
     lateinit var navController: NavController
+    lateinit var myRecordCategoryAdapter: MyRecordCategoryAdapter
+    val datas = mutableListOf<MyRecordCategoryData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navController = binding.navHostFragmentContainer.findNavController()
+        //navController = binding.navHostFragmentContainer.findNavController()
 
         binding = MyRecordWeekBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -33,11 +39,14 @@ class MyRecordWeekActivity : AppCompatActivity() {
             finish()
         }
 
-        // 투두 부분
+        // 투두 멘트 부분
         setTodoView()
 
-        // 시간표 부분
+        // 시간표 멘트 부분
         setTimetableView()
+
+        // 통계 카테고리 부분
+        initCategoryRecycler()
 
         //달력 부분
         val daysUntilSaturday = (Calendar.SATURDAY - CalendarUtil.selectedDate.dayOfWeek.value) % 7
@@ -96,6 +105,27 @@ class MyRecordWeekActivity : AppCompatActivity() {
         binding.recordContextTimetable.text = formattedText2
 
     }
+    // 통계 우측 카테고리 리사이클러뷰 설정
+    private fun initCategoryRecycler() {
+        myRecordCategoryAdapter = MyRecordCategoryAdapter(this)
+        binding.myCategoryRecycler.adapter = myRecordCategoryAdapter
+
+
+        datas.apply {
+            val categoryName = "카테고리명" // 임시데이터
+            val percentNum = 25 // 임시데이터
+
+            // 서버 데이터 받아서 반복문으로 수정하기
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorImage = R.drawable.ic_record_color, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorImage = R.drawable.ic_record_color, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorImage = R.drawable.ic_record_color, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorImage = R.drawable.ic_record_color, category = categoryName))
+
+            myRecordCategoryAdapter.datas = datas
+        }
+        myRecordCategoryAdapter.notifyDataSetChanged()
+    }
+
     // 캘린더 뷰 설정
     private fun setWeekView() {
         val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴

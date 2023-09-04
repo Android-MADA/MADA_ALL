@@ -168,6 +168,9 @@
         <action
             android:id="@+id/action_fragMy_to_myRecordDayActivity"
             app:destination="@id/myRecordDayActivity" />
+        <action
+            android:id="@+id/action_fragMy_to_myRecordWeekActivity"
+            app:destination="@id/myRecordWeekActivity" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"

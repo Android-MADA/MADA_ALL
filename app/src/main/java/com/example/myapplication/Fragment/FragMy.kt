@@ -133,8 +133,8 @@ class FragMy : Fragment() {
 
         // 내 기록 확인하기
         binding.myRecordBtn.setOnClickListener {
-            val intent = Intent(requireContext(), MyRecordDayActivity::class.java)
-            startActivity(intent)
+            navController.navigate(R.id.action_fragMy_to_myRecordWeekActivity)
+            //navController.navigate(R.id.action_fragMy_to_myRecordDayActivity)
         }
 
 
