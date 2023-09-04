@@ -33,7 +33,7 @@ import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
 import com.example.myapplication.databinding.FragCalendarBinding
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shawnlin.numberpicker.NumberPicker
 import com.squareup.picasso.Picasso

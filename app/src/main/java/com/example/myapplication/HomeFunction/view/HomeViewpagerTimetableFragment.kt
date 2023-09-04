@@ -24,9 +24,8 @@ import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.databinding.HomeFragmentViewpagerTimetableBinding
