@@ -16,21 +16,12 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".On1Activity"
-            android:exported="false"
-            android:label="@string/title_activity_on1"
-            android:theme="@style/Theme.MyApplication" />
-        <activity
-            android:name=".Activity2"
-            android:exported="false" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".StartFuction.Splash1Activity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
@@ -40,52 +31,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Splash2Activity"
+            android:name=".StartFuction.Splash2Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup1Activity"
+            android:name=".StartFuction.OnBoardingActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySignup2Activity"
+            android:name=".StartFuction.FragOnBoarding_1"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyWebviewActivity"
+            android:name=".StartFuction.FragOnBoarding_2"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyNoticeActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".MyFuction.MyListItem"
-            android:exported="false"
-            android:label="@string/title_activity_my_list_item"
-            android:theme="@style/Theme.MyApplication" />
-        <activity
-            android:name=".MyFuction.MyWithdraw1Activity"
+            android:name=".StartFuction.FragOnBoarding_3"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyPremiumActivity"
+            android:name=".StartFuction.FragOnBoarding_4"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MySetActivity"
+            android:name=".StartFuction.MyWebviewActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyAlarmActivity"
+            android:name=".StartFuction.MySignup1Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyProfileNickActivity"
+            android:name=".StartFuction.MySignup2Activity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyProfileActivity"
+            android:name=".MyFuction.Activity.MyRecordMonthActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyRecordMonthActivity"
+            android:name=".MyFuction.Activity.MyRecordWeekActivity"
             android:exported="false" />
         <activity
-            android:name=".MyFuction.MyRecordWeekActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyRecordDayActivity"
+            android:name=".MyFuction.Activity.MyRecordDayActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

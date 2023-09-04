@@ -25,7 +25,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -39,7 +39,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataArray:  Array<ArrayList<CalendarDATA?>>, private val token : String)
+class CalendarAdapter(private val dayList: ArrayList<Date>, private val myDataArray:  Array<ArrayList<AndroidCalendarData?>>, private val token : String)
         : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>()  {
     var m = LocalDate.now().monthValue
     var y = LocalDate.now().year
