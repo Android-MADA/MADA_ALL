@@ -3,39 +3,39 @@ package com.example.myapplication.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.myapplication.HomeFunction.Model.Category
 
-@Entity(tableName = "todo_table")
-data class DBTodo(
+
+@Entity(tableName = "repeat_table")
+data class RepeatEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todoId")
-    val todoId : Int,
+    val todoId : Int = 0,
     @ColumnInfo(name = "id")
     val id : Int?,
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "category")
-    var category: Category,
+    val category: Int,
     @ColumnInfo(name = "todoName")
-    var todoName: String,
+    val todoName: String,
     @ColumnInfo(name = "complete")
     var complete: Boolean,
     @ColumnInfo(name = "repeat")
-    var repeat: String,
+    val repeat: String,
     @ColumnInfo(name = "repeatWeek")
-    var repeatWeek: String?,
+    val repeatWeek: String?,
     @ColumnInfo(name = "repeatMonth")
-    var repeatMonth: String?,
+    val repeatMonth: String?,
     @ColumnInfo(name = "startRepeatDate")
-    var startRepeatDate: String?,
+    val startRepeatDate: String?,
     @ColumnInfo(name = "endRepeatDate")
-    var endRepeatDate: String?,
+    val endRepeatDate: String?,
     @ColumnInfo(name = "isAlarm")
-    var isAlarm: Boolean,
+    val isAlarm: Boolean,
     @ColumnInfo(name = "startTodoAtMonday")
-    var startTodoAtMonday: Boolean,
+    val startTodoAtMonday: Boolean,
     @ColumnInfo(name = "endTodoBackSetting")
-    var endTodoBackSetting: Boolean,
+    val endTodoBackSetting: Boolean,
     @ColumnInfo(name = "newTodoStartSetting")
-    var newTodoStartSetting: Boolean
+    val newTodoStartSetting: Boolean
 )

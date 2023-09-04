@@ -53,7 +53,7 @@ import java.util.Calendar
 
 class HomeViewpagerTimetableFragment : Fragment() {
 
-    private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
+   //private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
     lateinit var binding : HomeFragmentViewpagerTimetableBinding
     private val viewModel: HomeViewModel by activityViewModels()
 
@@ -69,10 +69,8 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val id : Int
     ) : Serializable
 
-//    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-//        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
-    var token = ""
+//    val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
+//    var token = ""
 
     var today = "2023-06-01"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,36 +84,36 @@ class HomeViewpagerTimetableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            today = viewModel.homeDate.value.toString()
-            getTimeDatas(today)
-
-        })
-
+//        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+//            today = viewModel.homeDate.value.toString()
+//            getTimeDatas(today)
+//
+//        })
+//
         binding = HomeFragmentViewpagerTimetableBinding.inflate((layoutInflater))
-        customCircleBarView = binding.progressbar
-        token = Splash2Activity.prefs.getString("token","")
-        // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
-        val currentTime = Calendar.getInstance()
-        val hour = currentTime.get(Calendar.HOUR_OF_DAY)
-        val minute = currentTime.get(Calendar.MINUTE)
-        val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
-
-        customCircleBarView.setProgress(progressPercentage.toInt())
-        //파이차트
-        getTimeDatas(today)
-
-        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            Log.d("timetable date 확인", viewModel.homeDate.value.toString())
-        })
-
-        binding.chart.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putBoolean("viewpager",true)
-            bundle.putString("Token",token)
-            bundle.putString("today",today)
-            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-        }
+//        customCircleBarView = binding.progressbar
+//        token = Splash2Activity.prefs.getString("token","")
+//        // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
+//        val currentTime = Calendar.getInstance()
+//        val hour = currentTime.get(Calendar.HOUR_OF_DAY)
+//        val minute = currentTime.get(Calendar.MINUTE)
+//        val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
+//
+//        customCircleBarView.setProgress(progressPercentage.toInt())
+//        //파이차트
+//        getTimeDatas(today)
+//
+//        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+//            Log.d("timetable date 확인", viewModel.homeDate.value.toString())
+//        })
+//
+//        binding.chart.setOnClickListener {
+//            val bundle = Bundle()
+//            bundle.putBoolean("viewpager",true)
+//            bundle.putString("Token",token)
+//            bundle.putString("today",today)
+//            Navigation.findNavController(requireView()).navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+//        }
 
         return binding.root
     }
@@ -143,39 +141,39 @@ class HomeViewpagerTimetableFragment : Fragment() {
         }
         return 0
     }
-    private fun getTimeDatas(date : String) {
-        val call = service.getTimetable(token,date)
-        val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
-        val sampleTimeArray = ArrayList<SampleTimeData>()
-        call.enqueue(object : Callback<ScheduleListData> {
-            override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.datas2.datas
-                        if(datas != null) {
-                            var i = 0
-                            for (data in datas) {
-                                var end00 = 0
-                                if(data.endTime=="00:00:00")
-                                    end00 = 24
-                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
-                                arrays.add(tmp)
-                                sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
-                                Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id}")
-                            }
-                        }
-                        pirChartOn(arrays)
-
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
+//    private fun getTimeDatas(date : String) {
+//        val call = service.getTimetable(token,date)
+//        val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
+//        val sampleTimeArray = ArrayList<SampleTimeData>()
+//        call.enqueue(object : Callback<ScheduleListData> {
+//            override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
+//                if (response.isSuccessful) {
+//                    val apiResponse = response.body()
+//                    if (apiResponse != null) {
+//                        val datas = apiResponse.datas2.datas
+//                        if(datas != null) {
+//                            var i = 0
+//                            for (data in datas) {
+//                                var end00 = 0
+//                                if(data.endTime=="00:00:00")
+//                                    end00 = 24
+//                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
+//                                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
+//                                arrays.add(tmp)
+//                                sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
+//                                Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id}")
+//                            }
+//                        }
+//                        pirChartOn(arrays)
+//
+//                    }
+//                }
+//            }
+//            override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
+//                Log.d("444","itemType: ${t.message}")
+//            }
+//        })
+//    }
     private fun pirChartOn(arrays : ArrayList<PieChartData>) {
         val tmp2 = arrays.sortedWith(compareBy(
             { it.startHour },
@@ -254,43 +252,43 @@ class HomeViewpagerTimetableFragment : Fragment() {
             description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
         }
         var lastSelectedEntry = -1
-        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                if (e is PieEntry) {
-                    val pieEntry = e as PieEntry
-                    val label = pieEntry.label
-                    if (label == "999") {
-                        pieDataSet.selectionShift = 0f //하이라이트 크기
-                        lastSelectedEntry = label.toInt()
-                    } else if(label == "998") {
-                        pieDataSet.selectionShift = 0f //하이라이트 크기
-                        lastSelectedEntry = 998
-                    } else {
-                        pieDataSet.selectionShift = 30f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정
-                        lastSelectedEntry = label.toInt()
-                    }
-
-                }
-            }
-            override fun onNothingSelected() {
-                if(lastSelectedEntry==998) {
-                    val bundle = Bundle()
-                    bundle.putBoolean("viewpager",true)
-                    bundle.putString("Token",token)
-                    bundle.putString("today",today)
-                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-                } else if(lastSelectedEntry>=0&&lastSelectedEntry<900) {
-                    val bundle = Bundle()
-                    bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
-                    bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-
-                    bundle.putBoolean("viewpager",true)
-                    bundle.putString("Token",token)
-                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
-                }
-                lastSelectedEntry =-1
-            }
-        })
+//        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+//            override fun onValueSelected(e: Entry?, h: Highlight?) {
+//                if (e is PieEntry) {
+//                    val pieEntry = e as PieEntry
+//                    val label = pieEntry.label
+//                    if (label == "999") {
+//                        pieDataSet.selectionShift = 0f //하이라이트 크기
+//                        lastSelectedEntry = label.toInt()
+//                    } else if(label == "998") {
+//                        pieDataSet.selectionShift = 0f //하이라이트 크기
+//                        lastSelectedEntry = 998
+//                    } else {
+//                        pieDataSet.selectionShift = 30f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+//                        lastSelectedEntry = label.toInt()
+//                    }
+//
+//                }
+//            }
+////            override fun onNothingSelected() {
+////                if(lastSelectedEntry==998) {
+////                    val bundle = Bundle()
+////                    bundle.putBoolean("viewpager",true)
+////                    bundle.putString("Token",token)
+////                    bundle.putString("today",today)
+////                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+////                } else if(lastSelectedEntry>=0&&lastSelectedEntry<900) {
+////                    val bundle = Bundle()
+////                    bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
+////                    bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+////
+////                    bundle.putBoolean("viewpager",true)
+////                    bundle.putString("Token",token)
+////                    findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
+////                }
+////                lastSelectedEntry =-1
+////            }
+//        })
 
     }
 }

@@ -4,24 +4,26 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.myapplication.db.dao.HomeDao
-import com.example.myapplication.db.entity.DBCategory
-import com.example.myapplication.db.entity.DBTodo
+import com.example.myapplication.db.dao.CateDao
+import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.db.entity.RepeatEntity
+import com.example.myapplication.db.entity.TodoEntity
 
-@Database(entities = [DBTodo::class], [DBCategory::class], version = 1)
+@Database(entities = [CateEntity::class, TodoEntity::class, RepeatEntity::class], version = 1)
 abstract class HomeDatabase : RoomDatabase() {
 
-    abstract fun HomeDao() : HomeDao
+    abstract fun cateDao() : CateDao
 
-    companion object {
+    companion object{
 
         @Volatile
         private var INSTANCE : HomeDatabase? = null
 
         fun getDatabase(
-            context: Context
+            context : Context
         ) : HomeDatabase {
             return INSTANCE ?: synchronized(this){
+
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     HomeDatabase::class.java,

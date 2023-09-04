@@ -2,28 +2,34 @@ package com.example.myapplication.HomeFunction.viewModel
 
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
-import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.repeatTodo
-import com.example.myapplication.HomeFunction.Model.todoData
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
 import com.example.myapplication.Splash2Activity
+import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.db.entity.RepeatEntity
+import com.example.myapplication.db.entity.TodoEntity
+import com.example.myapplication.db.repository.HomeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class HomeViewModel : ViewModel() {
@@ -548,6 +554,127 @@ class HomeViewModel : ViewModel() {
             _todoNum.value = --todoNumber
         }
 
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //ROOM
+
+    //repository 선언
+    private val repository = HomeRepository()
+
+    //카테고리 리스트
+    lateinit var cateEntityList : LiveData<List<CateEntity>>
+
+    //특정 카테고리 1개 저장(수정, 삭제 시)
+    var _cate = MutableLiveData<CateEntity>(null)
+    val cate : LiveData<CateEntity>
+        get() = _cate
+
+    lateinit var todoEntityList : LiveData<List<TodoEntity>>
+
+    var _todosList = MutableLiveData<List<TodoEntity>>(null)
+    var todosList : LiveData<List<TodoEntity>>? = null
+
+    val startMonday = false
+    val completeBottom = false
+    val newTodoTop = false
+
+    val date = "2023-09-08"
+
+
+
+    //CRUD 선언
+    fun createCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.createCate(cateEntity)
+    }
+
+    fun readCate() {
+        cateEntityList = repository.readCate().asLiveData()
+        Log.d("readcate", "working")
+    }
+
+    fun updateCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateCate(cateEntity)
+    }
+
+    fun deleteCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteCate(cateEntity)
+    }
+
+    //TODO
+
+    fun createTodo(todoEntity: TodoEntity, edt : EditText) = viewModelScope.launch(Dispatchers.IO) {
+        repository.createTodo(todoEntity)
+        edt.text.clear()
+    }
+
+    fun readTodo(cateId : Int, adapter: HomeTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
+        repository.readTodo(cateId).collect{
+            Log.d("todoList 확인", it.toString())
+            withContext(Dispatchers.Main){
+                adapter.submitList(it)
+            }
+        }
+
+    }
+
+    fun updateTodo(todoEntity: TodoEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateTodo(todoEntity)
+    }
+
+    fun deleteTodo(todoEntity: TodoEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteTodo(todoEntity)
+    }
+
+    fun deleteTodoCate(cateId : Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteTodoCate(cateId)
+    }
+
+    fun deleteAllTodo() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllTodo()
+    }
+
+    fun readAllTodo() {
+        todoEntityList = repository.readAllTodo().asLiveData()
+    }
+
+    //repeatTodo
+
+    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText) = viewModelScope.launch(Dispatchers.IO) {
+        repository.createRepeatTodo(repeatTodoEntity)
+        edt.text.clear()
+        //readAllTodo()
+    }
+
+    fun readRepeatTodo(cateId : Int, adapter: RepeatTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
+        //todoList = repository.readTodo(cateId).asLiveData()
+        repository.readRepeatTodo(cateId).collect{
+            Log.d("todoList 확인", it.toString())
+            withContext(Dispatchers.Main){
+                adapter.submitList(it)
+            }
+        }
+
+    }
+
+    fun updateRepeatTodo(repeatTodoEntity: RepeatEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateRepeatTodo(repeatTodoEntity)
+    }
+
+    fun deleteRepeatTodo(repeatTodoEntity: RepeatEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteRepeatTodo(repeatTodoEntity)
+    }
+
+    fun deleteRepeatTodoCate(cateId : Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteRepeatTodoCate(cateId)
+    }
+
+    fun deleteAllRepeatTodo() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllRepeatTodo()
+    }
+
+    fun readAllRepeatTodo() {
+        //todoEntityList = repository.readAllRepeatTodo().asLiveData()
     }
 
 
