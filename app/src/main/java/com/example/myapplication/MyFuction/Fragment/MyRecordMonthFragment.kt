@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.MyFuction.Adapter.MyCalendarMonthAdapter
+import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
+import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordMonthBinding
 import java.text.SimpleDateFormat
@@ -24,6 +27,7 @@ class MyRecordMonthFragment : Fragment() {
     private lateinit var binding: MyRecordMonthBinding
     private lateinit var calendar: Calendar
     lateinit var navController: NavController
+    val datas = mutableListOf<MyRecordCategoryData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +45,8 @@ class MyRecordMonthFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_fragMy)
         }
+
+        initCategoryRecycler()
 
 
         //달력 부분
@@ -97,6 +103,34 @@ class MyRecordMonthFragment : Fragment() {
 
         binding.recordTitleTimetable.text = formattedText1
         binding.recordContextTimetable.text = formattedText2
+    }
+
+    // 통계 우측 카테고리 리사이클러뷰 설정
+    private fun initCategoryRecycler() {
+        val adapter = MyRecordCategoryAdapter(requireContext())
+        var manager = LinearLayoutManager(requireContext())
+
+        datas.apply {
+            val categoryName = "카테고리명" // 임시데이터
+            val percentNum = 25 // 임시데이터
+            val colorCode = "F0768C" // 임시데이터
+            val categoryNum = 6 // 임시데이터
+
+            var size = if (categoryNum != 0) { categoryNum.minus(1) }
+            else { -1 }
+
+            // 서버 데이터 받아서 반복문으로 수정하기
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+
+            adapter.datas = datas
+            adapter.notifyDataSetChanged()
+
+        }
+        binding.myCategoryRecycler.adapter = adapter
+        binding.myCategoryRecycler.layoutManager = manager
     }
 
     // 달력 뷰 설정

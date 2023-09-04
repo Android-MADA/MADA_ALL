@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.MyFuction.Adapter.MyCalendarWeekAdapter
@@ -26,7 +27,6 @@ class MyRecordWeekFragment : Fragment() {
     private lateinit var binding: MyRecordWeekBinding
     private lateinit var calendar: Calendar
     lateinit var navController: NavController
-    lateinit var myRecordCategoryAdapter: MyRecordCategoryAdapter
     val datas = mutableListOf<MyRecordCategoryData>()
 
     override fun onCreateView(
@@ -118,46 +118,30 @@ class MyRecordWeekFragment : Fragment() {
 
     // 통계 우측 카테고리 리사이클러뷰 설정
     private fun initCategoryRecycler() {
-        myRecordCategoryAdapter = MyRecordCategoryAdapter(requireContext())
-        binding.myCategoryRecycler.adapter = myRecordCategoryAdapter
+        val adapter = MyRecordCategoryAdapter(requireContext())
+        var manager = LinearLayoutManager(requireContext())
 
         datas.apply {
             val categoryName = "카테고리명" // 임시데이터
             val percentNum = 25 // 임시데이터
+            val colorCode = "F0768C" // 임시데이터
+            val categoryNum = 6 // 임시데이터
+
+            var size = if (categoryNum != 0) { categoryNum.minus(1) }
+            else { -1 }
 
             // 서버 데이터 받아서 반복문으로 수정하기
-            add(
-                MyRecordCategoryData(
-                    percent = "${percentNum}%",
-                    colorImage = R.drawable.ic_record_color,
-                    category = categoryName
-                )
-            )
-            add(
-                MyRecordCategoryData(
-                    percent = "${percentNum}%",
-                    colorImage = R.drawable.ic_record_color,
-                    category = categoryName
-                )
-            )
-            add(
-                MyRecordCategoryData(
-                    percent = "${percentNum}%",
-                    colorImage = R.drawable.ic_record_color,
-                    category = categoryName
-                )
-            )
-            add(
-                MyRecordCategoryData(
-                    percent = "${percentNum}%",
-                    colorImage = R.drawable.ic_record_color,
-                    category = categoryName
-                )
-            )
-        }
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
 
-        myRecordCategoryAdapter.datas = datas
-        myRecordCategoryAdapter.notifyDataSetChanged()
+            adapter.datas = datas
+            adapter.notifyDataSetChanged()
+
+        }
+        binding.myCategoryRecycler.adapter = adapter
+        binding.myCategoryRecycler.layoutManager = manager
     }
 
     // 캘린더 뷰 설정
