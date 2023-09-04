@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
     android:orientation="vertical"
     tools:context=".MyFuction.Fragment.MyRecordDayFragment"
     android:id="@+id/nav_host_fragment_container"
@@ -14,7 +13,7 @@
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/grey4"
+        android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,246 +53,248 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/cal"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
-
-            <ImageButton
-                android:id="@+id/preBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@android:color/transparent"
-                android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/textCalendar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/calendar_arrow_left" />
-
-            <TextView
-                android:id="@+id/textCalendar"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="2023년 8월"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/nextBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@android:color/transparent"
-                android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/textCalendar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/calendar_arrow_right" />
-
-            <TextView
-                android:id="@+id/dayWeekMonthBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/calendar_cell_background2"
-                android:backgroundTint="#F0F0F0"
-                android:gravity="center"
-                android:text="일"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:background="#E8E8E8">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textSun"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="S"
-                android:textAlignment="center"
-                android:textColor="#D92437"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textMon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="M"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textTue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="T"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textWed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="W"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textThu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="T"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textFri"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="F"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textSat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="S"
-                android:textAlignment="center"
-                android:textColor="#0041A3"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/calendar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="15dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-
-        android:id="@+id/record"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/cal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="30dp"
-                android:text="투두"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingTop="16dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/textCalendar"
+                        android:id="@+id/preBtn"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/calendar_arrow_left" />
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:id="@+id/textCalendar"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="2023년 8월"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                    <ImageButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/textCalendar"
+                        android:id="@+id/nextBtn"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/calendar_arrow_right" />
+                    <TextView
+                        android:id="@+id/dayWeekMonthBtn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginRight="15dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:text="주"
+                        android:backgroundTint="#F0F0F0"
+                        android:background="@drawable/calendar_cell_background2"/>
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/my_viewpager2"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginVertical="20dp"
-                    android:background="@drawable/home_viewpager_background"
-                    android:paddingVertical="20dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="18dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:layout_marginTop="15dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:orientation="horizontal">
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/textSun"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="S"
+                        android:textAlignment="center"
+                        android:textColor="#D92437"
+                        android:textSize="16sp" />
 
-            <TextView
+                    <TextView
+                        android:id="@+id/textMon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="M"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textTue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="T"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textWed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="W"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textThu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="T"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textFri"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="F"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textSat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="S"
+                        android:textAlignment="center"
+                        android:textColor="#0041A3"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:id="@+id/calendar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/todo_and_timetable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:text="시간표"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:background="@color/white">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="225dp"
-                    android:layout_height="225dp"
-                    android:layout_gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/my_time_circle"
-                    />
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:text="투두"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-                </com.github.mikephil.charting.charts.PieChart>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/my_viewpager2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@drawable/home_viewpager_background"
+                        android:paddingVertical="20dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="18dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="시간표"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="225dp"
+                        android:layout_height="225dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/my_time_circle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/chart"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
 
-            </FrameLayout>
+                    </com.github.mikephil.charting.charts.PieChart>
+
+
+                </FrameLayout>
+            </LinearLayout>
+
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 </LinearLayout>

@@ -51,11 +51,15 @@ class MyRecordMonthFragment : Fragment() {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
             setMonthView()
+            setTodoView()
+            setTimetableView()
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
             setMonthView()
+            setTodoView()
+            setTimetableView()
         }
         binding.dayWeekMonthBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
