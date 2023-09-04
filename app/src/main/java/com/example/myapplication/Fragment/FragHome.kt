@@ -64,7 +64,6 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-
             Log.d("home캐릭", "뎅이터 넘어오기")
         })
 

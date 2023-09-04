@@ -1,6 +1,5 @@
 package com.example.myapplication.CustomFunction
 
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.Fragment.FragCustom
 import retrofit2.Call
 import retrofit2.Callback
