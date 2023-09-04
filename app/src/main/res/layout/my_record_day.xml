@@ -6,14 +6,19 @@
     android:layout_height="match_parent"
     android:background="#E8E8E8"
     android:orientation="vertical"
-    tools:context=".MyFuction.MyRecordDayActivity">
+    tools:context=".MyFuction.Fragment.MyRecordDayFragment"
+    android:id="@+id/nav_host_fragment_container"
+    app:navGraph="@navigation/home_nav_graph">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/grey4"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/todayInfo"

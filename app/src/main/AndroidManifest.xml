@@ -21,7 +21,7 @@
             android:required="false" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".StartFuction.Splash1Activity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
@@ -31,64 +31,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Splash2Activity"
+            android:name=".StartFuction.Splash2Activity"
             android:exported="false" />
         <activity
-            android:name=".On1Activity"
+            android:name=".StartFuction.OnBoardingActivity"
             android:exported="false" />
         <activity
-            android:name=".On2Activity"
+            android:name=".StartFuction.MyWebviewActivity"
             android:exported="false" />
         <activity
-            android:name=".On3Activity"
+            android:name=".StartFuction.MySignup1Activity"
             android:exported="false" />
         <activity
-            android:name=".On4Activity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MySignup1Activity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MySignup2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyWebviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyNoticeActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".MyFuction.MyListItem"
-            android:exported="false"
-            android:label="@string/title_activity_my_list_item"
-            android:theme="@style/Theme.MyApplication" />
-        <activity
-            android:name=".MyFuction.MyWithdraw1Activity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyPremiumActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MySetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyAlarmActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyProfileNickActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyRecordMonthActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyRecordWeekActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyFuction.MyRecordDayActivity"
+            android:name=".StartFuction.MySignup2Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

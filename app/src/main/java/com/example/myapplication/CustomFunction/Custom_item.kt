@@ -14,7 +14,7 @@ import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
