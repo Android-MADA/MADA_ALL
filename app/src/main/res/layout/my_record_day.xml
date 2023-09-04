@@ -119,7 +119,7 @@
                         android:gravity="center"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:text="주"
+                        android:text="일"
                         android:backgroundTint="#F0F0F0"
                         android:background="@drawable/calendar_cell_background2"/>
 
@@ -215,7 +215,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/todo_and_timetable"
+                android:id="@+id/record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
