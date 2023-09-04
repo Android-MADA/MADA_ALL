@@ -13,16 +13,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
-import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
