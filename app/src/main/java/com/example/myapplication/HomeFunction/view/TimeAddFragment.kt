@@ -17,6 +17,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -31,12 +32,14 @@ import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
+import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
 import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
+import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
@@ -58,10 +61,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
     private val viewModel : HomeViewModel by activityViewModels()
+    private val viewModelTime: TimeViewModel by activityViewModels()
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(HomeApi::class.java)
     lateinit var today: String
 
     var curColor = "#89A9D9"
@@ -69,19 +70,15 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     var viewpager = false
     var haveTodoCalDatas = false
 
-
     private lateinit var backDialog: HomeBackCustomDialog
-    //private lateinit var deleteDialog: HomeDeleteCustomDialog
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //할일 작성
                 customBackDialog()
             }
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
@@ -97,10 +94,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
         hideBottomNavigation(bottomFlag,  requireActivity())
-
         today = viewModel.homeDate.value.toString()
-
-
         return binding.root
     }
 
@@ -121,22 +115,20 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
         val textTitle = binding.edtHomeCategoryName
         val btnSubmit = binding.btnHomeTimeAddSubmit
-        val btnDelete = binding.btnHomeTimeEditDelete
         val textMemo = binding.edtHomeScheduleMemo
 
         val btnBack = binding.ivHomeAddTimeBack
         // 데이터 받기
-        val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<HomeViewpagerTimetableFragment.PieChartData>?: null
+        val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<TimeViewModel.PieChartData>?: null
         Log.d("reciedvd",receivedData.toString())
-        val recievedPieData =  arguments?.getSerializable("pieChartData") as  HomeViewpagerTimetableFragment.PieChartData?
+        val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
         viewpager = arguments?.getBoolean("viewpager")?: false
         today = arguments?.getString("today")?: "2023-06-01"
-        token= arguments?.getString("Token")?: ""
-        var id = 0
+        var curId = 0
 
         if(recievedPieData != null) {
-            btnSubmit.text = "수정"
-            btnDelete.isVisible = true
+            btnSubmit.text = "삭제"
+            //btnDelete.isVisible = true
 
             textTitle.setText(recievedPieData.title)
             ivColor.imageTintList =  ColorStateList.valueOf(Color.parseColor(recievedPieData.colorCode))
@@ -144,20 +136,13 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             //ivColor.setColorFilter(Color.parseColor(recievedPieData.colorCode), PorterDuff.Mode.SRC_IN)
             colorSelector.isGone = true
 
-            times[0].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.startHour, recievedPieData.startMin))
-            times[1].text = timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.endHour, recievedPieData.endMin))
-            id = recievedPieData.id
+            times[0].text = viewModelTime.timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.startHour, recievedPieData.startMin))
+            times[1].text = viewModelTime.timeChangeReverse(String.format(Locale("en", "US"), "%02d:%02d:00", recievedPieData.endHour, recievedPieData.endMin))
+            curId = recievedPieData.id
             textMemo.setText(recievedPieData.memo)
         }
-
-        //파라미터가 전달된다면(생성이 아니라 수정이라면)
-//        if(){
-//            //3. 받아온 파라미터들을 알맞은 장소에 넣기
-//            //4. 이전 시간표 데이터는 삭제하기
-//        }
-
         //색상 선택창
-        val colorListManager = GridLayoutManager(this.activity, 6)
+        val colorListManager = GridLayoutManager(this.activity, 7)
         colorAdapter.setItemClickListener(object : HomeTimeColorAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 binding.ivHomeTimeColor.imageTintList =
@@ -173,6 +158,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         ivColor.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (colorSelector.isVisible) {
                 colorSelector.isGone = true
             } else {
@@ -181,14 +167,13 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         // 데이터 클래스 작성해서 옮기기
-
-
         var scheduleSelect = 0
         val data1 = arrayOf("오전", "오후")
         val data2 = arrayOf("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55")
         val regex = """\s*(오전|오후)\s+(\d{1,2}):(\d{2})\s*""".toRegex()
 
         times[0].setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             times[0].setBackgroundResource(R.drawable.calendar_prebackground)
             times[1].setBackgroundColor(Color.TRANSPARENT)
             timepicker.isVisible = true
@@ -201,7 +186,6 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 } else {
                     ticker1.value = 1
                 }
-
                 ticker2.value = hour.toInt()
                 ticker3.value = minute.toInt() / 5
             } else {
@@ -210,8 +194,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 ticker3.value = 0
             }
         }
-
         times[1].setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             times[1].setBackgroundResource(R.drawable.calendar_prebackground)
             times[0].setBackgroundColor(Color.TRANSPARENT)
             timepicker.isVisible = true
@@ -234,8 +218,6 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 ticker3.value = 0
             }
         }
-
-
         ticker1.minValue = 0
         ticker1.maxValue = 1
         ticker1.displayedValues = data1
@@ -244,6 +226,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         ticker3.displayedValues = data2
 
         ticker1.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (newVal == 0) {
                 times[scheduleSelect].text =
                     times[scheduleSelect].text.toString().replace("오후", "오전")
@@ -252,16 +235,27 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                     times[scheduleSelect].text.toString().replace("오전", "오후")
             }
         }
+        var tmpCheck = true
         ticker2.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
                 times[scheduleSelect].text = "  " + ampm + " " + newVal + ":" + minute + "  "
-            } else {
-
+                if((oldVal==11&&newVal==12) ||(oldVal==12&&newVal==11)) {
+                    if(tmpCheck) {
+                        if (ticker1.value == 0) ticker1.value = 1
+                        else ticker1.value = 0
+                        tmpCheck = false
+                    }
+                } else {
+                    tmpCheck = true
+                }
+                times[scheduleSelect].text = "  "+ampm+" "+newVal+":"+minute+"  "
             }
         }
         ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
                 val (ampm, hour, minute) = matchResult.destructured
@@ -273,108 +267,115 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
         //등록 btn
         btnSubmit.setOnClickListener {
-            var start = timePlusMinutes(binding.tvHomeTimeStart.text.toString())
-            var end = timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
-            if(end == 0)
-                end =24*60
-            var check = true
-            if (receivedData != null) {
-                for (data in receivedData) {
-                    var tmpStart = data.startHour * 60 + data.startMin
-                    var tmpEnd = data.endHour * 60 + data.endMin
-                    if(tmpEnd==0)
-                        tmpEnd = 24*60
-                    if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
-                        if (data.divisionNumber != recievedPieData?.divisionNumber)
-                            check = false
+            if(btnSubmit.text.toString()=="삭제"){
+                viewModelTime.delTimeDatas(curId) { result ->
+                    when (result) {
+                        1 -> {
+                            val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                            for(data in tmpList) {
+                                if(data.id==curId) {
+                                    tmpList.remove(data)
+                                    break
+                                }
+                            }
+                            val bundle = Bundle()
+                            bundle.putString("today",today)
+                            if(viewpager) {
+                                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                            }
+                            else
+                                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } else {
+                var start = viewModelTime.timePlusMinutes(binding.tvHomeTimeStart.text.toString())
+                var end = viewModelTime.timePlusMinutes(binding.tvHomeTimeEnd.text.toString())
+                if(end == 0)
+                    end =24*60
+                var check = true
+                if (receivedData != null) {
+                    for (data in receivedData) {
+                        var tmpStart = data.startHour * 60 + data.startMin
+                        var tmpEnd = data.endHour * 60 + data.endMin
+                        if(tmpEnd==0)
+                            tmpEnd = 24*60
+                        if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
+                            if (data.divisionNumber != recievedPieData?.divisionNumber)
+                                check = false
+                        }
+                    }
+                }
+                if(binding.edtHomeCategoryName.text.toString()=="") {
+                    viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
+                } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
+                    viewModelTime.setPopupOne(requireContext(),"올바른 시간을 입력하시오", view)
+                } else if(!check){            //이미 해당 시간에 일정이 있을 때
+                    viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
+                } else {
+                    val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                    if(btnSubmit.text.toString()=="등록") {
+                        viewModelTime.addTimeDatas(tmp) { result ->
+                            when (result) {
+                                1 -> {
+                                    val tmpId = 1532
+                                    if(viewModelTime.hashMapArrayTime.get(today)==null) {
+                                        viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
+                                    }
+                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                        Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                    )
 
+                                    val bundle = Bundle()
+                                    bundle.putString("today",today)
+                                    if(viewpager) {
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                                    }
+                                    else
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    } else if(btnSubmit.text.toString()=="수정") {
+                        viewModelTime.editTimeData(curId,tmp) { result ->
+                            when (result) {
+                                1 -> {
+                                    val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                                    for(data in tmpList) {
+                                        if(data.id==curId) {
+                                            tmpList.remove(data)
+                                            break
+                                        }
+                                    }
+                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                        Schedule(curId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                    )
+
+                                    val bundle = Bundle()
+                                    bundle.putString("today",today)
+                                    if(viewpager) {
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
+                                    }
+                                    else
+                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if(binding.edtHomeCategoryName.text.toString()=="") {
-                val mDialogView = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
-                val mBuilder = AlertDialog.Builder(requireContext())
-                    .setView(mDialogView)
-                    .create()
-                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                mBuilder.show()
-
-                val displayMetrics = DisplayMetrics()
-                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                val size = Point()
-                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                display.getSize(size)
-                val screenWidth = size.x
-                val popupWidth = (screenWidth * 0.8).toInt()
-                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-
-                mDialogView.findViewById<TextView>(R.id.nickname).setText("스케줄명을 입력하시오")
-                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
-                    mBuilder.dismiss()
-                })
-            } else if(compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                val mDialogView = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
-                val mBuilder = AlertDialog.Builder(requireContext())
-                    .setView(mDialogView)
-                    .create()
-                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                mBuilder.show()
-
-                val displayMetrics = DisplayMetrics()
-                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                val size = Point()
-                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                display.getSize(size)
-                val screenWidth = size.x
-                val popupWidth = (screenWidth * 0.8).toInt()
-                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-
-                mDialogView.findViewById<TextView>(R.id.nickname).setText("올바른 시간을 입력해 주십시오")
-                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
-                    mBuilder.dismiss()
-                })
-            } else if(!check){            //이미 해당 시간에 일정이 있을 때
-                val mDialogView = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.home_fragment_time_add_warningsign, null)
-                val mBuilder = AlertDialog.Builder(requireContext())
-                    .setView(mDialogView)
-                    .create()
-                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                mBuilder.show()
-
-                val displayMetrics = DisplayMetrics()
-                val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                val size = Point()
-                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                display.getSize(size)
-                val screenWidth = size.x
-                val popupWidth = (screenWidth * 0.8).toInt()
-                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-
-                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener({
-                    mBuilder.dismiss()
-                })
-            } else if (check&&!compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-            //Log.d("time","${timeChange(binding.tvHomeTimeStart.text.toString())} ${timeChange(binding.tvHomeTimeEnd.text.toString())}")
-            val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,timeChange(binding.tvHomeTimeStart.text.toString()),
-                timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
-
-            if(binding.btnHomeTimeAddSubmit.text.toString()=="등록") {
-                addTimeDatas(tmp)
-            } else {
-                editTimeData(id,tmp)
-            }
-
-            }
-
-        // list 만들고 그 안에 파라미터를 받고(데이터를 저장해서) db에 넘기기
-            //2. 시간표 화면으로 이동
 
         }
         binding.ivHomeAddTimeBack.setOnClickListener {
@@ -387,250 +388,67 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             else
                 findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
         }
-        btnDelete.setOnClickListener {
-            delTimeDatas(id)
-        }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
             binding.homeFragmentTimeAddLayout.requestFocus()
         }
 
         val datas = ArrayList<AndroidCalendarData>()
-        getTodoCalDatas(today,datas)
-
-
-
-
-
+        viewModelTime.getTodoCalDatas(today,datas) { result ->
+            when (result) {
+                1 -> {
+                    if(!datas.isEmpty())
+                        haveTodoCalDatas = true
+                    val adapter = HomeScheduleAndTodoAdapter(datas,
+                        LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
+                    var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
+                    binding.homeTimeTodoList.layoutManager = manager
+                    binding.homeTimeTodoList.adapter = adapter
+                }
+                2 -> {
+                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         binding.edtHomeCategoryName.setOnFocusChangeListener { view, hasFocus ->
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             if (hasFocus&&haveTodoCalDatas) {
                 binding.homeTimeTodoListView.visibility = View.VISIBLE
             } else
                 binding.homeTimeTodoListView.visibility = View.GONE
         }
+        binding.timeLayout.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
+        }
+        binding.edtHomeScheduleMemo.setOnClickListener {
+            if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
+        }
     }
-
     private fun initColorArray(){
         with(timeColorArray){
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub5))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
+            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(android.graphics.Color.parseColor("#F68F30"))
+            timeColorArray.add(android.graphics.Color.parseColor("#F33E3E"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
             timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
-            timeColorArray.add(android.graphics.Color.parseColor("#D4ECF1"))
+
             timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
-            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
+            timeColorArray.add(android.graphics.Color.parseColor("#21C362"))
+            timeColorArray.add(android.graphics.Color.parseColor("#0E9746"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
 
-
         }
     }
-    private fun addTimeDatas(data : ScheduleAdd) {
-        val call = service.addTime(token,data)
-        Log.d("data",data.toJson())
-        call.enqueue(object : Callback<ScheduleResponse> {
-            override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse
-                        Log.d("success","${datas.status} ${datas.message} ${datas.succcess} ${datas.data.date} ${datas.data.scheduleName} ${datas.data.color}")
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
-                    }
-                } else {
-                    Log.d("333213","itemType: ${response.code()}")
-                }
-                val bundle = Bundle()
-                bundle.putString("today",today)
-                if(viewpager) {
-                    bottomFlag = false
-                    findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                }
-                else
-                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
-            }
-            override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-    private fun delTimeDatas(id : Int) {
-        val call = service.deleteTime(token, id)
-
-        call.enqueue(object : Callback<ScheduleResponse> {
-            override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse
-                        Log.d("success","${datas.status} ${datas.message} ${datas.succcess} ")
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
-                    }
-                    val bundle = Bundle()
-                    bundle.putString("today",today)
-                    if(viewpager) {
-                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                    }
-                    else
-                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
-                } else {
-                    Log.d("333213","itemType: ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-
-    private fun editTimeData(id : Int,data : ScheduleAdd) {
-        val call = service.editTime(token, id,data)
-        call.enqueue(object : Callback<ScheduleResponse> {
-            override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse
-                        Log.d("success","${datas.status} ${datas.message} ${datas.succcess} ")
-                    } else {
-                        Log.d("222","Request was not successful. Message: hi")
-                    }
-                    val bundle = Bundle()
-                    bundle.putString("today",today)
-                    if(viewpager) {
-                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                    }
-                    else
-                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
-                } else {
-                    Log.d("333213","itemType: ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-
-    }
-    // CalendarDATA(
-    //                "2023-7-2", "2023-7-2", "2023-7-6", "00:00", "24:00",
-    //                "#2AA1B7", "반복 안함", "N", "데이터분석기초 기말고사", -1, true, "","CAL",7
-    //            ),
-    private fun getTodoCalDatas(date : String,arrays: ArrayList<AndroidCalendarData>) {
-        val call = service.getCalendarTodo(token,date)
-        call.enqueue(object : Callback<ScheduleTodoCalList> {
-            override fun onResponse(call2: Call<ScheduleTodoCalList>, response: Response<ScheduleTodoCalList>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.datas
-                        if(datas != null) {
-                            for(data in datas.todoList) {
-
-                                arrays.add(AndroidCalendarData("","","","","",
-                                    "","","",data.todoName,data.iconId,false,"","TODO",7))
-                            }
-
-                            for(data in datas.calendarList) {
-                                Log.d("cal","${data.CalendarName} ${data.startTime} ${data.endTime} ${data.color} ${data.dday}" )
-                                if(data.dday=="N")
-                                    arrays.add(AndroidCalendarData("","","",data.startTime,data.endTime,
-                                        data.color,"","N",data.CalendarName,1,false,"","CAL",7))
-                                else
-                                    arrays.add(AndroidCalendarData("","","",data.startTime,data.endTime,
-                                        data.color,"","Y",data.CalendarName,1,true,"","CAL",7))
-                            }
-                            if(!arrays.isEmpty())
-                                haveTodoCalDatas = true
-                            val adapter = HomeScheduleAndTodoAdapter(arrays,LocalDate.parse(today).dayOfMonth,binding.edtHomeCategoryName,binding.tvHomeTimeStart,binding.tvHomeTimeEnd, binding.homeTimeTodoListView)
-                            var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
-                            binding.homeTimeTodoList.layoutManager = manager
-                            binding.homeTimeTodoList.adapter = adapter
-                        }
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-    fun timeChange(time: String): String {
-        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
-        val calendar = Calendar.getInstance()
-
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
-
-        calendar.time = inputFormat.parse(timeModified)
-
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        return String.format("%02d:%02d:00", hour, minute)
-    }
-    fun compareTimes(time1: String, time2: String): Boolean {
-        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US")) // 수정된 형식
-        val calendar1 = Calendar.getInstance()
-        val calendar2 = Calendar.getInstance()
-
-        val time1Modified = time1.replace("오전", "AM").replace("오후", "PM").replace(" ","")
-        val time2Modified = time2.replace("오전", "AM").replace("오후", "PM").replace(" ","")
-
-        calendar1.time = inputFormat.parse(time1Modified)
-        calendar2.time = inputFormat.parse(time2Modified)
-
-        val hour1 = calendar1.get(Calendar.HOUR_OF_DAY)
-        val minute1 = calendar1.get(Calendar.MINUTE)
-
-        val hour2 = calendar2.get(Calendar.HOUR_OF_DAY)
-        val minute2 = calendar2.get(Calendar.MINUTE)
-
-        if (hour1 > hour2 || (hour1 == hour2 && minute1 >= minute2)) {
-            return true
-        } else {
-            return false
-        }
-    }
-    fun timeChangeReverse(time: String): String {
-        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
-        val outputFormat = SimpleDateFormat(" a h:mm ", Locale("en", "US"))
-        val calendar = Calendar.getInstance()
-
-        calendar.time = inputFormat.parse(time)
-
-        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
-    }
-
-    fun timePlusMinutes(time: String): Int {
-        val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
-        val calendar = Calendar.getInstance()
-
-        val timeModified = time.replace("오전", "AM").replace("오후", "PM").replace(" ","")
-
-        calendar.time = inputFormat.parse(timeModified)
-
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        val totalMinutes = hour * 60 + minute
-
-
-        return totalMinutes
-    }
-
     private fun customBackDialog() {
         backDialog = HomeBackCustomDialog(requireActivity(), this)
         backDialog.show()
     }
-
-
-
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
             Navigation.findNavController(requireView()).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
