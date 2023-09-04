@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
@@ -34,6 +35,8 @@ class MyRecordMonthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = binding.navHostFragmentContainer.findNavController()
 
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_fragMy)
