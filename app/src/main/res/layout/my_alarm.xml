@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MyFuction.MySetActivity">
+    tools:context=".MyFuction.Fragment.MyAlarmFragment">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
@@ -82,12 +82,15 @@
                     android:text="캘린더에 등록된 일정의 알림을 전날 19시에 받습니다." />
             </LinearLayout>
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/my_set_switch1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:paddingEnd="5dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:thumbTint="@color/sub4"
+                app:trackTint="@color/main"
+                android:checked="true"/>
         </LinearLayout>
 
         <View
@@ -127,12 +130,15 @@
                     android:text="디데이에 등록된 일정의 알림을 당일에 받습니다." />
             </LinearLayout>
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/my_set_switch2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:paddingEnd="5dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:thumbTint="@color/sub4"
+                app:trackTint="@color/main"
+                android:checked="true" />
         </LinearLayout>
 
         <View
@@ -171,12 +177,15 @@
                     android:text="시간표에 등록된 일정 10분 전에 알림을 받습니다." />
             </LinearLayout>
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/my_set_switch3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:paddingEnd="5dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:thumbTint="@color/sub4"
+                app:trackTint="@color/main"
+                android:checked="true"/>
         </LinearLayout>
 
         <View

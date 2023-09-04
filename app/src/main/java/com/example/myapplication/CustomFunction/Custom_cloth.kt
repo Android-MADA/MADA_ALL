@@ -12,9 +12,8 @@ import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
-import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.CustomClothBinding
 import com.example.myapplication.databinding.FragCustomBinding
 import retrofit2.Call
@@ -37,7 +36,7 @@ class custom_cloth() : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
     private val serverIdToDrawableMap = mapOf(
         900 to R.drawable.custom_empty,

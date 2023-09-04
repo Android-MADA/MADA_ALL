@@ -2,6 +2,8 @@ package com.example.myapplication.CalenderFuntion
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
@@ -20,6 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,7 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData2
 import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
@@ -252,6 +255,19 @@ class CalendarAddFragment : Fragment() {
             } else {
                 binding.colck.visibility =View.VISIBLE
             }
+            // 스위치 색 변경
+            val trackColor = if (isChecked) {
+                ContextCompat.getColor(requireContext(), R.color.main)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.grey5)
+            }
+            val thumbColor = if (isChecked) {
+                ContextCompat.getColor(requireContext(),  R.color.sub4)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.grey2)
+            }
+            binding.switch2.trackDrawable?.setColorFilter(trackColor, PorterDuff.Mode.SRC_IN)
+            binding.switch2.thumbDrawable?.setColorFilter(thumbColor, PorterDuff.Mode.SRC_IN)
 
         }
         val schedules = arrayOf<TextView>(
@@ -810,7 +826,7 @@ class CalendarAddFragment : Fragment() {
         })
     }
     private fun getDdayDataArray() {
-        val ddayDatas = ArrayList<CalendarDATA>()
+        val ddayDatas = ArrayList<AndroidCalendarData>()
         val call2 = service.getAllDday(token)
         call2.enqueue(object : Callback<CalendarDataDday> {
             override fun onResponse(call2: Call<CalendarDataDday>, response: Response<CalendarDataDday>) {
@@ -821,7 +837,7 @@ class CalendarAddFragment : Fragment() {
                         var editDdayInfo = false        //디데이 정보를 수정하려고 할때
                         if(datas != null) {
                             for (data in datas) {
-                                val tmp = CalendarDATA("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
+                                val tmp = AndroidCalendarData("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
                                     "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                     -1,true,"${data.memo}","CAL",data.id)
                                 if(id2 == data.id)

@@ -1,16 +1,14 @@
 package com.example.myapplication.MyFuction
 
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.MyFuction.Model.FragMyData
-import com.example.myapplication.MyFuction.Model.MyAlarmData
-import com.example.myapplication.MyFuction.Model.MyAlarmData2
-import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
-import com.example.myapplication.MyFuction.Model.MyGetNoticesData
-import com.example.myapplication.MyFuction.Model.MyGetProfileData
-import com.example.myapplication.MyFuction.Model.MyPostSetPageData
-import com.example.myapplication.MyFuction.Model.MyPremiumData
-import com.example.myapplication.MyFuction.Model.MySetPageData
-import com.example.myapplication.MyFuction.Model.MySetPageData2
+import com.example.myapplication.MyFuction.Data.FragMyData
+import com.example.myapplication.MyFuction.Data.MyAlarmData
+import com.example.myapplication.MyFuction.Data.MyChangeNicknameData
+import com.example.myapplication.MyFuction.Data.MyGetNoticesData
+import com.example.myapplication.MyFuction.Data.MyGetProfileData
+import com.example.myapplication.MyFuction.Data.MyPremiumData
+import com.example.myapplication.MyFuction.Data.MySetPageData
+import com.example.myapplication.MyFuction.Data.MySetPageData2
 import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
@@ -70,10 +68,12 @@ interface RetrofitServiceMy {
     fun myGetSettingPage(@Header("Authorization") token: String?
     ): Call<MySetPageData>
 
-    // 화면 설정 저장 -> 미확인
+    // 화면 설정 저장 -> 확인
     @POST("/user/pageInfo/change")
-    fun mySetPage(@Header("Authorization") token: String?, @Body isSettings: MyPostSetPageData
-    ): Call<MyPostSetPageData>
+    fun mySetPage(
+        @Header("Authorization") token: String?,
+        @Body data : MySetPageData2
+    ) : Call<MySetPageData>
 
     // 알림 설정 조회 -> 확인
     @GET("/user/alarmInfo")
@@ -82,8 +82,8 @@ interface RetrofitServiceMy {
 
     // 알림 설정 저장-> 미확인
     @PATCH("/user/alarmInfo")
-    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: MyAlarmData2
-    ): Call<MyAlarmData2>
+    fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
+    ): Call<MyAlarmData>
 
 
 

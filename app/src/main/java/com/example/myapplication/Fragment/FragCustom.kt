@@ -11,17 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.CustomViewModel
@@ -31,48 +23,25 @@ import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
 import com.example.myapplication.custom_color
 import com.example.myapplication.custom_item
-import com.example.myapplication.databinding.CustomBackgroundBinding
-import com.example.myapplication.databinding.CustomClothBinding
-import com.example.myapplication.databinding.CustomColorBinding
-import com.example.myapplication.databinding.CustomItemBinding
 import com.example.myapplication.databinding.FragCustomBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import java.lang.Math.log
-import java.math.BigInteger
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.graphics.Point
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
-import com.example.myapplication.CustomFunction.CustomItemChangeDATA
-import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.CustomFunction.customPrintDATA
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
-import okhttp3.HttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.PUT
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-
-
-
 
 
 interface OnColorImageChangeListener {
@@ -96,13 +65,14 @@ interface OnResetButtonClickListener {
 }
 
 data class IdAndItemType(
-    val id: String,
+    val id: Int,
     val itemType: String
 )
 
 
 
-class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
+    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
     private lateinit var viewPager: ViewPager2
     private var selectedColorButtonInfo: ButtonInfo? = null
@@ -141,7 +111,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
 
@@ -353,94 +323,59 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
             }
-            val itemIds = mutableListOf<String>()
+            val itemIds = arrayOf("10", "900", "800", "700")
 
-            val uniqueItemIds = mutableSetOf<String>()
+            val uniqueItemIds = mutableListOf<String>()
 
-            val isColorMissing = printIds.none { IdAndItemType -> this.itemType == "color" }
-            val isSetMissing = printIds.none { IdAndItemType -> this.itemType == "set" }
-            val isItemMissing = printIds.none { IdAndItemType -> this.itemType == "item" }
-            val isBackgroundMissing = printIds.none { IdAndItemType -> this.itemType == "background" }
-            Log.d("getCustomPrint", "$isColorMissing $isSetMissing $isItemMissing $isBackgroundMissing")
-
-
-            if(isColorMissing){
-                temdata.selectedColorButtonInfo?.serverID?.let { colorServerID ->
-                    if (colorServerID != null) {
-                        if (colorServerID != 900 && colorServerID != 800 && colorServerID != 700 && colorServerID != 0) {
-                            uniqueItemIds.add(colorServerID.toString())
-                        }else{}
-                    } else {
-                        uniqueItemIds.add("10")
-                    }
-                }
-            }else{
-                if (temdata.selectedColorButtonInfo?.serverID != 900 &&
-                    temdata.selectedColorButtonInfo?.serverID != 800 &&
-                    temdata.selectedColorButtonInfo?.serverID != 700 &&
-                    temdata.selectedColorButtonInfo?.serverID != 0  &&
-                    temdata.selectedColorButtonInfo?.serverID != null
-                ) {
-                    temdata.selectedColorButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                        uniqueItemIds.add(it.toString())
-                    }
+            printIds.forEach { idAndItemType ->
+                if(idAndItemType.itemType=="color") {
+                    itemIds[0]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="set") {
+                    itemIds[1]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="item") {
+                    itemIds[2]=(idAndItemType.id.toString())
+                } else if(idAndItemType.itemType=="background") {
+                    itemIds[3]=(idAndItemType.id.toString())
                 }
             }
 
-            if(isSetMissing){
-                temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                uniqueItemIds.add(it.toString())
+            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
+            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
+            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
+            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
+
+
+            if(temdata.selectedColorButtonInfo?.serverID == null) {
+                uniqueItemIds.add(itemIds[0])
+            } else {
+                uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
             }
-            }else{
-                if (temdata.selectedClothButtonInfo?.serverID != 900 &&
-                    temdata.selectedClothButtonInfo?.serverID != 800 &&
-                    temdata.selectedClothButtonInfo?.serverID != 700 &&
-                    temdata.selectedClothButtonInfo?.serverID != 0  &&
-                    temdata.selectedClothButtonInfo?.serverID != null
-                ) {
-                    temdata.selectedClothButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                        uniqueItemIds.add(it.toString())
-                    }
-                }
+            if(temdata.selectedClothButtonInfo?.serverID == null) {
+                if(itemIds[1]!="900")
+                    uniqueItemIds.add(itemIds[1])
+            } else {
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                    uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedItemButtonInfo?.serverID == null) {
+                if(itemIds[2]!="800")
+                    uniqueItemIds.add(itemIds[2])
+            } else {
+                if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
+                    uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+            }
+            if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
+                if(itemIds[3]!="700")
+                    uniqueItemIds.add(itemIds[3])
+            } else {
+                if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
+                    uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
             }
 
-            if(isItemMissing){
-                temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                    uniqueItemIds.add(it.toString())
-                }
-            }else{
-                if (temdata.selectedItemButtonInfo?.serverID != 900 &&
-                    temdata.selectedItemButtonInfo?.serverID != 800 &&
-                    temdata.selectedItemButtonInfo?.serverID != 700 &&
-                    temdata.selectedItemButtonInfo?.serverID != 0  &&
-                    temdata.selectedItemButtonInfo?.serverID != null
-                ) {
-                    temdata.selectedItemButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                        uniqueItemIds.add(it.toString())
-                    }
-                }
-            }
 
-            if(isBackgroundMissing){
-                temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0}?.let {
-                    uniqueItemIds.add(it.toString())
-                }
-            }
-            else{
-                if (temdata.selectedBackgroundButtonInfo?.serverID != 900 &&
-                    temdata.selectedBackgroundButtonInfo?.serverID != 800 &&
-                    temdata.selectedBackgroundButtonInfo?.serverID != 700 &&
-                    temdata.selectedBackgroundButtonInfo?.serverID != 0  &&
-                    temdata.selectedBackgroundButtonInfo?.serverID != null
-                ) {
-                    temdata.selectedBackgroundButtonInfo?.serverID?.takeIf { it != 900 && it != 800 && it != 700 && it != 0 }?.let {
-                            uniqueItemIds.add(it.toString())
-                        };
-                    else if{printIds.IdAndItemType.itemType == "background"}
-                }
-            }
-
+// Convert uniqueItemIds set back to a list
             val combinedIds = uniqueItemIds.toList()
+            Log.d("combined",combinedIds.toString())
 
 // Now you can use combinedIds as needed
             patchCustomItemChange(combinedIds)
@@ -453,6 +388,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
+        alertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+
 
         val btnNo = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_no)
         val btnYes = dialogView.findViewById<AppCompatButton>(R.id.btn_home_dialog_back_yes)
@@ -588,8 +527,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val printInfo = response.body()
                 val responseCode = response.code()
                 val datas = printInfo?.data?.wearingItems
-                val printIds: MutableList<IdAndItemType> = mutableListOf() // Create a mutable list of IdAndItemType objects
-
 
                 datas?.forEachIndexed { index, item ->
                     printId = item.id
@@ -603,8 +540,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
 
                 datas?.forEachIndexed { index, item ->
-                    val IdAndItemType = IdAndItemType(item.id.toString(), item.itemType)
-                    printIds.add(IdAndItemType)
+                    val idAndItemType = IdAndItemType(item.id, item.itemType)
+                    printIds.add(idAndItemType)
+
                 }
                 if (datas != null) {
                     for (item in datas) {
@@ -627,6 +565,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                         }
                     }
                 }
+
+
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
@@ -647,10 +587,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
                 else{
                     Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
-
                 }
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d("patchCustomItemChange", t.message.toString())
             }
@@ -687,21 +625,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-
-    /*private fun showBackConfirmationDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Unsaved Changes")
-            .setMessage("You have unsaved changes. Are you sure you want to go back?")
-            .setPositiveButton("Discard") { _, _ ->
-                // Discard changes and navigate back
-                requireActivity().onBackPressed()
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-
-        alertDialog.show()
-    }*/
-
     private fun navigateToSelectedFragment(itemId: Int) {
         if (unsavedChanges) {
             showBackConfirmationDialog()
@@ -723,6 +646,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     private fun showBackConfirmationDialog() {
         alertDialog.show()
+
+        //사이즈 조절
+        val displayMetrics = DisplayMetrics()
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
 
