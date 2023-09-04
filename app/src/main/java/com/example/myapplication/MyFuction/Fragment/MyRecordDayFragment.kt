@@ -1,13 +1,14 @@
-package com.example.myapplication.MyFuction.Activity
+package com.example.myapplication.MyFuction.Fragment
 
-import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,9 +46,10 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MyRecordDayActivity : AppCompatActivity() {
+class MyRecordDayFragment : Fragment() {
     private lateinit var binding: MyRecordDayBinding
     private lateinit var calendar: Calendar
+    lateinit var navController: NavController
 
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -55,14 +57,23 @@ class MyRecordDayActivity : AppCompatActivity() {
     var token = Splash2Activity.prefs.getString("token", "")
     var today = LocalDate.now().toString()        //default값
 
-    private var cateAdapter : HomeViewpager2CategoryAdapter? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = MyRecordDayBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        token = Splash2Activity.prefs.getString("token","")
+    private var cateAdapter: HomeViewpager2CategoryAdapter? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = MyRecordDayBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        token = Splash2Activity.prefs.getString("token", "")
+
         binding.backBtn.setOnClickListener {
-            finish()
+            navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
         }
 
         //달력 부분
@@ -86,9 +97,8 @@ class MyRecordDayActivity : AppCompatActivity() {
 
         // 일 주 월 버튼 클릭 이동
         binding.dayWeekMonthBtn.setOnClickListener {
-            finish()
-            val intent = Intent(this, MyRecordWeekActivity::class.java)
-            startActivity(intent)
+            activity?.finish()
+            navController.navigate(R.id.action_myRecordDayFragment_to_myRecordWeekFragment)
         }
 
         binding.todayInfo.setOnClickListener {
@@ -110,8 +120,8 @@ class MyRecordDayActivity : AppCompatActivity() {
         val todayDate = Date()
         val formattedDate = dateFormat.format(todayDate)
         getTimeDatas(formattedDate)
-
     }
+
     private fun setMonthView() {
         var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         binding.textCalendar.text = CalendarUtil.selectedDate.format(formatter)
@@ -119,44 +129,44 @@ class MyRecordDayActivity : AppCompatActivity() {
         val dayList = dayInMonthArray()
 
         val formatter2 = DateTimeFormatter.ofPattern("M")
-        val adapter = MyCalendarAdapter(dayList,CalendarUtil.selectedDate.format(formatter2),binding.record,binding.todayInfo)
-        var manager: RecyclerView.LayoutManager = GridLayoutManager(this,7)
+        val adapter = MyCalendarAdapter(dayList, CalendarUtil.selectedDate.format(formatter2), binding.record, binding.todayInfo)
+        var manager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
         binding.calendar2.layoutManager = manager
         binding.calendar2.adapter = adapter
 
     }
-    private fun dayInMonthArray() : ArrayList<Date> {
+
+    private fun dayInMonthArray(): ArrayList<Date> {
         var dayList = ArrayList<Date>()
         var monthCalendar = calendar.clone() as Calendar
 
         monthCalendar[Calendar.DAY_OF_MONTH] = 1
-        var firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK]-1
-        monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
+        var firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK] - 1
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayofMonth)
 
         var i = 0
-        var curMon = calendar.get(Calendar.MONTH)+1
-        while(i<38) {
+        var curMon = calendar.get(Calendar.MONTH) + 1
+        while (i < 38) {
             val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
             val date = dateFormat.parse(monthCalendar.time.toString())
-            if(curMon< SimpleDateFormat("M", Locale.ENGLISH).format(date).toInt()) {
+            if (curMon < SimpleDateFormat("M", Locale.ENGLISH).format(date).toInt()) {
                 break
             }
             dayList.add(monthCalendar.time)
-            monthCalendar.add(Calendar.DAY_OF_MONTH,1)
+            monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
 
         }
 
         return dayList
-
-
     }
-    private fun extractTime(timeString: String,hourOrMin : Boolean): Int {
+
+    private fun extractTime(timeString: String, hourOrMin: Boolean): Int {
         val timeParts = timeString.split(":")
         if (timeParts.size == 3) {
             try {
                 val hour = timeParts[0].toInt()
                 val minute = timeParts[1].toInt()
-                if(hourOrMin)
+                if (hourOrMin)
                     return hour
                 else
                     return minute
@@ -167,8 +177,9 @@ class MyRecordDayActivity : AppCompatActivity() {
         }
         return 0
     }
-    private fun getTimeDatas(date : String) {
-        val call = service.getTimetable(token,date)
+
+    private fun getTimeDatas(date: String) {
+        val call = service.getTimetable(token, date)
         val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
         val sampleTimeArray = ArrayList<SampleTimeData>()
         call.enqueue(object : Callback<ScheduleListData> {
@@ -177,16 +188,16 @@ class MyRecordDayActivity : AppCompatActivity() {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
                         val datas = apiResponse.datas2.datas
-                        if(datas != null) {
+                        if (datas != null) {
                             var i = 0
                             for (data in datas) {
                                 var end00 = 0
-                                if(data.endTime=="00:00:00")
+                                if (data.endTime == "00:00:00")
                                     end00 = 24
-                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
+                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName, data.memo, extractTime(data.startTime, true), extractTime(data.startTime, false),
+                                    extractTime(data.endTime, true) + end00, extractTime(data.endTime, false), data.color, i++, data.id)
                                 arrays.add(tmp)
-                                sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
+                                sampleTimeArray.add(SampleTimeData(data.scheduleName, data.color))
                             }
                         }
                         pirChartOn(arrays)
@@ -194,16 +205,17 @@ class MyRecordDayActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
             }
         })
     }
-    private fun pirChartOn(arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
+
+    private fun pirChartOn(arrays: ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
         val tmp2 = arrays.sortedWith(compareBy(
             { it.startHour },
             { it.startMin }
         ))
-
 
         var tmp = 0     //시작 시간
 
@@ -212,35 +224,34 @@ class MyRecordDayActivity : AppCompatActivity() {
         //Pi Chart
         var chart = binding.chart
 
-
-        val marker_ = YourMarkerView(this, R.layout.home_time_custom_label,pieChartDataArray)
+        val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label, pieChartDataArray)
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
 
-        if(pieChartDataArray.size==0) {     //그날 정보가 없다면
+        if (pieChartDataArray.size == 0) {     //그날 정보가 없다면
             entries.add(PieEntry(10f, "999"))
             colorsItems.add(Color.parseColor("#F0F0F0"))
         }
-        for(data in pieChartDataArray) {
+        for (data in pieChartDataArray) {
             val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
             val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
-            if(tmp==start) {      //이전 일정과 사이에 빈틈이 없을때
-                entries.add(PieEntry((end-start).toFloat(), data.divisionNumber.toString()))
+            if (tmp == start) {      //이전 일정과 사이에 빈틈이 없을때
+                entries.add(PieEntry((end - start).toFloat(), data.divisionNumber.toString()))
                 colorsItems.add(Color.parseColor(data.colorCode.toString()))
                 tmp = end
             } else {
                 val noScheduleDuration = start - tmp
                 entries.add(PieEntry(noScheduleDuration.toFloat(), "999"))      // 스케줄 없는 시간
                 colorsItems.add(Color.parseColor("#FFFFFF"))
-                entries.add(PieEntry((end-start).toFloat(), data.divisionNumber.toString()))
+                entries.add(PieEntry((end - start).toFloat(), data.divisionNumber.toString()))
                 colorsItems.add(Color.parseColor(data.colorCode.toString()))
                 tmp = end
             }
         }
-        if(pieChartDataArray.size>0&&pieChartDataArray[pieChartDataArray.size-1].endHour!=24) {
-            val h = 23 - pieChartDataArray[pieChartDataArray.size-1].endHour
-            val m = 60 - pieChartDataArray[pieChartDataArray.size-1].endMin
-            entries.add(PieEntry((h*60+m).toFloat(), "999"))
+        if (pieChartDataArray.size > 0 && pieChartDataArray[pieChartDataArray.size - 1].endHour != 24) {
+            val h = 23 - pieChartDataArray[pieChartDataArray.size - 1].endHour
+            val m = 60 - pieChartDataArray[pieChartDataArray.size - 1].endMin
+            entries.add(PieEntry((h * 60 + m).toFloat(), "999"))
             colorsItems.add(Color.parseColor("#FFFFFF"))
         }
         // 왼쪽 아래 설명 제거
@@ -256,14 +267,14 @@ class MyRecordDayActivity : AppCompatActivity() {
         }
 
         val pieData = PieData(pieDataSet)
-        val smallXY = if(chart.width > chart.height) chart.height else chart.width
-        val range = smallXY/60f
+        val smallXY = if (chart.width > chart.height) chart.height else chart.width
+        val range = smallXY / 60f
 
         chart.apply {
             data = pieData
             isRotationEnabled = false                               //드래그로 회전 x
             isDrawHoleEnabled = false                               //중간 홀 그리기 x
-            setExtraOffsets(range,range,range,range)    //크기 조절
+            setExtraOffsets(range, range, range, range)    //크기 조절
             setUsePercentValues(false)
             setEntryLabelColor(Color.BLACK)
             marker = marker_
@@ -285,13 +296,13 @@ class MyRecordDayActivity : AppCompatActivity() {
 
                 }
             }
+
             override fun onNothingSelected() {
             }
         })
-
     }
 
-    private fun attachAdapter( dataSet : ArrayList<Category>, cateTodoSet : ArrayList<ArrayList<Todo>>) {
+    private fun attachAdapter(dataSet: ArrayList<Category>, cateTodoSet: ArrayList<ArrayList<Todo>>) {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
@@ -310,33 +321,28 @@ class MyRecordDayActivity : AppCompatActivity() {
             ) {
 
             }
-            })
-
+        })
 
         binding.myViewpager2.adapter = cateAdapter
-        binding.myViewpager2.layoutManager = LinearLayoutManager(this)
+        binding.myViewpager2.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun findRv(date : String) {
-        Log.d("findrv", "함수 시작")
-        service.getMyCategory(token).enqueue(object : Callback<CategoryList1>{
+    private fun findRv(date: String) {
+        service.getMyCategory(token).enqueue(object : Callback<CategoryList1> {
             override fun onResponse(call: Call<CategoryList1>, response: Response<CategoryList1>) {
                 val category = response.body()?.data?.CategoryList
-                if(category?.isEmpty() != true){
-                    Log.d("findrvcate", response.body()?.data?.CategoryList.toString())
+                if (category?.isEmpty() != true) {
                     val cate = response.body()?.data?.CategoryList
-                    service.getAllMyTodo(token, date).enqueue(object : Callback<TodoList>{
+                    service.getAllMyTodo(token, date).enqueue(object : Callback<TodoList> {
                         override fun onResponse(
                             call: Call<TodoList>,
                             response: Response<TodoList>
                         ) {
                             val cateTodo = classifyTodo(category!!, response.body()!!.data.TodoList)
-                            Log.d("findrv", cateTodo.toString())
                             attachAdapter(category, cateTodo)
                         }
 
                         override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                            TODO("Not yet implemented")
                         }
 
                     })
@@ -345,13 +351,11 @@ class MyRecordDayActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-                Log.d("cate", "실패 ")
             }
-
         })
     }
 
-    private fun classifyTodo(dataSet : ArrayList<Category>, todo : ArrayList<Todo>) : ArrayList<ArrayList<Todo>> {
+    private fun classifyTodo(dataSet: ArrayList<Category>, todo: ArrayList<Todo>): ArrayList<ArrayList<Todo>> {
 
         var size = if (dataSet.size != 0) {
             dataSet.size.minus(1)
@@ -359,7 +363,7 @@ class MyRecordDayActivity : AppCompatActivity() {
             -1
         }
 
-        var todoCateList : ArrayList<ArrayList<Todo>> = arrayListOf(
+        var todoCateList: ArrayList<ArrayList<Todo>> = arrayListOf(
             arrayListOf(),
             arrayListOf(),
             arrayListOf(),
@@ -375,7 +379,6 @@ class MyRecordDayActivity : AppCompatActivity() {
             arrayListOf(),
             arrayListOf(),
             arrayListOf()
-
         )
         if (size > 0) {
             for (i in todo) {
@@ -385,16 +388,11 @@ class MyRecordDayActivity : AppCompatActivity() {
                     }
                 }
             }
-
         } else if (size == 0) {
             for (i in todo) {
                 todoCateList[0].add(i)
             }
         }
-        Log.d("mytodo", todoCateList.toString())
         return todoCateList
     }
-
-
-
 }

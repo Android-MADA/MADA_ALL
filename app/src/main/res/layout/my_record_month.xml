@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8E8"
-    tools:context=".MyFuction.Activity.MyRecordMonthActivity"
+    tools:context=".MyFuction.Fragment.MyRecordMonthFragment"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
 

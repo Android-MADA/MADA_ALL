@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8E8"
-    tools:context=".MyFuction.Activity.MyRecordWeekActivity"
+    tools:context=".MyFuction.Fragment.MyRecordWeekFragment"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
 
@@ -29,7 +29,7 @@
             android:layout_width="17dp"
             android:layout_height="17dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left" />
