@@ -93,7 +93,7 @@ class DayDataItemView @JvmOverloads constructor(
                         when (result) {
                             1 -> {
                                 //통신 성공
-                                val tmpId = 1532        //서버로 부터 얻은 아이디
+                                val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
 
                                 val inputYear = date.toString("yyyy").toInt() // 연도 정보
@@ -196,11 +196,11 @@ class DayDataItemView @JvmOverloads constructor(
                     val paint2 = Paint()
                     paint2.isAntiAlias = true
                     paint2.color = Color.parseColor(data.color)
-                    val roundedRect = RectF(10f, 130f+55f*data.floor, width.toFloat(), 180f+55f*data.floor)
+                    val roundedRect = RectF(0f, 130f+55f*data.floor, width.toFloat(), 180f+55f*data.floor)
                     val roundedRectCenter = RectF(-50f, 130f+55f*data.floor, width.toFloat()+55f, 180f+55f*data.floor)
                     val roundedRectRight = RectF(-50f, 130f+55f*data.floor, width.toFloat(), 180f+55f*data.floor)
-                    val roundedRectLeft = RectF(10f, 130f+55f*data.floor, width.toFloat()+55f, 180f+55f*data.floor)
-                    val roundedRectNoDuration = RectF(10f, 130f+55f*data.floor, 25f, 180f+55f*data.floor)
+                    val roundedRectLeft = RectF(0f, 130f+55f*data.floor, width.toFloat()+55f, 180f+55f*data.floor)
+                    val roundedRectNoDuration = RectF(0f, 130f+55f*data.floor, 25f, 180f+55f*data.floor)
                     val paint3 = Paint()
                     paint3.isAntiAlias = true
                     if(data.duration) {

@@ -195,7 +195,7 @@ class CalendarAddDdayFragment : Fragment() {
                         curColor,"No","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ) ) { result ->
                         when (result) {
                             1 -> {
-                                val tmpId = 1532        //서버로 부터 얻은 아이디
+                                val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
                                 CalendarViewModel.ddayArrayList.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
                                     "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(), -1,false,
