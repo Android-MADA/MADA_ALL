@@ -46,7 +46,7 @@ class MyRecordWeekFragment : Fragment() {
             navController.navigate(R.id.action_myRecordWeekFragment_to_fragMy)
         }
 
-
+        initCategoryRecycler()
 
         // 달력 부분
         val daysUntilSaturday =
@@ -58,18 +58,22 @@ class MyRecordWeekFragment : Fragment() {
         setWeekView()
         setTodoView()
         setTimetableView()
-        initCategoryRecycler()
+
 
         binding.preBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusWeeks(1)
             calendar.add(Calendar.WEEK_OF_YEAR, -1)
             setWeekView()
+            setTodoView()
+            setTimetableView()
         }
 
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusWeeks(1)
             calendar.add(Calendar.WEEK_OF_YEAR, 1)
             setWeekView()
+            setTodoView()
+            setTimetableView()
         }
 
         binding.dayWeekMonthBtn.setOnClickListener {
