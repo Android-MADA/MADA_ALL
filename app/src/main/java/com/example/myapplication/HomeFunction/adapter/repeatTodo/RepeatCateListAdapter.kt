@@ -77,7 +77,9 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
-                val data = RepeatEntity(0, 3, viewModel!!.homeDate.value.toString(), getItem(position).cateId, holder.edtAdd.text.toString(), false, "DAY", null, null, viewModel!!.homeDate.value.toString(), endDate, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
+                //서버 post
+                //response로 id 값 넣기
+                val data = RepeatEntity(0, 3, viewModel!!.homeDate.value.toString(), getItem(position).cateId, holder.edtAdd.text.toString(),  "DAY", null, null, viewModel!!.homeDate.value.toString(), endDate)
                 viewModel!!.createRepeatTodo(data, holder.edtAdd)
                 holder.edtAdd.text.clear()
                 holder.layoutAdd.isGone = true
