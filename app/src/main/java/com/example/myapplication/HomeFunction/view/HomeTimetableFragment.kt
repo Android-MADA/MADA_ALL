@@ -7,20 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CustomCircleBarView
-import com.example.myapplication.HomeFunction.Model.ScheduleList
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.time.SampleTimeData
+import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentTimetableBinding
 import com.example.myapplication.hideBottomNavigation
 import com.github.mikephil.charting.data.Entry
@@ -43,17 +43,14 @@ class HomeTimetableFragment : Fragment() {
 
     lateinit var binding : HomeFragmentTimetableBinding
     private val viewModel : HomeViewModel by activityViewModels()
+    private val viewModelTime: TimeViewModel by activityViewModels()
     private var bottomFlag = true
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(HomeApi::class.java)
-    var token = ""
     lateinit var today : String
+    lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
 
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
-    var dataArray= ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -64,7 +61,6 @@ class HomeTimetableFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
         hideBottomNavigation(bottomFlag, activity)
-        token = Splash2Activity.prefs.getString("token","")
         today = viewModel.homeDate.value.toString()
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
@@ -72,12 +68,29 @@ class HomeTimetableFragment : Fragment() {
         val hour = currentTime.get(Calendar.HOUR_OF_DAY)
         val minute = currentTime.get(Calendar.MINUTE)
         val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
-        customCircleBarView.setProgress(progressPercentage.toInt())
-
-        //var today = viewModel.homeDate.value.toString()
+        customCircleBarView.setProgress(progressPercentage)
 
         //파이차트
-        getTimeDatas(viewModel.homeDate.value.toString())
+        viewModelTime.getScheduleDatas(today) { result ->
+            when (result) {
+                1 -> {
+                    val tmpList = viewModelTime.getTimeDatas(today)
+                    pirChartOn(tmpList)
+                    val timeAdapter = HomeTimeAdapter(tmpList)
+                    //rv adpter 연결
+                    timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
+                        override fun onClick(v: View, position: Int) {
+                            //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+                        }
+                    })
+                    binding.rvHomeTimeSchedule.adapter = timeAdapter
+                    binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
+                }
+                2 -> {
+                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         return binding.root
     }
@@ -90,99 +103,21 @@ class HomeTimetableFragment : Fragment() {
 
         binding.ivHomeTimetableBack.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
-            bottomFlag = false
         }
-
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("today",viewModel.homeDate.value.toString())
-            bundle.putString("Token",viewModel.userToken)
-            if(dataArray!=null) {
-                bundle.putSerializable("pieChartDataArray", dataArray)
-                Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
-            } else {
-                Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
-            }
+            bundle.putString("today",today)
+            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
         }
-
-
-        //edt처리
-
-
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         hideBottomNavigation(bottomFlag, activity)
     }
-    private fun extractTime(timeString: String,hourOrMin : Boolean): Int {
-        val timeParts = timeString.split(":")
-        if (timeParts.size == 3) {
-            try {
-                val hour = timeParts[0].toInt()
-                val minute = timeParts[1].toInt()
-                if(hourOrMin)
-                    return hour
-                else
-                    return minute
-            } catch (e: NumberFormatException) {
-                // 숫자로 변환할 수 없는 경우 또는 잘못된 형식인 경우
-                return 0
-            }
-        }
-        return 0
-    }
 
-    private fun getTimeDatas(date : String) {
-        val call = service.getTimetable(token,date)
-        val arrays = ArrayList<HomeViewpagerTimetableFragment.PieChartData>()
-        val sampleTimeArray = ArrayList<SampleTimeData>()
-        call.enqueue(object : Callback<ScheduleListData> {
-            override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.datas2.datas
-                        if(datas != null) {
-                            var i = 0
-                            for (data in datas) {
-                                var end00 = 0
-                                if(data.endTime=="00:00:00")
-                                    end00 = 24
-                                val tmp = HomeViewpagerTimetableFragment.PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
-                                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
-                                arrays.add(tmp)
-                                sampleTimeArray.add(SampleTimeData(data.scheduleName,data.color))
-                                Log.d("time","${data.scheduleName} ${data.startTime} ${data.endTime} ${data.id} ${data.color}")
-                            }
-                        }
-                        pirChartOn(arrays)
-
-                        val timeAdapter = HomeTimeAdapter(sampleTimeArray)
-                        //rv adpter 연결
-                        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
-                            override fun onClick(v: View, position: Int) {
-                                //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-                            }
-                        })
-
-                        binding.rvHomeTimeSchedule.adapter = timeAdapter
-                        binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-    private fun pirChartOn(arrays : ArrayList<HomeViewpagerTimetableFragment.PieChartData>) {
-        val tmp = arrays.sortedWith(compareBy(
-            { it.startHour },
-            { it.startMin }
-        ))
-        dataArray = tmp.toMutableList() as ArrayList<HomeViewpagerTimetableFragment.PieChartData>
-        val pieChartDataArray = dataArray
+    private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
+        pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
 
@@ -190,7 +125,6 @@ class HomeTimetableFragment : Fragment() {
         val colorsItems = ArrayList<Int>()
 
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
-
             entries.add(PieEntry(10f, "999"))
             colorsItems.add(Color.parseColor("#F0F0F0"))
         } else {
@@ -213,9 +147,6 @@ class HomeTimetableFragment : Fragment() {
                 }
             }
         }
-
-
-
         if(pieChartDataArray.size>0&&pieChartDataArray[pieChartDataArray.size-1].endHour!=24) {
             val h = 23 - pieChartDataArray[pieChartDataArray.size-1].endHour
             val m = 60 - pieChartDataArray[pieChartDataArray.size-1].endMin
@@ -235,8 +166,8 @@ class HomeTimetableFragment : Fragment() {
 
         val pieData = PieData(pieDataSet)
         val smallXY = if(chart.width > chart.height) chart.height else chart.width
-
-        val range = smallXY / 60.toFloat()
+        if(smallXY/60f > 0) viewModelTime.range = smallXY/60f
+        val range = viewModelTime.range
 
 
         chart.apply {
@@ -258,10 +189,9 @@ class HomeTimetableFragment : Fragment() {
 
                     if (label != "999") {
                         val bundle = Bundle()
+                        bundle.putString("today",today)
                         bundle.putSerializable("pieChartData", pieChartDataArray[label.toInt()])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-                        bundle.putString("Token",token)
-                        bundle.putString("today",today)
                         Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
                     } else {
                         pieDataSet.selectionShift = 1f //하이라이트 크기

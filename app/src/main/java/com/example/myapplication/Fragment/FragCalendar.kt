@@ -1,84 +1,59 @@
 package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.CalendarAdapter
-import com.example.myapplication.CalenderFuntion.CalendarUtil
-import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarData2
-import com.example.myapplication.CalenderFuntion.Model.CalendarData3
-import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
-import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.Model.ResponseSample
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.MyWebviewActivity
 import com.example.myapplication.databinding.FragCalendarBinding
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
-import java.util.Date
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
+import com.example.myapplication.StartFuction.Splash2Activity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.shawnlin.numberpicker.NumberPicker
 import com.squareup.picasso.Picasso
-import org.json.JSONObject
+import org.joda.time.DateTime
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.lang.Integer.min
-import java.net.HttpURLConnection
-import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
 class FragCalendar : Fragment(){
 
     lateinit var binding: FragCalendarBinding
-    private val viewModelCal : CalendarViewModel by activityViewModels()
+    private lateinit var calendarAdapter: CalendarSliderAdapter
+    private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val viewModel: CustomViewModel by viewModels()
-    private lateinit var calendar: Calendar
-    data class sche(var startMonth: Int, var endMonth: Int, var startDay: Int, var endDay: Int)
-    val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
-
-
-    private var todayMonth = 6
-    private var todayYear =2023
-
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(RetrofitServiceCalendar::class.java)
-    var token = ""
-
-
+    val today = LocalDate.now()
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -91,408 +66,115 @@ class FragCalendar : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        token = Splash2Activity.prefs.getString("token","")?: "123"
-        CalendarUtil.selectedDate = LocalDate.now()
-        calendar = Calendar.getInstance()
-        todayMonth = calendar.get(Calendar.MONTH) + 1
-        todayYear = calendar.get(Calendar.YEAR)
-
+        hideBootomNavigation(false)
         binding = FragCalendarBinding.inflate(inflater, container, false)
+        val viewPager =binding.calendarViewPager
+        val tmp = ArrayList<AndroidCalendarData>()
+        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-31",
+            "10:00:00","11:00:00","#2AA1B7","No","N","안녕하세요 저의 이름은",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-06",
+            "10:00:00","11:00:00","#2AA1B7","No","N","6",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-07",
+            "10:00:00","11:00:00","#2AA1B7","No","N","7",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-04",
+            "10:00:00","11:00:00","#2AA1B7","No","N","4",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-05",
+            "10:00:00","11:00:00","#2AA1B7","No","N","5",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-07","2023-08-07","2023-08-09",
+            "10:00:00","11:00:00","#2AA1B7","No","N","6",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-08","2023-08-08","2023-08-09",
+            "10:00:00","11:00:00","#2AA1B7","No","N","7",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-08","2023-08-08","2023-08-10",
+            "10:00:00","11:00:00","#2AA1B7","No","N","9",
+            -1,true,"","CAL",-1,""))
+        tmp.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
+            "10:00:00","11:00:00","#2AA1B7","No","N","9fhdfhdfhfdhd",
+            -1,false,"","CAL",-1,""))
+        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
+        //    "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
+         //   -1,false,"","CAL",-1,"3"))
+        //CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
+        val currentDate = LocalDate.now()
+        calendarAdapter = CalendarSliderAdapter(this,binding.textYear, binding.textMonth,viewPager)
+        binding.textYear.text = currentDate.year.toString() + "년"
+        binding.textMonth.text = currentDate.monthValue.toString() + "월"
+        viewPager.adapter = calendarAdapter
+        viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
+        binding.calendarTodayText.text =  LocalDate.now().dayOfMonth.toString()
+        binding.calendarTodayBtn.setOnClickListener {
+            viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION, true)
+        }
+        binding.changeCal.setOnClickListener {
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_change_cal, null)
+            val mBuilder = AlertDialog.Builder(context)
+                .setView(mDialogView)
+                .create()
 
+            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+            mBuilder.show()
+            mDialogView.findViewById<NumberPicker>(R.id.number_picker1).value = today.year
+            mDialogView.findViewById<NumberPicker>(R.id.number_picker2).value = today.monthValue
+            //팝업 사이즈 조절
+            DisplayMetrics()
+            context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val size = Point()
+            val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+            display.getSize(size)
+            val screenWidth = size.x
+            val popupWidth = (screenWidth * 0.9).toInt()
+            mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+            //팝업 타이틀 설정, 버튼 작용 시스템
+            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+
+                mBuilder.dismiss()
+            })
+            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                val yearTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker1).value
+                val monthTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker2).value
+                val comparisonResult =  ChronoUnit.MONTHS.between(today,LocalDate.parse(String.format("%02d-%02d",yearTmp, monthTmp)+"-01"))
+                viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt() , true)
+
+                mBuilder.dismiss()
+            })
+        }
 
         //getMonthDataArray(CalendarUtil.selectedDate.format(viewModelCal.formatterM),CalendarUtil.selectedDate.format(viewModelCal.formatterYYYY),datas)
 
-        binding.preBtn.setOnClickListener {
-            CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
-            calendar.add(Calendar.MONTH, -1)
-            //getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
-        }
-        binding.nextBtn.setOnClickListener {
-            CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
-            calendar.add(Calendar.MONTH, 1)
-            //getMonthDataArray(CalendarUtil.selectedDate.format(formatterM),CalendarUtil.selectedDate.format(formatterY),datas)
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //val savedData = viewModel.getSavedButtonInfo()
-
         //getCustomChar()
-
-        //getDdayDataArray()
-
 
         binding.calendarDdayPlusBtn.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("Today","${todayYear}-${todayMonth}-${calendar.get(Calendar.DAY_OF_MONTH)}")
-            bundle.putString("Token",token)
+            bundle.putString("today",CalendarViewModel.todayDate())
             Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
         }
-
-
     }
-
-
-    fun daysRemainingToDate(targetDate: String): Int {
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d")
-        val today = LocalDate.now()
-        val target = LocalDate.parse(targetDate, dateFormatter)
-        val daysRemaining = target.toEpochDay() - today.toEpochDay()
-        return daysRemaining.toInt()
-    }
-    private fun setMonthView(datas : ArrayList<AndroidCalendarData>, startMon : Boolean) {
-        val dataArray = Array<ArrayList<AndroidCalendarData?>>(42) { ArrayList() }
-        var formatter = DateTimeFormatter.ofPattern("M")
-        binding.textMonth.text = CalendarUtil.selectedDate.format(formatter)+"월"
-        formatter = DateTimeFormatter.ofPattern("yyyy년")
-        binding.textYear.text = CalendarUtil.selectedDate.format(formatter)
-
-        var calendarDayArray = Array(43) {""}
-        val dayList = dayInMonthArray(startMon,calendarDayArray)
-
-        //임시 데이터 정보 받아오기
-                                                                       //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 년도랑 월 받아와야함
-        val formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d")
-        for(data in datas) {
-            if(data!=null) {
-                var start = calendarDayArray.indexOf(data.startDate)
-                var end = calendarDayArray.indexOf(data.endDate)
-                if(end>=0 && start < 0)
-                    start = 0
-                else if(end<0 && start >=0)
-                    end = 41
-
-                if (start >= 0 && end >= 0) {
-                    // start와 end가 유효한 경우에만 dataArray 배열에 데이터 추가
-                    if(dataArray[start].size<2) {
-                        data.floor = dataArray[start].size
-                    } else {
-                        data.floor=-1
-                    }
-                    for(i in start.. end) {
-                        if(dataArray[i].size<2&&data.floor==-1) {
-                            data.floor = dataArray[i].size
-                            data.startDate2 = LocalDate.parse(data.startDate, formatter2).plusDays((i-start).toLong()).format(formatter2)
-                        }
-
-                        dataArray[i].add(data.copy())
-                    }
-                } else {
-                    // start와 end가 유효하지 않은 경우, 오류 처리 또는 다른 로직 수행
-                }
-
-
-            } else {
-
-            }
+    fun hideBootomNavigation(bool : Boolean){
+        val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        if(bool){
+            bottomNavigation?.isGone = true
         }
-        val adapter = CalendarAdapter(dayList,dataArray,token)
-        var manager: RecyclerView.LayoutManager = GridLayoutManager(context,7)
-        binding.calendar.layoutManager = manager
-        binding.calendar.adapter = adapter
-    }
-
-    private fun dayInMonthArray(startMon : Boolean, calendarDayArray : Array<String>) : ArrayList<Date> {
-        var dayList = ArrayList<Date>()
-        var monthCalendar = calendar.clone() as Calendar
-
-        monthCalendar[Calendar.DAY_OF_MONTH] = 1        //달의 첫 번째 날짜
-        var firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK]-1
-        if(startMon&&firstDayofMonth==0) {
-            firstDayofMonth = 7
+        else {
+            bottomNavigation?.isVisible = true
         }
-        monthCalendar.add(Calendar.DAY_OF_MONTH,-firstDayofMonth)
-        var i = 0
-        var curMon = calendar.get(Calendar.MONTH)+1
-        while(i<43) {
-
-            val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-            val date = dateFormat.parse(monthCalendar.time.toString())
-            calendarDayArray[i++] = SimpleDateFormat("yyyy-M-d", Locale.ENGLISH).format(date)
-            dayList.add(monthCalendar.time)
-            monthCalendar.add(Calendar.DAY_OF_MONTH,1)
-            if(i==36&&curMon.toString()!=SimpleDateFormat("M", Locale.ENGLISH).format(date)) {
-                //Log.d("breeeak","${SimpleDateFormat("M", Locale.ENGLISH).format(date)} ${curMon}")
-                break
-            }
-        }
-        if(startMon) {      //월요일 부터 시작이라면
-            dayList.removeAt(0)
-            for (i in 0 until calendarDayArray.size - 1) {
-                calendarDayArray[i] = calendarDayArray[i + 1]
-
-            }
-            val textView = binding.textSun
-            binding.textYoil.removeView(binding.textSun)
-            binding.textYoil.addView(textView)
-            return dayList
-        } else {
-            dayList.removeAt(dayList.size-1)
-
-            return dayList
-        }
-
     }
-    fun convertToDateKoreanFormat(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("M월 d일", Locale("ko", "KR"))
 
-        val date = inputFormat.parse(dateString)
-        return outputFormat.format(date)
-    }
-    fun convertToDate2(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
-
-        val date = inputFormat.parse(dateString)
-        return outputFormat.format(date)
-    }
-    private fun getMonthDataArray(month : String,year : String, arrays : ArrayList<AndroidCalendarData>) {
-        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-        val call2 = service.monthCalRequest(token,year,month)
-        var startMon = false
-        call2.enqueue(object : Callback<CalendarData3> {
-            override fun onResponse(call2: Call<CalendarData3>, response: Response<CalendarData3>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.data.datas
-                        startMon = apiResponse.data.startMon
-                        if(datas != null) {
-                            for (data in datas) {
-                                val dura : Boolean
-
-                                if(data.start_date==data.end_date) dura = false
-                                else dura = true
-                                if(data.d_day=="N") {
-                                    val tmp = AndroidCalendarData("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
-                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                        -1,dura,"${data.memo}","CAL",data.id)
-                                    if(dura) {
-                                        arrays.add(0,tmp)
-                                    } else {
-                                        arrays.add(tmp)
-                                    }
-                                } else if(daysRemainingToDate(data.end_date)<0){
-                                    deleteCalendar(data.id)
-                                } else {
-                                    val tmp = AndroidCalendarData("${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}","${convertToDate2(data.end_date)}",
-                                        "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                        -1,false,"${data.memo}","CAL",data.id)
-                                    arrays.add(tmp)
-                                }
-                                Log.d("data","${data.name} ${data.start_time} ${data.end_time}")
-                            }
-                        }
-                    }
-                }
-                setMonthView(arrays,startMon)
-            }
-            override fun onFailure(call: Call<CalendarData3>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-                setMonthView(arrays,startMon)
-            }
-        })
-    }
-    private fun getDdayDataArray() {
-        val ddayDatas = ArrayList<AndroidCalendarData>()
-        val call2 = service.getAllDday(token)
-        call2.enqueue(object : Callback<CalendarDataDday> {
-            override fun onResponse(call2: Call<CalendarDataDday>, response: Response<CalendarDataDday>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.datas.datas
-                        if(datas != null) {
-                            for (data in datas) {
-                                val tmp = AndroidCalendarData("${convertToDate2(data.start_date)}","${convertToDate2(data.start_date)}","${convertToDate2(data.end_date)}",
-                                    "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                    -1,true,"${data.memo}","CAL",data.id)
-                                ddayDatas.add(tmp)
-                                Log.d("111","datas: ${data.name} ${data.color} ${data.d_day}")
-                                // ...
-                            }
-                        }
-                        ddayDatas.sortBy { daysRemainingToDate(it.endDate) }
-
-                        for (i in 0 until min(ddayDatas.size, 3)) {
-                            val color = ddayDatas[i].color
-                            //Log.d("color",color)
-                            val imageResource = when (color) {
-                                "#89A9D9" -> R.drawable.calendar_ddayblue_smallbackground
-                                "#F0768C" -> R.drawable.calendar_ddaypink_smallbackground
-                                "#F8D141" -> R.drawable.calendar_ddayyellow_smallbackground
-                                else -> R.drawable.calendar_dday_plus
-                            }
-                            when (i) {
-                                0 -> {
-                                    binding.dday1.setImageResource(imageResource)
-                                    binding.dday1Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
-                                    binding.dday1TextInfo.text = ddayDatas[i].title
-                                }
-                                1 -> {
-                                    binding.dday2.setImageResource(imageResource)
-                                    binding.dday2Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
-                                    binding.dday2TextInfo.text = ddayDatas[i].title
-                                }
-                                2 -> {
-                                    binding.dday3.setImageResource(imageResource)
-                                    binding.dday3Text.text = "D-${daysRemainingToDate(ddayDatas[i].endDate)}"
-                                    binding.dday3TextInfo.text = ddayDatas[i].title
-                                }
-                            }
-                        }
-                        binding.dday1.setOnClickListener {
-                            if(ddayDatas.size>=1) {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[0].color == "#89A9D9") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-
-                                } else if(ddayDatas[0].color == "#F0768C") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[0].color == "#F8D141"){
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
-                                }
-                                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[0].title
-                                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[0].endDate)
-                                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday1Text.text.toString()
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
-
-                                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
-                                    val bundle = Bundle()
-                                    bundle.putString("title",ddayDatas[0].title)
-                                    bundle.putString("startDate",ddayDatas[0].startDate)
-                                    bundle.putString("endDate",ddayDatas[0].endDate)
-                                    bundle.putString("memo",ddayDatas[0].memo)
-                                    bundle.putString("color",ddayDatas[0].color)
-                                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[0].endDate))
-                                    bundle.putString("Token",token)
-                                    bundle.putInt("id",ddayDatas[0].id)
-                                    bundle.putBoolean("edit",true)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                }
-                                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
-                                    deleteCalendar(ddayDatas[0].id)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_fragCalendar)
-                                    mBuilder.dismiss()
-                                }
-                                //mDialogView.findViewById<ImageButton>(R.id.plus).setImageResource(R.drawable.)
-
-                            } else {
-                                val bundle = Bundle()
-                                bundle.putString("Token",token)
-                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-
-                            }
-                        }
-                        binding.dday2.setOnClickListener {
-                            if(ddayDatas.size>=2) {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[1].color == "#89A9D9") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-                                } else if(ddayDatas[1].color == "#F0768C") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[1].color == "#F8D141"){
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
-                                }
-                                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[1].title
-                                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[1].endDate)
-                                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday2Text.text.toString()
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
-                                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
-                                    val bundle = Bundle()
-                                    bundle.putString("Token",token)
-                                    bundle.putBoolean("edit",true)
-                                    bundle.putString("title",ddayDatas[1].title)
-                                    bundle.putString("startDate",ddayDatas[1].startDate)
-                                    bundle.putString("endDate",ddayDatas[1].endDate)
-                                    bundle.putString("memo",ddayDatas[1].memo)
-                                    bundle.putString("color",ddayDatas[1].color)
-                                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[1].endDate))
-                                    bundle.putInt("id",ddayDatas[1].id)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                }
-                                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
-                                    deleteCalendar(ddayDatas[1].id)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_fragCalendar)
-                                    mBuilder.dismiss()
-                                }
-                            } else {
-                                val bundle = Bundle()
-                                bundle.putString("Token",token)
-                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                            }
-
-                        }
-                        binding.dday3.setOnClickListener {
-                            if(ddayDatas.size==3) {
-                                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_dday_popup_plus, null)
-                                if(ddayDatas[2].color == "#89A9D9") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_blue_popup)
-                                } else if(ddayDatas[2].color == "#F0768C") {
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_pink_popup)
-                                } else if(ddayDatas[2].color == "#F8D141"){
-                                    mDialogView.findViewById<AppCompatImageButton>(R.id.plus).setImageResource(R.drawable.calendar_dday_yellow_popup)
-                                }
-                                mDialogView.findViewById<TextView>(R.id.textTitle).text = ddayDatas[2].title
-                                mDialogView.findViewById<TextView>(R.id.textDay).text =convertToDateKoreanFormat(ddayDatas[2].endDate)
-                                mDialogView.findViewById<TextView>(R.id.textDday).text =binding.dday3Text.text.toString()
-                                val mBuilder = AlertDialog.Builder(requireContext())
-                                    .setView(mDialogView)
-                                    .create()
-                                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-                                mBuilder.show()
-                                mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
-                                    val bundle = Bundle()
-                                    bundle.putString("Token",token)
-                                    bundle.putBoolean("edit",true)
-                                    bundle.putString("title",ddayDatas[2].title)
-                                    bundle.putString("startDate",ddayDatas[2].startDate)
-                                    bundle.putString("endDate",ddayDatas[2].endDate)
-                                    bundle.putString("memo",ddayDatas[2].memo)
-                                    bundle.putString("color",ddayDatas[2].color)
-                                    bundle.putInt("dday",daysRemainingToDate(ddayDatas[2].endDate))
-                                    bundle.putInt("id",ddayDatas[2].id)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                                    mBuilder.dismiss()
-                                }
-                                mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
-                                    deleteCalendar(ddayDatas[2].id)
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_fragCalendar)
-                                    mBuilder.dismiss()
-                                }
-                            } else {
-                                val bundle = Bundle()
-                                bundle.putString("Token",token)
-                                Navigation.findNavController(requireView()).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                            }
-
-                        }
-                    }
-                }
-            }
-            override fun onFailure(call: Call<CalendarDataDday>, t: Throwable) {
-                Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
+/*
+    */
+    /*
     private fun getCustomChar() {
         val call2 = service.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
@@ -535,26 +217,7 @@ class FragCalendar : Fragment(){
             }
         })
     }
-    private fun deleteCalendar(id : Int) {
-        val call1 = service.deleteCal(token,id)
-        call1.enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if(responseBody!=null) {
-                        //Log.d("del1",responseBody.datas.name.toString())
-                    }
-                        //Log.d("del2","${response.code()}")
 
-                } else {
-                    //Log.d("del3","itemType: ${response.code()} ${id} ")
-                }
-                findNavController().navigate(R.id.action_fragCalendar_to_fragCalendar)
-            }
+     */
 
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
-                //Log.d("del4","itemType: ${t.message}")
-            }
-        })
-    }
 }
