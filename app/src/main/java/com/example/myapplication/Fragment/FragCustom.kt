@@ -35,6 +35,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.fragment.findNavController
+import com.example.myapplication.CustomFunction.NewViewModel
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -82,6 +83,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var custom_save = false
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
+    private val newviewModel: NewViewModel by viewModels()
 
 
     private var colorFragment: custom_color? = null
@@ -155,13 +157,23 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         val savedData = viewModel.getSavedButtonInfo()
-        if (savedData != null) {
-            selectedColorButtonInfo = savedData.selectedColorButtonInfo
-            selectedClothButtonInfo = savedData.selectedClothButtonInfo
-            selectedItemButtonInfo = savedData.selectedItemButtonInfo
-            selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
+        val savedData2 = newviewModel.getSavedButtonInfo()
 
-            /*binding.customRamdi.setImageResource(
+        if (savedData != null) {
+            if(savedData2 ==null){
+                selectedColorButtonInfo = savedData.selectedColorButtonInfo
+                selectedClothButtonInfo = savedData.selectedClothButtonInfo
+                selectedItemButtonInfo = savedData.selectedItemButtonInfo
+                selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
+
+            }
+            else{
+                selectedColorButtonInfo = savedData2.selectedColorButtonInfo
+                selectedClothButtonInfo = savedData2.selectedClothButtonInfo
+                selectedItemButtonInfo = savedData2.selectedItemButtonInfo
+                selectedBackgroundButtonInfo = savedData2.selectedBackgroundButtonInfo
+            }
+            binding.customRamdi.setImageResource(
                 selectedColorButtonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomCloth.setImageResource(
@@ -172,7 +184,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
-            )*/
+            )
+
         }
 
 
@@ -314,6 +327,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
+
             var temdata = getSelectedButtonInfo()
 
             Log.d(
@@ -322,7 +336,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
-                //why~
             }
             val itemIds = arrayOf("10", "900", "800", "700")
 
@@ -340,16 +353,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
             }
 
-            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
-            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
-            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
-            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
-
-
             if(temdata.selectedColorButtonInfo?.serverID == null) {
                 uniqueItemIds.add(itemIds[0])
             } else {
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
+                newviewModel.saveButtonInfo(temdata.selectedColorButtonInfo)
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900")
@@ -357,6 +365,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata.selectedClothButtonInfo)
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800")
@@ -364,6 +373,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata.selectedItemButtonInfo)
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700")
@@ -371,6 +381,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata.selectedBackgroundButtonInfo)
             }
 
 
