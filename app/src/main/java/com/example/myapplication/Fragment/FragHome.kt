@@ -63,6 +63,7 @@ class FragHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("token", viewModel.userToken)
 
         //binding.layoutHome.setBackgroundResource(R.drawable.color_purple)
 

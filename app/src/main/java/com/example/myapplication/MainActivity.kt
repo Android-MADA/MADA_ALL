@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                                     categoryName = i.categoryName,
                                     color = i.color,
                                     iconId = i.iconId,
-                                    isActive = i.isActive
+                                    isInActive = i.isInActive
                                 )
                                 viewModel.createCate(cateData)
                             }

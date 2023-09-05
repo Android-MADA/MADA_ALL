@@ -109,11 +109,13 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         Log.d("카테고리 post", response.toString())
     }
 
-    fun deleteCategory(token: String?, categoryId: Int, view: View) = viewModelScope.launch {
+    fun deleteCategory(token: String?, categoryId: Int, view: View?) = viewModelScope.launch {
         val response = api.deleteCategory(token, categoryId)
         Log.d("카테고리 delete", "확인")
-        Navigation.findNavController(view)
-            .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        if(view != null){
+            Navigation.findNavController(view)
+                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+        }
     }
 
 //    fun postTodo(data : PostRequestTodo) = viewModelScope.launch{
