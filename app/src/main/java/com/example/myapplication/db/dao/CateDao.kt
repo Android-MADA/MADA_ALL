@@ -34,6 +34,9 @@ interface CateDao  {
     @Query("SELECT * FROM cate_table WHERE cateId LIKE :cateId")
     fun readCateId(cateId : Int) : Flow<CateEntity>
 
+    @Query("DELETE FROM cate_table")
+    fun deleteAllCate()
+
     @Update
     fun updateCate(cateEntity : CateEntity)
 

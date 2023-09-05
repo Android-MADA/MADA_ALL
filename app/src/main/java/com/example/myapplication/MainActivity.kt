@@ -61,6 +61,11 @@ class MainActivity : AppCompatActivity() {
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
+            //데베 클리어
+            viewModel.deleteAllCate()
+            viewModel.deleteAllTodo()
+            viewModel.deleteAllRepeatTodo()
+
             //서버에서 카테고리 데이터 받아서 로컬 데베에 저장
             api.getHCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1>{
                 override fun onResponse(
