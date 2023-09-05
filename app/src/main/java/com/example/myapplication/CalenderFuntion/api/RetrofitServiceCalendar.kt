@@ -2,7 +2,6 @@ package com.example.myapplication.CalenderFuntion.api
 
 import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarDataId
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatasData
@@ -29,7 +28,7 @@ interface RetrofitServiceCalendar {
     //디데이 데이터 불러오기
     @GET("/api/calendar/dday")
     fun getAllDday(@Header("Authorization") token : String?
-    ) : Call<CalendarDataDday>
+    ) : Call<CalendarDatasData>
 
     //반복 데이터 불러오기
     @GET("/api/calendar/repeat")

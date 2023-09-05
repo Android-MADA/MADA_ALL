@@ -29,8 +29,8 @@ data class CalendarDatas (
 
 data class CalendarDatasData (
     @SerializedName("data") val data : CalendarDatas
-
 )
+
 data class CalendarDataId(
     @SerializedName("calendarName") val name : String,
     @SerializedName("startDate") val start_date: String,
@@ -50,10 +50,6 @@ data class AddCalendarData (
 )
 
 //Dday 모든 정보 요청
-data class CalendarDataDday (
-    @SerializedName("startTodoAtMonday") val startMon : Boolean ,
-    @SerializedName("data") val datas: DdayCalendar
-)
 data class DdayCalendar (
     @SerializedName("calendar") val datas: List<CalendarDataId>
 )
