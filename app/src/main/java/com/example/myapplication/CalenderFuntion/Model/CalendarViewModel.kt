@@ -221,10 +221,12 @@ class CalendarViewModel : ViewModel(){
         }
     }
     fun deleteCalendar(id : Int , callback: (Int) -> Unit) {
+        Log.d("id",id.toString())
         service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData> {
             override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
+                    Log.d("dsadsa",responseBody.toString())
                     if(responseBody!=null) callback(1)
                     else callback(2)
                 } else callback(2)
@@ -252,6 +254,7 @@ class CalendarViewModel : ViewModel(){
                             //startMon = apiResponse.data.startMon
                             if(datas != null) {
                                 for (data in datas) {
+                                    Log.d("data",data.toString())
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
