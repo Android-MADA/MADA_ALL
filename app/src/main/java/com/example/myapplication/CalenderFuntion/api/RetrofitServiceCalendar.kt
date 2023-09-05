@@ -22,7 +22,7 @@ interface RetrofitServiceCalendar {
 
     //월별 데이터 불러오기
     @GET("/api/calendar/")
-    fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: String, @Query("month") month: String
+    fun monthCalRequest(@Header("Authorization") token : String?, @Query("year") year: Int, @Query("month") month: Int
     ) : Call<CalendarDatasData>
 
     //디데이 데이터 불러오기

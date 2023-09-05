@@ -40,10 +40,14 @@ class CalendarFragment() : Fragment() {
 
 
         binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)))
-        CalendarViewModel.getMonthDataArray(DateTime(millis).monthOfYear.toString(),DateTime(millis).year.toString()) { result ->
+
+        CalendarViewModel.getMonthDataArray(DateTime(millis).monthOfYear,DateTime(millis).year) { result ->
             when (result) {
                 1 -> {
-                    binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)
+                    CalendarViewModel.getRepeat {
+                        binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)
+                    }
+
                 }
                 2 -> {
                     //binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)
