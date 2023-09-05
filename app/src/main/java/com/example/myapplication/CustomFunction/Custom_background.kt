@@ -12,9 +12,8 @@ import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnBackgroundImageChangeListener
-import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.CustomBackgroundBinding
 import retrofit2.Call
 import retrofit2.Callback

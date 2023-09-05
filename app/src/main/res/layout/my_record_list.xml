@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/my_record_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp">
+
+    <TextView
+        android:id="@+id/record_category_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="nn%"
+        android:textColor="@color/sub4"
+        android:textSize="12sp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/record_category_color"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="@color/main"
+        app:cardCornerRadius="3dp"
+        app:cardPreventCornerOverlap="false">
+
+    </androidx.cardview.widget.CardView>
+
+
+<TextView
+        android:id="@+id/record_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="카테고리명"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+
+</LinearLayout>
