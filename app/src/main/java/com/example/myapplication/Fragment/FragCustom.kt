@@ -83,7 +83,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var custom_save = false
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
-    private val newviewModel: NewViewModel by viewModels()
 
 
     private var colorFragment: custom_color? = null
