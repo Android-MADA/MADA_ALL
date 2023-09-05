@@ -46,7 +46,7 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.readActiveCate(true)
+        viewModel.readActiveCate(false)
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             Log.d("viewmodel", it.toString())
 
@@ -78,7 +78,7 @@ class HomeCategoryFragment : Fragment() {
             cateRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
-        viewModel.readQuitCate(false)
+        viewModel.readQuitCate(true)
         viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
             //rv에 연결
             val quitCateList = it as List<CateEntity>

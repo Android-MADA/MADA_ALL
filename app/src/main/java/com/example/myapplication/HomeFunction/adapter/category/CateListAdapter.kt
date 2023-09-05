@@ -39,7 +39,7 @@ class CateListAdapter : ListAdapter<CateEntity, CateListAdapter.ViewHolder>(Diff
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
 
-        if(holder.data!!.isActive == true){
+        if(holder.data!!.isInActive == false){
             holder.cateLayout.setOnClickListener {
                 itemClickListener.onClick(it, holder.data!!)
             }

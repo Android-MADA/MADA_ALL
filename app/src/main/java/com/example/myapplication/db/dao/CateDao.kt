@@ -23,11 +23,11 @@ interface CateDao  {
     fun createCate(cateEntity: CateEntity)
 
     // isActive ==true 카테고리 읽어오기
-    @Query("SELECT * FROM cate_table WHERE isActive LIKE :isActive")
+    @Query("SELECT * FROM cate_table WHERE isInActive LIKE :isActive")
     fun readActiveCate(isActive : Boolean) : Flow<List<CateEntity>>
 
     // isActive == false 카테고리 읽어오기
-    @Query("SELECT * FROM cate_table WHERE isActive LIKE :isActive")
+    @Query("SELECT * FROM cate_table WHERE isInActive LIKE :isActive")
     fun readQuitCate(isActive : Boolean) : Flow<List<CateEntity>>
 
     //특정 id 값을 가진 카테고리 읽어오기
