@@ -237,13 +237,16 @@ class CalendarViewModel : ViewModel(){
     //달력 불러오고 hashMap에 담기
     fun getMonthDataArray(month : String,year : String, callback: (Int) -> Unit) {
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
+
         if(hashMapArrayCal.get("${year}-${month}")==null) {
             val monthArray = ArrayList<AndroidCalendarData>()
             val monthArray2 = ArrayList<AndroidCalendarData>()
             service.monthCalRequest(token,year,month).enqueue(object : Callback<CalendarDatasData> {
                 override fun onResponse(call2: Call<CalendarDatasData>, response: Response<CalendarDatasData>) {
+                    Log.d("respone",response.toString())
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
+                        Log.d("datas",apiResponse.toString())
                         if (apiResponse != null) {
                             val datas = apiResponse.data.datas
                             //startMon = apiResponse.data.startMon
@@ -279,9 +282,10 @@ class CalendarViewModel : ViewModel(){
                         monthArray.addAll(monthArray2)
                         hashMapArrayCal.put("${year}-${month}",monthArray)
                         callback(1)
-                    }
+                    } else callback(2)
                 }
                 override fun onFailure(call: Call<CalendarDatasData>, t: Throwable) {
+
                     callback(2)
                 }
             })
@@ -500,12 +504,12 @@ class CalendarViewModel : ViewModel(){
 
     fun getDdayDataArray(callback: (Int) -> Unit) {
         if(ddayArrayList.size == 0) {
-            service.getAllDday(token).enqueue(object : Callback<CalendarDataDday> {
-                override fun onResponse(call2: Call<CalendarDataDday>, response: Response<CalendarDataDday>) {
+            service.getAllDday(token).enqueue(object : Callback<CalendarDatasData> {
+                override fun onResponse(call2: Call<CalendarDatasData>, response: Response<CalendarDatasData>) {
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
                         if (apiResponse != null) {
-                            val datas = apiResponse.datas.datas
+                            val datas = apiResponse.data.datas
                             if(datas != null) {
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
@@ -520,7 +524,7 @@ class CalendarViewModel : ViewModel(){
                         } else callback(2)
                     } else callback(2)
                 }
-                override fun onFailure(call: Call<CalendarDataDday>, t: Throwable) {
+                override fun onFailure(call: Call<CalendarDatasData>, t: Throwable) {
                     callback(2)
                 }
             })

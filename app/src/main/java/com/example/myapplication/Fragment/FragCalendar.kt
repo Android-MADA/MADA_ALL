@@ -26,7 +26,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
-import com.example.myapplication.CalenderFuntion.Model.CalendarDataDday
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
