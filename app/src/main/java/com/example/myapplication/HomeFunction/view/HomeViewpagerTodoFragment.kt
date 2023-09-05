@@ -47,7 +47,7 @@ class HomeViewpagerTodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //카테고리 데이터 가져와서 adapter 넣기
-        viewModel.readActiveCate(true)
+        viewModel.readActiveCate(false)
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
