@@ -43,6 +43,18 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
                 android:textColor="@color/black"
+
+                />
+            <ImageView
+                android:id="@+id/btn_home_cate_add_save_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cate_menu"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="4dp"
+                android:textColor="@color/black"
+                android:visibility="gone"
                 />
         </androidx.appcompat.widget.Toolbar>
 

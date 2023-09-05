@@ -1,6 +1,5 @@
 package com.example.myapplication.HomeFunction.viewModel
 
-import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +11,6 @@ import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeDbViewModel : ViewModel() {
 
@@ -45,9 +43,9 @@ class HomeDbViewModel : ViewModel() {
         repository.createCate(cateEntity)
     }
 
-    fun readCate() {
-        cateEntityList = repository.readCate().asLiveData()
-    }
+//    fun readCate() {
+//        cateEntityList = repository.readActiveCate().asLiveData()
+//    }
 
     fun updateCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.updateCate(cateEntity)

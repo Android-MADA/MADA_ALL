@@ -76,8 +76,8 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-
-                val data = RepeatEntity(0, 3, viewModel!!.homeDate.value.toString(), getItem(position).cateId, holder.edtAdd.text.toString(), false, "N", null, null, null, null, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
+                var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
+                val data = RepeatEntity(0, 3, viewModel!!.homeDate.value.toString(), getItem(position).cateId, holder.edtAdd.text.toString(), false, "DAY", null, null, viewModel!!.homeDate.value.toString(), endDate, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
                 viewModel!!.createRepeatTodo(data, holder.edtAdd)
                 holder.edtAdd.text.clear()
                 holder.layoutAdd.isGone = true
