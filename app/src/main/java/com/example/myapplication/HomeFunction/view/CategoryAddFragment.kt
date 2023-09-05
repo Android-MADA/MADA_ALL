@@ -100,6 +100,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             true,
                             findIconId(iconAdapter.selectedIcon
                         ))
+                        //서버에 patch 전송
+                        viewModel.patchCategory(viewModel.userToken, )
                         viewModel.updateCate(cateData)
 
                     }
@@ -216,6 +218,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     true,
                     findIconId(iconAdapter.selectedIcon)
                 )
+                //서버 patch
                 viewModel.updateCate(cate)
                 Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             }
@@ -290,6 +293,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         findIconId(iconAdapter.selectedIcon)
                     )
                     CoroutineScope(Dispatchers.IO).launch {
+                        //종료 patch
                         viewModel.updateCate(cate)
                         withContext(Dispatchers.Main){
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
@@ -310,6 +314,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         argsArray!![4].toInt())
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.deleteCate(cateData)
+                        //서버 전송
                         //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
                         withContext(Dispatchers.Main){
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
