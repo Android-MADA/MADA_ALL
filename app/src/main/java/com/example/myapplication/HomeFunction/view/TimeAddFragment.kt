@@ -240,12 +240,18 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
             val matchResult = regex.find(times[scheduleSelect].text.toString())
             if (matchResult != null) {
-                val (ampm, hour, minute) = matchResult.destructured
+                var (ampm, hour, minute) = matchResult.destructured
                 times[scheduleSelect].text = "  " + ampm + " " + newVal + ":" + minute + "  "
                 if((oldVal==11&&newVal==12) ||(oldVal==12&&newVal==11)) {
                     if(tmpCheck) {
-                        if (ticker1.value == 0) ticker1.value = 1
-                        else ticker1.value = 0
+                        if (ticker1.value == 0)  {
+                            ampm = "오후"
+                            ticker1.value = 1
+                        }
+                        else {
+                            ampm = "오전"
+                            ticker1.value = 0
+                        }
                         tmpCheck = false
                     }
                 } else {
@@ -322,7 +328,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                         viewModelTime.addTimeDatas(tmp) { result ->
                             when (result) {
                                 1 -> {
-                                    val tmpId = 1532
+                                    val tmpId = viewModelTime.addId
                                     if(viewModelTime.hashMapArrayTime.get(today)==null) {
                                         viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
                                     }
