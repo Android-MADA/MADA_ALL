@@ -25,6 +25,7 @@ import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.RepeatEntity

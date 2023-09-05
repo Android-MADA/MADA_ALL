@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/on_linearlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/home_viewpager2"
+    <Button
+        android:id="@+id/on_skipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:padding="20dp"
+        android:text="건너뛰기"
+        android:visibility="visible"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:id="@+id/on_framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="20dp"
-        android:background="@drawable/home_viewpager_background"
-        android:paddingVertical="20dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="18dp"
-        app:layout_constraintBottom_toTopOf="@id/on_indicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.979" />
+        android:layout_gravity="center"
+        android:background="#F5F5F5">
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/on_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:ci_drawable="@drawable/home_indicator_selected"
-        app:ci_drawable_unselected="@drawable/home_indicator_unselected"
-        android:layout_marginVertical="20dp"
-        app:ci_width="10dp"
-        app:ci_height="10dp"
-        />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/on_viewpager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/on_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginVertical="30dp"
+            android:visibility="visible"
+            app:ci_drawable="@drawable/home_indicator_selected"
+            app:ci_drawable_unselected="@drawable/home_indicator_unselected"
+            app:ci_height="10dp"
+            app:ci_width="10dp" />
+
+        <Button
+            android:id="@+id/on_StartBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/on4_btn"
+            android:visibility="invisible"
+            android:text="마다 시작하기"
+            android:textColor="#28374C"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </FrameLayout>
+
+</LinearLayout>
