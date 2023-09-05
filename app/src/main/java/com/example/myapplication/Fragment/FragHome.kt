@@ -51,7 +51,7 @@ class FragHome : Fragment() {
         val view = binding.root
 
         hideBottomNavigation(false, activity)
-        //서버에서 cateogry, todo받아오기
+        //날짜 변경 시 서버에서 cateogry, todo받아오기
 
 
         val homeViewPager = binding.homeViewpager2
@@ -151,6 +151,7 @@ class FragHome : Fragment() {
             //viewModel.changeDate(year, (month +1), dayOfMonth, "home")
             Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
+            //db 투두 데이터 전체 삭제 후 해당 날짜의 데이터를 서버에서 받아서 db에 저장하고 어댑터에 연결하기
         }
 //
 //

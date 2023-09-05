@@ -573,14 +573,10 @@ class HomeViewModel : ViewModel() {
 
     lateinit var todoEntityList : LiveData<List<TodoEntity>>
 
-    var _todosList = MutableLiveData<List<TodoEntity>>(null)
-    var todosList : LiveData<List<TodoEntity>>? = null
 
     val startMonday = false
     val completeBottom = false
     val newTodoTop = false
-
-    val date = "2023-09-08"
 
 
 
@@ -609,9 +605,11 @@ class HomeViewModel : ViewModel() {
 
     //TODO
 
-    fun createTodo(todoEntity: TodoEntity, edt : EditText) = viewModelScope.launch(Dispatchers.IO) {
+    fun createTodo(todoEntity: TodoEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {
         repository.createTodo(todoEntity)
-        edt.text.clear()
+        if(edt != null){
+            edt!!.text.clear()
+        }
     }
 
     fun readTodo(cateId : Int, adapter: HomeTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
@@ -646,9 +644,12 @@ class HomeViewModel : ViewModel() {
 
     //repeatTodo
 
-    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText) = viewModelScope.launch(Dispatchers.IO) {
+    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {
         repository.createRepeatTodo(repeatTodoEntity)
-        edt.text.clear()
+        if(edt != null) {
+            edt!!.text.clear()
+        }
+
         //readAllTodo()
     }
 

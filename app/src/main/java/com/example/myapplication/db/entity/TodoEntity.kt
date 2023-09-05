@@ -1,10 +1,22 @@
 package com.example.myapplication.db.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
+import androidx.room.Relation
+import com.example.myapplication.HomeFunction.Model.Category
 
-@Entity(tableName = "todo_table")
+@Entity(tableName = "todo_table",
+foreignKeys = [ForeignKey(
+    entity = CateEntity::class,
+    parentColumns = ["cateId"],
+    childColumns = ["category"],
+    onDelete = CASCADE,
+    onUpdate = CASCADE
+)])
 data class TodoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todoId")
@@ -14,7 +26,7 @@ data class TodoEntity(
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "category")
-    val category: Int,
+    var category: Int,
     @ColumnInfo(name = "todoName")
     val todoName: String,
     @ColumnInfo(name = "complete")
@@ -37,4 +49,13 @@ data class TodoEntity(
     val endTodoBackSetting: Boolean,
     @ColumnInfo(name = "newTodoStartSetting")
     val newTodoStartSetting: Boolean
+)
+
+data class CategoryTodos(
+    @Embedded val category : CateEntity,
+    @Relation(
+        parentColumn = "cateId",
+        entityColumn = "category"
+    )
+    val todos : List<TodoEntity>?
 )

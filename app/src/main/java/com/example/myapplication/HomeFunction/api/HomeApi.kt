@@ -110,6 +110,11 @@ interface HomeApi {
     ): CategoryList1
 
     @GET("/api/home/category")
+    fun getHCategory(
+        @Header("Authorization") token : String?
+    ): Call<CategoryList1>
+
+    @GET("/api/home/category")
     fun getMyCategory(
         @Header("Authorization") token : String?
     ): Call<CategoryList1>
@@ -141,6 +146,11 @@ interface HomeApi {
     suspend fun getRepeatTodo(
         @Header("Authorization") token : String?
     ) : RepeatData1
+
+    @GET("/api/home/todo/repeat")
+    fun getHRepeatTodo(
+        @Header("Authorization") token : String?
+    ) : Call<RepeatData1>
 
     @GET("/api/custom/")
     fun getHomeRamdi(

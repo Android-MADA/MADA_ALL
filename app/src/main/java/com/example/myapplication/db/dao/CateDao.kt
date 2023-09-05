@@ -5,8 +5,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.db.entity.CategoryTodos
 import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.flow.Flow
@@ -89,6 +91,18 @@ interface CateDao  {
     //모든 반복두투 삭제
     @Query("DELETE FROM repeat_table")
     fun deleteAllRepeatTodo()
+
+
+    //foregin key -> 실제사용...?
+
+    // 카테고리와 카테고리 외래키로 연결된 투두들이 같이 나온다.
+    @Transaction
+    @Query("SELECT * FROM cate_table")
+    suspend fun getAllCateAndTodos() : List<CategoryTodos>
+
+    @Transaction
+    @Query("SELECT * FROM cate_table WHERE cateId LIKE :cateId")
+    suspend fun getCategory(cateId: Int) : CategoryTodos?
 
 
 

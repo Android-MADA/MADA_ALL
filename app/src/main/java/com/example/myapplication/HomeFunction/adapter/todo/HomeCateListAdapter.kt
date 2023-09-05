@@ -53,6 +53,7 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
         //todoadapter 연결하기
         val mTodoAdapter = HomeTodoListAdapter()
         mTodoAdapter.viewModel = viewModel
+        mTodoAdapter.category = getItem(position)
         viewModel!!.readTodo(cateId, mTodoAdapter)
         holder.todoRv.adapter = mTodoAdapter
         holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
