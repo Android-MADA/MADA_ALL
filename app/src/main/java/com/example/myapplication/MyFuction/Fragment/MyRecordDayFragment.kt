@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +75,8 @@ class MyRecordDayFragment : Fragment() {
 
         token = Splash2Activity.prefs.getString("token", "")
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
         }
@@ -99,7 +102,6 @@ class MyRecordDayFragment : Fragment() {
 
         // 일 주 월 버튼 클릭 이동
         binding.dayWeekMonthBtn.setOnClickListener {
-            activity?.finish()
             navController.navigate(R.id.action_myRecordDayFragment_to_myRecordWeekFragment)
         }
 

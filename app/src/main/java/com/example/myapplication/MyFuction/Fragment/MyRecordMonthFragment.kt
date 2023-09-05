@@ -1,17 +1,28 @@
 package com.example.myapplication.MyFuction.Fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.MyFuction.Adapter.MyCalendarMonthAdapter
+import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
+import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordMonthBinding
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.utils.ColorTemplate
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,6 +34,7 @@ class MyRecordMonthFragment : Fragment() {
     private lateinit var binding: MyRecordMonthBinding
     private lateinit var calendar: Calendar
     lateinit var navController: NavController
+    val datas = mutableListOf<MyRecordCategoryData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +47,15 @@ class MyRecordMonthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_fragMy)
         }
+
+        // 통계 부분
+        initCategoryRecycler()
+        initCategoryPieChart()
 
 
         //달력 부분
@@ -51,11 +69,15 @@ class MyRecordMonthFragment : Fragment() {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
             calendar.add(Calendar.MONTH, -1)
             setMonthView()
+            setTodoView()
+            setTimetableView()
         }
         binding.nextBtn.setOnClickListener {
             CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
             calendar.add(Calendar.MONTH, 1)
             setMonthView()
+            setTodoView()
+            setTimetableView()
         }
         binding.dayWeekMonthBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
@@ -90,6 +112,89 @@ class MyRecordMonthFragment : Fragment() {
 
         binding.recordTitleTimetable.text = formattedText1
         binding.recordContextTimetable.text = formattedText2
+    }
+
+    // 통계 우측 카테고리 리사이클러뷰 설정
+    private fun initCategoryRecycler() {
+        val adapter = MyRecordCategoryAdapter(requireContext())
+        var manager = LinearLayoutManager(requireContext())
+
+        datas.apply {
+            // 임시데이터
+            val categoryName = "카테고리명"
+            val percentNum = 25
+            val colorCode = "F0768C"
+            val categoryNum = 6
+            var size = if (categoryNum != 0) { categoryNum.minus(1) }
+            else { -1 }
+
+            // 서버 데이터 받아서 반복문으로 수정하기
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+
+            adapter.datas = datas
+            adapter.notifyDataSetChanged()
+
+        }
+        binding.myCategoryRecycler.adapter = adapter
+        binding.myCategoryRecycler.layoutManager = manager
+    }
+
+    // 통계 좌측 파이차트 뷰 설정
+    private fun initCategoryPieChart() {
+        binding.myChart.setUsePercentValues(true)
+
+        // 임시데이터
+        val categoryName = "카테고리명"
+        val percentNum = 20f
+        val colorCode = "F0768C"
+        val categoryNum = 6
+
+        var size = if (categoryNum != 0) { categoryNum.minus(1) }
+        else { -1 }
+
+        // 서버데이터 받으면 반복문으로 수정하기
+        val entries = ArrayList<PieEntry>()
+        entries.add(PieEntry(percentNum, categoryName))
+        entries.add(PieEntry(percentNum, categoryName))
+        entries.add(PieEntry(percentNum, categoryName))
+        entries.add(PieEntry(percentNum, categoryName))
+        entries.add(PieEntry(percentNum, categoryName))
+
+        // 색상
+        val colorsItems = ArrayList<Int>()
+        for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
+        for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
+        for (c in ColorTemplate.COLORFUL_COLORS) colorsItems.add(c)
+        for (c in ColorTemplate.LIBERTY_COLORS) colorsItems.add(c)
+        for (c in ColorTemplate.PASTEL_COLORS) colorsItems.add(c)
+        colorsItems.add(ColorTemplate.getHoloBlue())
+
+
+        // 데이터셋 초기화
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.apply {
+            colors = colorsItems
+            valueTextColor = Color.BLACK
+            valueTextSize = 12f
+            setDrawValues(false) // 차트 내 수치 값 표시 비활성화
+        }
+
+        // 데이터셋 세팅
+        val pieData = PieData(pieDataSet)
+        binding.myChart.apply {
+            data = pieData
+            isRotationEnabled = false
+            description.isEnabled = false // 차트 내 항목 값 표시 비활성화
+            legend.isEnabled = false // 범례 비활성화
+            setDrawEntryLabels(false) // 라벨 비활성화
+            setDrawMarkers(false) // 차트 위에 마우스포인트 올릴 시 마커(필요 시 뷰 구현하겠음!)
+            animateY(1400, Easing.EaseInOutQuad) // 시계방향 애니메이션
+            animate()
+        }
     }
 
     // 달력 뷰 설정

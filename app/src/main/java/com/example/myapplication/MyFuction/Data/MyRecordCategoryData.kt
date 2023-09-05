@@ -2,6 +2,6 @@ package com.example.myapplication.MyFuction.Data
 
 data class MyRecordCategoryData(
     val percent : String,
-    val colorImage : Int,
+    val colorCode : String,
     val category : String
 )
