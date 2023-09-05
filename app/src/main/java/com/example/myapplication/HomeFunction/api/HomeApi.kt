@@ -125,12 +125,12 @@ interface HomeApi {
         @Header("Authorization") token : String?,
         @Body data : PostRequestCategory
     ): PactchResponseCategory
+
     @POST("/api/home/category")
     fun postHCategory(
         @Header("Authorization") token : String?,
         @Body data : PostRequestCategory
     ): Call<PactchResponseCategory>
-
 
 
     //카테고리 수정 -> 확인 완
@@ -141,9 +141,22 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): PactchResponseCategory
 
+    @PATCH("/api/home/category/{categoryId}")
+    fun editHCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int,
+        @Body data : PostRequestCategory
+    ): Call<PactchResponseCategory>
+
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    )
+
+    @DELETE("/api/home/category/{categoryId}")
+    fun deleteHCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
     )

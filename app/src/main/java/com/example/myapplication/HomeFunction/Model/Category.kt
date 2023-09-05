@@ -7,5 +7,9 @@ data class Category(
     @SerializedName("categoryName") var categoryName: String,
     @SerializedName("color") var color: String,
     @SerializedName("iconId") var iconId : Int,
-    @SerializedName("isActive") var isActive : Boolean
+    @SerializedName("isInActive") var isInActive : Boolean
 )
+
+data class Category2 (
+    @SerializedName("id") val id: Int
+        )
