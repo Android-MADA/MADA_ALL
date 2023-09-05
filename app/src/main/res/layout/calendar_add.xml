@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#E1E9F5"
         android:orientation="horizontal">
 
         <ImageButton
@@ -40,7 +40,7 @@
 
         <Button
             android:id="@+id/submitBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="16sp"
@@ -53,7 +53,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+
         >
 
         <LinearLayout
@@ -89,165 +89,143 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0"
                     android:scaleType="fitCenter"
-                    app:tint="#F5EED1"
+                    app:tint="#89A9D9"
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_color_selectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:id="@+id/layout_color_selector1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    >
+                    android:orientation="horizontal">
+
                     <ImageButton
                         android:id="@+id/calendar_color1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/main"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub1" />
+
                     <ImageButton
                         android:id="@+id/calendar_color2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/point_main"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#F68F30" />
+
                     <ImageButton
                         android:id="@+id/calendar_color3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="#F5EED1"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#F33E3E" />
+
                     <ImageButton
                         android:id="@+id/calendar_color4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub1"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#FDA4B4" />
+
                     <ImageButton
                         android:id="@+id/calendar_color5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub6"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub3" />
+
                     <ImageButton
                         android:id="@+id/calendar_color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginStart="10dp"
-                        app:tint="@color/sub3"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub2" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/layout_color_selector2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    >
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
                     <ImageButton
                         android:id="@+id/calendar_color7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/main"
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#7FC7D4" />
+
                     <ImageButton
                         android:id="@+id/calendar_color8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub3"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/point_main" />
+
                     <ImageButton
                         android:id="@+id/calendar_color9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
                         android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub1"
                         android:background="@android:color/transparent"
-                        />
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#21C362" />
 
+                    <ImageButton
+                        android:id="@+id/calendar_color10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="#0E9746" />
+
+                    <ImageButton
+                        android:id="@+id/calendar_color11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/main" />
+
+                    <ImageButton
+                        android:id="@+id/calendar_color12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_home_color_selector_28"
+                        app:tint="@color/sub4" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/textVie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/black"
-                    android:text="디데이 설정 여부"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
-                <CheckBox
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:id="@+id/checkBox"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/textDday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp"
-                android:gravity="center"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:textColor="@color/point_main"
-                android:text="D - 0" />
 
             <LinearLayout
                 android:visibility="visible"
@@ -266,7 +244,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:orientation="horizontal">
-
                     <ImageView
                         android:id="@+id/imageView4"
                         android:layout_width="25dp"
@@ -276,11 +253,40 @@
                         app:srcCompat="@drawable/calendar_calendar_image" />
 
                     <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="하루 종일"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/switch2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:theme="@style/SwitchTheme"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+                    <TextView
                         android:id="@+id/preScheldule"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="29dp"
                         android:background="@android:color/transparent"
                         android:gravity="center"
                         android:text="  6월 9일 (금)  "
@@ -310,7 +316,8 @@
                 <LinearLayout
                     android:id="@+id/cal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="350dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:visibility="gone">
 
@@ -322,8 +329,8 @@
 
                         <ImageButton
                             android:id="@+id/preBtn"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="15dp"
                             android:background="@android:color/transparent"
@@ -331,20 +338,20 @@
                             app:srcCompat="@drawable/calendar_arrow_left" />
 
                         <TextView
-                            android:id="@+id/textCalendar"
+                            android:id="@+id/textYearMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:text="2023년 6월"
-                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:text="2023년"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
+
                         <ImageButton
                             android:id="@+id/nextBtn"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
                             android:layout_gravity="center"
                             android:layout_marginRight="15dp"
                             android:background="@android:color/transparent"
@@ -355,6 +362,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
                         android:layout_marginTop="30dp"
                         android:orientation="horizontal">
 
@@ -430,72 +438,19 @@
 
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/calendar2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                    </androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="250dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp" />
                 </LinearLayout>
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginVertical="15dp"/>
-
-            <LinearLayout
-                android:id="@+id/clockAndCycle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/imageView5"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/calendar_clock" />
-
-                        <TextView
-                            android:id="@+id/textView8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:text="하루 종일"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <Switch
-
-                            android:id="@+id/switch2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="15dp"
-
-                            />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/colck"
@@ -518,17 +473,17 @@
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
-                                android:text="  오전 10:00  "
                                 android:gravity="center"
+                                android:text="  오전 10:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/textView9"
-                                android:layout_marginHorizontal="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:layout_marginHorizontal="10dp"
                                 android:gravity="center"
                                 android:text="~" />
 
@@ -537,8 +492,8 @@
                                 android:layout_width="90dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
-                                android:gravity="center"
                                 android:background="@android:color/transparent"
+                                android:gravity="center"
                                 android:text="  오전 11:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
@@ -624,6 +579,15 @@
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/clockAndCycle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -631,10 +595,10 @@
                     android:background="?android:attr/listDivider" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/imageView9"
@@ -658,11 +622,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:layout_marginBottom="15dp"
                     android:id="@+id/chipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -673,8 +638,8 @@
                             android:id="@+id/chip1"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
-                            android:checkable="true"
                             android:layout_marginLeft="40dp"
+                            android:checkable="true"
                             android:text="반복 안함"
                             android:textSize="16sp"
                             android:theme="@style/ChipTheme"
@@ -688,11 +653,11 @@
                             android:id="@+id/chip2"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
+                            android:layout_marginHorizontal="20dp"
                             android:background="@color/black"
                             android:checkable="true"
                             android:text="매일"
                             android:textSize="16sp"
-                            android:layout_marginHorizontal="20dp"
                             android:theme="@style/ChipTheme"
                             app:checkedIconVisible="false"
                             app:chipBackgroundColor="@color/white"
@@ -722,10 +687,10 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.chip.Chip
-                            android:layout_marginLeft="40dp"
                             android:id="@+id/chip4"
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
+                            android:layout_marginLeft="40dp"
                             android:checkable="true"
                             android:text="매월"
                             android:textSize="16sp"
@@ -754,9 +719,8 @@
 
                 </LinearLayout>
 
-                <!--
+
                 <LinearLayout
-                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -766,14 +730,13 @@
                         android:id="@+id/repeat_week"
                         android:background="@drawable/calendar_cell_background_day"
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="10dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_margin="5dp"
-                            android:background="@drawable/calendar_add_repeat_back1"
                             android:id="@+id/textWeek1"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
@@ -842,7 +805,7 @@
                         android:background="@drawable/calendar_dell_background_week"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingVertical="15dp"
+                        android:paddingVertical="5dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -1209,11 +1172,66 @@
 
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/repeat_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="5dp"
+                        android:orientation="horizontal">
+                        <com.shawnlin.numberpicker.NumberPicker
+                            app:np_dividerThickness="1dp"
+                            android:id="@+id/number_picker_month"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginHorizontal="20dp"
+                            app:np_height="180dp"
+                            app:np_max="12"
+                            app:np_min="1"
+                            app:np_selectedTextColor="@color/black"
+                            app:np_selectedTextSize="24sp"
+                            app:np_textColor="@color/grey3"
+                            app:np_textSize="24sp"
+                            app:np_value="1"
+                            app:np_width="64dp"
+                            app:np_wrapSelectorWheel="true" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="월"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <com.shawnlin.numberpicker.NumberPicker
+                            app:np_dividerThickness="1dp"
+                            android:id="@+id/number_picker_day"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginHorizontal="20dp"
+                            app:np_height="180dp"
+                            app:np_max="31"
+                            app:np_min="1"
+                            app:np_selectedTextColor="@color/black"
+                            app:np_selectedTextSize="24sp"
+                            app:np_textColor="@color/grey3"
+                            app:np_textSize="24sp"
+                            app:np_value="1"
+                            app:np_width="64dp"
+                            app:np_wrapSelectorWheel="true" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="일 마다 반복"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
 
                 </LinearLayout>
-                  -->
+
                 <View
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="15dp"

@@ -17,7 +17,7 @@
             android:id="@+id/toolbar_home_timetable"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/main">
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/iv_home_timetable_back"

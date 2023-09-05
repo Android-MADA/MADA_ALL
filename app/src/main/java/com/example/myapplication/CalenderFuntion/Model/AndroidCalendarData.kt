@@ -1,9 +1,11 @@
 package com.example.myapplication.CalenderFuntion.Model
 
+import java.io.Serializable
+
 data class AndroidCalendarData(
-    val startDate: String,
+    var startDate: String,
     var startDate2: String,
-    val endDate: String,
+    var endDate: String,
     val startTime : String,
     val endTime : String,
     val color: String,
@@ -16,8 +18,9 @@ data class AndroidCalendarData(
     val duration : Boolean,
     val memo : String,
     val what : String,       //종류
-    val id : Int       //종류
+    val id : Int,       //종류
+    val repeatDate : String
 
-) {
+) : Serializable {
 
 }

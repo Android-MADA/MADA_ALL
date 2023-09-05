@@ -22,12 +22,12 @@ import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAda
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
-import com.example.myapplication.Splash2Activity
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
+import com.example.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate

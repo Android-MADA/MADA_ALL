@@ -1,15 +1,14 @@
 package com.example.myapplication.MyFuction
 
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.MyFuction.Model.FragMyData
-import com.example.myapplication.MyFuction.Model.MyAlarmData
-import com.example.myapplication.MyFuction.Model.MyAlarmData2
-import com.example.myapplication.MyFuction.Model.MyChangeNicknameData
-import com.example.myapplication.MyFuction.Model.MyGetNoticesData
-import com.example.myapplication.MyFuction.Model.MyGetProfileData
-import com.example.myapplication.MyFuction.Model.MyPremiumData
-import com.example.myapplication.MyFuction.Model.MySetPageData
-import com.example.myapplication.MyFuction.Model.MySetPageData2
+import com.example.myapplication.MyFuction.Data.FragMyData
+import com.example.myapplication.MyFuction.Data.MyAlarmData
+import com.example.myapplication.MyFuction.Data.MyChangeNicknameData
+import com.example.myapplication.MyFuction.Data.MyGetNoticesData
+import com.example.myapplication.MyFuction.Data.MyGetProfileData
+import com.example.myapplication.MyFuction.Data.MyPremiumData
+import com.example.myapplication.MyFuction.Data.MySetPageData
+import com.example.myapplication.MyFuction.Data.MySetPageData2
 import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
