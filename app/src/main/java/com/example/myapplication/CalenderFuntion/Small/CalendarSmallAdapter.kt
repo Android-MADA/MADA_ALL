@@ -1,4 +1,4 @@
-package com.example.myapplication.CalenderFuntion
+package com.example.myapplication.CalenderFuntion.Small
 
 import android.graphics.Color
 import android.util.Log
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.R
-import java.lang.StringBuilder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -24,6 +24,7 @@ class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal
     var y = LocalDate.now().year
     var d = LocalDate.now().dayOfMonth
     private val weekdays = arrayOf("일" ,"월", "화", "수", "목", "금", "토")
+
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)
@@ -54,7 +55,7 @@ class CalendarSmallAdapter(private val dayList: ArrayList<Date>, private val cal
         }
 
         holder.itemView.setOnClickListener {
-            stringText.text = "${iYear}-${iMonth}-${iDay}"
+            stringText.text = String.format("%d-%02d-%02d", iYear, iMonth, iDay)
             Log.d("string2",stringText.toString())
             preNexttext.text ="  ${iMonth}월 ${iDay}일 (${weekdays[position%7]})  "
 

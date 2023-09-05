@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.MySetPageData
 import com.example.myapplication.MyFuction.Data.MySetPageData2
@@ -24,6 +26,7 @@ import retrofit2.Response
 
 class MySetFragment : Fragment() {
     private lateinit var binding: MySetBinding
+    lateinit var navController: NavController
     private val token = Splash2Activity.prefs.getString("token", "")
     private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
 
@@ -38,6 +41,8 @@ class MySetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = binding.navHostFragmentContainer.findNavController()
+
         // 스위치 색 설정 함수 호출
         setupSwitchColor(binding.mySetSwitch1)
         setupSwitchColor(binding.mySetSwitch2)
@@ -46,8 +51,8 @@ class MySetFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             GlobalScope.launch {
                 patchSetting(token, MySetPageData2(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
-                activity?.finish()
             }
+            navController.navigate(R.id.action_mySetFragment_to_fragMy)
         }
 
         GetSetPage()

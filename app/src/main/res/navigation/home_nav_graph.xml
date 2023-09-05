@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_fragHome_to_timeAddFragment"
             app:destination="@id/timeAddFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_ddayAddFragment"
+            app:destination="@id/calendarAddDday" />
     </fragment>
     <fragment
         android:id="@+id/fragCalendar"
@@ -68,6 +71,9 @@
         <action
             android:id="@+id/action_calendarAddDday_to_fragCalendar"
             app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_calendarAddDday_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/fragCustom"
@@ -159,6 +165,21 @@
         <action
             android:id="@+id/action_fragMy_to_myWithdrawFragment"
             app:destination="@id/myWithdrawFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_mySetFragment"
+            app:destination="@id/mySetFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_splash2Activity"
+            app:destination="@id/splash2Activity" />
+        <action
+            android:id="@+id/action_fragMy_to_myRecordWeekFragment"
+            app:destination="@id/myRecordWeekFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_myRecordMonthFragment"
+            app:destination="@id/myRecordMonthFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_myRecordDayFragment"
+            app:destination="@id/myRecordDayFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -216,7 +237,51 @@
         android:name="com.example.myapplication.MyFuction.Fragment.MyWithdrawFragment"
         android:label="MyWithdrawFragment" >
         <action
+            android:id="@+id/action_myWithdrawFragment_to_splash2Activity"
+            app:destination="@id/splash2Activity" />
+        <action
             android:id="@+id/action_myWithdrawFragment_to_fragMy"
+            app:destination="@id/fragMy" />
+    </fragment>
+    <activity
+        android:id="@+id/splash2Activity"
+        android:name="com.example.myapplication.StartFuction.Splash2Activity"
+        android:label="splash2"
+        tools:layout="@layout/splash2" />
+    <fragment
+        android:id="@+id/myRecordWeekFragment"
+        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordWeekFragment"
+        android:label="MyRecordWeekFragment" >
+        <action
+            android:id="@+id/action_myRecordWeekFragment_to_fragMy"
+            app:destination="@id/fragMy" />
+        <action
+            android:id="@+id/action_myRecordWeekFragment_to_myRecordMonthFragment"
+            app:destination="@id/myRecordMonthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRecordMonthFragment"
+        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment"
+        android:label="MyRecordMonthFragment" >
+        <action
+            android:id="@+id/action_myRecordMonthFragment_to_fragMy"
+            app:destination="@id/fragMy" />
+        <action
+            android:id="@+id/action_myRecordMonthFragment_to_myRecordDayFragment"
+            app:destination="@id/myRecordDayFragment" />
+        <action
+            android:id="@+id/action_myRecordMonthFragment_to_myRecordWeekFragment"
+            app:destination="@id/myRecordWeekFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRecordDayFragment"
+        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordDayFragment"
+        android:label="MyRecordDayFragment" >
+        <action
+            android:id="@+id/action_myRecordDayFragment_to_myRecordWeekFragment"
+            app:destination="@id/myRecordWeekFragment" />
+        <action
+            android:id="@+id/action_myRecordDayFragment_to_fragMy"
             app:destination="@id/fragMy" />
     </fragment>
 </navigation>

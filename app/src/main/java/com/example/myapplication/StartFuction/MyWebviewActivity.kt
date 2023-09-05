@@ -2,6 +2,7 @@ package com.example.myapplication.StartFuction
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -26,11 +27,6 @@ class MyWebviewActivity : AppCompatActivity() {
 
     private lateinit var binding: MyWebviewBinding
 
-    // retrofit
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(RetrofitServiceMy::class.java)
-    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
     override fun onCreate(savedInstanceState: Bundle?) {
         Splash2Activity.prefs = PreferenceUtil(applicationContext)
         super.onCreate(savedInstanceState)
@@ -45,27 +41,26 @@ class MyWebviewActivity : AppCompatActivity() {
             settings.javaScriptCanOpenWindowsAutomatically = true
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
         }
-        binding.myWebview.loadUrl("http://15.165.210.13:8080/oauth2/authorization/naver")
+        binding.myWebview.loadUrl("http://www.madaumc.store/oauth2/authorization/naver")
         binding.myWebview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val url = request?.url.toString()
-                //Log.d("url",url)
+                Log.d("url",url)
                 binding.myWebview.loadUrl(url)
-                if (url.startsWith("http://15.165.210.13:8080/user/test?")) {
+                if (url.startsWith("http://www.madaumc.store/user/test?")) {
                     //회원가입 한 상태라면
                     val intent = Intent(this@MyWebviewActivity, MainActivity::class.java)
                     getResponseLogin(url)
                     startActivity(intent)
                     finish()
                     return true // 처리됨
-                } else if (url.startsWith("http://15.165.210.13:8080/user/signup")) {
+                } else if (url.startsWith("http://www.madaumc.store/user/signup")) {
                     //회원가입 안한 상태라면
                     getResponseSign(url)
                     return true // 처리됨
                 } else {
                     return true
                 }
-
                 return true
             }
             override fun onPageFinished(view: WebView, url: String) {

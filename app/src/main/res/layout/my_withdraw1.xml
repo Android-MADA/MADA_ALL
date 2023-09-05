@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyFuction.Fragment.MyWithdrawFragment">
+    tools:context=".MyFuction.Fragment.MyWithdrawFragment"
+    android:id="@+id/nav_host_fragment_container"
+    app:navGraph="@navigation/home_nav_graph">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
@@ -87,7 +89,7 @@
         app:layout_constraintBottom_toTopOf="@+id/my_withdraw_btn"
         app:layout_constraintEnd_toEndOf="@+id/divider6"
         app:layout_constraintStart_toStartOf="@+id/divider6"
-        android:button="@drawable/checkbox_custom"/>
+        android:background="@drawable/checkbox_custom"/>
 
     <Button
         android:id="@+id/my_withdraw_btn"
