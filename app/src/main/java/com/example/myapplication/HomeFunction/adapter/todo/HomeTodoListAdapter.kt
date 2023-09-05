@@ -14,6 +14,7 @@ import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeTodoListBinding
+import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
 
 class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHolder>(DiffCallback) {
@@ -34,7 +35,7 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
     }
 
     var viewModel : HomeViewModel? = null
-    var category : Category? = null
+    var category : CateEntity? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewHolder = ViewHolder(HomeTodoListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -47,21 +48,22 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
         var cbColor = R.drawable.home_checkbox1
 
-//        when(category!!.color){
-//            "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
-//            "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
-//            "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
-//            "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
-//            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
-//            "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
-//            "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
-//            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
-//            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
-//            "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
-//            "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
-//            else -> {cbColor = R.drawable.home_checkbox12}
-//
-//        }
+        when(category!!.color){
+            "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
+            "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
+            "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
+            "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
+            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
+            "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
+            "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
+            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
+            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
+            "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
+            "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
+            else -> {cbColor = R.drawable.home_checkbox12}
+
+        }
+
         holder.checkbox.setBackgroundResource(cbColor)
 
         if(holder.data!!.repeat != "N"){
@@ -79,21 +81,6 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
         }
 
 
-
-//        holder.btnEdit.setOnClickListener {
-//            if(holder.editLayout.isVisible == true){
-//                holder.editLayout.isGone = true
-//                //checkbox 부분 활성화
-//                holder.layoutcb.isVisible = true
-//            }
-//            else {
-//                holder.editLayout.isVisible = true
-//                holder.layoutcb.isGone = true
-//                //checkbox 부분 비활성화
-//                //edt에 text 채우기
-//                holder.edtTodo.setText(getItem(position).todoName)
-//            }
-//        }
 
         holder.edtTodo.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN
