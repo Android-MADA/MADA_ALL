@@ -19,7 +19,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/main"
             >
             <ImageView
                 android:id="@+id/iv_home_cate_add_back"
@@ -43,6 +42,19 @@
                 android:textSize="16sp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
+                android:textColor="@color/black"
+
+                />
+            <ImageView
+                android:id="@+id/btn_home_cate_add_save_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cate_menu"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="4dp"
+                android:textColor="@color/black"
+                android:visibility="gone"
                 />
         </androidx.appcompat.widget.Toolbar>
 
@@ -67,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="카테고리명"
                     android:textSize="16sp"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -103,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:text="색상"
                     android:textSize="16sp"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
@@ -144,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:text="아이콘"
                     android:textSize="16sp"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
@@ -176,25 +191,6 @@
                 android:background="#F0F0F0"/>
 
         </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:visibility="gone"
-            android:id="@+id/btn_home_time_edit_delete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="삭제하기"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:backgroundTint="#F0768C"
-            android:background="@drawable/home_dialog_background"
-            android:layout_marginHorizontal="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="33dp"
-            android:paddingVertical="18dp"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

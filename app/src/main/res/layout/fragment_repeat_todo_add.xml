@@ -16,17 +16,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/main"
             >
             <ImageView
                 android:id="@+id/iv_home_repeat_add_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/home_baseline_arrow_back_ios_24"/>
-            <View
-                android:layout_width="10dp"
-                android:layout_height="0dp"
-                />
+                android:src="@drawable/home_baseline_arrow_back_ios_24"
+                android:layout_marginEnd="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="등록"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
@@ -68,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:hint="제목"
+                    android:textColor="@color/black"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:text="시작일"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -149,6 +148,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:text="종료일"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -209,6 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="매일"
+                    android:textColor="@color/black"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_repeat"
                     android:layout_marginStart="16dp"
