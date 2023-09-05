@@ -178,8 +178,9 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         //db에 반복투두 수정 저장
                         CoroutineScope(Dispatchers.IO).launch {
 
-                            val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), false, repeatString, null, null, startDay, endDay, _argsArrayEdit[11].toBoolean(), _argsArrayEdit[12].toBoolean(), _argsArrayEdit[13].toBoolean(), _argsArrayEdit[14].toBoolean())
+                            val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
                             viewModel.updateRepeatTodo(updateData)
+                            //서버 연결 patch
 
                             withContext(Dispatchers.Main){
                                 Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)

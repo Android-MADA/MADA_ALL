@@ -62,16 +62,11 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                         holder.data!!.date,
                         holder.data!!.category.toString(),
                         holder.data!!.todoName,
-                        holder.data!!.complete.toString(),
                         holder.data!!.repeat,
                         holder.data!!.repeatWeek,
                         holder.data!!.repeatMonth,
                         holder.data!!.startRepeatDate,
                         holder.data!!.endRepeatDate,
-                        holder.data!!.isAlarm.toString(),
-                        holder.data!!.startTodoAtMonday.toString(),
-                        holder.data!!.endTodoBackSetting.toString(),
-                        holder.data!!.newTodoStartSetting.toString()
                     ))
 
                     Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
@@ -79,6 +74,7 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                 else{
                     val data = holder.data
                     viewModel!!.deleteRepeatTodo(data!!)
+                    //서버 연결 delete
                     notifyDataSetChanged()
                 }
                 true

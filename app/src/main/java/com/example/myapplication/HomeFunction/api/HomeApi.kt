@@ -125,6 +125,12 @@ interface HomeApi {
         @Header("Authorization") token : String?,
         @Body data : PostRequestCategory
     ): PactchResponseCategory
+    @POST("/api/home/category")
+    fun postHCategory(
+        @Header("Authorization") token : String?,
+        @Body data : PostRequestCategory
+    ): Call<PactchResponseCategory>
+
 
 
     //카테고리 수정 -> 확인 완
