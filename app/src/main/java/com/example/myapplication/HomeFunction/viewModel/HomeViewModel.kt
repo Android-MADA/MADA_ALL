@@ -608,6 +608,10 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         repository.deleteCate(cateEntity)
     }
 
+    fun deleteAllCate() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllCate()
+    }
+
     //TODO
 
     fun createTodo(todoEntity: TodoEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {

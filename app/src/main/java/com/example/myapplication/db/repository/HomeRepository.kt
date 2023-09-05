@@ -26,6 +26,8 @@ class HomeRepository {
 
     fun deleteCate(cateEntity: CateEntity) = db.cateDao().deleteCate(cateEntity)
 
+    fun deleteAllCate() = db.cateDao().deleteAllCate()
+
     fun getCateId(cateId : Int) = db.cateDao().readCateId(cateId)
 
     //todo
