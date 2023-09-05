@@ -96,13 +96,18 @@ class HomeViewModel : ViewModel() {
             }
         }
 
-    fun postCategory(token: String?, data: PostRequestCategory, view: View) =
-        viewModelScope.launch {
-            val response = api.postCategory(token, data)
-            Log.d("카테고리 post", response.toString())
-            Navigation.findNavController(view)
-                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-        }
+//    fun postCategory(token: String?, data: PostRequestCategory, view: View) =
+//        viewModelScope.launch {
+//            val response = api.postCategory(token, data)
+//            Log.d("카테고리 post", response.toString())
+//            Navigation.findNavController(view)
+//                .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+//        }
+fun postCategory(token: String?, data: PostRequestCategory) =
+    viewModelScope.launch {
+        val response = api.postCategory(token, data)
+        Log.d("카테고리 post", response.toString())
+    }
 
     fun deleteCategory(token: String?, categoryId: Int, view: View) = viewModelScope.launch {
         val response = api.deleteCategory(token, categoryId)

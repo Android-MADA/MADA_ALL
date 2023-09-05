@@ -22,9 +22,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
+import com.example.myapplication.HomeFunction.Model.CategoryList1
+import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateIconAdapter
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentCategoryAddBinding
@@ -34,6 +39,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
@@ -126,6 +134,9 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
         if(arguments != null){
             argsArray =requireArguments().getStringArrayList("key")!!
             binding.edtHomeCategoryName.setText(argsArray!![2])
@@ -227,7 +238,30 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         val cateColor = colorAdapter.selecetedColor
                         val cateIconId = findIconId(iconAdapter.selectedIcon)
 
-                        viewModel.createCate(CateEntity(0, 0, cateName, cateColor, true, cateIconId))
+                        //서버 post 후 response id 넣어서 db 저장
+                        val catePostData = PostRequestCategory(cateName, cateColor, cateIconId)
+                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PactchResponseCategory>{
+                            override fun onResponse(
+                                call: Call<PactchResponseCategory>,
+                                response: Response<PactchResponseCategory>
+                            ) {
+                                if(response.isSuccessful){
+                                    viewModel.createCate(CateEntity(0, response.body()!!.data.id, cateName, cateColor, true, cateIconId))
+                                } else {
+                                    Log.d("cate안드 잘못", "서버 연결 실패")
+
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<PactchResponseCategory>,
+                                t: Throwable
+                            ) {
+                                Log.d("cate서버 연결 오류", "서버 연결 실패")
+                            }
+
+                        })
+
 
                         // navigaiton 이동
                         withContext(Dispatchers.Main){
