@@ -30,13 +30,19 @@ class OnBoardingActivity : AppCompatActivity() {
 
         // ViewPager2, Adapter, Indicator 초기화
         mPager = binding.onViewpager2
-        mPager.setCurrentItem(1) // 시작 지점
+        mPager.setCurrentItem(0) // 시작 지점
         mPager.offscreenPageLimit = 4 // 최대 이미지 수
         mPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 스크롤 방향
         mPager.adapter = OnBoardingAdapter(this, numPage) // 자체 어댑터 연결
         mIndicator = binding.onIndicator
         mIndicator.setViewPager(mPager)
         mIndicator.createIndicators(numPage, 0)
+
+        // [건너뛰기] 버튼 클릭 시
+        binding.onSkipBtn.setOnClickListener {
+            mPager.setCurrentItem(3)
+            mIndicator.setViewPager(mPager)
+        }
 
 
         // 페이지 변경 이벤트 리스너 등록

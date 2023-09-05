@@ -10,7 +10,7 @@
                 </shape>
             </item>
             <!-- 체크 아이콘 -->
-            <item android:right="2dp" android:left="2dp" android:top="2dp" android:bottom="2dp">
+            <item>
                 <shape android:shape="rectangle">
                     <solid android:color="#FFFFFF" />
                 </shape>
@@ -18,7 +18,14 @@
         </layer-list>
     </item>
     <!-- 기본 상태 (체크되지 않은 상태) -->
-    <item>
-        <!-- 안드로이드 기본값을 따름 -->
+    <item android:state_checked="false">
+        <layer-list>
+            <!-- 배경색 -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#FFFFFF" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
 </selector>

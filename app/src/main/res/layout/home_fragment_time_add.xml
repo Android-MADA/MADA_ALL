@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_home_timetable"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/main"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/timeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -81,7 +82,7 @@
                     android:src="@drawable/home_baseline_circle_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/sub2" />
+                    app:tint="@color/main" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_marginTop="15dp"
