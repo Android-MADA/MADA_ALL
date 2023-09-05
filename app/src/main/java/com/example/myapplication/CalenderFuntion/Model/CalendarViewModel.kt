@@ -226,9 +226,12 @@ class CalendarViewModel : ViewModel(){
             override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    Log.d("dsadsa",responseBody.toString())
-                    if(responseBody!=null) callback(1)
-                    else callback(2)
+                    if(responseBody!=null) {
+                        if(responseBody.data!=null) {
+                            callback(2)
+                        }
+                    }
+                    callback(1)
                 } else callback(2)
             }
             override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
@@ -237,9 +240,8 @@ class CalendarViewModel : ViewModel(){
         })
     }
     //달력 불러오고 hashMap에 담기
-    fun getMonthDataArray(month : String,year : String, callback: (Int) -> Unit) {
+    fun getMonthDataArray(month : Int,year : Int, callback: (Int) -> Unit) {
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-
         if(hashMapArrayCal.get("${year}-${month}")==null) {
             val monthArray = ArrayList<AndroidCalendarData>()
             val monthArray2 = ArrayList<AndroidCalendarData>()
@@ -262,7 +264,7 @@ class CalendarViewModel : ViewModel(){
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,dura,"${data.memo}","CAL",data.id,"")
+                                                -1,dura,"${data.memo}","CAL",data.id,data.repeatInfo)
                                             if(dura) {
                                                 monthArray.add(0,tmp)
                                             } else {
@@ -273,7 +275,7 @@ class CalendarViewModel : ViewModel(){
                                         } else {
                                             val tmp = AndroidCalendarData("${(data.end_date)}","${(data.end_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,false,"${data.memo}","CAL",data.id,"")
+                                                -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
                                             monthArray2.add(tmp)
                                         }
                                     }
@@ -309,6 +311,7 @@ class CalendarViewModel : ViewModel(){
                             if(datas != null) {
                                 for (data in datas) {
                                     if(data.repeat!="No") {
+                                        //Log.d("Data",data.toString())
                                         val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                             "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                             -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
@@ -342,19 +345,9 @@ class CalendarViewModel : ViewModel(){
         val hashMapDataMonth = HashMap<DateTime, ArrayList<AndroidCalendarData>>()
 
         val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>
-        getRepeat { result ->
-            when (result) {
-                1 -> {
-                }
-
-                2 -> {
-                }
-            }
-        }
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
-
             } else if(data.repeat=="Week") {
                 val calendar = Calendar.getInstance()
                 calendar.clear()
@@ -389,7 +382,7 @@ class CalendarViewModel : ViewModel(){
 
                     todayTmp =dateFormat.format(calendar.time)
                 } else {
-                    todayTmp = String.format("%d-%02d-%02d", Year, Month,data.repeatDate.toInt())
+                    todayTmp = String.format("%d-%02d-%02d", Year.toInt(), Month.toInt(),data.repeatDate.toInt())
                 }
                 clone.startDate = todayTmp
                 clone.startDate = todayTmp
@@ -458,10 +451,6 @@ class CalendarViewModel : ViewModel(){
                 }
             }
         }
-        /*
-        for ((key, value) in hashMapDataMonth) {
-            Log.d("HashMap", "Key: $key, Value: $value")
-        }*/
 
         return hashMapDataMonth
     }

@@ -97,9 +97,9 @@ class FragCalendar : Fragment(){
         tmp.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
             "10:00:00","11:00:00","#2AA1B7","No","N","9fhdfhdfhfdhd",
             -1,false,"","CAL",-1,""))
-        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
+        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-09-4","2023-09-04","2023-09-04",
         //    "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
-         //   -1,false,"","CAL",-1,"3"))
+        //    -1,false,"","CAL",-1,"3"))
         //CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
         val currentDate = LocalDate.now()
         calendarAdapter = CalendarSliderAdapter(this,binding.textYear, binding.textMonth,viewPager)

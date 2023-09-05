@@ -151,6 +151,7 @@ class DayDataItemView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
+
         hashMapDataCal = CalendarViewModel.setMonthData(year,month,false,(height - 130)/55)
         maxItemNum = (height - 130)/55
         super.onDraw(canvas)
