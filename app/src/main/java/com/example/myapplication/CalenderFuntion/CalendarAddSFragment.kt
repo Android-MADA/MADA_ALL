@@ -46,6 +46,8 @@ class CalendarAddSFragment : Fragment() {
     lateinit var binding: CalendarAddSBinding
     lateinit var calData : AndroidCalendarData
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+
+    private val weekdays = arrayOf("일", "월","화", "수", "목", "금", "토")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,11 +77,12 @@ class CalendarAddSFragment : Fragment() {
             binding.preScheldule.visibility = View.GONE
             binding.textDday.text = "D - ${CalendarViewModel.daysRemainingToDate(calData.endDate)}"
         }
+        if(calData.repeat!="No") {
+            binding.calAndClock.visibility = View.GONE
+        }
         binding.cycle.text = processInput(calData.repeat)
         if(calData.memo =="") binding.memoLayout.visibility = View.GONE
         else binding.memo.text = calData.memo
-
-
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -148,9 +151,15 @@ class CalendarAddSFragment : Fragment() {
     fun processInput(input: String): String {
         return when (input) {
             "Day" -> "매일"
-            "Week" -> "매일"
-            "Month" -> "매일"
-            "Year" -> "매일"
+            "Week" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
+            "Month" -> {
+                if(calData.repeatDate=="32") "매월 " + "마지막 날"
+                else "매월 " + calData.repeatDate + "일"
+            }
+            "Year" -> {
+                val  tmp = calData.repeatDate.split("-")
+                "매년 ${tmp[0].toInt()}월 ${tmp[1].toInt()}일"
+            }
             else -> "반복 안함"
         }
     }

@@ -91,6 +91,9 @@ class CalendarAddFragment : Fragment() {
             preScheduleNum.text = today
             nextScheduleNum.text = today
         }
+        if(curCycle=="Day") {
+
+        }
         //받아온 데이터의 달력, 색깔 적용
         binding.preScheldule.text = CalendarViewModel.convertToDateKoreanFormat(preScheduleNum.text.toString())
         binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(nextScheduleNum.text.toString())
@@ -285,20 +288,48 @@ class CalendarAddFragment : Fragment() {
         val chip3 = binding.chip3
         val chip4 = binding.chip4
         val chip5 = binding.chip5
+        val textWeek = arrayOf(
+            binding.textWeek1, binding.textWeek2, binding.textWeek3, binding.textWeek4, binding.textWeek5,binding.textWeek6,binding.textWeek7
+        )
+        val textMon = arrayOf(
+            binding.textCal1, binding.textCal2, binding.textCal3, binding.textCal4, binding.textCal5,
+            binding.textCal6, binding.textCal7, binding.textCal8, binding.textCal9, binding.textCal10,
+            binding.textCal11, binding.textCal12, binding.textCal13, binding.textCal14, binding.textCal15,
+            binding.textCal16, binding.textCal17, binding.textCal18, binding.textCal19, binding.textCal20,
+            binding.textCal21, binding.textCal22, binding.textCal23, binding.textCal24, binding.textCal25,
+            binding.textCal26, binding.textCal27, binding.textCal28, binding.textCal29, binding.textCal30,
+            binding.textCal31, binding.textCalFinal
+        )
+        var preTextView = binding.textWeek1
+
         if(curCycle =="Day") {
             binding.cyclebtn.text = "매일"
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
+            binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
+
         } else if(curCycle =="Week") {
             binding.cyclebtn.text = "매주"
+            binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
+            if(calData.repeatDate=="0") {
+                textWeek[6].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+                textWeek[6].setTextColor(Color.WHITE)
+            } else {
+                textWeek[calData.repeatDate.toInt()-1].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+                textWeek[calData.repeatDate.toInt()-1].setTextColor(Color.WHITE)
+            }
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
+
         } else if(curCycle =="Month") {
             binding.cyclebtn.text = "매월"
+            binding.calAll.visibility = View.GONE
+            textMon[calData.repeatDate.toInt()-1].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+            textMon[calData.repeatDate.toInt()-1].setTextColor(Color.WHITE)
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
@@ -385,17 +416,17 @@ class CalendarAddFragment : Fragment() {
         }
         var selectedTextWeek = binding.textWeek1
 
-        val textWeek = arrayOf(
-            binding.textWeek1, binding.textWeek2, binding.textWeek3, binding.textWeek4, binding.textWeek5,binding.textWeek6,binding.textWeek7
-        )
-        var preTextView = binding.textWeek1
+
+
         for ((index, textView) in textWeek.withIndex()) {
             textView.setOnClickListener {
                 preTextView.setTextColor(Color.BLACK)
                 preTextView.setBackgroundResource(android.R.color.transparent)
                 // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.
                 selectedTextWeek?.setBackgroundResource(android.R.color.transparent)
-                curRepeatText = "${index}"
+                if(index == 6) curRepeatText = "0"
+                else curRepeatText = "${index+1}"
+
                 // 클릭한 TextView의 배경을 원하는 배경으로 설정합니다.
                 textView.setBackgroundResource(R.drawable.calendar_add_repeat_back1) // 여기서 R.drawable.selected_background는 적절한 배경 리소스로 변경해야 합니다.
                 preTextView = textView
@@ -406,15 +437,7 @@ class CalendarAddFragment : Fragment() {
             }
         }
         var selectedTextMon = binding.textCal1
-        val textMon = arrayOf(
-            binding.textCal1, binding.textCal2, binding.textCal3, binding.textCal4, binding.textCal5,
-            binding.textCal6, binding.textCal7, binding.textCal8, binding.textCal9, binding.textCal10,
-            binding.textCal11, binding.textCal12, binding.textCal13, binding.textCal14, binding.textCal15,
-            binding.textCal16, binding.textCal17, binding.textCal18, binding.textCal19, binding.textCal20,
-            binding.textCal21, binding.textCal22, binding.textCal23, binding.textCal24, binding.textCal25,
-            binding.textCal26, binding.textCal27, binding.textCal28, binding.textCal29, binding.textCal30,
-            binding.textCal31, binding.textCalFinal
-        )
+
         for ((index, textView) in textMon.withIndex()) {
             textView.setOnClickListener {
                 preTextView.setTextColor(Color.BLACK)
