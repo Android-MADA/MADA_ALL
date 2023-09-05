@@ -25,7 +25,12 @@ import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRepeatTodoAddBinding
+import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.hideBottomNavigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -43,7 +48,6 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //할일 작성
                 customBackDialog()
             }
 
@@ -69,30 +73,37 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
-        //0 id
-        //1 todoName
-        //2 repeat
-        //3 repeatWeek
+        val _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
 
-        //4 repeatMonth
-        //5 repeatStartDay
-        //6 repeatEndDay
-        //7 category position
-        //8 todoPosition
+//        0 : todoId.toString(),
+//        1 : id.toString(),
+//        2 : date
+//        3 : category.toString(),
+//        4 : todoName,
+//        5 : complete.toString(),
+//        6 : repeat,
+//        7 : repeatWeek,
+//        8 : repeatMonth,
+//        9 : startRepeatDate,
+//        10 : endRepeatDate,
+//        11 : isAlarm.toString(),
+//        12 : startTodoAtMonday.toString(),
+//        13 : endTodoBackSetting.toString(),
+//        14 : newTodoStartSetting.toString()
 
-            binding.edtHomeCategoryName.setText(_argsArrayEdit!![1])
+        binding.edtHomeCategoryName.setText(_argsArrayEdit!![4])
 
-            if(_argsArrayEdit!![2] == "DAY"){
+            if(_argsArrayEdit!![6] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
-                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![5]
-                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![6]
+                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![9]
+                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![10]
             }
 
 
         binding.ivHomeRepeatAddBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+            customBackDialog()
+            //Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
         }
 
         binding.tvHomeRepeatStartday.setOnClickListener {
@@ -161,9 +172,20 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
                         val startDay = binding.tvHomeRepeatStartday.text.toString()
                         val endDay = binding.tvHomeRepeatEndday.text.toString()
-                        val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay, complete = false)
-                        Log.d("repeat patch", data.toString())
-                        viewModel.patchTodo(_argsArrayEdit!![0].toInt(), data, _argsArrayEdit!![7].toInt(), _argsArrayEdit!![8].toInt(), view)
+                        //val data = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay, complete = false)
+                        //Log.d("repeat patch", data.toString())
+                        //viewModel.patchTodo(_argsArrayEdit!![0].toInt(), data, _argsArrayEdit!![7].toInt(), _argsArrayEdit!![8].toInt(), view)
+                        //db에 반복투두 수정 저장
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), false, repeatString, null, null, startDay, endDay, _argsArrayEdit[11].toBoolean(), _argsArrayEdit[12].toBoolean(), _argsArrayEdit[13].toBoolean(), _argsArrayEdit[14].toBoolean())
+                            viewModel.updateRepeatTodo(updateData)
+
+                            withContext(Dispatchers.Main){
+                                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+                            }
+                        }
+
                     }
 
             }
