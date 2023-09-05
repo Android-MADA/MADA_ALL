@@ -148,18 +148,25 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): Call<PactchResponseCategory>
 
+    //카테고리 종료
+    @PATCH("/api/home/category/active/{categoryId}")
+    fun quitCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    ): Call<Void>
+
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
-    @DELETE("/api/home/category/{categoryId}")
+    @PATCH("/api/home/category/delete/{categoryId}")
     suspend fun deleteCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
-    )
+    ) : Call<Void>
 
-    @DELETE("/api/home/category/{categoryId}")
+    @PATCH("/api/home/category/delete/{categoryId}")
     fun deleteHCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
-    )
+    ) : Call<Void>
 
     @GET("/api/home/todo/repeat")
     suspend fun getRepeatTodo(

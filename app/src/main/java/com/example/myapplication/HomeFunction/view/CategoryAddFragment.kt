@@ -336,12 +336,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     )
                     CoroutineScope(Dispatchers.IO).launch {
                         //종료 patch
-                        val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), true, false)
-                        api.editHCategory(viewModel.userToken, argsArray[1].toInt(), catePostData).enqueue(object : Callback<PactchResponseCategory>{
-                            override fun onResponse(
-                                call: Call<PactchResponseCategory>,
-                                response: Response<PactchResponseCategory>
-                            ) {
+                        api.quitCategory(viewModel.userToken, argsArray!![1].toInt()).enqueue(object : Callback<Void>{
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
                                 if(response.isSuccessful){
                                     Log.d("cateupdate", "성공")
                                 } else {
@@ -349,14 +345,11 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                                 }
                             }
 
-                            override fun onFailure(
-                                call: Call<PactchResponseCategory>,
-                                t: Throwable
-                            ) {
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
                                 Log.d("cateupdate", "서버 연결 실패")
                             }
-
                         })
+
                         viewModel.updateCate(cate)
                         withContext(Dispatchers.Main){
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
@@ -378,8 +371,20 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.deleteCate(cateData)
                         //서버 전송
-                        //api.deleteHCategory()
-                        //viewModel.deleteCategory(viewModel.userToken, argsArray!![1].toInt(), null)
+                        api.deleteHCategory(viewModel.userToken, argsArray!![1].toInt()).enqueue(object :Callback<Void>{
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if(response.isSuccessful){
+                                    Log.d("cateupdate", "성공")
+                                } else {
+                                    Log.d("cateupdate", "안드 잘못 실패")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("cateupdate", "서버 연결 실패")
+                            }
+
+                        })
                         //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
                         withContext(Dispatchers.Main){
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
