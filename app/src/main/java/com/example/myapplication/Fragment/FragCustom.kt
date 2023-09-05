@@ -322,6 +322,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
+                //why~
             }
             val itemIds = arrayOf("10", "900", "800", "700")
 
