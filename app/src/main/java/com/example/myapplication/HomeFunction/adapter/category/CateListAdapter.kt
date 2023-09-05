@@ -5,6 +5,8 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -36,18 +38,31 @@ class CateListAdapter : ListAdapter<CateEntity, CateListAdapter.ViewHolder>(Diff
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+
+        if(holder.data!!.isActive == true){
+            holder.cateLayout.setOnClickListener {
+                itemClickListener.onClick(it, holder.data!!)
+            }
+            holder.quitIcon.isGone = true
+        }
+        else {
+            //도장 표시
+            holder.quitIcon.isVisible = true
+            //클릭리스너 안 됨
+        }
     }
 
     inner class ViewHolder(private val binding : HomeEditCategoryListBinding) : RecyclerView.ViewHolder(binding.root){
+        var data : CateEntity? = null
         fun bind(cateEntity: CateEntity){
             binding.tvHomeAddCategory.text = cateEntity.categoryName
             binding.ivHomeAddCategory.setImageResource(findIcon(cateEntity.iconId))
             val mGradientDrawable : GradientDrawable = binding.layoutHomeCateList.background as GradientDrawable
             mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
-            binding.layoutHomeCateList.setOnClickListener {
-                itemClickListener.onClick(it, cateEntity)
-            }
+            data = cateEntity
         }
+        val cateLayout = binding.layoutHomeCateList
+        val quitIcon = binding.ivCateQuit
     }
 
     fun findIcon(iconId : Int) : Int {

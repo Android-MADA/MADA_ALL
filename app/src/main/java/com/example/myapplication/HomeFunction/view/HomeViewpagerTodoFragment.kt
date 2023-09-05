@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isGone
@@ -17,8 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
@@ -27,11 +24,9 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
 import com.example.myapplication.db.entity.CateEntity
-import com.example.myapplication.db.entity.TodoEntity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 
 
 class HomeViewpagerTodoFragment : Fragment() {
@@ -52,7 +47,7 @@ class HomeViewpagerTodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //카테고리 데이터 가져와서 adapter 넣기
-        viewModel.readCate()
+        viewModel.readActiveCate(true)
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())

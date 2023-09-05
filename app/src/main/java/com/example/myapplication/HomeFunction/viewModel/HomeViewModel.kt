@@ -564,6 +564,7 @@ class HomeViewModel : ViewModel() {
 
     //카테고리 리스트
     lateinit var cateEntityList : LiveData<List<CateEntity>>
+    lateinit var quitCateEntityList : LiveData<List<CateEntity>>
 
     //특정 카테고리 1개 저장(수정, 삭제 시)
     var _cate = MutableLiveData<CateEntity>(null)
@@ -588,9 +589,14 @@ class HomeViewModel : ViewModel() {
         repository.createCate(cateEntity)
     }
 
-    fun readCate() {
-        cateEntityList = repository.readCate().asLiveData()
-        Log.d("readcate", "working")
+    fun readActiveCate(isActive : Boolean) {
+        cateEntityList = repository.readActiveCate(isActive).asLiveData()
+        Log.d("readActivecate", "working")
+    }
+
+    fun readQuitCate(isActive : Boolean) {
+        quitCateEntityList = repository.readQuitCate(isActive).asLiveData()
+        Log.d("readQuitcate", "working")
     }
 
     fun updateCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {

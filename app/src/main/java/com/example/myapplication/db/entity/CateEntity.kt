@@ -15,6 +15,8 @@ data class CateEntity(
     val categoryName: String,
     @ColumnInfo(name = "color")
     val color: String,
+    @ColumnInfo(name = "isActive")
+    val isActive : Boolean,
     @ColumnInfo(name = "iconId")
     val iconId : Int
 )

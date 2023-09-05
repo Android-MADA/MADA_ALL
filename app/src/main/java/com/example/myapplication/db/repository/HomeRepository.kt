@@ -18,7 +18,9 @@ class HomeRepository {
 
     fun createCate(cateEntity: CateEntity) = db.cateDao().createCate(cateEntity)
 
-    fun readCate() = db.cateDao().readCate()
+    fun readActiveCate(isActive : Boolean) = db.cateDao().readActiveCate(isActive)
+
+    fun readQuitCate(isActive : Boolean) = db.cateDao().readQuitCate(isActive)
 
     fun updateCate(cateEntity: CateEntity) = db.cateDao().updateCate(cateEntity)
 

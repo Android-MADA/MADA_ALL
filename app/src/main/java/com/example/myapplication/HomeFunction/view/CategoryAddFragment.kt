@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
@@ -79,8 +80,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //뒤로가기 버튼 클릭 리스너
-                if (binding.btnHomeCateAddSave.text == "삭제") {
+                //뒤로가기 버튼 클릭 리스너 -> 등록 : 다이얼로그, 수정 : 수정후 페이지 전환
+                if (binding.btnHomeCateAddSaveMenu.isVisible) {
                     CoroutineScope(Dispatchers.IO).launch {
 
                         val cateData = CateEntity(
@@ -88,6 +89,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             argsArray!![1].toInt(),
                             binding.edtHomeCategoryName.text.toString(),
                             colorAdapter.selecetedColor,
+                            true,
                             findIconId(iconAdapter.selectedIcon
                         ))
                         viewModel.updateCate(cateData)
@@ -131,11 +133,14 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             colorAdapter.selecetedColor = argsArray!![3]
             binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![4].toInt()))
             iconAdapter.selectedIcon = findIcon(argsArray!![4].toInt()).toString()
-            binding.btnHomeCateAddSave.text = "삭제"
+            binding.btnHomeCateAddSaveMenu.isVisible = true
+            binding.btnHomeCateAddSave.isGone = true
         }
         else {
             colorAdapter.selecetedColor = "#89A9D9"
             iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
+            binding.btnHomeCateAddSaveMenu.isGone = true
+            binding.btnHomeCateAddSave.isVisible = true
         }
 
         val iconListManager = GridLayoutManager(this.activity, 6)
@@ -190,13 +195,14 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         //좌상단 뒤로가기 버튼 클릭 시
         binding.ivHomeCateAddBack.setOnClickListener {
             //cateogry 수정 상황 일 때
-            if (binding.btnHomeCateAddSave.text == "삭제") {
+            if (binding.btnHomeCateAddSaveMenu.isVisible) {
                 //수정 사항 저장
                 val cate = CateEntity(
                     argsArray!![0].toInt(),
                     argsArray!![1].toInt(),
                     binding.edtHomeCategoryName.text.toString(),
                     colorAdapter.selecetedColor,
+                    true,
                     findIconId(iconAdapter.selectedIcon)
                 )
                 viewModel.updateCate(cate)
@@ -215,26 +221,71 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
-                if(binding.btnHomeCateAddSave.text == "삭제") {
-                    //db에서 지우기
-                    customDeleteDialog()
-                } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         //내용 db 저장
                         val cateName = binding.edtHomeCategoryName.text.toString()
                         val cateColor = colorAdapter.selecetedColor
                         val cateIconId = findIconId(iconAdapter.selectedIcon)
 
-                        viewModel.createCate(CateEntity(0, 0, cateName, cateColor, cateIconId))
+                        viewModel.createCate(CateEntity(0, 0, cateName, cateColor, true, cateIconId))
 
                         // navigaiton 이동
                         withContext(Dispatchers.Main){
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                         }
                     }
-                }
             }
 
+        }
+
+        binding.btnHomeCateAddSaveMenu.setOnClickListener {
+            //메뉴바 show
+            val popup = PopupMenu(context, it)
+            popup.menuInflater.inflate(R.menu.cate_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                if(item.itemId == R.id.cate_quit) {
+                //다이얼로그
+                //종료로 업데이트하고 네비게이션
+                    // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
+                    val cate = CateEntity(
+                        argsArray!![0].toInt(),
+                        argsArray!![1].toInt(),
+                        binding.edtHomeCategoryName.text.toString(),
+                        colorAdapter.selecetedColor,
+                        false,
+                        findIconId(iconAdapter.selectedIcon)
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.updateCate(cate)
+                        withContext(Dispatchers.Main){
+                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                        }
+                    }
+
+                }
+                else{
+                    //다이얼로그
+                    //카테고리 테이블에서 삭제
+                    //해당 카테고리 내 모든 반복 투두와 투두 삭제
+                    val cateData = CateEntity(
+                        argsArray!![0].toInt(),
+                        argsArray!![1].toInt(),
+                        argsArray!![2],
+                        argsArray!![3],
+                        true,
+                        argsArray!![4].toInt())
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.deleteCate(cateData)
+                        //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
+                        withContext(Dispatchers.Main){
+                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                        }
+                    }
+                    Log.d("catedelete", "click")
+                }
+                true
+            }
+            popup.show()
         }
 
 

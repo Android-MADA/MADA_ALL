@@ -12,19 +12,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.adapter.category.CateListAdapter
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.hideBottomNavigation
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeCategoryFragment : Fragment() {
 
@@ -52,7 +46,7 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.readCate()
+        viewModel.readActiveCate(true)
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             Log.d("viewmodel", it.toString())
 
@@ -82,6 +76,17 @@ class HomeCategoryFragment : Fragment() {
             //item 클릭 시 수정으로 이동 코드 작성
             cateRv.adapter = cateAdapter
             cateRv.layoutManager = LinearLayoutManager(this.requireActivity())
+        })
+
+        viewModel.readQuitCate(false)
+        viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
+            //rv에 연결
+            val quitCateList = it as List<CateEntity>
+            val quitCateRv = binding.rvHomeCategoryQuit
+            val quitCateAdapter = CateListAdapter()
+            quitCateAdapter.submitList(quitCateList)
+            quitCateRv.adapter = quitCateAdapter
+            quitCateRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
         binding.ivHomeCategoryBack.setOnClickListener {

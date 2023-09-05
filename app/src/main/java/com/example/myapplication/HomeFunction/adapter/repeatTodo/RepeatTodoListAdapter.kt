@@ -57,15 +57,21 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                     val bundle = Bundle()
 
                     bundle.putStringArrayList("keyEdit", arrayListOf(
+                        holder.data!!.todoId.toString(),
                         holder.data!!.id.toString(),
+                        holder.data!!.date,
+                        holder.data!!.category.toString(),
                         holder.data!!.todoName,
+                        holder.data!!.complete.toString(),
                         holder.data!!.repeat,
                         holder.data!!.repeatWeek,
                         holder.data!!.repeatMonth,
                         holder.data!!.startRepeatDate,
                         holder.data!!.endRepeatDate,
-                        holder.data!!.category.toString(),
-                        position.toString()
+                        holder.data!!.isAlarm.toString(),
+                        holder.data!!.startTodoAtMonday.toString(),
+                        holder.data!!.endTodoBackSetting.toString(),
+                        holder.data!!.newTodoStartSetting.toString()
                     ))
 
                     Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
@@ -89,7 +95,7 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
             binding.tvRepeatTodoEdit.isVisible = true
             data = repeatTodoEntity
         }
-        val todoMenu = binding.edtRepeatTodoEdit
+        val todoMenu = binding.tvRepeatTodoEdit
 
     }
 }
