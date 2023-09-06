@@ -180,6 +180,9 @@
         <action
             android:id="@+id/action_fragMy_to_myRecordDayFragment"
             app:destination="@id/myRecordDayFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
