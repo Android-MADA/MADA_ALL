@@ -89,7 +89,9 @@ class FragMy : Fragment() {
                 Log.d("서버 오류", "selectfragMy 실패")
             }
         })
+
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -144,11 +146,13 @@ class FragMy : Fragment() {
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                navController.navigate(R.id.action_fragMy_to_fragHome)
                 return@OnKeyListener true
             }
             false
         })
+
+
 
     }
     // 캐릭터 커스텀 불러오기
@@ -268,4 +272,5 @@ class FragMy : Fragment() {
         // 호출
         alertDialog.show()
     }
+
 }
