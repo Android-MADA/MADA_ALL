@@ -39,7 +39,7 @@ interface RetrofitServiceCalendar {
     //데이터 추가
     @POST("/api/calendar/add")
     fun addCal(@Header("Authorization") token: String?, @Body data: CalendarData
-    ) : Call<CalendarDataId>
+    ) : Call<AddCalendarData>
 
 
     //데이터 수정

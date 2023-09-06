@@ -99,8 +99,13 @@ class CalendarViewModel : ViewModel(){
             mBuilder.dismiss()
         })
         mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-            Navigation.findNavController(theView).navigate(moveFragment)
-            mBuilder.dismiss()
+            if(moveFragment!=0) {
+                Navigation.findNavController(theView).navigate(moveFragment)
+                mBuilder.dismiss()
+            } else {
+                System.exit(0)
+            }
+
         })
     }
     fun setPopupOne(theContext: Context,title : String, theView : View) {
@@ -224,14 +229,14 @@ class CalendarViewModel : ViewModel(){
         Log.d("id",id.toString())
         service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData> {
             override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                Log.d("rrrrrrrrrrrrrrrrrrrr",response.toString())
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        if(responseBody.data!=null) {
-                            callback(2)
-                        }
-                    }
-                    callback(1)
+                        if (responseBody.data != null) {
+                            callback(1)
+                        } else callback(2)
+                    } else callback(2)
                 } else callback(2)
             }
             override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
@@ -473,12 +478,13 @@ class CalendarViewModel : ViewModel(){
     }
 
     fun addCalendar(data : CalendarData,callback: (Int) -> Unit){
-        service.addCal(token,data).enqueue(object : Callback<CalendarDataId> {
-            override fun onResponse(call: Call<CalendarDataId>, response: Response<CalendarDataId>) {
+        service.addCal(token,data).enqueue(object : Callback<AddCalendarData> {
+            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        addId = responseBody.id
+                        addId = responseBody.data.id
                         callback(1)
                     }else
                         callback(2)
@@ -488,7 +494,7 @@ class CalendarViewModel : ViewModel(){
                     callback(2)
                 }
             }
-            override fun onFailure(call: Call<CalendarDataId>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
                 callback(2)
             }
 

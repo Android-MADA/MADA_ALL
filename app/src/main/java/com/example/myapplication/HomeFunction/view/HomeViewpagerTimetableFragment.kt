@@ -175,7 +175,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     if (e is PieEntry) {
                         val bundle = Bundle()
                         bundle.putString("today",today)
-                        bundle.putBoolean("viewpager",true)
                         findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                     }
                 }
@@ -246,7 +245,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                         bundle.putString("today",today)
                         bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-                        bundle.putBoolean("viewpager",true)
                         findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                     }
                     lastSelectedEntry =-1

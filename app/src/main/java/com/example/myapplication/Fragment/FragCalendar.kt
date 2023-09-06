@@ -8,16 +8,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,22 +25,11 @@ import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
-import com.example.myapplication.databinding.FragCalendarBinding
 import com.example.myapplication.R
-import com.example.myapplication.StartFuction.Splash2Activity
+import com.example.myapplication.databinding.FragCalendarBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shawnlin.numberpicker.NumberPicker
-import com.squareup.picasso.Picasso
-import org.joda.time.DateTime
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Integer.min
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -147,7 +134,7 @@ class FragCalendar : Fragment(){
             })
         }
 
-        //getMonthDataArray(CalendarUtil.selectedDate.format(viewModelCal.formatterM),CalendarUtil.selectedDate.format(viewModelCal.formatterYYYY),datas)
+
 
         return binding.root
     }
@@ -161,6 +148,15 @@ class FragCalendar : Fragment(){
             bundle.putString("today",CalendarViewModel.todayDate())
             Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
         }
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
     fun hideBootomNavigation(bool : Boolean){
         val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
