@@ -67,7 +67,6 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     var curColor = "#89A9D9"
     lateinit var token : String
-    var viewpager = false
     var haveTodoCalDatas = false
 
     private lateinit var backDialog: HomeBackCustomDialog
@@ -122,7 +121,6 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<TimeViewModel.PieChartData>?: null
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
-        viewpager = arguments?.getBoolean("viewpager")?: false
         today = arguments?.getString("today")?: "2023-06-01"
         var curId = 0
 
@@ -286,11 +284,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             val bundle = Bundle()
                             bundle.putString("today",today)
-                            if(viewpager) {
-                                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                            }
-                            else
-                                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                         }
                         2 -> {
                             Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -339,11 +333,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    if(viewpager) {
-                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                                    }
-                                    else
-                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -368,11 +358,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    if(viewpager) {
-                                        findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-                                    }
-                                    else
-                                        findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -387,12 +373,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         binding.ivHomeAddTimeBack.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
-            if(viewpager) {
-                bottomFlag = false
-                findNavController().navigate(R.id.action_timeAddFragment_to_fragHome)
-            }
-            else
-                findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {

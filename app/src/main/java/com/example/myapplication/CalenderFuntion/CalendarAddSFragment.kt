@@ -118,7 +118,8 @@ class CalendarAddSFragment : Fragment() {
                     when (result) {
                         1 -> {
                             Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
-                            delCal(calData.id)
+                            if(calData.repeat=="No") delCal(calData.id)
+                            else delRepeat(calData.id)
                             findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
                         }
                         2 -> {
@@ -132,6 +133,12 @@ class CalendarAddSFragment : Fragment() {
             })
         }
         binding.calendarS.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putBoolean("edit",true)
+            bundle.putSerializable("calData",calData)
+            Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
+        }
+        binding.title.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("edit",true)
             bundle.putSerializable("calData",calData)
@@ -183,6 +190,15 @@ class CalendarAddSFragment : Fragment() {
                 }
             }
             currentDate = currentDate.plusMonths(1)
+        }
+    }
+    private fun delRepeat(curId: Int) {
+        val repeatArray = CalendarViewModel.repeatArrayList
+        for(data in repeatArray) {
+            if(data.id == curId) {
+                repeatArray.remove(data)
+                break;
+            }
         }
     }
 }

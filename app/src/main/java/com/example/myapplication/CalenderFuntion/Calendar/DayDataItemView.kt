@@ -199,7 +199,7 @@ class DayDataItemView @JvmOverloads constructor(
                     paint2.color = Color.parseColor(data.color)
                     val roundedRect = RectF(0f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
                     val roundedRectCenter = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
-                    val roundedRectRight = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+55f*data.floor)
+                    val roundedRectRight = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
                     val roundedRectLeft = RectF(0f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
                     val roundedRectNoDuration = RectF(0f, height/2.7f+45f*data.floor, 13f, height/2.7f+40f+45f*data.floor)
                     val paint3 = Paint()

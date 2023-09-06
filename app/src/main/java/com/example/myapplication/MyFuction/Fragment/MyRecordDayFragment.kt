@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +32,7 @@ import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.MyRecordDayBinding
 import com.example.myapplication.databinding.MyRecordMonthBinding
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -49,6 +51,7 @@ import java.util.Calendar
 class MyRecordDayFragment : Fragment() {
     private lateinit var binding: MyRecordDayBinding
     lateinit var navController: NavController
+    lateinit var chartBackground : PieChart
 
     private val viewModelTime: TimeViewModel by activityViewModels()
 
@@ -64,6 +67,40 @@ class MyRecordDayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordDayBinding.inflate(inflater, container, false)
+        chartBackground = binding.chart2
+        val entries = ArrayList<PieEntry>()
+        val colorsItems = ArrayList<Int>()
+
+        val pieDataSet = PieDataSet(entries, "")
+        val pieData = PieData(pieDataSet)
+
+
+        entries.add(PieEntry(10f, "999"))
+        colorsItems.add(Color.parseColor("#232323"))
+        pieDataSet.apply {
+            colors = colorsItems
+            setDrawValues(false) // 비율 숫자 없애기
+        }
+        chartBackground.apply {
+            invalidate()
+            legend.isEnabled = false
+            data = pieData
+            isRotationEnabled = false                               //드래그로 회전 x
+            isDrawHoleEnabled = false
+            setUsePercentValues(false)
+            setEntryLabelColor(Color.BLACK)
+            setDrawEntryLabels(false) //라벨 끄기
+            description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+        }
+        chartBackground.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e is PieEntry) {
+                    pieDataSet.selectionShift = 0f
+                }
+            }
+            override fun onNothingSelected() {
+            }
+        })
         return binding.root
     }
 
@@ -101,7 +138,8 @@ class MyRecordDayFragment : Fragment() {
 
         view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                // 뷰의 크기가 확정되면 호출됩니다.
+                // 설정한 LayoutParams를 다시 설정
+
                 dayChange(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 // 필요한 작업 수행 후 리스너 제거
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -151,9 +189,9 @@ class MyRecordDayFragment : Fragment() {
         val pieDataSet = PieDataSet(entries, "")
         val pieData = PieData(pieDataSet)
 
-
-
         val range = chart.width/60f
+
+        chartBackground.setExtraOffsets(range*0.98f,range*0.98f,range*0.98f,range*0.98f)
 
         if(pieChartDataArray.size==0) {
             entries.add(PieEntry(10f, "999"))
@@ -174,6 +212,7 @@ class MyRecordDayFragment : Fragment() {
                 marker = marker_
                 setDrawEntryLabels(false) //라벨 끄기
                 description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+
             }
             chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {

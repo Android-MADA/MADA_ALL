@@ -4,6 +4,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment
+import com.example.myapplication.MyFuction.Fragment.MyRecordWeekFragment
 import org.joda.time.DateTime
 
 class MyMonthSliderlAdapter(
@@ -17,7 +19,7 @@ class MyMonthSliderlAdapter(
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 monthWeekText.text = DateTime(millis).year.toString() + "년 " + DateTime(millis).monthOfYear.toString() + "월"
-
+                (fm as? MyRecordMonthFragment)?.monthChange(DateTime(millis).monthOfYear)
             }
         })
     }
