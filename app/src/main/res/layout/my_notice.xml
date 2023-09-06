@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MyFuction.Fragment.MyNoticeFragment"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
@@ -13,7 +14,7 @@
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/sub5"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <ImageButton

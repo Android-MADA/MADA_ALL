@@ -68,9 +68,9 @@ class MyRecordMonthFragment : Fragment() {
         }
 
     }
-    fun monthChange(month : Int) {
-        setTodoView(month)
-        setTimetableView(month)
+    fun monthChange(monthOfYear: Int) {
+        setTodoView(monthOfYear)
+        setTimetableView(monthOfYear)
     }
 
     // 투두 뷰 설정
@@ -89,9 +89,9 @@ class MyRecordMonthFragment : Fragment() {
     // 시간표 뷰 설정
     private fun setTimetableView(month : Int) {
         val nickname = "김마다" // 임시데이터
-        val category1 = "카테고리1" // 임시데이터
-        val category2 = "카테고리2"// 임시데이터
-        val category3 = "카테고리3" // 임시데이터
+        val category1 = "공부하기" // 임시데이터
+        val category2 = "데이트"// 임시데이터
+        val category3 = "개발" // 임시데이터
 
         val formattedText1 = "${month}월 시간표"
         val formattedText2 =

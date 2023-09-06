@@ -8,122 +8,129 @@
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:paddingTop="30dp"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="150dp"
+                android:layout_height="180dp">
+
+
+                <ImageView
+                    android:id="@+id/my_ramdi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top|center"
+                    android:src="@drawable/c_ramdi"></ImageView>
+
+                <ImageView
+                    android:id="@+id/img_my_cloth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/custom_empty"></ImageView>
+
+                <ImageView
+                    android:id="@+id/img_my_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"></ImageView>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/my_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="3dp"
+                    android:breakStrategy="balanced"
+                    android:text="안녕하세요, 김마다님!"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/user_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="일반 유저"
+                    android:textColor="@color/grey1"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/my_record_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/my_record_btn_custom"
+                    android:text="내 기록 확인하기"
+                    android:textSize="14sp"
+                    android:drawableStart="@drawable/ic_mada_logo3"
+                    android:paddingStart="16dp"
+                    android:clickable="true"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="150dp"
-            android:layout_height="180dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <ImageView
-                android:id="@+id/my_ramdi"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top|center"
-                android:src="@drawable/c_ramdi"></ImageView>
-
-            <ImageView
-                android:id="@+id/img_my_cloth"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/custom_empty"></ImageView>
-
-            <ImageView
-                android:id="@+id/img_my_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"></ImageView>
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/my_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="안녕하세요, 김마다님!"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/frameLayout"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/user_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="center_horizontal"
-            android:text="일반 유저"
-            android:textColor="@color/grey1"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/my_nickname"
-            app:layout_constraintTop_toBottomOf="@+id/my_nickname" />
-
-        <ImageButton
-            android:id="@+id/my_record_btn"
-            android:layout_width="170dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            android:scaleType="fitCenter"
-            app:layout_constraintStart_toStartOf="@+id/user_type"
-            app:layout_constraintTop_toBottomOf="@+id/user_type"
-            app:srcCompat="@drawable/my_premium_btn" />
-
-
-        <TextView
-            android:id="@+id/saying_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
-            android:background="@drawable/my_ment_custom"
-            android:gravity="start|center_horizontal"
-            android:padding="16dp"
-            android:text="@string/ment_1"
-            android:textColor="#393939"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/my_bottom_sheet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            tools:ignore="NotSibling" />
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/saying_sayer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="start|bottom"
-            android:paddingStart="16dp"
-            android:paddingBottom="12dp"
-            android:text="@string/ment_2"
-            android:textColor="#393939"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/saying_content"
-            app:layout_constraintEnd_toEndOf="@+id/saying_content"
-            app:layout_constraintStart_toStartOf="@+id/saying_content"
-            app:layout_constraintTop_toTopOf="@+id/saying_content" />
+            <TextView
+                android:id="@+id/saying_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/my_ment_custom"
+                android:gravity="start|center_horizontal"
+                android:padding="16dp"
+                android:text="@string/ment_1"
+                android:textColor="#393939"
+                android:textSize="14sp"
+                tools:ignore="NotSibling" />
+
+            <TextView
+                android:id="@+id/saying_sayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:paddingStart="26dp"
+                android:paddingBottom="22dp"
+                android:text="@string/ment_2"
+                android:textColor="#393939"
+                android:textSize="12sp" />
+        </FrameLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         android:background="@drawable/calendar_dday_background"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -145,6 +152,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical" >
 
                 <TextView
