@@ -366,7 +366,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
                     newviewModel.saveButtonInfo(temdata)
-                    newviewModel.saveButtonInfo(temdata)
                 }
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
