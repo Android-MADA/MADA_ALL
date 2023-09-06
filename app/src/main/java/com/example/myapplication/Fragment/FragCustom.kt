@@ -31,9 +31,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
 import android.graphics.Point
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.CustomFunction.NewViewModel
 import com.example.myapplication.CustomFunction.customPrintDATA
@@ -517,7 +519,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 true
             }
         }
-
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragCustom_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
 

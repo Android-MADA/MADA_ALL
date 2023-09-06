@@ -152,7 +152,7 @@ class FragCalendar : Fragment(){
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragHome)
                 return@OnKeyListener true
             }
             false
@@ -168,52 +168,5 @@ class FragCalendar : Fragment(){
         }
     }
 
-/*
-    */
-    /*
-    private fun getCustomChar() {
-        val call2 = service.characterRequest(token)
-        call2.enqueue(object : Callback<CharacterResponse> {
-            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.data.datas
-                        if(datas != null) {
-                            for (data in datas) {
-                                //arrays.add(data)
-                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
-                                if(data.itemType=="color") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.calendarRamdi)
-                                } else if(data.itemType=="set") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.imgCalendarCloth)
-                                } else if(data.itemType=="item") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.imgCalendarItem)
-                                }
-                                // ...
-                            }
-                        } else {
-                            //Log.d("2221","${response.code()}")
-                        }
-                    } else {
-                        //Log.d("222","Request was not successful. Message: hi")
-                    }
-                } else {
-                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
-                }
-            }
-            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
-                //Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-
-     */
 
 }
