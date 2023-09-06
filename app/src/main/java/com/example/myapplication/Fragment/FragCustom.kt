@@ -357,15 +357,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 uniqueItemIds.add(itemIds[0])
             } else {
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
-                newviewModel.saveButtonInfo(temdata.selectedColorButtonInfo)
+                newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900")
                     uniqueItemIds.add(itemIds[1])
             } else {
-                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata.selectedClothButtonInfo)
+                    newviewModel.saveButtonInfo(temdata)
+                }
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800")
@@ -373,7 +374,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata.selectedItemButtonInfo)
+                    newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700")
@@ -381,7 +382,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata.selectedBackgroundButtonInfo)
+                    newviewModel.saveButtonInfo(temdata)
             }
 
 
