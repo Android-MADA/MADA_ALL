@@ -21,9 +21,6 @@ class MyCalendarAdapter(private val dayList: ArrayList<Date>,private val realMon
     var d = LocalDate.now().dayOfMonth
     lateinit var preText : TextView
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(RetrofitServiceCalendar::class.java)
     //임시 데이터
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textDay : TextView = itemView.findViewById(R.id.textDay)

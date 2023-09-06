@@ -8,27 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.CalendarUtil
-import com.example.myapplication.MyFuction.Adapter.MyCalendarMonthAdapter
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
+import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
+import com.example.myapplication.MyFuction.Calendar.MyWeekSliderlAdapter
 import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordMonthBinding
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class MyRecordMonthFragment : Fragment() {
     private lateinit var binding: MyRecordMonthBinding
@@ -59,34 +52,28 @@ class MyRecordMonthFragment : Fragment() {
 
 
         //달력 부분
-        CalendarUtil.selectedDate = LocalDate.now()
-        calendar = Calendar.getInstance()
-        setMonthView()
-        setTodoView()
-        setTimetableView()
-
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
+        binding.calendar2.adapter = calendarAdapter
+        binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
-            CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1)
-            calendar.add(Calendar.MONTH, -1)
-            setMonthView()
-            setTodoView()
-            setTimetableView()
+            binding.calendar2.setCurrentItem(1, true)
         }
+
         binding.nextBtn.setOnClickListener {
-            CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1)
-            calendar.add(Calendar.MONTH, 1)
-            setMonthView()
-            setTodoView()
-            setTimetableView()
+            binding.calendar2.setCurrentItem(1, true)
         }
+
         binding.dayWeekMonthBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
+            navController.navigate(R.id.action_myRecordWeekFragment_to_myRecordMonthFragment)
         }
+    }
+    fun monthChange(month : Int) {
+        setTodoView(month)
+        setTimetableView(month)
     }
 
     // 투두 뷰 설정
-    private fun setTodoView() {
-        val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
+    private fun setTodoView(month : Int) {
         val todoCnt = 7.4 // 임시데이터
         val todoPercent = 72.6 // 임시데이터
 
@@ -99,8 +86,7 @@ class MyRecordMonthFragment : Fragment() {
     }
 
     // 시간표 뷰 설정
-    private fun setTimetableView() {
-        val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
+    private fun setTimetableView(month : Int) {
         val nickname = "김마다" // 임시데이터
         val category1 = "카테고리1" // 임시데이터
         val category2 = "카테고리2"// 임시데이터
@@ -197,48 +183,5 @@ class MyRecordMonthFragment : Fragment() {
         }
     }
 
-    // 달력 뷰 설정
-    private fun setMonthView() {
-        val month = CalendarUtil.selectedDate.monthValue // 월을 가져옴
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
 
-        val formattedText1 = CalendarUtil.selectedDate.format(formatter)
-        val formattedText2 = "${month}월 투두"
-        val formattedText3 = "${month}월 시간표"
-
-        binding.textCalendar.text = formattedText1
-        binding.recordTitleTodo.text = formattedText2
-        binding.recordTitleTimetable.text = formattedText3
-
-        val dayList = dayInMonthArray()
-
-        val formatter2 = DateTimeFormatter.ofPattern("M")
-        val adapter = MyCalendarMonthAdapter(dayList, CalendarUtil.selectedDate.format(formatter2))
-        val manager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
-        binding.calendar2.layoutManager = manager
-        binding.calendar2.adapter = adapter
-    }
-
-    private fun dayInMonthArray(): ArrayList<Date> {
-        val dayList = ArrayList<Date>()
-        val monthCalendar = calendar.clone() as Calendar
-
-        monthCalendar[Calendar.DAY_OF_MONTH] = 1
-        val firstDayofMonth = monthCalendar[Calendar.DAY_OF_WEEK] - 1
-        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayofMonth)
-
-        var i = 0
-        val curMon = calendar.get(Calendar.MONTH) + 1
-        while (i < 38) {
-            val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-            val date = dateFormat.parse(monthCalendar.time.toString())
-            if (curMon < SimpleDateFormat("M", Locale.ENGLISH).format(date).toInt()) {
-                break
-            }
-            dayList.add(monthCalendar.time)
-            monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
-        }
-
-        return dayList
-    }
 }
