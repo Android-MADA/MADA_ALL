@@ -35,7 +35,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.CustomFunction.NewViewModel
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -83,7 +82,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var custom_save = false
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
-    private val newviewModel: NewViewModel by viewModels()
 
 
     private var colorFragment: custom_color? = null
@@ -152,27 +150,18 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         bottomSheetBehavior = BottomSheetBehavior.from(customBottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        getCustomPrint()
+        //getCustomPrint()
         //postcustomItemBuy(14)
 
 
         val savedData = viewModel.getSavedButtonInfo()
-        val savedData2 = newviewModel.getSavedButtonInfo()
 
         if (savedData != null) {
-            if(savedData2 ==null){
                 selectedColorButtonInfo = savedData.selectedColorButtonInfo
                 selectedClothButtonInfo = savedData.selectedClothButtonInfo
                 selectedItemButtonInfo = savedData.selectedItemButtonInfo
                 selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
 
-            }
-            else{
-                selectedColorButtonInfo = savedData2.selectedColorButtonInfo
-                selectedClothButtonInfo = savedData2.selectedClothButtonInfo
-                selectedItemButtonInfo = savedData2.selectedItemButtonInfo
-                selectedBackgroundButtonInfo = savedData2.selectedBackgroundButtonInfo
-            }
             binding.customRamdi.setImageResource(
                 selectedColorButtonInfo?.selectedImageResource ?: 0
             )
@@ -316,7 +305,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             val background_resetinfo = true
             onResetButtonClicked()
             getcustomReset()
-            getCustomPrint()
+            //getCustomPrint()
 
         }
 
@@ -357,7 +346,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 uniqueItemIds.add(itemIds[0])
             } else {
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
-                newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900")
@@ -365,24 +353,23 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata)
                 }
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800")
                     uniqueItemIds.add(itemIds[2])
             } else {
-                if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
+                if(temdata.selectedItemButtonInfo?.serverID.toString()!="800"){
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata)
+                }
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700")
                     uniqueItemIds.add(itemIds[3])
             } else {
-                if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
+                if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700") {
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata)
+                }
             }
 
 
@@ -530,7 +517,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     }
 
 
-    private fun getCustomPrint() {
+    /*private fun getCustomPrint() {
         val call: Call<customPrintDATA> = service.customPrint(token)
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(
@@ -586,7 +573,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 Log.d("error", t.message.toString())
             }
         })
-    }
+    }*/
 
 
     fun patchCustomItemChange(itemIds: List<String>) {
