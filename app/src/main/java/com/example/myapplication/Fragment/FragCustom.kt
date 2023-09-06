@@ -83,6 +83,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var custom_save = false
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
+    private val newviewModel: NewViewModel by viewModels()
 
 
     private var colorFragment: custom_color? = null
@@ -335,7 +336,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
-                //why~
             }
             val itemIds = arrayOf("10", "900", "800", "700")
 
@@ -363,9 +363,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 if(itemIds[1]!="900")
                     uniqueItemIds.add(itemIds[1])
             } else {
-                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
                     newviewModel.saveButtonInfo(temdata)
+                    newviewModel.saveButtonInfo(temdata)
+                }
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800")
