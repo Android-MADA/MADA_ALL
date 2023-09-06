@@ -2,6 +2,7 @@ package com.example.myapplication.Fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
@@ -32,6 +34,7 @@ class FragHome : Fragment() {
     lateinit var binding: HomeFragmentBinding
     private var myAdapter: HomeViewPagerAdapter? = null
     private val viewModel: HomeViewModel by activityViewModels()
+    private val CalendarViewModel : CalendarViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,6 +177,16 @@ class FragHome : Fragment() {
 //            binding.progressBar.progress = viewModel.completeTodoNum.value!!
 //        })
 
+        // 시스템 뒤로가기
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
 
