@@ -40,7 +40,7 @@ class MySignup1Activity : AppCompatActivity() {
         }
     }
     private fun signUpId(id : String) {
-        val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+        val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(RetrofitServiceCalendar::class.java)
         token = Splash2Activity.prefs.getString("token","")
