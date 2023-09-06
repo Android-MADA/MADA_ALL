@@ -2,9 +2,11 @@ package com.example.myapplication.MyFuction.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -13,25 +15,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.example.myapplication.CalenderFuntion.CalendarUtil
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.ScheduleListData
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.HomeFunction.time.SampleTimeData
 import com.example.myapplication.HomeFunction.time.TimeViewModel
 import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.YourMarkerView
 import com.example.myapplication.databinding.MyRecordDayBinding
+import com.example.myapplication.databinding.MyRecordMonthBinding
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -44,11 +43,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class MyRecordDayFragment : Fragment() {
     private lateinit var binding: MyRecordDayBinding
-    private lateinit var calendar: Calendar
     lateinit var navController: NavController
 
     private val viewModelTime: TimeViewModel by activityViewModels()
@@ -75,12 +74,13 @@ class MyRecordDayFragment : Fragment() {
 
         navController = binding.navHostFragmentContainer.findNavController()
 
+
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
         }
 
         //달력 부분
-        dayChange(LocalDate.now().toString())
+
 
         val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"DAY")
         binding.calendar2.adapter = calendarAdapter
@@ -99,6 +99,14 @@ class MyRecordDayFragment : Fragment() {
         }
 
 
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // 뷰의 크기가 확정되면 호출됩니다.
+                dayChange(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                // 필요한 작업 수행 후 리스너 제거
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
         // 홈 투두 받아오기
         //카테 데이터 받아오기
@@ -111,10 +119,11 @@ class MyRecordDayFragment : Fragment() {
 
     }
     //날짜 클릭시 실행되는 함수
-    public fun dayChange(theDate : String) {
+    fun dayChange(theDate : String) {
         //서버에게서 정보 얻어오기
         viewModelTime.getScheduleDatas(theDate) { result ->
             when (result) {
+
                 1 -> {
                     //통신이 된다면
                     pirChartOn(viewModelTime.getTimeDatas(theDate))
@@ -133,6 +142,7 @@ class MyRecordDayFragment : Fragment() {
         val pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
+        chart.clear()
         var tmp = 0     //시작 시간
         val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
         val entries = ArrayList<PieEntry>()
@@ -141,19 +151,9 @@ class MyRecordDayFragment : Fragment() {
         val pieDataSet = PieDataSet(entries, "")
         val pieData = PieData(pieDataSet)
 
+
+
         val range = chart.width/60f
-
-
-        val existingView = binding.chartBackground
-
-        //val layoutParams = existingView.layoutParams as ViewGroup.MarginLayoutParams
-        //layoutParams.leftMargin = range.toInt()
-        //layoutParams.topMargin = range.toInt()
-        //layoutParams.rightMargin = range.toInt()
-        //layoutParams.bottomMargin = range.toInt()
-
-// ImageView에 레이아웃 파라미터를 설정합니다.
-        //existingView.layoutParams = layoutParams
 
         if(pieChartDataArray.size==0) {
             entries.add(PieEntry(10f, "999"))
@@ -161,9 +161,7 @@ class MyRecordDayFragment : Fragment() {
             pieDataSet.apply {
                 colors = colorsItems
                 setDrawValues(false) // 비율 숫자 없애기
-                selectionShift = 0f
             }
-            chart.clear()
             chart.apply {
                 invalidate()
                 legend.isEnabled = false
@@ -177,6 +175,15 @@ class MyRecordDayFragment : Fragment() {
                 setDrawEntryLabels(false) //라벨 끄기
                 description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
             }
+            chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    if (e is PieEntry) {
+                        pieDataSet.selectionShift = 0f
+                    }
+                }
+                override fun onNothingSelected() {
+                }
+            })
         } else {
             for(data in pieChartDataArray) {
                 val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
