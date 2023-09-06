@@ -91,9 +91,6 @@ class CalendarAddFragment : Fragment() {
             preScheduleNum.text = today
             nextScheduleNum.text = today
         }
-        if(curCycle=="Day") {
-
-        }
         //받아온 데이터의 달력, 색깔 적용
         binding.preScheldule.text = CalendarViewModel.convertToDateKoreanFormat(preScheduleNum.text.toString())
         binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(nextScheduleNum.text.toString())
@@ -154,7 +151,8 @@ class CalendarAddFragment : Fragment() {
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.timePicker)
             binding.preScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
-            toggleLayout(true,binding.cal)
+            if(binding.cal.visibility== View.GONE)  toggleLayout(true,binding.cal)
+            else toggleLayout(false,binding.cal)
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonth,binding.calendar2,binding.preScheldule,preScheduleNum ,binding.cal)
             binding.calendar2.adapter = calendarAdapter
@@ -168,7 +166,8 @@ class CalendarAddFragment : Fragment() {
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.timePicker)
             binding.nextScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
-            toggleLayout(true,binding.cal)
+            if(binding.cal.visibility== View.GONE)  toggleLayout(true,binding.cal)
+            else toggleLayout(false,binding.cal)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonth,binding.calendar2,binding.nextScheldule,nextScheduleNum ,binding.cal)
             binding.calendar2.adapter = calendarAdapter
@@ -244,7 +243,8 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.cal)
             schedules[0].setBackgroundResource(R.drawable.calendar_prebackground)
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(true,binding.timePicker)
+            if(binding.timePicker.visibility== View.GONE)  toggleLayout(true,binding.timePicker)
+            else toggleLayout(false,binding.timePicker)
             scheduleSelect=0
             val matchResult = regex.find(schedules[0].text.toString())
             if (matchResult != null) {
@@ -265,7 +265,8 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.cal)
             schedules[1].setBackgroundResource(R.drawable.calendar_prebackground)
             schedules[0].setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(true,binding.timePicker)
+            if(binding.timePicker.visibility== View.GONE)  toggleLayout(true,binding.timePicker)
+            else toggleLayout(false,binding.timePicker)
             scheduleSelect=1
             val matchResult = regex.find(schedules[1].text.toString())
             if (matchResult != null) {
