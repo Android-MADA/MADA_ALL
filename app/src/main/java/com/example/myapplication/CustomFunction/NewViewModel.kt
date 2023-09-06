@@ -13,4 +13,5 @@ class NewViewModel : ViewModel() {
     fun getSavedButtonInfo(): FragCustom.selectedButtonInfo? {
         return savedButtonInfo
     }
+
 }

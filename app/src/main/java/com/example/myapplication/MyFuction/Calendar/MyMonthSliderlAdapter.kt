@@ -4,15 +4,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.CalenderFuntion.Small.CalendarSmallFragment
-import com.example.myapplication.MyFuction.Fragment.MyRecordWeekFragment
 import org.joda.time.DateTime
-import org.joda.time.DateTimeConstants
 
 class MyMonthSliderlAdapter(
-    fm: Fragment,
+    private val fm: Fragment,
     private val monthWeekText: TextView,
-    private val viewPager: ViewPager2
+    private val viewPager: ViewPager2,
+    private val dayOrMonth : String
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -30,7 +28,7 @@ class MyMonthSliderlAdapter(
 
     override fun createFragment(position: Int): MyMonthFragment {
         val millis = getItemId(position)
-        return MyMonthFragment.newInstance(millis)
+        return MyMonthFragment.newInstance(millis,dayOrMonth,fm)
     }
 
     override fun getItemId(position: Int): Long

@@ -52,20 +52,21 @@ class MyRecordMonthFragment : Fragment() {
 
 
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"Month")
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
-            binding.calendar2.setCurrentItem(1, true)
+            binding.calendar2.setCurrentItem(binding.calendar2.currentItem-1, true)
         }
 
         binding.nextBtn.setOnClickListener {
-            binding.calendar2.setCurrentItem(1, true)
+            binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
         binding.dayWeekMonthBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordWeekFragment_to_myRecordMonthFragment)
+            navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
         }
+
     }
     fun monthChange(month : Int) {
         setTodoView(month)

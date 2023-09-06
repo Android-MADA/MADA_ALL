@@ -203,15 +203,12 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
+                <androidx.viewpager2.widget.ViewPager2
                     android:layout_marginVertical="15dp"
-                    android:layout_marginHorizontal="15dp"
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginHorizontal="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -263,12 +260,14 @@
                     android:textStyle="bold" />
 
                 <FrameLayout
+                    android:id="@+id/chartFrame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:layout_width="225dp"
-                        android:layout_height="225dp"
+                        android:id="@+id/chartBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:src="@drawable/my_time_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -278,8 +277,8 @@
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/chart"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

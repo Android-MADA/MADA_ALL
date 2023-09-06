@@ -85,6 +85,7 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         viewModelHome.homeDate.observe(viewLifecycleOwner, Observer {
             today = viewModelHome.homeDate.value.toString()
+            //Log.d("today",today)
             viewModelTime.getScheduleDatas(today) { result ->
                 when (result) {
                     1 -> {
