@@ -7,7 +7,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
-import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils
+import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
 import com.example.myapplication.R
 import org.joda.time.DateTime
@@ -61,14 +61,25 @@ class MyMonthView @JvmOverloads constructor(
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
      */
     fun initCalendar(
-        firstDayOfMonth: DateTime,
         list: List<DateTime>
     ) {
         list.forEach {
-            addView(MyDayView(
+            addView(MyItemView(
+                context = context,
+                date = it
+            ))
+        }
+
+    }
+    fun initCalendar2(
+        list: List<DateTime>,
+        fm: Fragment
+    ) {
+        list.forEach {
+            addView(MyDayItemView(
                 context = context,
                 date = it,
-                firstDayOfMonth = firstDayOfMonth
+                fm = fm
             ))
         }
 

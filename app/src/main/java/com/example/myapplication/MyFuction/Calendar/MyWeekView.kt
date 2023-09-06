@@ -59,14 +59,12 @@ class MyWeekView @JvmOverloads constructor(
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
      */
     fun initCalendar(
-        firstDayOfMonth: DateTime,
         list: List<DateTime>
     ) {
         list.forEach {
-            addView(MyDayView(
+            addView(MyItemView(
                 context = context,
-                date = it,
-                firstDayOfMonth = firstDayOfMonth
+                date = it
             ))
         }
 

@@ -29,7 +29,7 @@ class MyWeekFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordSliderWeekViewBinding.inflate(inflater, container, false)
-        binding.calendarView.initCalendar(DateTime(millis), getWeekList(DateTime(millis)))
+        binding.calendarView.initCalendar(getWeekList(DateTime(millis)))
         return binding.root
     }
     companion object {

@@ -11,24 +11,23 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
-import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.getDateColor
+import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
-import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
+import com.example.myapplication.MyFuction.Fragment.MyRecordDayFragment
 import com.example.myapplication.R
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
-class MyDayView @JvmOverloads constructor(
+class MyDayItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
     private val date: DateTime = DateTime(),
-    private val firstDayOfMonth: DateTime = DateTime()
+    private val fm: Fragment
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
@@ -46,6 +45,9 @@ class MyDayView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
+            Log.d("click","${date}")
+            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+            (fm as? MyRecordDayFragment)?.dayChange(formatter.print(date))
         }
     }
 
