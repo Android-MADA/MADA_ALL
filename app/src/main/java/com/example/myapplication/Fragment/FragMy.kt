@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +26,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.FragMyData
@@ -43,6 +46,7 @@ class FragMy : Fragment() {
     private lateinit var binding: FragMyBinding
     lateinit var navController: NavController
     private lateinit var alertDialog: AlertDialog
+    private val CalendarViewModel : CalendarViewModel by activityViewModels()
 
     //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -70,8 +74,10 @@ class FragMy : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("selectfragMy 성공", response.body().toString())
-                    if (response.body()!!.data.subscribe == true) binding.userType.text = "프리미엄 유저"
-                    else binding.userType.text = "일반 유저"
+
+                    if (response.body()!!.data.subscribe == true) {binding.userType.text = "프리미엄 유저"}
+                    else { binding.userType.text = "일반 유저" }
+
                     binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
                     binding.sayingContent.text = response.body()!!.data.saying[0].content
                     binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
@@ -133,6 +139,16 @@ class FragMy : Fragment() {
             //navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
         }
 
+        // 시스템 뒤로가기
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
     // 캐릭터 커스텀 불러오기
