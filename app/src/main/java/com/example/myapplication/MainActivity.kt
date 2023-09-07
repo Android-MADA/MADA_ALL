@@ -159,9 +159,13 @@ class MainActivity : AppCompatActivity() {
 
         }
         //서버에서 커스텀 받아서 저장?
+    }
+
+
 
     }
-}
+
+
 
         fun hideBottomNavigation(bool: Boolean, activity: Activity?) {
             val bottomNavigation =
@@ -172,3 +176,9 @@ class MainActivity : AppCompatActivity() {
                 bottomNavigation?.isVisible = true
             }
         }
+
+
+
+
+
+
