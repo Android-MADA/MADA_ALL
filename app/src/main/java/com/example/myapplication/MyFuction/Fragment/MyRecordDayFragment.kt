@@ -191,7 +191,7 @@ class MyRecordDayFragment : Fragment() {
 
         val range = chart.width/60f
 
-        chartBackground.setExtraOffsets(range*0.98f,range*0.98f,range*0.98f,range*0.98f)
+
 
         if(pieChartDataArray.size==0) {
             entries.add(PieEntry(10f, "999"))
@@ -223,7 +223,10 @@ class MyRecordDayFragment : Fragment() {
                 override fun onNothingSelected() {
                 }
             })
+            chartBackground.setExtraOffsets(range*0.9f
+                ,range*0.9f,range*0.9f,range*0.9f)
         } else {
+
             for(data in pieChartDataArray) {
                 val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
                 val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
@@ -279,6 +282,8 @@ class MyRecordDayFragment : Fragment() {
                 override fun onNothingSelected() {
                 }
             })
+            chartBackground.setExtraOffsets(range*0.9f
+                ,range*0.9f,range*0.9f,range*0.9f)
         }
 
 

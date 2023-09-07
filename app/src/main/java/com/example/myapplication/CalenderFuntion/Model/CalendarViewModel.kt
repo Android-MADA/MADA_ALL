@@ -357,7 +357,7 @@ class CalendarViewModel : ViewModel(){
                 calendar.clear()
                 calendar.set(Calendar.YEAR, Year.toInt())
                 calendar.set(Calendar.MONTH, Month.toInt() - 1) // 월은 0부터 시작합니다 (1월 = 0)
-                calendar.set(Calendar.DAY_OF_WEEK, data.repeatDate.toInt()+1)
+                calendar.set(Calendar.DAY_OF_MONTH, 1)
 
                 val dates = mutableListOf<Date>()
 
@@ -484,7 +484,7 @@ class CalendarViewModel : ViewModel(){
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        addId = responseBody.data.id
+                        addId = -1    //responseBody.data.id
                         callback(1)
                     }else
                         callback(2)
