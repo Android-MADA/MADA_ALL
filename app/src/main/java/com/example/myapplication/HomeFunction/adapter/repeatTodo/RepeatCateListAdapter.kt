@@ -1,5 +1,6 @@
 package com.example.myapplication.HomeFunction.adapter.repeatTodo
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -26,12 +28,14 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeCatagoryListBinding
+import com.example.myapplication.db.MyApp
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,8 +79,10 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
             mTodoAdapter.viewModel = viewModel
             // 반복투두 읽어오기
             viewModel!!.readRepeatTodo(cateId, mTodoAdapter)
-            holder.todoRv.adapter = mTodoAdapter
-            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+            withContext(Dispatchers.Main){
+                holder.todoRv.adapter = mTodoAdapter
+                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+            }
         }
 
         holder.btnAdd.setOnClickListener {
@@ -93,9 +99,17 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
 
         holder.edtAdd.setOnKeyListener { view, keyCode, event ->
             // Enter Key Action
+            var handled = false
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
+
+                val context = MyApp.context()
+                //키보드 내리기
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(holder.edtAdd.windowToken, 0)
+                handled = true
+
                 var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
                 //서버 post
                 //response로 id 값 넣기
@@ -153,7 +167,7 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
                 holder.layoutAdd.isGone = true
                 true
             }
-
+            handled
             false
         }
 

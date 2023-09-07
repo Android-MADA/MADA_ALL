@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomeFunction.view.CategoryAddFragment"
-       >
+        >
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_home_add_category"
+            android:id="@+id/toolbar_home_inactive_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             >
             <ImageView
-                android:id="@+id/iv_home_cate_add_back"
+                android:id="@+id/iv_home_cate_inactive_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/home_baseline_arrow_back_ios_24"
@@ -34,19 +34,8 @@
                 android:textColor="@color/font"
                 android:textStyle="bold"
                 />
-            <TextView
-                android:id="@+id/btn_home_cate_add_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="등록"
-                android:textSize="16sp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:textColor="@color/black"
-
-                />
             <ImageView
-                android:id="@+id/btn_home_cate_add_save_menu"
+                android:id="@+id/btn_home_cate_inactive_save_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_cate_menu"
@@ -54,7 +43,6 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="4dp"
                 android:textColor="@color/black"
-                android:visibility="gone"
                 />
         </androidx.appcompat.widget.Toolbar>
 
@@ -64,7 +52,7 @@
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_home_add_category">
+            app:layout_constraintTop_toBottomOf="@id/toolbar_home_inactive_category">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -74,7 +62,7 @@
                 android:layout_marginEnd="22dp">
 
                 <TextView
-                    android:id="@+id/tv_home_category_name"
+                    android:id="@+id/tv_home_category_inactive_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="카테고리명"
@@ -83,21 +71,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-                <EditText
-                    android:id="@+id/edt_home_category_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:hint="카테고리명"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@null"
-                    />
 
                 <TextView
-                    android:id="@+id/edt_home_category_name_show"
+                    android:id="@+id/edt_home_category_inactive_name_show"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -105,7 +81,7 @@
                     android:textColor="@color/black"
                     android:textAlignment="textEnd"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_home_category_name"
+                    app:layout_constraintStart_toEndOf="@id/tv_home_category_inactive_name"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -141,24 +117,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:tint="#21C362" />
-                <ImageButton
-                    android:visibility="gone"
-                    android:id="@+id/iv_home_cate_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/home_baseline_circle_24"
-                    android:background="#ffffff"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:tint="#21C362" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/rv_home_cate_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/iv_home_cate_color"
-                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -192,26 +150,8 @@
                     android:src="@drawable/ic_home_cate_study"
                     android:background="#ffffff"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    />
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/iv_home_cate_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_cate_study"
-                    android:background="#ffffff"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/rv_home_cate_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/iv_home_cate_icon"
-                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
