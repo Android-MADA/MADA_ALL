@@ -59,15 +59,15 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="캘린더 일정 알림받기"
@@ -78,7 +78,6 @@
                     android:id="@+id/textView20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:paddingStart="10dp"
                     android:textColor="@color/grey3"
                     android:textSize="12sp"
@@ -108,14 +107,14 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="디데이 알림받기"
@@ -125,7 +124,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:paddingStart="10dp"
                     android:textColor="@color/grey3"
                     android:textSize="12sp"
@@ -139,7 +137,7 @@
                 android:paddingEnd="5dp"
                 android:layout_weight="1"
                 app:thumbTint="#F5F5F5"
-                app:trackTint="#D9D9D9" />
+                app:trackTint="#D9D9D9"/>
         </LinearLayout>
 
         <View
@@ -154,14 +152,14 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="시간표 일정 알림"
@@ -171,7 +169,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:paddingStart="10dp"
                     android:textColor="@color/grey3"
                     android:textSize="12sp"
