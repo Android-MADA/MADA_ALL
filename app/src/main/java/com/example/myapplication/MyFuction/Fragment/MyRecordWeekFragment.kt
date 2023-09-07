@@ -63,11 +63,11 @@ class MyRecordWeekFragment : Fragment() {
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
-            binding.calendar2.setCurrentItem(1, true)
+            binding.calendar2.setCurrentItem(binding.calendar2.currentItem-1, true)
         }
 
         binding.nextBtn.setOnClickListener {
-            binding.calendar2.setCurrentItem(1, true)
+            binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
         binding.dayWeekMonthBtn.setOnClickListener {

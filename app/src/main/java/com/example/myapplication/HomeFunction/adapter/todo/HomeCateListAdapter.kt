@@ -76,8 +76,6 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
             holder.todoRv.adapter = mTodoAdapter
             holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
         }
-
-
         holder.btnAdd.setOnClickListener {
             if(holder.layoutAdd.isGone == true){
                 holder.layoutAdd.isVisible = true
