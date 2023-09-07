@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyFuction.MyWithdraw1Activity">
+    android:background="@color/white"
+    tools:context=".MyFuction.Fragment.MyWithdrawFragment"
+    android:id="@+id/nav_host_fragment_container"
+    app:navGraph="@navigation/home_nav_graph">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
 
         <ImageButton
             android:id="@+id/backBtn"
@@ -22,7 +26,6 @@
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left" />
-
 
         <TextView
             android:id="@+id/textView"
@@ -75,7 +78,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toTopOf="@+id/checkBox" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,7 +89,8 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/my_withdraw_btn"
         app:layout_constraintEnd_toEndOf="@+id/divider6"
-        app:layout_constraintStart_toStartOf="@+id/divider6" />
+        app:layout_constraintStart_toStartOf="@+id/divider6"
+        android:background="@drawable/checkbox_custom"/>
 
     <Button
         android:id="@+id/my_withdraw_btn"

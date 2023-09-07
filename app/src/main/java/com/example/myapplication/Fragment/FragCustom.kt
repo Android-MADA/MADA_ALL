@@ -11,17 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomBottomSheetViewPager
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.CustomViewModel
@@ -31,49 +23,28 @@ import com.example.myapplication.custom_background
 import com.example.myapplication.custom_cloth
 import com.example.myapplication.custom_color
 import com.example.myapplication.custom_item
-import com.example.myapplication.databinding.CustomBackgroundBinding
-import com.example.myapplication.databinding.CustomClothBinding
-import com.example.myapplication.databinding.CustomColorBinding
-import com.example.myapplication.databinding.CustomItemBinding
 import com.example.myapplication.databinding.FragCustomBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import java.lang.Math.log
-import java.math.BigInteger
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Point
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
-import com.example.myapplication.CustomFunction.CustomItemChangeDATA
-import com.example.myapplication.CustomFunction.customItemCheckDATA
+import com.example.myapplication.CustomFunction.NewViewModel
 import com.example.myapplication.CustomFunction.customPrintDATA
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
-import okhttp3.HttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.PUT
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-
-
-
 
 
 interface OnColorImageChangeListener {
@@ -103,7 +74,8 @@ data class IdAndItemType(
 
 
 
-class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener, OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
+class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
+    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
     private lateinit var viewPager: ViewPager2
     private var selectedColorButtonInfo: ButtonInfo? = null
@@ -113,6 +85,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var custom_save = false
     private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
+    private val newviewModel: NewViewModel by viewModels()
 
 
     private var colorFragment: custom_color? = null
@@ -142,7 +115,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token", "")
+    val token = Splash2Activity.prefs.getString("token", "")
 
 
 
@@ -186,13 +159,23 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         val savedData = viewModel.getSavedButtonInfo()
-        if (savedData != null) {
-            selectedColorButtonInfo = savedData.selectedColorButtonInfo
-            selectedClothButtonInfo = savedData.selectedClothButtonInfo
-            selectedItemButtonInfo = savedData.selectedItemButtonInfo
-            selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
+        val savedData2 = newviewModel.getSavedButtonInfo()
 
-            /*binding.customRamdi.setImageResource(
+        if (savedData != null) {
+            if(savedData2 ==null){
+                selectedColorButtonInfo = savedData.selectedColorButtonInfo
+                selectedClothButtonInfo = savedData.selectedClothButtonInfo
+                selectedItemButtonInfo = savedData.selectedItemButtonInfo
+                selectedBackgroundButtonInfo = savedData.selectedBackgroundButtonInfo
+
+            }
+            else{
+                selectedColorButtonInfo = savedData2.selectedColorButtonInfo
+                selectedClothButtonInfo = savedData2.selectedClothButtonInfo
+                selectedItemButtonInfo = savedData2.selectedItemButtonInfo
+                selectedBackgroundButtonInfo = savedData2.selectedBackgroundButtonInfo
+            }
+            binding.customRamdi.setImageResource(
                 selectedColorButtonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomCloth.setImageResource(
@@ -203,7 +186,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
             binding.imgCustomBackground.setImageResource(
                 selectedBackgroundButtonInfo?.selectedImageResource ?: 0
-            )*/
+            )
+
         }
 
 
@@ -345,6 +329,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.btnCustomSave.setOnClickListener {
             custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
+
             var temdata = getSelectedButtonInfo()
 
             Log.d(
@@ -370,23 +355,21 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
             }
 
-            val isColorMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "color" }
-            val isSetMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "set" }
-            val isItemMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "item" }
-            val isBackgroundMissing = printIds.none { idAndItemType -> idAndItemType.itemType == "background" }
-
-
             if(temdata.selectedColorButtonInfo?.serverID == null) {
                 uniqueItemIds.add(itemIds[0])
             } else {
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
+                newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900")
                     uniqueItemIds.add(itemIds[1])
             } else {
-                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900")
+                if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata)
+                    newviewModel.saveButtonInfo(temdata)
+                }
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800")
@@ -394,6 +377,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700")
@@ -401,6 +385,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
+                    newviewModel.saveButtonInfo(temdata)
             }
 
 
@@ -535,7 +520,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 true
             }
         }
-
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragCustom_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
 

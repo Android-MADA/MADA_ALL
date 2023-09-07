@@ -1,3 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //이전꺼
+    <declare-styleable name="CalendarView">
+        <attr name="calendarViewStyle" format="reference" />
+        <attr name="itemViewStyle" format="reference" />
+
+        <attr name="dayHeight" format="dimension"/>
+        <attr name="dayTextSize" format="dimension"/>
+    </declare-styleable>
+
+    <style name="Calendar"/>
+    <style name="Calendar.CalendarViewStyle">
+        <item name="dayHeight">70dp</item>
+    </style>
+
+    <style name="Calendar.ItemViewStyle">
+        <item name="dayTextSize">16sp</item>
+    </style>
+
+    <declare-styleable name="CalendarSmallView">
+        <attr name="calendarSmallViewStyle" format="reference" />
+        <attr name="itemSmallViewStyle" format="reference" />
+
+        <attr name="daySmallHeight" format="dimension"/>
+        <attr name="dayTextSmallSize" format="dimension"/>
+    </declare-styleable>
+    <style name="CalendarSmall"/>
+    <style name="CalendarSmall.CalendarSmallViewStyle">
+        <item name="daySmallHeight">40dp</item>
+    </style>
+
+    <style name="CalendarSmall.ItemSmallViewStyle">
+        <item name="dayTextSmallSize">14sp</item>
+    </style>
+
 </resources>

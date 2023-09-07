@@ -11,13 +11,11 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customItemCheckDATA
-import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.OnColorImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.CustomColorBinding
 import com.example.myapplication.databinding.FragCustomBinding
-import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +37,7 @@ class custom_color : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token","")
+    val token = Splash2Activity.prefs.getString("token","")
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
