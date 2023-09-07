@@ -163,12 +163,7 @@ class FragHome : Fragment() {
         //배경설정
 
         val calendarLayout = binding.layoutCalendarviewHome
-//        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
-//        binding.progressBar.max = viewModel.todoNum.value!!
-//        binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
-//        binding.progressBar.progress = viewModel.completeTodoNum.value!!
-//        binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//
+
         //달력은 현재 날짜로 세팅
         var dateCalendar = Calendar.getInstance()
         dateCalendar.set(
