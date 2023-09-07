@@ -315,8 +315,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
 
-        var width = 500
-        var height = 500
+        var width = 700
+        var height = 700
         val customRamdi = binding.customRamdi
         val customRamdi_layoutParams = customRamdi.layoutParams
         customRamdi_layoutParams.width = 1200 // 원하는 너비(dp 단위)
@@ -349,21 +349,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 800).toInt()
-                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
+                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
+                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 800).toInt()
-                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
+                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
+                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 800).toInt()
-                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
+                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
+                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1100).toInt()
-                imgCustomBackground_layoutParams.height =
-                    (height * (1 - slideOffset) + 1100).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1200).toInt()
+                imgCustomBackground_layoutParams.height = (height * (1 - slideOffset) + 1200).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
