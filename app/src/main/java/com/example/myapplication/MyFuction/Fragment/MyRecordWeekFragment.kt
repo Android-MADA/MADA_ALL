@@ -190,6 +190,7 @@ class MyRecordWeekFragment : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
+                    datas.clear()
 
                     datas.apply{
                         val categoryStatistics = response.body()?.data?.categoryStatistics
