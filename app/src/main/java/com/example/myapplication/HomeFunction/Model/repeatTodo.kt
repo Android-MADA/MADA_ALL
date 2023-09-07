@@ -21,3 +21,4 @@ data class repeatTodo(
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?
 )
+

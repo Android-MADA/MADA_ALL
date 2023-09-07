@@ -14,12 +14,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.HomeFunction.Model.PostRequestTodo
+import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
+import com.example.myapplication.HomeFunction.Model.PostResponseTodo
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeCatagoryListBinding
 import com.example.myapplication.databinding.HomeEditCategoryListBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHolder>(DiffCallback) {
 
@@ -48,15 +59,18 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Log.d("HomeCateItem", getItem(position).toString())
         val cateId = holder.bind(getItem(position))
+        Log.d("HomeCateItem", cateId.toString())
         //todoadapter 연결하기
-        val mTodoAdapter = HomeTodoListAdapter()
-        mTodoAdapter.viewModel = viewModel
-        mTodoAdapter.category = getItem(position)
-        viewModel!!.readTodo(cateId, mTodoAdapter)
-        holder.todoRv.adapter = mTodoAdapter
-        holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+        CoroutineScope(Dispatchers.IO).launch {
+            val mTodoAdapter = HomeTodoListAdapter()
+            mTodoAdapter.viewModel = viewModel
+            mTodoAdapter.category = getItem(position)
+            viewModel!!.readTodo(cateId, mTodoAdapter)
+            holder.todoRv.adapter = mTodoAdapter
+            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+        }
+
 
         holder.btnAdd.setOnClickListener {
             if(holder.layoutAdd.isGone == true){
@@ -75,11 +89,34 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
+                val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+                val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatWeek = null, repeatMonth = null, startRepeatDate = null, endRepeatDate = null, isAlarm = false, startTodoAtMonday = viewModel!!.startMonday, endTodoBackSetting = viewModel!!.completeBottom, newTodoStartSetting = viewModel!!.newTodoTop)
+                //서버 보내기ㅎㅎㅎㅎ
+                CoroutineScope(Dispatchers.IO).launch {
+                    api.addTodo(viewModel!!.userToken, todoData).enqueue(object : Callback<PostResponseTodo>{
+                        override fun onResponse(
+                            call: Call<PostResponseTodo>,
+                            response: Response<PostResponseTodo>
+                        ) {
+                            if(response.isSuccessful){
+                                //db에 저장
+                                val Tresponse = response.body()!!.data.Todo
+                                val data = TodoEntity(0, Tresponse.id, viewModel!!.homeDate.value.toString(), Tresponse.category.id, holder.edtAdd.text.toString(), false, "N", null, null, null, null, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
+                                viewModel!!.createTodo(data, holder.edtAdd)
 
-                val data = TodoEntity(0, 3, viewModel!!.homeDate.value.toString(), getItem(position).cateId, holder.edtAdd.text.toString(), false, "N", null, null, null, null, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
-                Log.d("todo 확인", data.toString())
-                viewModel!!.createTodo(data, holder.edtAdd)
-                //holder.edtAdd.text.clear()
+                            } else{
+                                Log.d("todoAdd", "안드잘못")
+
+                            }
+                        }
+
+                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
+                            Log.d("todoAdd", "서버 연결 실패")
+                        }
+
+                    })
+                }
+
                 holder.layoutAdd.isGone = true
                 true
             }
@@ -97,7 +134,7 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
             val mGradientDrawable : GradientDrawable = binding.layoutHomeViewpagerCateList.background as GradientDrawable
             mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
 
-            return cateEntity.cateId
+            return cateEntity.id!!
         }
         val todoRv = binding.rvRepeatTodo
         val btnAdd = binding.btnRepeatAddTodo

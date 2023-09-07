@@ -22,15 +22,22 @@ import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
+import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRepeatTodoAddBinding
 import com.example.myapplication.db.entity.RepeatEntity
+import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.hideBottomNavigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -73,31 +80,28 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         val _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
 
-//        0 : todoId.toString(),
-//        1 : id.toString(),
-//        2 : date
-//        3 : category.toString(),
+//        0 : todoId,
+//        1 : id,
+//        2 : date,
+//        3 : category,
 //        4 : todoName,
-//        5 : complete.toString(),
-//        6 : repeat,
-//        7 : repeatWeek,
-//        8 : repeatMonth,
-//        9 : startRepeatDate,
-//        10 : endRepeatDate,
-//        11 : isAlarm.toString(),
-//        12 : startTodoAtMonday.toString(),
-//        13 : endTodoBackSetting.toString(),
-//        14 : newTodoStartSetting.toString()
+//        5 : repeat,
+//        6 : repeatWeek,
+//        7 : reepatMonth,
+//        8 : startDay,
+//        9 : endDay
+
 
         binding.edtHomeCategoryName.setText(_argsArrayEdit!![4])
 
-            if(_argsArrayEdit!![6] == "DAY"){
+            if(_argsArrayEdit!![5] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
                 binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
-                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![9]
-                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![10]
+                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![8]
+                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![9]
             }
 
 
@@ -179,9 +183,50 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         CoroutineScope(Dispatchers.IO).launch {
 
                             val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
+                            val patchData = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeat = repeatString, repeatWeek = null, repeatMonth = null, startRepeatDate = startDay, endRepeatDate = endDay, complete = false)
                             viewModel.updateRepeatTodo(updateData)
                             //서버 연결 patch
+                            api.editTodo(viewModel!!.userToken, _argsArrayEdit[1].toInt(), patchData).enqueue(object : Callback<Void>{
+                                override fun onResponse(
+                                    call: Call<Void>,
+                                    response: Response<Void>
+                                ) {
+                                    if(response.isSuccessful){
+                                        Log.d("editRTodo", "success")
+                                        viewModel!!.deleteAllTodo()
+                                        //투두 새로 서버 에서 읽어오기
+                                        api.getAllMyTodo(viewModel!!.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
+                                            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                                                if(response.isSuccessful){
+                                                    for(i in response.body()!!.data.TodoList){
+                                                        val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                                        Log.d("todo server", todoData.toString())
+                                                        viewModel!!.createTodo(todoData, null)
+                                                    }
+                                                    //닉네임 저장하기
+                                                    viewModel!!.userHomeName = response.body()!!.data.nickname
+                                                }
+                                                else {
+                                                    Log.d("todo안드 잘못", "서버 연결 실패")
+                                                }
+                                            }
 
+                                            override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                                                Log.d("todo서버 연결 오류", "서버 연결 실패")
+                                            }
+
+                                        })
+                                    } else {
+                                        Log.d("editRTodo", "And fail")
+
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Void>, t: Throwable) {
+                                    Log.d("editRTodo", "server fail")
+                                }
+
+                            })
                             withContext(Dispatchers.Main){
                                 Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
                             }
