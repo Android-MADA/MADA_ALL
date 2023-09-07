@@ -18,6 +18,7 @@ import com.example.myapplication.CustomFunction.ButtonDatabase
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.ButtonInfoEntity
 import com.example.myapplication.CustomFunction.CustomViewModel
+import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.FragCalendar
@@ -253,6 +254,7 @@ class MainActivity : AppCompatActivity() {
                             selectedImageResource = R.drawable.custom_empty
                         )
                     )
+                    DataRepo.buttonInfoEntity = buttonInfoEntity
                     CoroutineScope(Dispatchers.IO).launch {
                         buttonInfoDao.insertButtonInfo(buttonInfoEntity)
                     }
