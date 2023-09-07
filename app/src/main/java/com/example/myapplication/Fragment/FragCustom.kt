@@ -37,6 +37,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.example.myapplication.CustomFunction.ButtonInfoEntity
 import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.StartFuction.Splash2Activity
@@ -155,6 +156,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         //getCustomPrint()
         //postcustomItemBuy(14)
+        val savedData = viewModel.getSavedButtonInfo()
 
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
@@ -167,7 +169,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
             15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
             18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedColorButtonInfo
         }
 
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
@@ -181,7 +183,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
             45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedClothButtonInfo
         }
 
         val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
@@ -203,7 +205,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
             29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
             38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedItemButtonInfo
         }
 
         val backgroundbuttonInfo = when (DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID) {
@@ -217,28 +219,26 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
             2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
             6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedBackgroundButtonInfo
         }
 
         binding.customRamdi.setImageResource(
-            colorbuttonInfo.selectedImageResource ?: 0
+            colorbuttonInfo?.selectedImageResource ?: 0
         )
 
         binding.imgCustomCloth.setImageResource(
-            clothbuttonInfo.selectedImageResource ?: 0
+            clothbuttonInfo?.selectedImageResource ?: 0
         )
         binding.imgCustomItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
+            itembuttonInfo?.selectedImageResource ?: 0
         )
         binding.imgCustomBackground.setImageResource(
-            backgroundbuttonInfo.selectedImageResource ?: 0
+            backgroundbuttonInfo?.selectedImageResource ?: 0
         )
 
 
 
 
-
-        val savedData = viewModel.getSavedButtonInfo()
 
         if (savedData != null) {
             selectedColorButtonInfo = savedData.selectedColorButtonInfo
@@ -410,7 +410,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
             }
             val itemIds = arrayOf("10", "900", "800", "700")
-            var serverpatchIds = mutableListOf<String>()
+            var serverpatchIds = mutableListOf("10", "900", "800", "700")
 
             val uniqueItemIds = mutableListOf<String>()
 
@@ -427,46 +427,46 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             if(temdata.selectedColorButtonInfo?.serverID == null) {
-                uniqueItemIds.add(itemIds[0])
-                serverpatchIds.add(itemIds[0])
+                uniqueItemIds.add(DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString())
+                serverpatchIds[0] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
+                Log.d("ss","ss")
             } else {
+                Log.d("dd","dd")
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
-                serverpatchIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
+                serverpatchIds[0] = temdata.selectedColorButtonInfo?.serverID.toString()
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900") {
-                    uniqueItemIds.add(itemIds[1])
-                    serverpatchIds.add(itemIds[1])
+                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID.toString())
+                    serverpatchIds[1] = DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID.toString()
                 }
             } else {
                 if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
-                    serverpatchIds.add(temdata.selectedClothButtonInfo?.serverID.toString())
+                    serverpatchIds[1] = temdata.selectedClothButtonInfo?.serverID.toString()
                 }
-                else serverpatchIds.add("900")
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800") {
-                    uniqueItemIds.add(itemIds[2])
-                    serverpatchIds.add(itemIds[2])
-                }else serverpatchIds.add("800")
+                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID.toString())
+                    serverpatchIds[2] = DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID.toString()
+                }
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800"){
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
-                    serverpatchIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
+                    serverpatchIds[2] = temdata.selectedItemButtonInfo?.serverID.toString()
                 }
-                else serverpatchIds.add("800")
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700") {
-                    uniqueItemIds.add(itemIds[3])
-                    serverpatchIds.add(itemIds[3])
-                }else serverpatchIds.add("700")
+                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID.toString())
+                    serverpatchIds[3] = DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID.toString()
+                }
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700") {
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
-                    serverpatchIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
-                }else serverpatchIds.add("700")
+                    serverpatchIds[3] = temdata.selectedBackgroundButtonInfo?.serverID.toString()
+                }
             }
 
 
@@ -481,7 +481,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-            val colorbuttonInfo = when (serverpatchList[0]) {
+            var colorbuttonInfo = when (serverpatchList[0]) {
                 "10" -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
                 "11" -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
                 "17" -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
@@ -494,7 +494,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 else -> savedData?.selectedColorButtonInfo
             }
 
-            val clothbuttonInfo = when (serverpatchList[1]) {
+            var clothbuttonInfo = when (serverpatchList[1]) {
                 "900" -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
                 "41" -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
                 "44" -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
@@ -508,7 +508,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 else -> savedData?.selectedClothButtonInfo
             }
 
-            val itembuttonInfo = when (serverpatchList[2]) {
+            var itembuttonInfo = when (serverpatchList[2]) {
                 "800" -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
                 "22" -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
                 "30" -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
@@ -530,7 +530,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 else -> savedData?.selectedItemButtonInfo
             }
 
-            val backgroundbuttonInfo = when (serverpatchList[3]) {
+            var backgroundbuttonInfo = when (serverpatchList[3]) {
                 "700" -> ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
                 "1" -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
                 "3" -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
@@ -546,17 +546,27 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
             binding.customRamdi.setImageResource(
-                selectedColorButtonInfo?.selectedImageResource ?: 0
+                colorbuttonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomCloth.setImageResource(
-                selectedClothButtonInfo?.selectedImageResource ?: 0
+                clothbuttonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomItem.setImageResource(
-                selectedItemButtonInfo?.selectedImageResource ?: 0
+                itembuttonInfo?.selectedImageResource ?: 0
             )
             binding.imgCustomBackground.setImageResource(
-                selectedBackgroundButtonInfo?.selectedImageResource ?: 0
+                backgroundbuttonInfo?.selectedImageResource ?: 0
             )
+
+
+            DataRepo.buttonInfoEntity?.colorButtonInfo = colorbuttonInfo
+            DataRepo.buttonInfoEntity?.clothButtonInfo = clothbuttonInfo
+            DataRepo.buttonInfoEntity?.itemButtonInfo = itembuttonInfo
+            DataRepo.buttonInfoEntity?.backgroundButtonInfo = backgroundbuttonInfo
+
+
+
+
 
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
