@@ -18,6 +18,8 @@ import retrofit2.http.DELETE
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface RetrofitServiceMy {
@@ -90,7 +92,8 @@ interface RetrofitServiceMy {
 
     // 주, 월별 투두, 카테고리 통계 조회
     @GET("/user/statistics")
-    fun myGetRecord(@Header("/user/statistics/week") token: String?, @Body data: MyRecordOptionData
+    fun myGetRecord(@Header("/user/statistics") token: String?, @Query("option") option: String,
+                    @Query("date") date: String
     ): Call<MyRecordData>
 
 }

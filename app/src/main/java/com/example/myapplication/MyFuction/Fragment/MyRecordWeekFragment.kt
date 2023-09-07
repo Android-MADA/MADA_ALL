@@ -75,9 +75,9 @@ class MyRecordWeekFragment : Fragment() {
         }
 
     }
-    fun weekChange(month : Int, iweek : Int,date : String) {
+    fun weekChange(month : Int, iweek : Int, date : String) {
         Log.d("dasdas",date)
-        setTodoView(MyRecordOptionData("week", date) , month, iweek) // 첫번째 인자 뭐죵??
+        setTodoView(MyRecordOptionData("month", date) , month, iweek)
         setTimetableView(MyRecordOptionData("week", date), month, iweek)
         initCategoryRecycler(MyRecordOptionData("week", date))
         initCategoryPieChart(MyRecordOptionData("week", date))
@@ -87,13 +87,13 @@ class MyRecordWeekFragment : Fragment() {
     private fun setTodoView(wdata: MyRecordOptionData, month : Int, weekOfMonth: Int) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek", "Response Code: $responseCode")
+                Log.d("myGetRecordWeek, ${wdata.date}", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
@@ -122,7 +122,7 @@ class MyRecordWeekFragment : Fragment() {
     private fun setTimetableView(wdata: MyRecordOptionData, month : Int, weekOfMonth: Int) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -165,7 +165,7 @@ class MyRecordWeekFragment : Fragment() {
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -219,7 +219,7 @@ class MyRecordWeekFragment : Fragment() {
         binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
