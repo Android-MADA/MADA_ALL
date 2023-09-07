@@ -45,8 +45,8 @@ class MyProfileNickFragment : Fragment() {
 
         binding.myNickBtn.setOnClickListener {
             changeNickname(binding.editNickname.text.toString())
-            navController.navigate(R.id.action_myProfileNickFragment_to_fragMy)
-            Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+
         }
     }
 
@@ -63,11 +63,14 @@ class MyProfileNickFragment : Fragment() {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         Log.d("닉네임 ${response.body()?.data!!.nickname}으로 변경 성공", "Response Code: $responseCode")
+                        navController.navigate(R.id.action_myProfileNickFragment_to_fragMy)
+                        Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                     } else
                         Log.d("닉네임 ${response.body()?.data!!.nickname}으로 변경 실패", "Response Code: $responseCode")
                 } else {
                     Log.d("닉네임 변경 실패", "Response Code: ${response.code()} ")
                 }
+
             }
             override fun onFailure(call: Call<MyChangeNicknameData>, t: Throwable) {
                 Log.d("서버 오류", "닉네임 변경 실패")

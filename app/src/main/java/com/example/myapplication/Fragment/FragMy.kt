@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,6 +38,7 @@ import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -62,7 +64,7 @@ class FragMy : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
-
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
             override fun onResponse(
@@ -229,6 +231,15 @@ class FragMy : Fragment() {
         alertDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.show()
+        val displayMetrics = DisplayMetrics()
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
         // 버튼 클릭 리스너
         btnYes.setOnClickListener {
@@ -239,6 +250,9 @@ class FragMy : Fragment() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Log.d("로그아웃 성공", response.body().toString())
+                        alertDialog.dismiss()
+                        navController.navigate(R.id.action_fragMy_to_splash2Activity)
+                        Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("로그아웃 실패", response.body().toString())
                     }
@@ -249,10 +263,7 @@ class FragMy : Fragment() {
             })
 
             // 뷰 설정
-            alertDialog.dismiss()
-            navController.navigate(R.id.action_fragMy_to_splash2Activity)
 
-            Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
         }
         btnNo.setOnClickListener {
             alertDialog.dismiss()
@@ -260,17 +271,10 @@ class FragMy : Fragment() {
         }
 
         // 뷰 사이즈 조절
-        val displayMetrics = DisplayMetrics()
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        display.getSize(size)
-        val screenWidth = size.x
-        val popupWidth = (screenWidth * 0.8).toInt()
-        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
 
         // 호출
-        alertDialog.show()
+
     }
 
 }

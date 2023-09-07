@@ -35,10 +35,10 @@ class FragHome : Fragment() {
     private var myAdapter: HomeViewPagerAdapter? = null
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.userToken = Splash2Activity.prefs.getString("token", "")
+
     }
 
 
@@ -60,7 +60,7 @@ class FragHome : Fragment() {
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
-
+        homeViewPager.setCurrentItem(1,false)
         return view
     }
 
@@ -187,7 +187,6 @@ class FragHome : Fragment() {
             }
             false
         })
-
     }
 
     override fun onResume() {
