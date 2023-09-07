@@ -9,7 +9,6 @@
         android:layout_width="51dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/textTime1"
             android:layout_width="wrap_content"
@@ -39,7 +38,7 @@
         android:tint="@color/sub1" />
 
     <TextView
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/textTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -8,14 +8,26 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.CustomFunction.ButtonDatabase
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.ButtonInfoEntity
+import com.example.myapplication.CustomFunction.DataRepo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customPrintDATA
+import com.example.myapplication.Fragment.IdAndItemType
 import com.example.myapplication.MainActivity
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.PreferenceUtil
+import com.example.myapplication.R
 import com.example.myapplication.databinding.MyWebviewBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
@@ -50,10 +62,115 @@ class MyWebviewActivity : AppCompatActivity() {
                 if (url.startsWith("http://www.madaumc.store/user/test?")) {
                     //회원가입 한 상태라면
                     val intent = Intent(this@MyWebviewActivity, MainActivity::class.java)
-                    getResponseLogin(url)
-                    startActivity(intent)
-                    finish()
-                    return true // 처리됨
+
+
+                    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+                        .addConverterFactory(GsonConverterFactory.create()).build()
+                    val service = retrofit.create(RetrofitServiceCustom::class.java)
+                    val token = Splash2Activity.prefs.getString("token", "")
+
+                    val appDatabase =
+                        ButtonDatabase.getInstance(applicationContext) // AppDatabase는 Room 데이터베이스 클래스
+                    val buttonInfoDao = appDatabase.buttonInfoDao()
+
+                    val printIds = mutableListOf<IdAndItemType>()
+                    var printId: Int = 0
+                    var itemType: String = "z"
+
+                    val call: Call<customPrintDATA> = service.customPrint(token)
+                    call.enqueue(object : Callback<customPrintDATA> {
+                        override fun onResponse(
+                            call: Call<customPrintDATA>,
+                            response: Response<customPrintDATA>
+                        ) {
+                            val printInfo = response.body()
+                            val responseCode = response.code()
+                            val datas = printInfo?.data?.wearingItems
+
+                            datas?.forEachIndexed { index, item ->
+                                printId = item.id
+                                itemType = item.itemType
+                                Log.d(
+                                    "getCustomPrint",
+                                    "Item $index - id: ${item.id} itemType: ${item.itemType}"
+                                )
+                                Log.d("getCustomPrint", "Response Code: $responseCode")
+                            }
+
+                            datas?.forEachIndexed { index, item ->
+                                val idAndItemType = IdAndItemType(item.id, item.itemType)
+                                printIds.add(idAndItemType)
+                            }
+
+                            var colorid: Int? = null // 변수를 초기화
+
+                            var clothid: Int? = null // 변수를 초기화
+
+                            var itemid: Int? = null // 변수를 초기화
+
+                            var backgroundid: Int? = null // 변수를 초기화
+
+                            datas?.forEach { item ->
+                                if (item.itemType == "color") {
+                                    colorid = item.id
+                                } else if (item.itemType == "set") {
+                                    clothid = item.id
+                                } else if (item.itemType == "item") {
+                                    itemid = item.id
+                                } else if (item.itemType == "background") {
+                                    backgroundid = item.id
+                                }
+
+                                var buttonInfoEntity = ButtonInfoEntity(
+                                    id = 0,
+                                    colorButtonInfo = ButtonInfo(
+                                        buttonId = colorid ?: 0, // 기본값을 설정할 수 있음
+                                        serverID = colorid ?: 10, // 기본값을 설정할 수 있음
+                                        selectedImageResource = R.drawable.c_ramdi
+                                    ),
+                                    clothButtonInfo = ButtonInfo(
+                                        buttonId = clothid ?: 0, // 기본값을 설정할 수 있음
+                                        serverID = clothid ?: 900, // 기본값을 설정할 수 있음
+                                        selectedImageResource = R.drawable.custom_empty
+                                    ),
+                                    itemButtonInfo = ButtonInfo(
+                                        buttonId = itemid ?: 0, // 기본값을 설정할 수 있음
+                                        serverID = itemid ?: 800, // 기본값을 설정할 수 있음
+                                        selectedImageResource = R.drawable.custom_empty
+                                    ),
+                                    backgroundButtonInfo = ButtonInfo(
+                                        buttonId = backgroundid ?: 0, // 기본값을 설정할 수 있음
+                                        serverID = backgroundid ?: 700, // 기본값을 설정할 수 있음
+                                        selectedImageResource = R.drawable.custom_empty
+                                    )
+                                )
+                                DataRepo.buttonInfoEntity = buttonInfoEntity
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    buttonInfoDao.insertButtonInfo(buttonInfoEntity)
+                                }
+
+                                // 데이터베이스에 추가
+                                Log.d(
+                                    "getCustomPrint",
+                                    "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo.serverID} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo.serverID} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo.serverID} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo.serverID}"
+                                )
+                                Log.d("getCustomPrint", "Response Code: $responseCode")
+                            }
+
+                            datas?.forEachIndexed { index, item ->
+                                val idAndItemType = IdAndItemType(item.id, item.itemType)
+                                printIds.add(idAndItemType)
+                            }
+                            getResponseLogin(url)
+                            startActivity(intent)
+                            finish()
+                        }
+                        override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
+                            Log.d("error", t.message.toString())
+                        }
+                    })
+                    return true
+                    // 처리됨
                 } else if (url.startsWith("http://www.madaumc.store/user/signup")) {
                     //회원가입 안한 상태라면
                     getResponseSign(url)
@@ -100,6 +217,31 @@ class MyWebviewActivity : AppCompatActivity() {
                         Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
                 }
+                var buttonInfoEntity = ButtonInfoEntity(
+                    id = 0,
+                    colorButtonInfo = ButtonInfo(
+                        buttonId =  0, // 기본값을 설정할 수 있음
+                        serverID =  10, // 기본값을 설정할 수 있음
+                        selectedImageResource = R.drawable.c_ramdi
+                    ),
+                    clothButtonInfo = ButtonInfo(
+                        buttonId =  0, // 기본값을 설정할 수 있음
+                        serverID = 900, // 기본값을 설정할 수 있음
+                        selectedImageResource = R.drawable.custom_empty
+                    ),
+                    itemButtonInfo = ButtonInfo(
+                        buttonId =  0, // 기본값을 설정할 수 있음
+                        serverID =  800, // 기본값을 설정할 수 있음
+                        selectedImageResource = R.drawable.custom_empty
+                    ),
+                    backgroundButtonInfo = ButtonInfo(
+                        buttonId =  0, // 기본값을 설정할 수 있음
+                        serverID =  700, // 기본값을 설정할 수 있음
+                        selectedImageResource = R.drawable.custom_empty
+                    )
+                )
+                DataRepo.buttonInfoEntity = buttonInfoEntity
+
                 val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
                 startActivity(intent)
                 finish()
