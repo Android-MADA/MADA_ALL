@@ -73,18 +73,20 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
 
             var cbColor = R.drawable.home_checkbox1
 
+            dataSet[position].category.color
+
             when(dataSet[position].category.color){
-                "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
-                "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
-                "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
-                "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
-                "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
-                "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
-                "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
-                "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
-                "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
-                "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
-                "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
+                "#21C362" -> {cbColor = R.drawable.home_checkbox1}
+                "#0E9746" -> {cbColor = R.drawable.home_checkbox2}
+                "#7FC7D4" -> {cbColor = R.drawable.home_checkbox3}
+                "#2AA1B7" -> {cbColor = R.drawable.home_checkbox4}
+                "#89A9D9" -> {cbColor = R.drawable.home_checkbox5}
+                "#486DA3" -> {cbColor = R.drawable.home_checkbox6}
+                "#FDA4B4" -> {cbColor = R.drawable.home_checkbox7}
+                "#F0768C" -> {cbColor = R.drawable.home_checkbox8}
+                "#F8D141" -> {cbColor = R.drawable.home_checkbox9}
+                "#F68F30" -> {cbColor = R.drawable.home_checkbox10}
+                "#F33E3E" -> {cbColor = R.drawable.home_checkbox11}
                 else -> {cbColor = R.drawable.home_checkbox12}
 
             }
