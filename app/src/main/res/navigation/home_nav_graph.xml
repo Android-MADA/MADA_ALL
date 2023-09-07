@@ -271,6 +271,9 @@
         <action
             android:id="@+id/action_myRecordWeekFragment_to_myRecordMonthFragment"
             app:destination="@id/myRecordMonthFragment" />
+        <action
+            android:id="@+id/action_myRecordWeekFragment_to_fragMy2"
+            app:destination="@id/fragMy" />
     </fragment>
     <fragment
         android:id="@+id/myRecordMonthFragment"
@@ -285,6 +288,9 @@
         <action
             android:id="@+id/action_myRecordMonthFragment_to_myRecordWeekFragment"
             app:destination="@id/myRecordWeekFragment" />
+        <action
+            android:id="@+id/action_myRecordMonthFragment_to_fragMy2"
+            app:destination="@id/fragMy" />
     </fragment>
     <fragment
         android:id="@+id/myRecordDayFragment"
@@ -295,6 +301,9 @@
             app:destination="@id/myRecordWeekFragment" />
         <action
             android:id="@+id/action_myRecordDayFragment_to_fragMy"
+            app:destination="@id/fragMy" />
+        <action
+            android:id="@+id/action_myRecordDayFragment_to_fragMy2"
             app:destination="@id/fragMy" />
     </fragment>
     <fragment

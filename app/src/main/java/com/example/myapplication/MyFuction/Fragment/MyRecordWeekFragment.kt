@@ -3,6 +3,7 @@ package com.example.myapplication.MyFuction.Fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,6 +75,17 @@ class MyRecordWeekFragment : Fragment() {
         binding.dayWeekMonthBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordWeekFragment_to_myRecordMonthFragment)
         }
+
+        // 시스템 뒤로가기
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                navController.navigate(R.id.action_myRecordWeekFragment_to_fragMy)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
     fun weekChange(month : Int, iweek : Int, date : String) {

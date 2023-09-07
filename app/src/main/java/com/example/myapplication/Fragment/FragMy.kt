@@ -199,8 +199,8 @@ class FragMy : Fragment() {
 
         // 내 기록 확인하기
         binding.myRecordBtn.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myRecordWeekFragment)
-            //navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
+            //navController.navigate(R.id.action_fragMy_to_myRecordWeekFragment)
+            navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
         }
 
         // 시스템 뒤로가기
