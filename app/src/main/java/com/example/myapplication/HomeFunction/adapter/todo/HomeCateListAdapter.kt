@@ -34,6 +34,7 @@ import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,8 +74,13 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
             mTodoAdapter.viewModel = viewModel
             mTodoAdapter.category = getItem(position)
             viewModel!!.readTodo(cateId, mTodoAdapter)
-            holder.todoRv.adapter = mTodoAdapter
-            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+
+            withContext(Dispatchers.Main){
+                holder.todoRv.adapter = mTodoAdapter
+                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+
+            }
+
         }
 
 

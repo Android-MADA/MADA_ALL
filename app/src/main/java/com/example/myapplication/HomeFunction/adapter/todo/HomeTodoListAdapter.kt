@@ -194,17 +194,17 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 //        }
 
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked == true){
+//            if(isChecked == true){
                 //update
-                holder.data!!.complete = true
-                val checkUpdateData = holder.data!!
-                val updateData = PatchRequestTodo(checkUpdateData.todoName, checkUpdateData.repeat, checkUpdateData.repeatWeek, checkUpdateData.repeatMonth, checkUpdateData.startRepeatDate, checkUpdateData.endRepeatDate, complete = true)
-                viewModel!!.updateTodo(checkUpdateData)
+                //holder.data!!.complete = true
+                val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate , endTodoBackSetting = holder.data!!.endTodoBackSetting, newTodoStartSetting = holder.data!!.newTodoStartSetting, isAlarm = holder.data!!.isAlarm, startTodoAtMonday = holder.data!!.startTodoAtMonday, repeat = holder.data!!.repeat, repeatMonth = holder.data!!.repeatMonth, repeatWeek = holder.data!!.repeatWeek , startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
+                val updateData = PatchRequestTodo(checkUpdateData.todoName, checkUpdateData.repeat, checkUpdateData.repeatWeek, checkUpdateData.repeatMonth, checkUpdateData.startRepeatDate, checkUpdateData.endRepeatDate, complete = isChecked)
                 //서버 연결
                 api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if(response.isSuccessful){
                             Log.d("todo server", "성공")
+                            viewModel!!.updateTodo(checkUpdateData)
                         }
                         else {
                             Log.d("todo안드 잘못", "서버 연결 실패")
@@ -216,33 +216,33 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                     }
                 })
                 //자리 이동
-            }
-            else {
-                //update
-                holder.data!!.complete = false
-                CoroutineScope(Dispatchers.IO).launch {
-                    //서버 연결, db 저장
-                    val checkUpdateData = holder.data!!
-                    val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = "N",  repeatWeek = checkUpdateData.repeatWeek, repeatMonth = checkUpdateData.repeatMonth, startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = false)
-                    Log.d("todoedit 확인", updateData.toString())
-                    api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
-                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                            if(response.isSuccessful){
-                                    Log.d("todo server", "성공")
-                            }
-                            else {
-                                Log.d("todo안드 잘못", "서버 연결 실패")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Log.d("서버 문제", "서버 연결 실패")
-                        }
-                    })
-                    viewModel!!.updateTodo(checkUpdateData)
-                }
-                //자리 이동
-            }
+//            }
+//            else {
+//                //update
+//                holder.data!!.complete = false
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    //서버 연결, db 저장
+//                    val checkUpdateData = holder.data!!
+//                    val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = "N",  repeatWeek = checkUpdateData.repeatWeek, repeatMonth = checkUpdateData.repeatMonth, startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = false)
+//                    Log.d("todoedit 확인", updateData.toString())
+//                    api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+//                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                            if(response.isSuccessful){
+//                                    Log.d("todo server", "성공")
+//                            }
+//                            else {
+//                                Log.d("todo안드 잘못", "서버 연결 실패")
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<Void>, t: Throwable) {
+//                            Log.d("서버 문제", "서버 연결 실패")
+//                        }
+//                    })
+//                    viewModel!!.updateTodo(checkUpdateData)
+//                }
+//                //자리 이동
+//            }
         }
     }
 
