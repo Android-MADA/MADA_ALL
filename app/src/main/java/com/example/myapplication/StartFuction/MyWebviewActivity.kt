@@ -8,6 +8,9 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.myapplication.CustomFunction.ButtonDatabase
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.ButtonInfoEntity
@@ -69,8 +72,22 @@ class MyWebviewActivity : AppCompatActivity() {
                     val service = retrofit.create(RetrofitServiceCustom::class.java)
                     val token = Splash2Activity.prefs.getString("token", "")
 
-                    val appDatabase =
-                        ButtonDatabase.getInstance(applicationContext) // AppDatabase는 Room 데이터베이스 클래스
+                    val migration1to2 = object : Migration(1, 2) {
+                        override fun migrate(database: SupportSQLiteDatabase) {
+                            // 마이그레이션 로직을 여기에 작성합니다.
+                            // 이전 버전에서 새 버전으로의 데이터베이스 스키마 변경을 정의합니다.
+                            database.execSQL("ALTER TABLE old_table_name ADD COLUMN new_column_name TEXT")
+                        }
+                    }
+
+
+                    val appDatabase = Room.databaseBuilder(applicationContext, ButtonDatabase::class.java, "my_database")
+                        .addMigrations(migration1to2) // 마이그레이션 경로 추가
+                        .build()
+
+                    // DataRepo 클래스나 다른 곳에서 이 데이터베이스 인스턴스를 사용할 수 있습니다.
+                    //DataRepo.initializeDatabase(appDatabase)
+
                     val buttonInfoDao = appDatabase.buttonInfoDao()
 
                     val printIds = mutableListOf<IdAndItemType>()
@@ -152,7 +169,7 @@ class MyWebviewActivity : AppCompatActivity() {
                                 // 데이터베이스에 추가
                                 Log.d(
                                     "getCustomPrint",
-                                    "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo.serverID} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo.serverID} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo.serverID} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo.serverID}"
+                                    "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo?.serverID} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo?.serverID} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo?.serverID} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo?.serverID}"
                                 )
                                 Log.d("getCustomPrint", "Response Code: $responseCode")
                             }
@@ -217,31 +234,6 @@ class MyWebviewActivity : AppCompatActivity() {
                         Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
                 }
-                var buttonInfoEntity = ButtonInfoEntity(
-                    id = 0,
-                    colorButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  10, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.c_ramdi
-                    ),
-                    clothButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID = 900, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    ),
-                    itemButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  800, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    ),
-                    backgroundButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  700, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    )
-                )
-                DataRepo.buttonInfoEntity = buttonInfoEntity
-
                 val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
                 startActivity(intent)
                 finish()
@@ -264,4 +256,3 @@ class MyWebviewActivity : AppCompatActivity() {
     }
 
 }
-
