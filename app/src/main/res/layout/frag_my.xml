@@ -129,7 +129,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="380dp"
         android:background="@drawable/calendar_dday_background"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
