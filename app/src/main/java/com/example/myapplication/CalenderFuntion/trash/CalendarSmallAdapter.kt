@@ -1,4 +1,4 @@
-package com.example.myapplication.CalenderFuntion.Small
+package com.example.myapplication.CalenderFuntion.trash
 
 import android.graphics.Color
 import android.util.Log

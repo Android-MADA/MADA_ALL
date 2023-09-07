@@ -40,7 +40,7 @@ data class CalendarDataId(
 )
 
 data class AddCalendarData (
-    @SerializedName("data") val data: CalendarDataId
+    @SerializedName("calendars") val data: CalendarDataId
 )
 
 //Dday 모든 정보 요청

@@ -153,15 +153,15 @@ class DayDataItemView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
 
         hashMapDataCal = CalendarViewModel.setMonthData(year,month,false,(height - 130)/55)
-        maxItemNum = (height - 130)/55
+        maxItemNum = ((height*0.63f)/55).toInt()
         super.onDraw(canvas)
         if (canvas == null) return
         // date에 있는 데이터 들이
         if(hashMapDataCal.get(date)!=null) {
+            Log.d("height",height.toString())
             val size = hashMapDataCal.get(date)!!.size
             var floor = 0
             for(data in hashMapDataCal.get(date)!!) {
-                //Log.d("${date}","${data.floor} ${data.title}")
                 if(data.floor +1 == maxItemNum&&size > maxItemNum) {
                     val paint3 = Paint()
                     paint3.isAntiAlias = true
@@ -170,7 +170,7 @@ class DayDataItemView @JvmOverloads constructor(
                     canvas.drawText(
                         "+${size-maxItemNum+1}",
                         10f,
-                        167f+55f*data.floor,
+                        height/2.2f+45f*data.floor,
                         paint3
                     )
                 }
@@ -197,11 +197,11 @@ class DayDataItemView @JvmOverloads constructor(
                     val paint2 = Paint()
                     paint2.isAntiAlias = true
                     paint2.color = Color.parseColor(data.color)
-                    val roundedRect = RectF(0f, 130f+55f*data.floor, width.toFloat(), 180f+55f*data.floor)
-                    val roundedRectCenter = RectF(-50f, 130f+55f*data.floor, width.toFloat()+55f, 180f+55f*data.floor)
-                    val roundedRectRight = RectF(-50f, 130f+55f*data.floor, width.toFloat(), 180f+55f*data.floor)
-                    val roundedRectLeft = RectF(0f, 130f+55f*data.floor, width.toFloat()+55f, 180f+55f*data.floor)
-                    val roundedRectNoDuration = RectF(0f, 130f+55f*data.floor, 25f, 180f+55f*data.floor)
+                    val roundedRect = RectF(0f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
+                    val roundedRectCenter = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
+                    val roundedRectRight = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
+                    val roundedRectLeft = RectF(0f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
+                    val roundedRectNoDuration = RectF(0f, height/2.7f+45f*data.floor, 13f, height/2.7f+40f+45f*data.floor)
                     val paint3 = Paint()
                     paint3.isAntiAlias = true
                     if(data.duration) {
@@ -254,14 +254,14 @@ class DayDataItemView @JvmOverloads constructor(
                             canvas.drawText(
                                 newText,
                                 30f,
-                                167f + 55f * data.floor,
+                                height/2.2f + 45f * data.floor,
                                 textPaint
                             )
                         } else {
                             canvas.drawText(
                                 originalText,
                                 30f,
-                                167f + 55f * data.floor,
+                                height/2.2f + 45f * data.floor,
                                 textPaint
                             )
                         }

@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
                         backgroundid = item.id
                     }
 
-                    val buttonInfoEntity = ButtonInfoEntity(
+                    var buttonInfoEntity = ButtonInfoEntity(
                         id = 0,
                         colorButtonInfo = ButtonInfo(
                             buttonId = colorid ?: 0, // 기본값을 설정할 수 있음
@@ -242,7 +242,7 @@ class MainActivity : AppCompatActivity() {
                             serverID = clothid ?: 900, // 기본값을 설정할 수 있음
                             selectedImageResource = R.drawable.custom_empty
                         ),
-                        itmeButtonInfo = ButtonInfo(
+                        itemButtonInfo = ButtonInfo(
                             buttonId = itemid ?: 0, // 기본값을 설정할 수 있음
                             serverID = itemid ?: 800, // 기본값을 설정할 수 있음
                             selectedImageResource = R.drawable.custom_empty
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
                     // 데이터베이스에 추가
                     Log.d(
                         "getCustomPrint",
-                        "Item id: ${item.id} itemType: ${item.itemType}"
+                        "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo}"
                     )
                     Log.d("getCustomPrint", "Response Code: $responseCode")
                 }

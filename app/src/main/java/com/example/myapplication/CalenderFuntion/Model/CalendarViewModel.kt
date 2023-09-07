@@ -99,8 +99,13 @@ class CalendarViewModel : ViewModel(){
             mBuilder.dismiss()
         })
         mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-            Navigation.findNavController(theView).navigate(moveFragment)
-            mBuilder.dismiss()
+            if(moveFragment!=0) {
+                Navigation.findNavController(theView).navigate(moveFragment)
+                mBuilder.dismiss()
+            } else {
+                System.exit(0)
+            }
+
         })
     }
     fun setPopupOne(theContext: Context,title : String, theView : View) {
@@ -224,14 +229,14 @@ class CalendarViewModel : ViewModel(){
         Log.d("id",id.toString())
         service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData> {
             override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                Log.d("rrrrrrrrrrrrrrrrrrrr",response.toString())
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        if(responseBody.data!=null) {
-                            callback(2)
-                        }
-                    }
-                    callback(1)
+                        if (responseBody.data != null) {
+                            callback(1)
+                        } else callback(2)
+                    } else callback(2)
                 } else callback(2)
             }
             override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
@@ -348,6 +353,24 @@ class CalendarViewModel : ViewModel(){
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
+                val calendar = Calendar.getInstance()
+                calendar.clear()
+                calendar.set(Calendar.YEAR, Year.toInt())
+                calendar.set(Calendar.MONTH, Month.toInt() - 1) // 월은 0부터 시작합니다 (1월 = 0)
+                calendar.set(Calendar.DAY_OF_WEEK, data.repeatDate.toInt()+1)
+
+                val dates = mutableListOf<Date>()
+
+                // 주어진 월에 해당하는 요일이 있는 경우에만 날짜를 추가합니다.
+                while (calendar.get(Calendar.MONTH) == Month.toInt() - 1) {
+                    val clone = data.copy()
+                    val todayTmp =dateFormat.format(calendar.time)
+                    clone.startDate = todayTmp
+                    clone.startDate2 = todayTmp
+                    clone.endDate = todayTmp
+                    hashMapArrayCalTmp.add(clone)
+                    calendar.add(Calendar.DAY_OF_MONTH, 1) // 7일씩 증가시켜 다음 주로 이동합니다.
+                }
             } else if(data.repeat=="Week") {
                 val calendar = Calendar.getInstance()
                 calendar.clear()
@@ -420,7 +443,6 @@ class CalendarViewModel : ViewModel(){
                         } else tmpFloor++;
                     }
                     if(clone.floor==-1) clone.floor = hashMapDataMonth.get(startDate)!!.size
-
                 }
                 hashMapDataMonth.get(startDate)?.add(clone)
 
@@ -456,12 +478,13 @@ class CalendarViewModel : ViewModel(){
     }
 
     fun addCalendar(data : CalendarData,callback: (Int) -> Unit){
-        service.addCal(token,data).enqueue(object : Callback<CalendarDataId> {
-            override fun onResponse(call: Call<CalendarDataId>, response: Response<CalendarDataId>) {
+        service.addCal(token,data).enqueue(object : Callback<AddCalendarData> {
+            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+                Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        addId = responseBody.id
+                        addId = responseBody.data.id
                         callback(1)
                     }else
                         callback(2)
@@ -471,7 +494,7 @@ class CalendarViewModel : ViewModel(){
                     callback(2)
                 }
             }
-            override fun onFailure(call: Call<CalendarDataId>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
                 callback(2)
             }
 

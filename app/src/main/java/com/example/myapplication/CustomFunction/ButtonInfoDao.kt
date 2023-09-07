@@ -27,7 +27,7 @@ interface ButtonInfoDao {
     @Query("SELECT * FROM table_serverbuttoninfo WHERE clothButtonInfo IS NOT NULL")
     suspend fun getClothButtonInfo(): ButtonInfoEntity?
 
-    @Query("SELECT * FROM table_serverbuttoninfo WHERE itmeButtonInfo IS NOT NULL")
+    @Query("SELECT * FROM table_serverbuttoninfo WHERE itemButtonInfo IS NOT NULL")
     suspend fun getItemButtonInfo(): ButtonInfoEntity?
 
     @Query("SELECT * FROM table_serverbuttoninfo WHERE backgroundButtonInfo IS NOT NULL")

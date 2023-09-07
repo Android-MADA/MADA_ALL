@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class ButtonInfoEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val colorButtonInfo : ButtonInfo? = null,
-    val clothButtonInfo : ButtonInfo? = null,
-    val itmeButtonInfo : ButtonInfo? = null,
-    val backgroundButtonInfo : ButtonInfo? = null
+    val colorButtonInfo : ButtonInfo,
+    val clothButtonInfo : ButtonInfo,
+    val itemButtonInfo : ButtonInfo,
+    val backgroundButtonInfo : ButtonInfo
 )

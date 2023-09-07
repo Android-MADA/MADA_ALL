@@ -61,8 +61,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/cal"
@@ -73,64 +73,68 @@
                 android:paddingTop="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
                     <ImageButton
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/textCalendar"
                         android:id="@+id/preBtn"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@android:color/transparent"
                         android:scaleType="centerInside"
-                        app:srcCompat="@drawable/calendar_arrow_left" />
-                    <TextView
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/textCalendar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/calendar_arrow_left" />
+
+                    <TextView
                         android:id="@+id/textCalendar"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
                         android:text="2023년 8월"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
-                    <ImageButton
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/textCalendar"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
                         android:id="@+id/nextBtn"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@android:color/transparent"
                         android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/textCalendar"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/calendar_arrow_right" />
+
                     <TextView
                         android:id="@+id/dayWeekMonthBtn"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginRight="15dp"
-                        app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/calendar_cell_background2"
+                        android:backgroundTint="#F0F0F0"
                         android:gravity="center"
+                        android:text="일"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:text="일"
-                        android:backgroundTint="#F0F0F0"
-                        android:background="@drawable/calendar_cell_background2"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -204,24 +208,22 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginHorizontal="15dp"
+
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/calendar2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="15dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -263,35 +265,29 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="225dp"
-                        android:layout_height="225dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/my_time_circle"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp">
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chart"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
-                        android:layout_gravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/chart2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center" />
 
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                    </com.github.mikephil.charting.charts.PieChart>
-
-
-                </FrameLayout>
             </LinearLayout>
 
         </LinearLayout>
