@@ -195,7 +195,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                                         Log.d("editRTodo", "success")
                                         viewModel!!.deleteAllTodo()
                                         //투두 새로 서버 에서 읽어오기
-                                        api.getAllMyTodo(viewModel!!.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
+                                        api.getAllMyTodo(viewModel!!.userToken, viewModel!!.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
                                             override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
                                                 if(response.isSuccessful){
                                                     for(i in response.body()!!.data.TodoList){

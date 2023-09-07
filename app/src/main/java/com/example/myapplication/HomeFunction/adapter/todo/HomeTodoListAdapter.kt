@@ -63,17 +63,17 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
         var cbColor = R.drawable.home_checkbox1
 
         when(category!!.color){
-            "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
-            "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
-            "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
-            "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
-            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
-            "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
-            "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
-            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
-            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
-            "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
-            "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
+            "#21C362" -> {cbColor = R.drawable.home_checkbox1}
+            "#0E9746" -> {cbColor = R.drawable.home_checkbox2}
+            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox3}
+            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox4}
+            "#89A9D9" -> {cbColor = R.drawable.home_checkbox5}
+            "#486DA3" -> {cbColor = R.drawable.home_checkbox6}
+            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox7}
+            "#F0768C" -> {cbColor = R.drawable.home_checkbox8}
+            "#F8D141" -> {cbColor = R.drawable.home_checkbox9}
+            "#F68F30" -> {cbColor = R.drawable.home_checkbox10}
+            "#F33E3E" -> {cbColor = R.drawable.home_checkbox11}
             else -> {cbColor = R.drawable.home_checkbox12}
 
         }
@@ -151,34 +151,11 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                 else{
                     //데이터 삭제
                     val data = holder.data
-                    viewModel!!.deleteTodo(data!!)
                     api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
                         override fun onResponse(call: Call<Void>, response: Response<Void>) {
                             if(response.isSuccessful){
                                 Log.d("todo server", "성공")
-                                viewModel!!.deleteAllTodo()
-                                //투두 새로 서버 에서 읽어오기
-                                api.getAllMyTodo(viewModel!!.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
-                                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                                        if(response.isSuccessful){
-                                            for(i in response.body()!!.data.TodoList){
-                                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                                Log.d("todo server", todoData.toString())
-                                                viewModel!!.createTodo(todoData, null)
-                                            }
-                                            //닉네임 저장하기
-                                            viewModel!!.userHomeName = response.body()!!.data.nickname
-                                        }
-                                        else {
-                                            Log.d("todo안드 잘못", "서버 연결 실패")
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                                        Log.d("todo서버 연결 오류", "서버 연결 실패")
-                                    }
-
-                                })
+                                viewModel!!.deleteTodo(data!!)
                             }
                             else {
                                 Log.d("todo안드 잘못", "서버 연결 실패")
@@ -189,7 +166,6 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                             Log.d("서버 문제", "서버 연결 실패")
                         }
                     })
-                    notifyDataSetChanged()
                 }
                 true
             }
