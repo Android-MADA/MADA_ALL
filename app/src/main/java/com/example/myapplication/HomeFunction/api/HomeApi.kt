@@ -83,7 +83,7 @@ fun editTodo(
 //        @Path("todoId", encoded = true) todoId: Int
 //    )
 
-    @DELETE("/api/home/todo/delete/{todoId}")
+    @PATCH("/api/home/todo/delete/{todoId}")
     fun deleteTodo(
         @Header("Authorization") token: String?,
         @Path("todoId", encoded = true) todoId: Int

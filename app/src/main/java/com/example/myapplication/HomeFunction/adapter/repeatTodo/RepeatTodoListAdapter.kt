@@ -101,7 +101,6 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                                 Log.d("R서버 문제", "서버 연결 실패")
                             }
                         })
-                        notifyDataSetChanged()
                     }
 
                 }

@@ -581,6 +581,11 @@ fun postCategory(token: String?, data: PostRequestCategory) =
 
     lateinit var todoEntityList : LiveData<List<TodoEntity>>
 
+    var _dUserName = MutableLiveData<String>("김마다")
+
+    val dUserName : LiveData<String>
+        get() = _dUserName
+
     val isAlarm = false
     val startMonday = false
     val completeBottom = false

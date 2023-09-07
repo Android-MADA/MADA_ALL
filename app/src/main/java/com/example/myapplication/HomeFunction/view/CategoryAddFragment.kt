@@ -165,7 +165,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             binding.btnHomeCateAddSave.isGone = true
         }
         else {
-            colorAdapter.selecetedColor = "#89A9D9"
+            colorAdapter.selecetedColor = "#21C362"
             iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
             binding.btnHomeCateAddSaveMenu.isGone = true
             binding.btnHomeCateAddSave.isVisible = true
@@ -541,17 +541,17 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     private fun initColorArray() {
         with(cateColorArray) {
-            cateColorArray.add("#E1E9F5")
-            cateColorArray.add("#89A9D9")
-            cateColorArray.add("#486DA3")
-            cateColorArray.add("#FFE7EB")
-            cateColorArray.add("#FDA4B4")
-            cateColorArray.add("#F0768C")
-            cateColorArray.add("#D4ECF1")
+            cateColorArray.add("#21C362")
+            cateColorArray.add("#0E9746")
             cateColorArray.add("#7FC7D4")
             cateColorArray.add("#2AA1B7")
-            cateColorArray.add("#FDF3CF")
+            cateColorArray.add("#89A9D9")
+            cateColorArray.add("#486DA3")
+            cateColorArray.add("#FDA4B4")
+            cateColorArray.add("#F0768C")
             cateColorArray.add("#F8D141")
+            cateColorArray.add("#F68F30")
+            cateColorArray.add("#F33E3E")
             cateColorArray.add("#405059")
         }
     }
