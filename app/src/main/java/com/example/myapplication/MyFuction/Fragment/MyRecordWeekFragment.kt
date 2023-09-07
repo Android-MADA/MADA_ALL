@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
 import java.util.Calendar
@@ -51,7 +53,10 @@ class MyRecordWeekFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = binding.navHostFragmentContainer.findNavController()
-
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
+        binding.backBtn.setOnClickListener {
+            navController.navigate(R.id.action_myRecordWeekFragment_to_fragMy)
+        }
 
 
         val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2)
@@ -69,17 +74,13 @@ class MyRecordWeekFragment : Fragment() {
             navController.navigate(R.id.action_myRecordWeekFragment_to_myRecordMonthFragment)
         }
 
-        // 뒤로가기
-        binding.backBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordWeekFragment_to_fragMy)
-        }
-
     }
-    fun weekChange(month : Int, week : Int) {
-        setTodoView(MyRecordOptionData("week", "") , month, week) // 첫번째 인자 뭐죵??
-        setTimetableView(MyRecordOptionData("week", ""),month, week)
-        initCategoryRecycler(MyRecordOptionData("week", ""))
-        initCategoryPieChart(MyRecordOptionData("week", ""))
+    fun weekChange(month : Int, iweek : Int,date : String) {
+        Log.d("dasdas",date)
+        setTodoView(MyRecordOptionData("week", date) , month, iweek) // 첫번째 인자 뭐죵??
+        setTimetableView(MyRecordOptionData("week", date), month, iweek)
+        initCategoryRecycler(MyRecordOptionData("week", date))
+        initCategoryPieChart(MyRecordOptionData("week", date))
     }
 
     // 투두 뷰 설정

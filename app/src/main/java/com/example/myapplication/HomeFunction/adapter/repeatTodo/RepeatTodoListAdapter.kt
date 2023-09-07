@@ -1,6 +1,7 @@
 package com.example.myapplication.HomeFunction.adapter.repeatTodo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeRepeatTodoListBinding
 import com.example.myapplication.databinding.HomeTodoListBinding
 import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity, RepeatTodoListAdapter.ViewHolder>(DiffCallback) {
 
@@ -46,7 +55,7 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         holder.bind(getItem(position))
 
         holder.todoMenu.setOnClickListener {
@@ -72,10 +81,28 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                     Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
                 }
                 else{
-                    val data = holder.data
-                    viewModel!!.deleteRepeatTodo(data!!)
-                    //서버 연결 delete
-                    notifyDataSetChanged()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val data = holder.data
+                        viewModel!!.deleteRepeatTodo(data!!)
+                        //서버 연결 delete
+                        api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :
+                            Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if(response.isSuccessful){
+                                    Log.d("Rtodo server", "성공")
+
+                                }
+                                else {
+                                    Log.d("Rtodo안드 잘못", "서버 연결 실패")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("R서버 문제", "서버 연결 실패")
+                            }
+                        })
+                    }
+
                 }
                 true
             }

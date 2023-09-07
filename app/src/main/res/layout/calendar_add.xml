@@ -288,7 +288,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="29dp"
                         android:background="@android:color/transparent"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:text="  6월 9일 (금)  "
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -308,7 +308,7 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:text="  6월 9일 (금)  "
                         android:textColor="@color/black"
                         android:textSize="16sp" />
