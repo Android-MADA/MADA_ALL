@@ -24,6 +24,9 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
 import com.example.myapplication.db.entity.CateEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,12 +54,23 @@ class HomeViewpagerTodoFragment : Fragment() {
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = HomeCateListAdapter()
+            val mAdapter = HomeCateListAdapter(binding.rvHomeCategory)
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.rvHomeCategory.adapter = mAdapter
             binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.requireActivity())
 
+        })
+
+        viewModel.readQuitCate(true)
+        viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
+            val cateList = it as List<CateEntity>
+            Log.d("cateList", cateList.toString())
+            val mAdapter = HomeCateListAdapter(binding.rvHomeCategoryInactive)
+            mAdapter.viewModel = viewModel
+            mAdapter.submitList(cateList)
+            binding.rvHomeCategoryInactive.adapter = mAdapter
+            binding.rvHomeCategoryInactive.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
 

@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
@@ -33,13 +34,14 @@ import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHolder>(DiffCallback) {
+class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, HomeCateListAdapter.ViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<CateEntity>(){
@@ -69,17 +71,47 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
         val cateId = holder.bind(getItem(position))
         Log.d("HomeCateItem", cateId.toString())
         //todoadapter 연결하기
-        CoroutineScope(Dispatchers.IO).launch {
-            val mTodoAdapter = HomeTodoListAdapter()
-            mTodoAdapter.viewModel = viewModel
-            mTodoAdapter.category = getItem(position)
-            viewModel!!.readTodo(cateId, mTodoAdapter)
+        CoroutineScope(Dispatchers.Main).launch {
 
-            withContext(Dispatchers.Main){
-                holder.todoRv.adapter = mTodoAdapter
-                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+            if(holder.data!!.isInActive == true){
+                holder.btnAdd.isGone = true
+                viewModel!!.readTodo(cateId, null)
+                if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
+                    holder.todoRv.isGone = true
+                    view!!.isGone = true
+
+                }
+                else {
+                        val mTodoAdapter = HomeTodoListAdapter()
+                        mTodoAdapter.viewModel = viewModel
+                        mTodoAdapter.category = getItem(position)
+                        viewModel!!.readTodo(cateId, mTodoAdapter)
+
+                        withContext(Dispatchers.Main){
+                            holder.todoRv.adapter = mTodoAdapter
+                            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+
+                        }
+                    }
+
 
             }
+            else {
+                holder.btnAdd.isVisible = true
+                holder.todoRv.isVisible = true
+
+                val mTodoAdapter = HomeTodoListAdapter()
+                mTodoAdapter.viewModel = viewModel
+                mTodoAdapter.category = getItem(position)
+                viewModel!!.readTodo(cateId, mTodoAdapter)
+
+                withContext(Dispatchers.Main){
+                    holder.todoRv.adapter = mTodoAdapter
+                    holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+
+                }
+            }
+
 
         }
 
@@ -149,12 +181,14 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
     }
 
     inner class ViewHolder(private val binding : HomeCatagoryListBinding) : RecyclerView.ViewHolder(binding.root){
+        var data : CateEntity? = null
         fun bind(cateEntity: CateEntity) : Int {
             binding.tvRepeatCategory.text = cateEntity.categoryName
             binding.tvRepeatCategory.text = cateEntity.categoryName
             binding.icRepeatCategory.setImageResource(findIcon(cateEntity.iconId))
             val mGradientDrawable : GradientDrawable = binding.layoutHomeViewpagerCateList.background as GradientDrawable
             mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
+            data = cateEntity
 
             return cateEntity.id!!
         }
