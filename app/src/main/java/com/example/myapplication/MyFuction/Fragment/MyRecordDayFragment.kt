@@ -194,6 +194,7 @@ class MyRecordDayFragment : Fragment() {
                 setUsePercentValues(false)
                 setDrawEntryLabels(false) //라벨 끄기
                 description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+                isHighlightPerTapEnabled = false
             }
             binding.chart2.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -216,7 +217,7 @@ class MyRecordDayFragment : Fragment() {
                 marker = marker_
                 setDrawEntryLabels(false) //라벨 끄기
                 description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
-
+                isHighlightPerTapEnabled = false
             }
             chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -239,6 +240,7 @@ class MyRecordDayFragment : Fragment() {
                 setUsePercentValues(false)
                 setDrawEntryLabels(false) //라벨 끄기
                 description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+                isHighlightPerTapEnabled = false
             }
             binding.chart2.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
