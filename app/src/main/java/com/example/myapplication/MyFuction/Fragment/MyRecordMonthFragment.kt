@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
 import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
-import com.example.myapplication.MyFuction.Calendar.MyWeekSliderlAdapter
 import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordMonthBinding
@@ -71,7 +70,7 @@ class MyRecordMonthFragment : Fragment() {
         }
 
     }
-    fun monthChange(monthOfYear: Int) {
+    fun monthChange(monthOfYear: Int, toString: String) {
         setTodoView(monthOfYear)
         setTimetableView(monthOfYear)
     }
