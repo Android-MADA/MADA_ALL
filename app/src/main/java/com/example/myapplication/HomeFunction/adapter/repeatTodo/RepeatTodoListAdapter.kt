@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -83,27 +84,46 @@ class RepeatTodoListAdapter(private val view : View) : ListAdapter<RepeatEntity,
                 else{
                     CoroutineScope(Dispatchers.IO).launch {
                         val data = holder.data
-                        viewModel!!.deleteRepeatTodo(data!!)
                         //서버 연결 delete
-                        api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :
-                            Callback<Void> {
+                        api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
                             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                                 if(response.isSuccessful){
                                     Log.d("Rtodo server", "성공")
+                                    viewModel!!.deleteRepeatTodo(data!!)
+                                    viewModel!!.deleteAllTodo()
+                                    //투두 새로 서버 에서 읽어오기
+                                    api.getAllMyTodo(viewModel!!.userToken, viewModel!!.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+                                        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                                            if(response.isSuccessful){
+                                                for(i in response.body()!!.data.TodoList){
+                                                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                                    Log.d("todo server", todoData.toString())
+                                                    viewModel!!.createTodo(todoData, null)
+                                                }
+                                                //닉네임 저장하기
+                                                viewModel!!.userHomeName = response.body()!!.data.nickname
+                                            }
+                                            else {
+                                                Log.d("todo안드 잘못", "서버 연결 실패")
+                                            }
+                                        }
 
+                                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                                            Log.d("todo서버 연결 오류", "서버 연결 실패")
+                                        }
+
+                                    })
                                 }
                                 else {
-                                    Log.d("Rtodo안드 잘못", "서버 연결 실패")
+                                    Log.d("todo안드 잘못", "서버 연결 실패")
                                 }
                             }
 
                             override fun onFailure(call: Call<Void>, t: Throwable) {
-                                Log.d("R서버 문제", "서버 연결 실패")
+                                Log.d("서버 문제", "서버 연결 실패")
                             }
                         })
-                    }
-
-                }
+                    } }
                 true
             }
             popup.show()

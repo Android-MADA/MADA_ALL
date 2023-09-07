@@ -234,31 +234,6 @@ class MyWebviewActivity : AppCompatActivity() {
                         Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
                 }
-                var buttonInfoEntity = ButtonInfoEntity(
-                    id = 0,
-                    colorButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  10, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.c_ramdi
-                    ),
-                    clothButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID = 900, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    ),
-                    itemButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  800, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    ),
-                    backgroundButtonInfo = ButtonInfo(
-                        buttonId =  0, // 기본값을 설정할 수 있음
-                        serverID =  700, // 기본값을 설정할 수 있음
-                        selectedImageResource = R.drawable.custom_empty
-                    )
-                )
-                DataRepo.buttonInfoEntity = buttonInfoEntity
-
                 val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
                 startActivity(intent)
                 finish()
@@ -281,4 +256,3 @@ class MyWebviewActivity : AppCompatActivity() {
     }
 
 }
-

@@ -83,6 +83,10 @@ class FragHome : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
+
+
+
+
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
             900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
@@ -141,6 +145,23 @@ class FragHome : Fragment() {
         //유저 이름
         viewModel.dUserName.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${it}님,"
+        })
+
+        viewModel.readAllTodo()
+        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
+            CoroutineScope(Dispatchers.Main).launch {
+                var completeNum = 0
+                var todoNum = it.size
+                for(i in it){
+                    if(i.complete == true){
+                        completeNum++
+                    }
+                }
+                binding.tvHomeProgressMax.text = todoNum.toString()
+                binding.tvHomeProgressComplete.text = completeNum.toString()
+                binding.progressBar.max = todoNum
+                binding.progressBar.progress = completeNum
+            }
         })
 
         //배경설정
