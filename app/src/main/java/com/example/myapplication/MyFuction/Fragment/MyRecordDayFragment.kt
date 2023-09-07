@@ -192,8 +192,10 @@ class MyRecordDayFragment : Fragment() {
         val range = chart.width/60f
 
 
-
+        binding.chart2.setExtraOffsets(range*0.99f
+            ,range*0.99f,range*0.99f,range*0.99f)
         if(pieChartDataArray.size==0) {
+
             entries.add(PieEntry(10f, "999"))
             colorsItems.add(Color.parseColor("#F0F0F0"))
             pieDataSet.apply {
@@ -223,8 +225,7 @@ class MyRecordDayFragment : Fragment() {
                 override fun onNothingSelected() {
                 }
             })
-            chartBackground.setExtraOffsets(range*0.9f
-                ,range*0.9f,range*0.9f,range*0.9f)
+
         } else {
 
             for(data in pieChartDataArray) {
@@ -282,8 +283,7 @@ class MyRecordDayFragment : Fragment() {
                 override fun onNothingSelected() {
                 }
             })
-            chartBackground.setExtraOffsets(range*0.9f
-                ,range*0.9f,range*0.9f,range*0.9f)
+
         }
 
 
