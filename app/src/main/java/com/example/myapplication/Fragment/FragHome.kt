@@ -34,6 +34,7 @@ import java.util.Calendar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -69,7 +70,7 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
-        Log.d("dsadas",DataRepo.buttonInfoEntity.toString())
+
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
@@ -82,6 +83,10 @@ class FragHome : Fragment() {
             18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
+
+
+
+
 
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
             900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
@@ -143,15 +148,27 @@ class FragHome : Fragment() {
             binding.tvHomeUsername.text = "${it}님,"
         })
 
+        viewModel.readAllTodo()
+        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
+            CoroutineScope(Dispatchers.Main).launch {
+                var completeNum = 0
+                var todoNum = it.size
+                for(i in it){
+                    if(i.complete == true){
+                        completeNum++
+                    }
+                }
+                binding.tvHomeProgressMax.text = todoNum.toString()
+                binding.tvHomeProgressComplete.text = completeNum.toString()
+                binding.progressBar.max = todoNum
+                binding.progressBar.progress = completeNum
+            }
+        })
+
         //배경설정
 
         val calendarLayout = binding.layoutCalendarviewHome
-//        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
-//        binding.progressBar.max = viewModel.todoNum.value!!
-//        binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
-//        binding.progressBar.progress = viewModel.completeTodoNum.value!!
-//        binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//
+
         //달력은 현재 날짜로 세팅
         var dateCalendar = Calendar.getInstance()
         dateCalendar.set(
@@ -221,29 +238,36 @@ class FragHome : Fragment() {
             viewModel.changeDate(year, (month +1), dayOfMonth, "home")
             //db 투두 데이터 전체 삭제 후 해당 날짜의 데이터를 서버에서 받아서 db에 저장하고 어댑터에 연결하기
             CoroutineScope(Dispatchers.IO).launch {
-                viewModel.deleteAllTodo()
-                //투두 새로 서버 에서 읽어오기
-                api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
-                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                        if(response.isSuccessful){
-                            for(i in response.body()!!.data.TodoList){
-                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                Log.d("todo server", todoData.toString())
-                                viewModel.createTodo(todoData, null)
+                CoroutineScope(Dispatchers.IO).async {
+                    viewModel.deleteAllTodo()
+                }.await()
+
+                CoroutineScope(Dispatchers.IO).async {
+                    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+                        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                            if(response.isSuccessful){
+                                for(i in response.body()!!.data.TodoList){
+                                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                    Log.d("todo server", todoData.toString())
+                                    viewModel.createTodo(todoData, null)
+                                }
+                                //닉네임 저장하기
+                                viewModel.userHomeName = response.body()!!.data.nickname
                             }
-                            //닉네임 저장하기
-                            viewModel.userHomeName = response.body()!!.data.nickname
+                            else {
+                                Log.d("todo안드 잘못", "서버 연결 실패")
+                            }
                         }
-                        else {
-                            Log.d("todo안드 잘못", "서버 연결 실패")
+
+                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                            Log.d("todo서버 연결 오류", "서버 연결 실패")
                         }
-                    }
 
-                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                        Log.d("todo서버 연결 오류", "서버 연결 실패")
-                    }
+                    })
+                }
 
-                })
+                //투두 새로 서버 에서 읽어오기
+
             }
         }
 //
@@ -257,17 +281,7 @@ class FragHome : Fragment() {
             Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
             binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
         })
-//
-//        //date를 통해서 todo가 변경되었을 때 실행
-//        viewModel.todoNum.observe(viewLifecycleOwner, Observer {
-//            binding.tvHomeProgressMax.text = viewModel.todoNum.value.toString()
-//            binding.progressBar.max = viewModel.todoNum.value!!
-//        })
-//
-//        viewModel.completeTodoNum.observe(viewLifecycleOwner, Observer {
-//            binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
-//            binding.progressBar.progress = viewModel.completeTodoNum.value!!
-//        })
+
 
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
@@ -311,51 +325,6 @@ class FragHome : Fragment() {
             else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
-    }
-
-    private fun getCustomChar() {
-
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-        api.getHomeRamdi(viewModel.userToken).enqueue(object : Callback<HomeCharacData> {
-            override fun onResponse(
-                call: Call<HomeCharacData>,
-                response: Response<HomeCharacData>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("home캐릭터 성공", "성공 ${response.body()!!.data.wearingItems}")
-                    val apiResponse = response.body()!!.data.wearingItems
-                    if (apiResponse.isEmpty() != true) {
-                        for (i in apiResponse) {
-                            if (i != null) {
-                                if (i.itemType == "color") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeRamdi)
-                                } else if (i.itemType == "set") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeCloth)
-                                } else if (i.itemType == "item") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeItem)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Log.d("home캐릭터 안드 잘못", "실패")
-                }
-            }
-
-            override fun onFailure(call: Call<HomeCharacData>, t: Throwable) {
-                Log.d("home캐릭터 연결 실패", "실패")
-            }
-
-        })
-
-//
     }
 
 }
