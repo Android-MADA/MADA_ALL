@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class MyRecordWeekFragment : Fragment() {
@@ -41,7 +43,7 @@ class MyRecordWeekFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = binding.navHostFragmentContainer.findNavController()
-
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordWeekFragment_to_fragMy)
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class MyRecordMonthFragment : Fragment() {
@@ -34,6 +36,7 @@ class MyRecordMonthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordMonthBinding.inflate(inflater, container, false)
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         return binding.root
     }
 

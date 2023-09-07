@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -39,6 +40,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,7 +53,6 @@ import java.util.Calendar
 class MyRecordDayFragment : Fragment() {
     private lateinit var binding: MyRecordDayBinding
     lateinit var navController: NavController
-    lateinit var chartBackground : PieChart
 
     private val viewModelTime: TimeViewModel by activityViewModels()
 
@@ -62,45 +63,28 @@ class MyRecordDayFragment : Fragment() {
 
     private var cateAdapter: HomeViewpager2CategoryAdapter? = null
 
+    lateinit var pieData2 : PieData
+    lateinit var pieDataSet2 : PieDataSet
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordDayBinding.inflate(inflater, container, false)
-        chartBackground = binding.chart2
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
 
-        val pieDataSet = PieDataSet(entries, "")
-        val pieData = PieData(pieDataSet)
-
-
+        //배경 파이차트 (검정색 테두리)
+        pieDataSet2 = PieDataSet(entries, "")
+        pieData2 = PieData(pieDataSet2)
         entries.add(PieEntry(10f, "999"))
         colorsItems.add(Color.parseColor("#232323"))
-        pieDataSet.apply {
+        pieDataSet2.apply {
             colors = colorsItems
             setDrawValues(false) // 비율 숫자 없애기
         }
-        chartBackground.apply {
-            invalidate()
-            legend.isEnabled = false
-            data = pieData
-            isRotationEnabled = false                               //드래그로 회전 x
-            isDrawHoleEnabled = false
-            setUsePercentValues(false)
-            setEntryLabelColor(Color.BLACK)
-            setDrawEntryLabels(false) //라벨 끄기
-            description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
-        }
-        chartBackground.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                if (e is PieEntry) {
-                    pieDataSet.selectionShift = 0f
-                }
-            }
-            override fun onNothingSelected() {
-            }
-        })
+
+
         return binding.root
     }
 
@@ -192,8 +176,6 @@ class MyRecordDayFragment : Fragment() {
         val range = chart.width/60f
 
 
-        binding.chart2.setExtraOffsets(range*0.99f
-            ,range*0.99f,range*0.99f,range*0.99f)
         if(pieChartDataArray.size==0) {
 
             entries.add(PieEntry(10f, "999"))
@@ -202,6 +184,26 @@ class MyRecordDayFragment : Fragment() {
                 colors = colorsItems
                 setDrawValues(false) // 비율 숫자 없애기
             }
+            binding.chart2.apply {
+                invalidate()
+                legend.isEnabled = false
+                data = pieData2
+                isRotationEnabled = false                               //드래그로 회전 x
+                isDrawHoleEnabled = false                               //중간 홀 그리기 x
+                setExtraOffsets(range*0.95f,range*0.95f,range*0.95f,range*0.95f)    //크기 조절
+                setUsePercentValues(false)
+                setDrawEntryLabels(false) //라벨 끄기
+                description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+            }
+            binding.chart2.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    if (e is PieEntry) {
+                        pieDataSet.selectionShift = 0f
+                    }
+                }
+                override fun onNothingSelected() {
+                }
+            })
             chart.apply {
                 invalidate()
                 legend.isEnabled = false
@@ -219,7 +221,7 @@ class MyRecordDayFragment : Fragment() {
             chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
                     if (e is PieEntry) {
-                        pieDataSet.selectionShift = 0f
+                        pieDataSet2.selectionShift = 0f
                     }
                 }
                 override fun onNothingSelected() {
@@ -227,7 +229,26 @@ class MyRecordDayFragment : Fragment() {
             })
 
         } else {
-
+            binding.chart2.apply {
+                invalidate()
+                legend.isEnabled = false
+                data = pieData2
+                isRotationEnabled = false                               //드래그로 회전 x
+                isDrawHoleEnabled = false                               //중간 홀 그리기 x
+                setExtraOffsets(range*0.95f,range*0.95f,range*0.95f,range*0.95f)    //크기 조절
+                setUsePercentValues(false)
+                setDrawEntryLabels(false) //라벨 끄기
+                description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+            }
+            binding.chart2.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    if (e is PieEntry) {
+                        pieDataSet2.selectionShift = 0f
+                    }
+                }
+                override fun onNothingSelected() {
+                }
+            })
             for(data in pieChartDataArray) {
                 val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
                 val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()

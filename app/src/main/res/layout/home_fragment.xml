@@ -194,7 +194,6 @@
                     android:layout_height="wrap_content"
                     android:minHeight="400dp"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginVertical="20dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="18dp"
                     android:paddingVertical="20dp"
