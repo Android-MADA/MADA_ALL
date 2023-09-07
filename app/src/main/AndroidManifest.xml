@@ -24,7 +24,8 @@
         <activity
             android:name=".StartFuction.Splash1Activity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".CalenderFuntion.CalendarAddFragment" />
         <activity android:name=".CalenderFuntion.CalendarAddDdayFragment" />
     </application>

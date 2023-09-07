@@ -1,9 +1,11 @@
 package com.example.myapplication.HomeFunction.adapter.todo
 
+import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -19,6 +21,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeTodoListBinding
+import com.example.myapplication.db.MyApp
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.CoroutineScope
@@ -97,9 +100,19 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
 
         holder.edtTodo.setOnKeyListener { v, keyCode, event ->
+
+            var handled = false
+
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ){
+
+                val context = MyApp.context()
+                //키보드 내리기
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(holder.edtTodo.windowToken, 0)
+                handled = true
+
                 //update
                 val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.date, holder.data!!.category, holder.edtTodo.text.toString(), holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
                 viewModel!!.updateTodo(data)
@@ -123,6 +136,7 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                 holder.layoutcb.isVisible = true
                 true
             }
+            handled
             false
         }
 
