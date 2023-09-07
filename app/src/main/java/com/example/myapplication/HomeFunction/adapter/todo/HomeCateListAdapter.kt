@@ -82,8 +82,6 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
             }
 
         }
-
-
         holder.btnAdd.setOnClickListener {
             if(holder.layoutAdd.isGone == true){
                 holder.layoutAdd.isVisible = true
