@@ -88,7 +88,7 @@ class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendar
                     viewHolderWithDuration.textTitle.text = item.title
                     val date2 = LocalDate.parse(item.endDate, formatter)
                     viewHolderWithDuration.textDuration.text = ("${date2.monthValue}월 ${date2.dayOfMonth}일")
-                    viewHolderWithDuration.dday.setImageResource(R.drawable.color_bluepurple_lock)
+                    viewHolderWithDuration.dday.setImageResource(R.drawable.dday_mark)
                     viewHolderWithDuration.backgroundBar.setImageResource(R.drawable.calendar_schedule_background_dday)
                     viewHolderWithDuration.backgroundBar.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
                 }
