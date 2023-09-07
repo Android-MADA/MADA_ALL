@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,12 +32,15 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Data.FragMyData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -62,7 +66,7 @@ class FragMy : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
-
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
             override fun onResponse(
@@ -100,7 +104,66 @@ class FragMy : Fragment() {
         navController = binding.navHostFragmentContainer.findNavController()
 
         // 캐릭터 커스텀 불러오는 함수 호출
-        getCustomChar()
+        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
+            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
+            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
+            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
+            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
+            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
+            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
+            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
+            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
+            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
+            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
+            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
+            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
+            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
+            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
+            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
+            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
+            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+
+        binding.myRamdi.setImageResource(
+            colorbuttonInfo.selectedImageResource ?: 0
+        )
+
+        binding.imgMyCloth.setImageResource(
+            clothbuttonInfo.selectedImageResource ?: 0
+        )
+        binding.imgMyItem.setImageResource(
+            itembuttonInfo.selectedImageResource ?: 0
+        )
         // 스위치 색 설정 함수 호출
         setupSwitchColor(binding.myGoogleCalSwitch)
 
@@ -156,6 +219,9 @@ class FragMy : Fragment() {
 
     }
     // 캐릭터 커스텀 불러오기
+    //
+
+    /*
     private fun getCustomChar() {
         val call2 = api.characterRequest(token)
         call2.enqueue(object : Callback<CharacterResponse> {
@@ -198,6 +264,7 @@ class FragMy : Fragment() {
             }
         })
     }
+    */
 
     // 스위치 색 설정 함수
     private fun setupSwitchColor(mySwitch: SwitchCompat) {
@@ -229,6 +296,15 @@ class FragMy : Fragment() {
         alertDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.show()
+        val displayMetrics = DisplayMetrics()
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
         // 버튼 클릭 리스너
         btnYes.setOnClickListener {
@@ -239,6 +315,9 @@ class FragMy : Fragment() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Log.d("로그아웃 성공", response.body().toString())
+                        alertDialog.dismiss()
+                        navController.navigate(R.id.action_fragMy_to_splash2Activity)
+                        Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("로그아웃 실패", response.body().toString())
                     }
@@ -249,10 +328,7 @@ class FragMy : Fragment() {
             })
 
             // 뷰 설정
-            alertDialog.dismiss()
-            navController.navigate(R.id.action_fragMy_to_splash2Activity)
 
-            Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
         }
         btnNo.setOnClickListener {
             alertDialog.dismiss()
@@ -260,17 +336,10 @@ class FragMy : Fragment() {
         }
 
         // 뷰 사이즈 조절
-        val displayMetrics = DisplayMetrics()
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        display.getSize(size)
-        val screenWidth = size.x
-        val popupWidth = (screenWidth * 0.8).toInt()
-        alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
 
         // 호출
-        alertDialog.show()
+
     }
 
 }

@@ -39,13 +39,11 @@ data class CalendarDataId(
     @SerializedName("repeatInfo") val repeatInfo: String
 )
 
-data class AddCalendarData (
-    @SerializedName("calendars") val data: CalendarDataId
+data class AddCalendarData2 (
+    @SerializedName("calendars") val calendars: CalendarDataId
 )
-
-//Dday 모든 정보 요청
-data class DdayCalendar (
-    @SerializedName("calendar") val datas: List<CalendarDataId>
+data class AddCalendarData1 (
+    @SerializedName("data") val data: AddCalendarData2
 )
 
 

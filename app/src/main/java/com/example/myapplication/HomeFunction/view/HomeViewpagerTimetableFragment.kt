@@ -128,18 +128,16 @@ class HomeViewpagerTimetableFragment : Fragment() {
         })
 
     }
-
     companion object {
         @JvmStatic
         fun newInstance() =
             HomeViewpagerTimetableFragment()
     }
-
-
     fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
         val pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
+        chart.clear()
         var tmp = 0     //시작 시간
         val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
         val entries = ArrayList<PieEntry>()
@@ -156,7 +154,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                 colors = colorsItems
                 setDrawValues(false) // 비율 숫자 없애기
             }
-            chart.clear()
             chart.apply {
                 invalidate()
                 legend.isEnabled = false

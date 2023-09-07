@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
+import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.repeatTodo
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
@@ -580,7 +581,12 @@ fun postCategory(token: String?, data: PostRequestCategory) =
 
     lateinit var todoEntityList : LiveData<List<TodoEntity>>
 
+    var _dUserName = MutableLiveData<String>("김마다")
 
+    val dUserName : LiveData<String>
+        get() = _dUserName
+
+    val isAlarm = false
     val startMonday = false
     val completeBottom = false
     val newTodoTop = false
@@ -621,6 +627,7 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         if(edt != null){
             edt!!.text.clear()
         }
+        Log.d("todo 추가중", todoEntity.toString())
     }
 
     fun readTodo(cateId : Int, adapter: HomeTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
@@ -665,9 +672,8 @@ fun postCategory(token: String?, data: PostRequestCategory) =
     }
 
     fun readRepeatTodo(cateId : Int, adapter: RepeatTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
-        //todoList = repository.readTodo(cateId).asLiveData()
         repository.readRepeatTodo(cateId).collect{
-            Log.d("todoList 확인", it.toString())
+            Log.d("RtodoList 확인", it.toString())
             withContext(Dispatchers.Main){
                 adapter.submitList(it)
             }
@@ -695,5 +701,11 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         //todoEntityList = repository.readAllRepeatTodo().asLiveData()
     }
 
+    /////////////////////////////////////////////////////////////////////
+    // server 연결
 
+    //투두 수정
+    fun patchHTodo(todoId : Int, data : PatchRequestTodo) = viewModelScope.launch {
+        api.editTodo(userToken, todoId, data)
+    }
 }
