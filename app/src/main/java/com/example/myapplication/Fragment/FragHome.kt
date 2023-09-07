@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
@@ -61,6 +62,9 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
+        DataRepo.buttonInfoEntity?.clothButtonInfo?.let { binding.ivHomeCloth.setImageResource(it.selectedImageResource) }
+        DataRepo.buttonInfoEntity?.colorButtonInfo?.let { binding.ivHomeRamdi.setImageResource(it.selectedImageResource) }
+        DataRepo.buttonInfoEntity?.itemButtonInfo?.let { binding.ivHomeItem.setImageResource(it.selectedImageResource) }
         return view
     }
 
