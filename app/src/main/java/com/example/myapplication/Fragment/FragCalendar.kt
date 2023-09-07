@@ -127,7 +127,7 @@ class FragCalendar : Fragment(){
             mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
                 val yearTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker1).value
                 val monthTmp = mDialogView.findViewById<NumberPicker>(R.id.number_picker2).value
-                val comparisonResult =  ChronoUnit.MONTHS.between(today,LocalDate.parse(String.format("%02d-%02d",yearTmp, monthTmp)+"-01"))
+                var comparisonResult =  ChronoUnit.MONTHS.between(today,LocalDate.parse(String.format("%02d-%02d",yearTmp, monthTmp)+"-"+String.format("%02d",today.dayOfMonth)))
                 viewPager.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt() , true)
 
                 mBuilder.dismiss()

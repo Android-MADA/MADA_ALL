@@ -38,7 +38,7 @@ class CalendarUtils {
             val dayOfWeek = dateTime.dayOfWeek
 
             // 현재 주의 시작일을 찾습니다.
-            val startOfWeek = dateTime.minusDays(dayOfWeek - 1)
+            val startOfWeek = dateTime.minusDays(dayOfWeek)
 
             // 주의 마지막 날짜를 찾습니다.
             val endOfWeek = startOfWeek.plusDays(DateTimeConstants.DAYS_PER_WEEK - 1)

@@ -17,6 +17,8 @@ class CalendarSliderAdapter(fm: Fragment,private val yearText : TextView, privat
             }
         })
     }
+
+
     /* 달의 첫 번째 Day timeInMillis*/
     private var start: Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
 
