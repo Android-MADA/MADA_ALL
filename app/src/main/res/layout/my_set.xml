@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MyFuction.Fragment.MySetFragment"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
@@ -13,7 +14,7 @@
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/sub5"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <ImageButton
@@ -59,7 +60,6 @@
             android:text="월요일부터 시작하기"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:checked="false"
             app:thumbTint="#F5F5F5"
             app:trackTint="#D9D9D9"/>
         <View
@@ -74,9 +74,8 @@
             android:text="새로운 투두 상단에 추가하기"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:thumbTint="@color/sub4"
-            app:trackTint="@color/main"
-            android:checked="true"/>
+            app:thumbTint="#F5F5F5"
+            app:trackTint="#D9D9D9"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -89,9 +88,8 @@
             android:text="완료된 투두 맨 뒤로 보내기"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:thumbTint="@color/sub4"
-            app:trackTint="@color/main"
-            android:checked="true"/>
+            app:thumbTint="#F5F5F5"
+            app:trackTint="#D9D9D9"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
