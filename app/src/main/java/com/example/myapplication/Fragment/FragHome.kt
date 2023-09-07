@@ -34,6 +34,7 @@ import java.util.Calendar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -69,71 +70,71 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
-
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
-            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
-            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
-            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
-            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-
+//
+//        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+//            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+//            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
+//            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
+//            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
+//            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
+//            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
+//            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
+//            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
+//            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 
-
-        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
-            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
-            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
-            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
-            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
-            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
-            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
-            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
-            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
-            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-
-        binding.ivHomeRamdi.setImageResource(
-            colorbuttonInfo.selectedImageResource ?: 0
-        )
-
-        binding.ivHomeCloth.setImageResource(
-            clothbuttonInfo.selectedImageResource ?: 0
-        )
-        binding.ivHomeItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
-        )
+//
+//
+//
+//        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
+//            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
+//            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
+//            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
+//            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
+//            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
+//            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+//            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
+//            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
+//            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
+//            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
+//
+//        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+//            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
+//            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+//            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+//            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+//            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+//            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+//            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+//            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+//            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+//            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+//            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+//            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+//            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+//            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+//            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+//            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+//            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+//            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
+//
+//
+//        binding.ivHomeRamdi.setImageResource(
+//            colorbuttonInfo.selectedImageResource ?: 0
+//        )
+//
+//        binding.ivHomeCloth.setImageResource(
+//            clothbuttonInfo.selectedImageResource ?: 0
+//        )
+//        binding.ivHomeItem.setImageResource(
+//            itembuttonInfo.selectedImageResource ?: 0
+//        )
         return view
     }
 
@@ -237,29 +238,36 @@ class FragHome : Fragment() {
             viewModel.changeDate(year, (month +1), dayOfMonth, "home")
             //db 투두 데이터 전체 삭제 후 해당 날짜의 데이터를 서버에서 받아서 db에 저장하고 어댑터에 연결하기
             CoroutineScope(Dispatchers.IO).launch {
-                viewModel.deleteAllTodo()
-                //투두 새로 서버 에서 읽어오기
-                api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
-                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                        if(response.isSuccessful){
-                            for(i in response.body()!!.data.TodoList){
-                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                Log.d("todo server", todoData.toString())
-                                viewModel.createTodo(todoData, null)
+                CoroutineScope(Dispatchers.IO).async {
+                    viewModel.deleteAllTodo()
+                }.await()
+
+                CoroutineScope(Dispatchers.IO).async {
+                    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+                        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                            if(response.isSuccessful){
+                                for(i in response.body()!!.data.TodoList){
+                                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                    Log.d("todo server", todoData.toString())
+                                    viewModel.createTodo(todoData, null)
+                                }
+                                //닉네임 저장하기
+                                viewModel.userHomeName = response.body()!!.data.nickname
                             }
-                            //닉네임 저장하기
-                            viewModel.userHomeName = response.body()!!.data.nickname
+                            else {
+                                Log.d("todo안드 잘못", "서버 연결 실패")
+                            }
                         }
-                        else {
-                            Log.d("todo안드 잘못", "서버 연결 실패")
+
+                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                            Log.d("todo서버 연결 오류", "서버 연결 실패")
                         }
-                    }
 
-                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                        Log.d("todo서버 연결 오류", "서버 연결 실패")
-                    }
+                    })
+                }
 
-                })
+                //투두 새로 서버 에서 읽어오기
+
             }
         }
 //
@@ -273,17 +281,7 @@ class FragHome : Fragment() {
             Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
             binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
         })
-//
-//        //date를 통해서 todo가 변경되었을 때 실행
-//        viewModel.todoNum.observe(viewLifecycleOwner, Observer {
-//            binding.tvHomeProgressMax.text = viewModel.todoNum.value.toString()
-//            binding.progressBar.max = viewModel.todoNum.value!!
-//        })
-//
-//        viewModel.completeTodoNum.observe(viewLifecycleOwner, Observer {
-//            binding.tvHomeProgressComplete.text = viewModel.completeTodoNum.value.toString()
-//            binding.progressBar.progress = viewModel.completeTodoNum.value!!
-//        })
+
 
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
@@ -327,51 +325,6 @@ class FragHome : Fragment() {
             else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
-    }
-
-    private fun getCustomChar() {
-
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-        api.getHomeRamdi(viewModel.userToken).enqueue(object : Callback<HomeCharacData> {
-            override fun onResponse(
-                call: Call<HomeCharacData>,
-                response: Response<HomeCharacData>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("home캐릭터 성공", "성공 ${response.body()!!.data.wearingItems}")
-                    val apiResponse = response.body()!!.data.wearingItems
-                    if (apiResponse.isEmpty() != true) {
-                        for (i in apiResponse) {
-                            if (i != null) {
-                                if (i.itemType == "color") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeRamdi)
-                                } else if (i.itemType == "set") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeCloth)
-                                } else if (i.itemType == "item") {
-                                    Picasso.get()
-                                        .load(i.filePath)
-                                        .into(binding.ivHomeItem)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Log.d("home캐릭터 안드 잘못", "실패")
-                }
-            }
-
-            override fun onFailure(call: Call<HomeCharacData>, t: Throwable) {
-                Log.d("home캐릭터 연결 실패", "실패")
-            }
-
-        })
-
-//
     }
 
 }

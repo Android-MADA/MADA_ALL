@@ -120,19 +120,20 @@ class HomeRepeatTodoAdapter (private var view : View?, private var flag : String
 
     fun findRes(color : String) : Int {
         var colorr : Int = when(color){
-            "#E1E9F5" -> {R.drawable.ch_checked_color1}
-            "#89A9D9" -> {R.drawable.ch_checked_color2}
-            "#486DA3" -> {R.drawable.ch_checked_color3}
-            "#FFE7EB" -> {R.drawable.ch_checked_color4}
-            "#FDA4B4" -> {R.drawable.ch_checked_color5}
-            "#F0768C" -> {R.drawable.ch_checked_color6}
-            "#D4ECF1" -> {R.drawable.ch_checked_color7}
-            "#7FC7D4" -> {R.drawable.ch_checked_color8}
-            "#2AA1B7" -> {R.drawable.ch_checked_color9}
-            "#FDF3CF" -> {R.drawable.ch_checked_color10}
-            "#F8D141" -> {R.drawable.ch_checked_color11}
+            "#21C362" -> {R.drawable.ch_checked_color1}
+            "#0E9746" -> {R.drawable.ch_checked_color2}
+            "#7FC7D4" -> {R.drawable.ch_checked_color3}
+            "#2AA1B7" -> {R.drawable.ch_checked_color4}
+            "#89A9D9" -> {R.drawable.ch_checked_color5}
+            "#486DA3" -> {R.drawable.ch_checked_color6}
+            "#FDA4B4" -> {R.drawable.ch_checked_color7}
+            "#F0768C" -> {R.drawable.ch_checked_color8}
+            "#F8D141" -> {R.drawable.ch_checked_color9}
+            "#F68F30" -> {R.drawable.ch_checked_color10}
+            "#F33E3E" -> {R.drawable.ch_checked_color11}
             else -> {R.drawable.ch_checked_color12}
         }
         return colorr
+
     }
 }

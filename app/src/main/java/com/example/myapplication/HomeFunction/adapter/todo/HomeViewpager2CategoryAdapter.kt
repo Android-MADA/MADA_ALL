@@ -1,5 +1,7 @@
 package com.example.myapplication.HomeFunction.adapter.todo
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -40,6 +43,7 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
         val todoRv : RecyclerView
         val addBtn : ImageView
         val edtTodo : EditText
+        val OutLayout : ConstraintLayout
 
         init {
             cateIcon = view.findViewById(R.id.ic_repeat_category)
@@ -48,6 +52,7 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
             todoRv = view.findViewById(R.id.rv_repeat_todo)
             addBtn = view.findViewById(R.id.btn_repeat_add_todo)
             edtTodo = view.findViewById(R.id.edt_repeat_todo)
+            OutLayout = view.findViewById(R.id.layout_home_viewpager_cate_list)
         }
     }
 
@@ -103,6 +108,9 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
 
         holder.cateIcon.setImageResource(findIcon(dataSet[position].iconId))
         holder.cateTv.text = dataSet[position].categoryName
+
+        val mGradientDrawable : GradientDrawable = holder.OutLayout.background as GradientDrawable
+        mGradientDrawable.setStroke(6, Color.parseColor(dataSet[position].color))
 
         //클릭 리스너
         holder.addBtn.setOnClickListener{
