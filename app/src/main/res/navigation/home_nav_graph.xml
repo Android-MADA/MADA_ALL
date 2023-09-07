@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_homeCategoryFragment_to_fragHome"
             app:destination="@id/fragHome" />
+        <action
+            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"
+            app:destination="@id/categoryInActiveFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
@@ -283,5 +286,14 @@
         <action
             android:id="@+id/action_myRecordDayFragment_to_fragMy"
             app:destination="@id/fragMy" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryInActiveFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryInActiveFragment"
+        android:label="CategoryInActiveFragment" >
+        <action
+            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment"
+            app:popUpTo="@id/fragHome" />
     </fragment>
 </navigation>
