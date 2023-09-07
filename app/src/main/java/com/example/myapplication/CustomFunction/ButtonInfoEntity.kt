@@ -9,7 +9,7 @@ import com.example.myapplication.ButtonInfoTypeConverter
 @TypeConverters(ButtonInfoTypeConverter::class)
 data class ButtonInfoEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    var id: Long,
     var colorButtonInfo: ButtonInfo?, // 이 필드에 Type Converter 적용
     var clothButtonInfo: ButtonInfo?, // 이 필드에 Type Converter 적용
     var itemButtonInfo: ButtonInfo?, // 이 필드에 Type Converter 적용
