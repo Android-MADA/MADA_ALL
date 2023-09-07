@@ -2,6 +2,7 @@ package com.example.myapplication.MyFuction.Adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.example.myapplication.R
 class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {
 
     var datas = mutableListOf<MyRecordCategoryData>()
-//        set(value) {
+    //        set(value) {
 //            field = value
 //            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
 //        }
@@ -37,7 +38,7 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
 
         fun bind(item: MyRecordCategoryData) {
             txtPercent.text = item.percent
-            //viewColor.setCardBackgroundColor(Color.parseColor(item.colorCode))
+            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.colorCode.replace("#","")))
             txtCategory.text = item.category
         }
     }
