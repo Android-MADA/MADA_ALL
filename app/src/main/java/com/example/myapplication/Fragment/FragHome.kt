@@ -83,6 +83,10 @@ class FragHome : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
+
+
+
+
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
             900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
             41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
