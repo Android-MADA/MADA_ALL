@@ -227,8 +227,8 @@ class CalendarViewModel : ViewModel(){
     }
     fun deleteCalendar(id : Int , callback: (Int) -> Unit) {
         Log.d("id",id.toString())
-        service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+        service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData1> {
+            override fun onResponse(call: Call<AddCalendarData1>, response: Response<AddCalendarData1>) {
                 Log.d("rrrrrrrrrrrrrrrrrrrr",response.toString())
                 if (response.isSuccessful) {
                     val responseBody = response.body()
@@ -239,7 +239,7 @@ class CalendarViewModel : ViewModel(){
                     } else callback(2)
                 } else callback(2)
             }
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData1>, t: Throwable) {
                 callback(2)
             }
         })
@@ -478,13 +478,13 @@ class CalendarViewModel : ViewModel(){
     }
 
     fun addCalendar(data : CalendarData,callback: (Int) -> Unit){
-        service.addCal(token,data).enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+        service.addCal(token,data).enqueue(object : Callback<AddCalendarData1> {
+            override fun onResponse(call: Call<AddCalendarData1>, response: Response<AddCalendarData1>) {
                 Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        addId = -1    //responseBody.data.id
+                        addId = responseBody.data.calendars.id    //responseBody.data.id
                         callback(1)
                     }else
                         callback(2)
@@ -494,7 +494,7 @@ class CalendarViewModel : ViewModel(){
                     callback(2)
                 }
             }
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData1>, t: Throwable) {
                 callback(2)
             }
 

@@ -11,7 +11,7 @@ import androidx.room.Relation
 @Entity(tableName = "repeat_table",
     foreignKeys = [ForeignKey(
         entity = CateEntity::class,
-        parentColumns = ["cateId"],
+        parentColumns = ["id"],
         childColumns = ["category"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
@@ -43,7 +43,7 @@ data class RepeatEntity(
 data class CategoryRepeats(
     @Embedded val category : CateEntity,
     @Relation(
-        parentColumn = "cateId",
+        parentColumn = "id",
         entityColumn = "category"
     )
     val todos : List<RepeatEntity>?

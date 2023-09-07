@@ -56,19 +56,39 @@ interface HomeApi {
     ) : Call<PostResponseTodo>
 
     //todo수정 -> 확인 완
-    @PATCH("/api/home/todo/todoId/{todoId}")
-    suspend fun editTodo(
-        @Header("Authorization") token: String?,
-        @Path("todoId", encoded = true) todoId: Int,
-        @Body data : PatchRequestTodo
-    ): PostResponseTodo
+//    @PATCH("/api/home/todo/todoId/{todoId}")
+//    suspend fun editTodo(
+//        @Header("Authorization") token: String?,
+//        @Path("todoId", encoded = true) todoId: Int,
+//        @Body data : PatchRequestTodo
+//    ): PostResponseTodo
+
+//    @PATCH("/api/home/todo/todoId/{todoId}")
+//    fun editTodo(
+//        @Header("Authorization") token: String?,
+//        @Path("todoId", encoded = true) todoId: Int,
+//        @Body data : PatchRequestTodo
+//    ): Call<PostResponseTodo>
+@PATCH("/api/home/todo/update/{todoId}")
+fun editTodo(
+    @Header("Authorization") token: String?,
+    @Path("todoId", encoded = true) todoId: Int,
+    @Body data : PatchRequestTodo
+): Call<Void>
 
     //todo삭제 -> 확인 완
-    @DELETE("/api/home/todo/todoId/{todoId}")
-    suspend fun deleteTodo(
+//    @DELETE("/api/home/todo/todoId/{todoId}")
+//    suspend fun deleteTodo(
+//        @Header("Authorization") token: String?,
+//        @Path("todoId", encoded = true) todoId: Int
+//    )
+
+    @PATCH("/api/home/todo/delete/{todoId}")
+    fun deleteTodo(
         @Header("Authorization") token: String?,
         @Path("todoId", encoded = true) todoId: Int
-    )
+    ) : Call<Void>
+
 
     //시간표 추가 시 일정 및 todo조회
     @GET("/api/home/time/search/date/{date}")
@@ -148,18 +168,25 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): Call<PactchResponseCategory>
 
+    //카테고리 종료
+    @PATCH("/api/home/category/active/{categoryId}")
+    fun quitCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    ): Call<Void>
+
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
-    @DELETE("/api/home/category/{categoryId}")
+    @PATCH("/api/home/category/delete/{categoryId}")
     suspend fun deleteCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
-    )
+    ) : Call<Void>
 
-    @DELETE("/api/home/category/{categoryId}")
+    @PATCH("/api/home/category/delete/{categoryId}")
     fun deleteHCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
-    )
+    ) : Call<Void>
 
     @GET("/api/home/todo/repeat")
     suspend fun getRepeatTodo(

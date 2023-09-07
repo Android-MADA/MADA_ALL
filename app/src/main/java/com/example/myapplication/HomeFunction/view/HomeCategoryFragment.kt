@@ -62,7 +62,6 @@ class HomeCategoryFragment : Fragment() {
 
                     val bundle = Bundle()
                     bundle.putStringArrayList("key", arrayListOf(
-                        dataSet.cateId.toString(),
                         dataSet.id.toString(),
                         dataSet.categoryName,
                         dataSet.color,

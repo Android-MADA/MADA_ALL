@@ -54,23 +54,23 @@ class CustomCircleBarView : View {
         textPaint.textSize = smallXY / 20.toFloat()
         textPaint.color = Color.BLACK
 
-        val textX = centerX + radius * Math.cos(Math.toRadians(-90.0)).toFloat() - textPaint.measureText("0") / 2
-        val textY = centerY + radius * Math.sin(Math.toRadians(-90.0)).toFloat() + textPaint.textSize / 2
+        val textX = centerX - textPaint.measureText("0") / 2
+        val textY = centerY + radius * Math.sin(Math.toRadians(-90.0)).toFloat() + textPaint.textSize / 2.5f
         canvas?.drawText("0", textX, textY, textPaint)
 
         val textAngle90 = -90
         val textX90 = centerX + radius * Math.cos(Math.toRadians(0.0)).toFloat() - textPaint.measureText("6") / 2
-        val textY90 = centerY + radius * Math.sin(Math.toRadians(0.0)).toFloat() + textPaint.textSize / 2
+        val textY90 = centerY + textPaint.textSize / 2
         canvas?.drawText("6", textX90, textY90, textPaint)
 
         val textAngle180 = 0
-        val textX180 = centerX + radius * Math.cos(Math.toRadians(90.0)).toFloat() - textPaint.measureText("12") / 2
-        val textY180 = centerY + radius * Math.sin(Math.toRadians(90.0)).toFloat() + textPaint.textSize / 2
+        val textX180 = centerX - textPaint.measureText("12") / 2
+        val textY180 = centerY + radius * Math.sin(Math.toRadians(90.0)).toFloat() + textPaint.textSize / 2.5f
         canvas?.drawText("12", textX180, textY180, textPaint)
 
         val textAngle270 = 90
         val textX270 = centerX + radius * Math.cos(Math.toRadians(180.0)).toFloat() - textPaint.measureText("18") / 2
-        val textY270 = centerY + radius * Math.sin(Math.toRadians(180.0)).toFloat() + textPaint.textSize / 2
+        val textY270 = centerY  + textPaint.textSize / 2
         canvas?.drawText("18", textX270, textY270, textPaint)
 
 
