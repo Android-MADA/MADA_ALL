@@ -64,7 +64,7 @@ class DayDataItemView @JvmOverloads constructor(
             display.getSize(size)
 
             val screenWidth = size.x
-            val popupWidth = (screenWidth * 1.0).toInt()
+            val popupWidth = (screenWidth * 0.9).toInt()
 
             mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 

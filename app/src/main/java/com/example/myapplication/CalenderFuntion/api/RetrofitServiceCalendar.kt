@@ -1,6 +1,6 @@
 package com.example.myapplication.CalenderFuntion.api
 
-import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
+import com.example.myapplication.CalenderFuntion.Model.AddCalendarData1
 import com.example.myapplication.CalenderFuntion.Model.CalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarDataId
 import com.example.myapplication.CalenderFuntion.Model.CalendarDatas
@@ -38,7 +38,7 @@ interface RetrofitServiceCalendar {
     //데이터 추가
     @POST("/api/calendar/add")
     fun addCal(@Header("Authorization") token: String?, @Body data: CalendarData
-    ) : Call<AddCalendarData>
+    ) : Call<AddCalendarData1>
 
 
     //데이터 수정
@@ -49,7 +49,7 @@ interface RetrofitServiceCalendar {
     //데이터 삭제
     @DELETE("/api/calendar/edit/{id}")
     fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int
-    ) : Call<AddCalendarData>
+    ) : Call<AddCalendarData1>
 
 
 

@@ -377,7 +377,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800")
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata)
+                newviewModel.saveButtonInfo(temdata)
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700")
@@ -385,7 +385,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700")
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID.toString())
-                    newviewModel.saveButtonInfo(temdata)
+                newviewModel.saveButtonInfo(temdata)
             }
 
 
@@ -626,7 +626,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val responseCode = response.code()
                 Log.d("putcustomReset", "Response Code: $responseCode")
-                findNavController().navigate(R.id.action_fragCustom_to_fragCustom)
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
