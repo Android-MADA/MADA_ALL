@@ -430,6 +430,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 uniqueItemIds.add(itemIds[0])
                 serverpatchIds[0] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
             } else {
+                Log.d("dd","dd")
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
                 serverpatchIds[0] = temdata.selectedColorButtonInfo?.serverID.toString()
             }
@@ -561,7 +562,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             DataRepo.buttonInfoEntity?.clothButtonInfo = clothbuttonInfo
             DataRepo.buttonInfoEntity?.itemButtonInfo = itembuttonInfo
             DataRepo.buttonInfoEntity?.backgroundButtonInfo = backgroundbuttonInfo
-
 
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
