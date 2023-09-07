@@ -472,7 +472,7 @@
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="  오전 10:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
@@ -492,7 +492,7 @@
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="  오전 11:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
