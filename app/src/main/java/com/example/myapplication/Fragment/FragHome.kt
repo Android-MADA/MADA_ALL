@@ -80,8 +80,8 @@ class FragHome : Fragment() {
         viewModel.readAllTodo()
         viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
             CoroutineScope(Dispatchers.Main).launch {
-                var completeNum = it.size
-                var todoNum = 0
+                var completeNum = 0
+                var todoNum = it.size
                 for(i in it){
                     if(i.complete == true){
                         completeNum++
