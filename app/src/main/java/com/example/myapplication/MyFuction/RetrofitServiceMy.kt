@@ -7,6 +7,8 @@ import com.example.myapplication.MyFuction.Data.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Data.MyGetNoticesData
 import com.example.myapplication.MyFuction.Data.MyGetProfileData
 import com.example.myapplication.MyFuction.Data.MyPremiumData
+import com.example.myapplication.MyFuction.Data.MyRecordData
+import com.example.myapplication.MyFuction.Data.MyRecordOptionData
 import com.example.myapplication.MyFuction.Data.MySetPageData
 import com.example.myapplication.MyFuction.Data.MySetPageData2
 import retrofit2.http.GET
@@ -16,6 +18,8 @@ import retrofit2.http.DELETE
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface RetrofitServiceMy {
@@ -44,7 +48,6 @@ interface RetrofitServiceMy {
     fun characterRequest(@Header("Authorization") token : String?
     ) : Call<CharacterResponse>
 
-
     // 프로필 편집창 닉네임, 이메일 불러오기 -> 확인
     @GET("/user/profile/change")
     fun myGetProfile(@Header("Authorization") token : String?
@@ -55,15 +58,12 @@ interface RetrofitServiceMy {
     fun changeNickname(@Header("Authorization") token: String?, @Body nickname: String
     ): Call<MyChangeNicknameData>
 
-
     // 공지사항 조회 -> 확인
     @GET("/allnotice")
     fun myGetNotices(@Header("Authorization") token: String?
     ): Call<MyGetNoticesData>
 
-
     // 화면 설정 조회 -> 확인
-
     @GET("/user/pageInfo")
     fun myGetSettingPage(@Header("Authorization") token: String?
     ): Call<MySetPageData>
@@ -85,11 +85,15 @@ interface RetrofitServiceMy {
     fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
     ): Call<MyAlarmData>
 
-
-
     // 프리미엄 구독 저장-> 미확인
     @PATCH("/user/subscribe")
     fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
+
+    // 주, 월별 투두, 카테고리 통계 조회
+    @GET("/user/statistics")
+    fun myGetRecord(@Header("/user/statistics") token: String?, @Query("option") option: String,
+                    @Query("date") date: String
+    ): Call<MyRecordData>
 
 }
