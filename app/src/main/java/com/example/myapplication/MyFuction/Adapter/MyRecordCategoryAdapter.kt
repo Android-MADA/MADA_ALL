@@ -39,7 +39,7 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
         fun bind(item: MyRecordCategoryData) {
             txtPercent.text = item.percent
             Log.d("컬러코드",item.colorCode)
-            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.colorCode))
+            viewColor.setCardBackgroundColor(Color.parseColor(item.colorCode))
             txtCategory.text = item.category
         }
     }
