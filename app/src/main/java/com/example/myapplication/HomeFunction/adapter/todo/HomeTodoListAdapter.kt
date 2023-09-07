@@ -11,11 +11,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
+import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
+import com.example.myapplication.HomeFunction.Model.PostResponseTodo
+import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeTodoListBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
 
 class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHolder>(DiffCallback) {
 
@@ -44,22 +56,24 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
         holder.bind(getItem(position))
 
         var cbColor = R.drawable.home_checkbox1
 
         when(category!!.color){
-            "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
-            "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}
-            "#486DA3" -> {cbColor = R.drawable.home_checkbox3}
-            "#FFE7EB" -> {cbColor = R.drawable.home_checkbox4}
-            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox5}
-            "#F0768C" -> {cbColor = R.drawable.home_checkbox6}
-            "#D4ECF1" -> {cbColor = R.drawable.home_checkbox7}
-            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox8}
-            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox9}
-            "#FDF3CF" -> {cbColor = R.drawable.home_checkbox10}
-            "#F8D141" -> {cbColor = R.drawable.home_checkbox11}
+            "#21C362" -> {cbColor = R.drawable.home_checkbox1}
+            "#0E9746" -> {cbColor = R.drawable.home_checkbox2}
+            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox3}
+            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox4}
+            "#89A9D9" -> {cbColor = R.drawable.home_checkbox5}
+            "#486DA3" -> {cbColor = R.drawable.home_checkbox6}
+            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox7}
+            "#F0768C" -> {cbColor = R.drawable.home_checkbox8}
+            "#F8D141" -> {cbColor = R.drawable.home_checkbox9}
+            "#F68F30" -> {cbColor = R.drawable.home_checkbox10}
+            "#F33E3E" -> {cbColor = R.drawable.home_checkbox11}
             else -> {cbColor = R.drawable.home_checkbox12}
 
         }
@@ -87,8 +101,23 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ){
                 //update
-                val updateData = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.date, holder.data!!.category, holder.edtTodo.text.toString(), holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
-                viewModel!!.updateTodo(updateData)
+                val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.date, holder.data!!.category, holder.edtTodo.text.toString(), holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
+                viewModel!!.updateTodo(data)
+                val updateData = PatchRequestTodo(todoName = holder.edtTodo.text.toString(), repeat = "N",  repeatWeek = holder.data!!.repeatWeek, repeatMonth = holder.data!!.repeatMonth, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete)
+                api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful){
+                            Log.d("todo server", "성공")
+                        }
+                        else {
+                            Log.d("todo안드 잘못", "서버 연결 실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("서버 문제", "서버 연결 실패")
+                    }
+                })
                 holder.edtTodo.text.clear()
                 holder.editLayout.isGone = true
                 holder.layoutcb.isVisible = true
@@ -120,12 +149,23 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                     }
                 }
                 else{
-//                    val todoId = dataSet[position].id
-//                    viewModel!!.deleteTodo(todoId, cateIndex, position, dataSet[position].complete, this)
                     //데이터 삭제
                     val data = holder.data
-                    viewModel!!.deleteTodo(data!!)
-                    notifyDataSetChanged()
+                    api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if(response.isSuccessful){
+                                Log.d("todo server", "성공")
+                                viewModel!!.deleteTodo(data!!)
+                            }
+                            else {
+                                Log.d("todo안드 잘못", "서버 연결 실패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d("서버 문제", "서버 연결 실패")
+                        }
+                    })
                 }
                 true
             }
@@ -144,14 +184,49 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                 //update
                 holder.data!!.complete = true
                 val checkUpdateData = holder.data!!
+                val updateData = PatchRequestTodo(checkUpdateData.todoName, checkUpdateData.repeat, checkUpdateData.repeatWeek, checkUpdateData.repeatMonth, checkUpdateData.startRepeatDate, checkUpdateData.endRepeatDate, complete = true)
                 viewModel!!.updateTodo(checkUpdateData)
+                //서버 연결
+                api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful){
+                            Log.d("todo server", "성공")
+                        }
+                        else {
+                            Log.d("todo안드 잘못", "서버 연결 실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("서버 문제", "서버 연결 실패")
+                    }
+                })
                 //자리 이동
             }
             else {
                 //update
                 holder.data!!.complete = false
-                val checkUpdateData = holder.data!!
-                viewModel!!.updateTodo(checkUpdateData)
+                CoroutineScope(Dispatchers.IO).launch {
+                    //서버 연결, db 저장
+                    val checkUpdateData = holder.data!!
+                    val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = "N",  repeatWeek = checkUpdateData.repeatWeek, repeatMonth = checkUpdateData.repeatMonth, startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = false)
+                    Log.d("todoedit 확인", updateData.toString())
+                    api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if(response.isSuccessful){
+                                    Log.d("todo server", "성공")
+                            }
+                            else {
+                                Log.d("todo안드 잘못", "서버 연결 실패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d("서버 문제", "서버 연결 실패")
+                        }
+                    })
+                    viewModel!!.updateTodo(checkUpdateData)
+                }
                 //자리 이동
             }
         }
