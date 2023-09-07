@@ -19,6 +19,7 @@ import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companio
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
 import com.example.myapplication.R
 import org.joda.time.DateTime
+import org.joda.time.LocalDate
 
 class DayItemView @JvmOverloads constructor(
     context: Context,
@@ -61,7 +62,7 @@ class DayItemView @JvmOverloads constructor(
         val y = bounds.height() + 40
 
         //날짜 그리기
-        if(isSameDay(date)) {
+        if(date.toString("yyyy-MM-dd")==LocalDate.now().toString("yyyy-MM-dd")) {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")

@@ -114,8 +114,6 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
 
 
         }
-
-
         holder.btnAdd.setOnClickListener {
             if(holder.layoutAdd.isGone == true){
                 holder.layoutAdd.isVisible = true

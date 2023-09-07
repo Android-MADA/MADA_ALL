@@ -279,9 +279,9 @@ class CalendarAddDdayFragment : Fragment() {
             preMonth = "${Year - 1}-12"
         }
         if(CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!=null){
-            for(data in CalendarViewModel.hashMapArrayCal.get("${Year-Month}")!!) {
+            for(data in CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!!) {
                 if(data.id == tmpId) {
-                    CalendarViewModel.hashMapArrayCal.get("${Year-Month}")!!.remove(data)
+                    CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!!.remove(data)
                     break
                 }
             }

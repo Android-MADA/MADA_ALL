@@ -315,8 +315,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
 
 
-        var width = 700
-        var height = 700
+        var width = 500
+        var height = 500
         val customRamdi = binding.customRamdi
         val customRamdi_layoutParams = customRamdi.layoutParams
         customRamdi_layoutParams.width = 1200 // 원하는 너비(dp 단위)
@@ -349,20 +349,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
-                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
+                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 customRamdi.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
-                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
+                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
 
-                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 500).toInt()
-                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 500).toInt()
+                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
+                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1200).toInt()
-                imgCustomBackground_layoutParams.height = (height * (1 - slideOffset) + 1200).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
+                imgCustomBackground_layoutParams.height = (height * (1 - slideOffset) + 1500).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
@@ -427,18 +427,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             if(temdata.selectedColorButtonInfo?.serverID == null) {
-                uniqueItemIds.add(DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString())
+                uniqueItemIds.add(itemIds[0])
                 serverpatchIds[0] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
-                Log.d("ss","ss")
             } else {
-                Log.d("dd","dd")
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
                 serverpatchIds[0] = temdata.selectedColorButtonInfo?.serverID.toString()
             }
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!="900") {
-                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID.toString())
-                    serverpatchIds[1] = DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID.toString()
+                    uniqueItemIds.add(itemIds[1])
+                    serverpatchIds[1] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
                 }
             } else {
                 if(temdata.selectedClothButtonInfo?.serverID.toString()!="900"){
@@ -448,8 +446,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!="800") {
-                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID.toString())
-                    serverpatchIds[2] = DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID.toString()
+                    uniqueItemIds.add(itemIds[2])
+                    serverpatchIds[2] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
                 }
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID.toString()!="800"){
@@ -459,8 +457,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!="700") {
-                    uniqueItemIds.add(DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID.toString())
-                    serverpatchIds[3] = DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID.toString()
+                    uniqueItemIds.add(itemIds[3])
+                    serverpatchIds[3] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
                 }
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID.toString()!="700") {
@@ -563,10 +561,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             DataRepo.buttonInfoEntity?.clothButtonInfo = clothbuttonInfo
             DataRepo.buttonInfoEntity?.itemButtonInfo = itembuttonInfo
             DataRepo.buttonInfoEntity?.backgroundButtonInfo = backgroundbuttonInfo
-
-
-
-
 
             unsavedChanges = false
             Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()

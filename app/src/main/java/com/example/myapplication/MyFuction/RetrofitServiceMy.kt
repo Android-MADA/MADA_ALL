@@ -91,9 +91,8 @@ interface RetrofitServiceMy {
     ): Call<MyPremiumData>
 
     // 주, 월별 투두, 카테고리 통계 조회
-    @GET("/user/statistics")
-    fun myGetRecord(@Header("/user/statistics") token: String?, @Query("option") option: String,
-                    @Query("date") date: String
+    @POST("/user/statistics")
+    fun myGetRecord(@Header("Authorization") token: String?, @Body data: MyRecordOptionData
     ): Call<MyRecordData>
 
 }

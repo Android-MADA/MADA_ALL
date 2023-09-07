@@ -1,5 +1,6 @@
 package com.example.myapplication.MyFuction.Calendar
 
+import android.util.Log
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -18,12 +19,14 @@ class MyWeekSliderlAdapter(
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 monthWeekText.text = DateTime(millis).monthOfYear.toString() + "월 " + getWeekOfMonth(DateTime(millis)).toString()+" 주차"
+
                 (fm as? MyRecordWeekFragment)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
+
             }
         })
     }
     /* 달의 첫 번째 Day timeInMillis*/
-    private var start: Long = DateTime().withDayOfWeek(7).withTimeAtStartOfDay().millis
+    private var start: Long = DateTime().withDayOfWeek(6).withTimeAtStartOfDay().millis
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
