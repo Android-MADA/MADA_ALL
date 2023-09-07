@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -63,6 +64,9 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
         holder.bind(getItem(position))
 
+
+
+
         var cbColor = R.drawable.home_checkbox1
 
         when(category!!.color){
@@ -83,18 +87,28 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
         holder.checkbox.setBackgroundResource(cbColor)
 
-        if(holder.data!!.repeat != "N"){
 
-            holder.checkbox.isVisible = true
-            holder.ivIcon.isGone = true
-            holder.todoMenu.isGone = true
-            holder.repeatIcon.isVisible = true
+
+        if(category!!.isInActive == true){
+            holder.checkbox.isInvisible = true
+            holder.todoMenu.isInvisible = true
+            holder.ivIcon.isVisible = true
+            if(holder.data!!.complete == true){
+                holder.ivIcon.setImageResource(findRes(category!!.color))
+            }
         }
         else {
             holder.checkbox.isVisible = true
-            holder.ivIcon.isGone = true
-            holder.todoMenu.isVisible = true
-            holder.repeatIcon.isGone = true
+            if(holder.data!!.repeat != "N"){
+                holder.ivIcon.isGone = true
+                holder.todoMenu.isGone = true
+                holder.repeatIcon.isVisible = true
+            }
+            else {
+                holder.ivIcon.isGone = true
+                holder.todoMenu.isVisible = true
+                holder.repeatIcon.isGone = true
+            }
         }
 
 
@@ -186,17 +200,8 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
             popup.show()
         }
 
-//        holder.btnDelete.setOnClickListener {
-//            //데이터 삭제
-//            val data = holder.data
-//            viewModel!!.deleteTodo(data!!)
-//            notifyDataSetChanged()
-//        }
 
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-//            if(isChecked == true){
-                //update
-                //holder.data!!.complete = true
                 val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate , endTodoBackSetting = holder.data!!.endTodoBackSetting, newTodoStartSetting = holder.data!!.newTodoStartSetting, isAlarm = holder.data!!.isAlarm, startTodoAtMonday = holder.data!!.startTodoAtMonday, repeat = holder.data!!.repeat, repeatMonth = holder.data!!.repeatMonth, repeatWeek = holder.data!!.repeatWeek , startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
                 val updateData = PatchRequestTodo(checkUpdateData.todoName, checkUpdateData.repeat, checkUpdateData.repeatWeek, checkUpdateData.repeatMonth, checkUpdateData.startRepeatDate, checkUpdateData.endRepeatDate, complete = isChecked)
                 //서버 연결
@@ -215,34 +220,7 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
                         Log.d("서버 문제", "서버 연결 실패")
                     }
                 })
-                //자리 이동
-//            }
-//            else {
-//                //update
-//                holder.data!!.complete = false
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    //서버 연결, db 저장
-//                    val checkUpdateData = holder.data!!
-//                    val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = "N",  repeatWeek = checkUpdateData.repeatWeek, repeatMonth = checkUpdateData.repeatMonth, startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = false)
-//                    Log.d("todoedit 확인", updateData.toString())
-//                    api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
-//                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                            if(response.isSuccessful){
-//                                    Log.d("todo server", "성공")
-//                            }
-//                            else {
-//                                Log.d("todo안드 잘못", "서버 연결 실패")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<Void>, t: Throwable) {
-//                            Log.d("서버 문제", "서버 연결 실패")
-//                        }
-//                    })
-//                    viewModel!!.updateTodo(checkUpdateData)
-//                }
-//                //자리 이동
-//            }
+
         }
     }
 
@@ -262,6 +240,25 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
         val ivIcon = binding.ivMyTodo
         val todoMenu = binding.tvHomeTodoEdit
         val repeatIcon = binding.ivHomeRepeat
+
+    }
+
+    fun findRes(color : String) : Int {
+        var colorr : Int = when(color){
+            "#21C362" -> {R.drawable.ch_checked_color1}
+            "#0E9746" -> {R.drawable.ch_checked_color2}
+            "#7FC7D4" -> {R.drawable.ch_checked_color3}
+            "#2AA1B7" -> {R.drawable.ch_checked_color4}
+            "#89A9D9" -> {R.drawable.ch_checked_color5}
+            "#486DA3" -> {R.drawable.ch_checked_color6}
+            "#FDA4B4" -> {R.drawable.ch_checked_color7}
+            "#F0768C" -> {R.drawable.ch_checked_color8}
+            "#F8D141" -> {R.drawable.ch_checked_color9}
+            "#F68F30" -> {R.drawable.ch_checked_color10}
+            "#F33E3E" -> {R.drawable.ch_checked_color11}
+            else -> {R.drawable.ch_checked_color12}
+        }
+        return colorr
 
     }
 }

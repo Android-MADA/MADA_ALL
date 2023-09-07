@@ -630,11 +630,16 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         Log.d("todo 추가중", todoEntity.toString())
     }
 
-    fun readTodo(cateId : Int, adapter: HomeTodoListAdapter) = viewModelScope.launch(Dispatchers.IO){
+    var inActiveTodoList : List<TodoEntity>? = null
+
+    fun readTodo(cateId : Int, adapter: HomeTodoListAdapter?) = viewModelScope.launch(Dispatchers.IO){
         repository.readTodo(cateId).collect{
             Log.d("todoList 확인", it.toString())
+            inActiveTodoList = it
             withContext(Dispatchers.Main){
-                adapter.submitList(it)
+                if(adapter != null){
+                    adapter.submitList(it)
+                }
             }
         }
 
