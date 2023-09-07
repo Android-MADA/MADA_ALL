@@ -216,6 +216,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 }
+                //d
 
                 // Here you can add code specific to handling the selected tab if needed
             }
