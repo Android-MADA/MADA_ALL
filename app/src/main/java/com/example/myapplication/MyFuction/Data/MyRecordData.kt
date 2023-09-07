@@ -8,8 +8,8 @@ data class MyRecordData(
 
 data class MyRecordData2(
     val nickName: String,
-    val todosPercent: Double,
-    val completeTodoPercent: Double,
+    val todosPercent: String,
+    val completeTodoPercent: String,
     val categoryStatistics: ArrayList<MyRecordData3>
 )
 
