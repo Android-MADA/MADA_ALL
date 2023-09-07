@@ -135,18 +135,24 @@ class MyRecordWeekFragment : Fragment() {
 
                     val nickName = response.body()?.data?.nickName
                     val categoryStatistics = response.body()?.data?.categoryStatistics
+                    val size = response.body()?.data?.categoryStatistics?.size
 
                     val formattedText1 = "${month}월 ${weekOfMonth}주 시간표"
                     var formattedText2 = ""
 
                     if (categoryStatistics.isNullOrEmpty()) {
                         formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는 없습니다."
-                    } else {
+                    } else if(size == 1 || size == 2){
                         var s = ""
                         for(data in categoryStatistics) {
                             s+= ", "+ data.categoryName
                         }
                         formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는\n${s.replaceFirst(",","")} 입니다."
+                    }else{
+                        val s1 = categoryStatistics[0].categoryName
+                        val s2 = categoryStatistics[1].categoryName
+                        val s3 = categoryStatistics[2].categoryName
+                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는\n${s1}, ${s2}, ${s3} 입니다."
                     }
 
                     binding.recordTitleTimetable.text = formattedText1
@@ -197,9 +203,11 @@ class MyRecordWeekFragment : Fragment() {
                             myPercentNumList.add(percentNum.toString())  // 리스트에 퍼센트 추가
                             myColorCodeList.add(colorCode)  // 리스트에 컬러코드 추가
 
-                            MyRecordCategoryData(percent = myPercentNumList[i], colorCode = colorCode, category = myCategoryNameList[i])
+                            MyRecordCategoryData(percent = myPercentNumList[i], colorCode = myColorCodeList[i], category = myCategoryNameList[i])
 
+                            Log.d("퍼센트", myPercentNumList[i])
                             Log.d("컬러코드", myColorCodeList[i])
+                            Log.d("카테고리", myCategoryNameList[i])
                         }
 
                         adapter.datas = datas
@@ -243,6 +251,8 @@ class MyRecordWeekFragment : Fragment() {
                     val myPercentNumList = mutableListOf<Float>() // Double 대신 Float 사용
                     val myColorCodeList = mutableListOf<Int>() // String 대신 Int 사용
 
+                    val entries = ArrayList<PieEntry>()
+
                     // 각 리스트에 항목 추가
                     for (i in 0 until size-1) {
                         val categoryName = categoryStatistics?.get(i)?.categoryName
@@ -258,34 +268,34 @@ class MyRecordWeekFragment : Fragment() {
                         myColorCodeList.add(colorCode)
 
                         // 파이차트 수치 속성 설정
-                        val entries = ArrayList<PieEntry>()
+
                         entries.add(PieEntry(myPercentNumList[i], myCategoryNameList[i]))
 
                         // 파이차트 색상 속성 설정
                         val colorsItems = ArrayList<Int>()
-                        colorsItems.add(colorCode) // 기본값 설정 가능
+                        colorsItems.add(myColorCodeList[i]) // 기본값 설정 가능
 
-                        // 데이터셋 초기화
-                        val pieDataSet = PieDataSet(entries, "")
-                        pieDataSet.apply {
-                            colors = myColorCodeList // setColor 대신에 colors를 설정
-                            valueTextColor = Color.BLACK
-                            valueTextSize = 12f
-                            setDrawValues(false)
-                        }
+                    }
+                    // 데이터셋 초기화
+                    val pieDataSet = PieDataSet(entries, "")
+                    pieDataSet.apply {
+                        colors = myColorCodeList // setColor 대신에 colors를 설정
+                        valueTextColor = Color.BLACK
+                        valueTextSize = 12f
+                        setDrawValues(false)
+                    }
 
-                        // 데이터셋 세팅
-                        val pieData = PieData(pieDataSet)
-                        binding.myChart.apply {
-                            data = pieData
-                            isRotationEnabled = false
-                            description.isEnabled = false
-                            legend.isEnabled = false
-                            setDrawEntryLabels(false)
-                            setDrawMarkers(false)
-                            animateY(1400, Easing.EaseInOutQuad)
-                            animate()
-                        }
+                    // 데이터셋 세팅
+                    val pieData = PieData(pieDataSet)
+                    binding.myChart.apply {
+                        data = pieData
+                        isRotationEnabled = false
+                        description.isEnabled = false
+                        legend.isEnabled = false
+                        setDrawEntryLabels(false)
+                        setDrawMarkers(false)
+                        animateY(1400, Easing.EaseInOutQuad)
+                        animate()
                     }
                 } else {
                     Log.d("myGetRecordWeek 실패", response.body().toString())
