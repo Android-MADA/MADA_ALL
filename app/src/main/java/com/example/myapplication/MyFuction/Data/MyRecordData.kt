@@ -1,23 +1,25 @@
 package com.example.myapplication.MyFuction.Data
 
+import com.google.gson.annotations.SerializedName
+
 data class MyRecordData(
     val data: MyRecordData2
 )
 
 data class MyRecordData2(
-    val nickname: String,
-    val todosPercent: Float,
-    val completeTodoPercent: Float,
+    val nickName: String,
+    val todosPercent: Double,
+    val completeTodoPercent: Double,
     val categoryStatistics: ArrayList<MyRecordData3>
 )
 
 data class MyRecordData3(
     val categoryName: String,
     val color: String,
-    val rate: Float
+    val rate: Double
 )
 
 data class MyRecordOptionData(
-    val option: String,
-    val date: String
+    @SerializedName("option") val option: String,
+    @SerializedName("date") val date: String
 )

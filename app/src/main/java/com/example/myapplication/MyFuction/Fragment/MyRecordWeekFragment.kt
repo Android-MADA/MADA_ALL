@@ -77,7 +77,7 @@ class MyRecordWeekFragment : Fragment() {
     }
     fun weekChange(month : Int, iweek : Int, date : String) {
         Log.d("dasdas",date)
-        setTodoView(MyRecordOptionData("month", date) , month, iweek)
+        setTodoView(MyRecordOptionData("week", date) , month, iweek)
         setTimetableView(MyRecordOptionData("week", date), month, iweek)
         initCategoryRecycler(MyRecordOptionData("week", date))
     }
@@ -86,7 +86,7 @@ class MyRecordWeekFragment : Fragment() {
     private fun setTodoView(wdata: MyRecordOptionData, month : Int, weekOfMonth: Int) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -121,7 +121,7 @@ class MyRecordWeekFragment : Fragment() {
     private fun setTimetableView(wdata: MyRecordOptionData, month : Int, weekOfMonth: Int) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -132,18 +132,21 @@ class MyRecordWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
 
-                    val nickname = response.body()!!.data.nickname
-                    val size = response.body()!!.data.categoryStatistics.size
-                    val myCategoryList = mutableListOf<String>() // 빈 리스트를 먼저 생성
-
-                    for (i in 0 until size) {
-                        val categoryItem = response.body()!!.data.categoryStatistics[i].categoryName
-                        myCategoryList.add(categoryItem) // 리스트에 카테고리명 추가
-                    }
+                    val nickName = response.body()?.data?.nickName
+                    val categoryStatistics = response.body()?.data?.categoryStatistics
 
                     val formattedText1 = "${month}월 ${weekOfMonth}주 시간표"
-                    val formattedText2 =
-                        "${nickname}님이 가장 많은 시간을 투자한 카테고리는\n${myCategoryList[0]}, ${myCategoryList[1]}, ${myCategoryList[2]} 입니다."
+                    var formattedText2 = ""
+
+                    if (categoryStatistics.isNullOrEmpty()) {
+                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는 없습니다."
+                    } else {
+                        var s = ""
+                        for(data in categoryStatistics) {
+                            s+= ", "+ data.categoryName
+                        }
+                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는\n${s.replaceFirst(",","")} 입니다."
+                    }
 
                     binding.recordTitleTimetable.text = formattedText1
                     binding.recordContextTimetable.text = formattedText2
@@ -152,10 +155,12 @@ class MyRecordWeekFragment : Fragment() {
                     Log.d("myGetRecordWeek 실패", response.body().toString())
                 }
             }
+
             override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
                 Log.d("서버 오류", "myGetRecordWeek 실패")
             }
         })
+
     }
 
     // 통계 우측 카테고리 리사이클러뷰 설정
@@ -164,7 +169,7 @@ class MyRecordWeekFragment : Fragment() {
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -182,7 +187,7 @@ class MyRecordWeekFragment : Fragment() {
                         val myColorCodeList = mutableListOf<String>()
                         val size = response.body()!!.data.categoryStatistics.size
 
-                        for (i in 0 until size) {
+                        for (i in 0 until size-1) {
                             val categoryName = response.body()!!.data.categoryStatistics[i].categoryName
                             val percentNum = response.body()!!.data.categoryStatistics[i].rate
                             val colorCode = response.body()!!.data.categoryStatistics[i].color
@@ -191,8 +196,9 @@ class MyRecordWeekFragment : Fragment() {
                             myPercentNumList.add(percentNum.toString())  // 리스트에 퍼센트 추가
                             myColorCodeList.add(colorCode)  // 리스트에 컬러코드 추가
 
-                            MyRecordCategoryData(percent = myPercentNumList[i], colorCode = myColorCodeList[i], category = myCategoryNameList[i])
+                            MyRecordCategoryData(percent = myPercentNumList[i], colorCode = colorCode, category = myCategoryNameList[i])
 
+                            Log.d("컬러코드", myColorCodeList[i])
                         }
 
                         adapter.datas = datas
@@ -218,7 +224,7 @@ class MyRecordWeekFragment : Fragment() {
         binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata.option, wdata.date).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
             override fun onResponse(
                 call: Call<MyRecordData>,
                 response: Response<MyRecordData>
@@ -229,23 +235,26 @@ class MyRecordWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
 
-                    // 각 항목 리스트화
+                    val categoryStatistics = response.body()?.data?.categoryStatistics
+                    val size = categoryStatistics?.size ?: 0 // categoryStatistics가 null일 경우 크기를 0으로 설정
+
                     val myCategoryNameList = mutableListOf<String>()
-                    val myPercentNumList = mutableListOf<Float>()
-                    val myColorCodeList = mutableListOf<String>()
-                    val size = response.body()!!.data.categoryStatistics.size
+                    val myPercentNumList = mutableListOf<Float>() // Double 대신 Float 사용
+                    val myColorCodeList = mutableListOf<Int>() // String 대신 Int 사용
 
                     // 각 리스트에 항목 추가
-                    for (i in 0 until size) {
-                        val categoryName = response.body()!!.data.categoryStatistics[i].categoryName
-                        val percentNum = response.body()!!.data.categoryStatistics[i].rate
-                        val colorCode = response.body()!!.data.categoryStatistics[i].color
+                    for (i in 0 until size-1) {
+                        val categoryName = categoryStatistics?.get(i)?.categoryName
+                        val percentNum = categoryStatistics?.get(i)?.rate?.toFloat() // Double을 Float로 변환
+                        val colorCode = Color.parseColor((categoryStatistics?.get(i)?.color)) // String을 Int(색상 코드)로 변환
 
-                        myCategoryNameList.add(categoryName)
-                        myPercentNumList.add(percentNum)
+                        if (categoryName != null) {
+                            myCategoryNameList.add(categoryName)
+                        }
+                        if (percentNum != null) {
+                            myPercentNumList.add(percentNum)
+                        }
                         myColorCodeList.add(colorCode)
-
-                        MyRecordCategoryData(percent = myPercentNumList[i].toString(), colorCode = myColorCodeList[i], category = myCategoryNameList[i])
 
                         // 파이차트 수치 속성 설정
                         val entries = ArrayList<PieEntry>()
@@ -253,22 +262,15 @@ class MyRecordWeekFragment : Fragment() {
 
                         // 파이차트 색상 속성 설정
                         val colorsItems = ArrayList<Int>()
-                        colorsItems.add(myColorCodeList[i].toInt())
-//                        // 랜덤색상 임시데이터
-//                        for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
-//                        for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
-//                        for (c in COLORFUL_COLORS) colorsItems.add(c)
-//                        for (c in ColorTemplate.LIBERTY_COLORS) colorsItems.add(c)
-//                        for (c in ColorTemplate.PASTEL_COLORS) colorsItems.add(c)
-//                        colorsItems.add(ColorTemplate.getHoloBlue())
+                        colorsItems.add(colorCode) // 기본값 설정 가능
 
                         // 데이터셋 초기화
                         val pieDataSet = PieDataSet(entries, "")
                         pieDataSet.apply {
-                            colors = colorsItems
+                            colors = myColorCodeList // setColor 대신에 colors를 설정
                             valueTextColor = Color.BLACK
                             valueTextSize = 12f
-                            setDrawValues(false) // 차트 내 수치 값 표시 비활성화
+                            setDrawValues(false)
                         }
 
                         // 데이터셋 세팅
@@ -276,34 +278,24 @@ class MyRecordWeekFragment : Fragment() {
                         binding.myChart.apply {
                             data = pieData
                             isRotationEnabled = false
-                            description.isEnabled = false // 차트 내 항목 값 표시 비활성화
-                            legend.isEnabled = false // 범례 비활성화
-                            setDrawEntryLabels(false) // 라벨 비활성화
-                            setDrawMarkers(false) // 차트 위에 마우스포인트 올릴 시 마커(필요 시 뷰 구현하겠음!)
-                            animateY(1400, Easing.EaseInOutQuad) // 시계방향 애니메이션
+                            description.isEnabled = false
+                            legend.isEnabled = false
+                            setDrawEntryLabels(false)
+                            setDrawMarkers(false)
+                            animateY(1400, Easing.EaseInOutQuad)
                             animate()
                         }
-
-                        // 범례 커스텀
-//                            binding.myChart.legend.apply {
-//                                isEnabled = true // 범례 활성화
-//                                verticalAlignment = Legend.LegendVerticalAlignment.CENTER // 세로 위치 중앙
-//                                horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT // 우측 배치
-//                                orientation = Legend.LegendOrientation.VERTICAL // 세로방향으로 배치
-//                                setDrawInside(false) // 차트 내부에 그리지 않도록 설정
-//                                // 그 외 범례에 대한 스타일 등을 설정할 수 있습니다.
-//                            // }
                     }
-
-
                 } else {
                     Log.d("myGetRecordWeek 실패", response.body().toString())
                 }
             }
+
             override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
                 Log.d("서버 오류", "myGetRecordWeek 실패")
             }
         })
+
 
     }
 
