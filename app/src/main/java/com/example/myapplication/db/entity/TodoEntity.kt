@@ -12,7 +12,7 @@ import com.example.myapplication.HomeFunction.Model.Category
 @Entity(tableName = "todo_table",
 foreignKeys = [ForeignKey(
     entity = CateEntity::class,
-    parentColumns = ["cateId"],
+    parentColumns = ["id"],
     childColumns = ["category"],
     onDelete = CASCADE,
     onUpdate = CASCADE
@@ -54,7 +54,7 @@ data class TodoEntity(
 data class CategoryTodos(
     @Embedded val category : CateEntity,
     @Relation(
-        parentColumn = "cateId",
+        parentColumn = "id",
         entityColumn = "category"
     )
     val todos : List<TodoEntity>?

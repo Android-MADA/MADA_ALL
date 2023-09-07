@@ -14,7 +14,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.Model.HomeCharacData
+import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -22,12 +24,17 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.HomeFragmentBinding
+import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class FragHome : Fragment() {
 
@@ -35,10 +42,10 @@ class FragHome : Fragment() {
     private var myAdapter: HomeViewPagerAdapter? = null
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.userToken = Splash2Activity.prefs.getString("token", "")
+
     }
 
 
@@ -60,22 +67,24 @@ class FragHome : Fragment() {
         myAdapter = HomeViewPagerAdapter(this@FragHome)
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
-
+        homeViewPager.setCurrentItem(1,false)
+        DataRepo.buttonInfoEntity?.clothButtonInfo?.let { binding.ivHomeCloth.setImageResource(it.selectedImageResource) }
+        DataRepo.buttonInfoEntity?.colorButtonInfo?.let { binding.ivHomeRamdi.setImageResource(it.selectedImageResource) }
+        DataRepo.buttonInfoEntity?.itemButtonInfo?.let { binding.ivHomeItem.setImageResource(it.selectedImageResource) }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         Log.d("token", viewModel.userToken)
 
-        //binding.layoutHome.setBackgroundResource(R.drawable.color_purple)
+        //유저 이름
+        viewModel.dUserName.observe(viewLifecycleOwner, Observer {
+            binding.tvHomeUsername.text = "${it}님,"
+        })
 
-//        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-//
-//            Log.d("home캐릭", "뎅이터 넘어오기")
-//        })
-
-//        viewModel.getUsername(binding.tvHomeUsername)
+        //배경설정
 
         val calendarLayout = binding.layoutCalendarviewHome
 //        binding.tvHomeProgressMax.text = viewModel.todoNum.toString()
@@ -144,27 +153,51 @@ class FragHome : Fragment() {
 
         // 클릭 시 텍스트 변환
         binding.calendarviewHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
+
             dateCalendar.set(year, month, dayOfMonth)
             var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
             binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
             calendarLayout.isGone = true
-            //viewModel.changeDate(year, (month +1), dayOfMonth, "home")
-            Log.d("date 확인", viewModel.homeDate.toString())
             binding.tvHomeSentence.text = homeMent(calendarDay)
+            viewModel.changeDate(year, (month +1), dayOfMonth, "home")
             //db 투두 데이터 전체 삭제 후 해당 날짜의 데이터를 서버에서 받아서 db에 저장하고 어댑터에 연결하기
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.deleteAllTodo()
+                //투두 새로 서버 에서 읽어오기
+                api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                        if(response.isSuccessful){
+                            for(i in response.body()!!.data.TodoList){
+                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                Log.d("todo server", todoData.toString())
+                                viewModel.createTodo(todoData, null)
+                            }
+                            //닉네임 저장하기
+                            viewModel.userHomeName = response.body()!!.data.nickname
+                        }
+                        else {
+                            Log.d("todo안드 잘못", "서버 연결 실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                        Log.d("todo서버 연결 오류", "서버 연결 실패")
+                    }
+
+                })
+            }
         }
 //
 //
-//        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-//            Log.d("date변경", binding.tvHomeCalendar.text.toString())
-//            getCustomChar()
-//            viewModel.getUsername(binding.tvHomeUsername)
-//        })
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            Log.d("date변경", binding.tvHomeCalendar.text.toString())
+            //getCustomChar()
+        })
 //
-//        viewModel.startDay.observe(viewLifecycleOwner, Observer{
-//            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
-//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//        })
+        viewModel.startDay.observe(viewLifecycleOwner, Observer{
+            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
+            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
+        })
 //
 //        //date를 통해서 todo가 변경되었을 때 실행
 //        viewModel.todoNum.observe(viewLifecycleOwner, Observer {
@@ -187,7 +220,6 @@ class FragHome : Fragment() {
             }
             false
         })
-
     }
 
     override fun onResume() {

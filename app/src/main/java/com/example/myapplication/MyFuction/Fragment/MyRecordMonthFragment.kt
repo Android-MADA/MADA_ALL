@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
 import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
-import com.example.myapplication.MyFuction.Calendar.MyWeekSliderlAdapter
 import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MyRecordMonthBinding
@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Calendar
 
 class MyRecordMonthFragment : Fragment() {
@@ -34,6 +35,7 @@ class MyRecordMonthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordMonthBinding.inflate(inflater, container, false)
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         return binding.root
     }
 
@@ -68,7 +70,7 @@ class MyRecordMonthFragment : Fragment() {
         }
 
     }
-    fun monthChange(monthOfYear: Int) {
+    fun monthChange(monthOfYear: Int, toString: String) {
         setTodoView(monthOfYear)
         setTimetableView(monthOfYear)
     }
