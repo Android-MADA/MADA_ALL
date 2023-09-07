@@ -69,6 +69,7 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
+        Log.d("daaaaaaaaaaaaaaaaaaa",DataRepo.buttonInfoEntity.toString())
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)

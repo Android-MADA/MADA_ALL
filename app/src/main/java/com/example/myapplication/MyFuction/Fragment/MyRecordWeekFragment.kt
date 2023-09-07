@@ -80,6 +80,7 @@ class MyRecordWeekFragment : Fragment() {
         setTodoView(MyRecordOptionData("week", date) , month, iweek)
         setTimetableView(MyRecordOptionData("week", date), month, iweek)
         initCategoryRecycler(MyRecordOptionData("week", date))
+        initCategoryPieChart(MyRecordOptionData("week", date))
     }
 
     // 투두 뷰 설정
@@ -238,53 +239,42 @@ class MyRecordWeekFragment : Fragment() {
                     val categoryStatistics = response.body()?.data?.categoryStatistics
                     val size = categoryStatistics?.size ?: 0 // categoryStatistics가 null일 경우 크기를 0으로 설정
 
-                    val myCategoryNameList = mutableListOf<String>()
-                    val myPercentNumList = mutableListOf<Float>() // Double 대신 Float 사용
-                    val myColorCodeList = mutableListOf<Int>() // String 대신 Int 사용
 
                     // 각 리스트에 항목 추가
-                    for (i in 0 until size-1) {
+                    val entries = ArrayList<PieEntry>()
+                    val colorsItems = ArrayList<Int>()
+                    for (i in 0 until size) {
                         val categoryName = categoryStatistics?.get(i)?.categoryName
-                        val percentNum = categoryStatistics?.get(i)?.rate?.toFloat() // Double을 Float로 변환
+                        val percentNum = categoryStatistics?.get(i)?.rate?.toFloat()?: 1f // Double을 Float로 변환
                         val colorCode = Color.parseColor((categoryStatistics?.get(i)?.color)) // String을 Int(색상 코드)로 변환
 
-                        if (categoryName != null) {
-                            myCategoryNameList.add(categoryName)
-                        }
-                        if (percentNum != null) {
-                            myPercentNumList.add(percentNum)
-                        }
-                        myColorCodeList.add(colorCode)
-
-                        // 파이차트 수치 속성 설정
-                        val entries = ArrayList<PieEntry>()
-                        entries.add(PieEntry(myPercentNumList[i], myCategoryNameList[i]))
-
-                        // 파이차트 색상 속성 설정
-                        val colorsItems = ArrayList<Int>()
+                        entries.add(PieEntry(percentNum, categoryName))
                         colorsItems.add(colorCode) // 기본값 설정 가능
+                        Log.d("dsadasd","${categoryName} ${percentNum} ${colorCode}")
+                        // 파이차트 수치 속성 설정
+                    }
 
-                        // 데이터셋 초기화
-                        val pieDataSet = PieDataSet(entries, "")
-                        pieDataSet.apply {
-                            colors = myColorCodeList // setColor 대신에 colors를 설정
-                            valueTextColor = Color.BLACK
-                            valueTextSize = 12f
-                            setDrawValues(false)
-                        }
+                    // 데이터셋 초기화
+                    val pieDataSet = PieDataSet(entries, "")
+                    val pieData = PieData(pieDataSet)
+                    pieDataSet.apply {
+                        colors = colorsItems // setColor 대신에 colors를 설정
+                        valueTextColor = Color.BLACK
+                        valueTextSize = 12f
+                        setDrawValues(false)
+                    }
 
-                        // 데이터셋 세팅
-                        val pieData = PieData(pieDataSet)
-                        binding.myChart.apply {
-                            data = pieData
-                            isRotationEnabled = false
-                            description.isEnabled = false
-                            legend.isEnabled = false
-                            setDrawEntryLabels(false)
-                            setDrawMarkers(false)
-                            animateY(1400, Easing.EaseInOutQuad)
-                            animate()
-                        }
+                    // 데이터셋 세팅
+
+                    binding.myChart.apply {
+                        data = pieData
+                        isRotationEnabled = false
+                        description.isEnabled = false
+                        legend.isEnabled = false
+                        setDrawEntryLabels(false)
+                        setDrawMarkers(false)
+                        animateY(1400, Easing.EaseInOutQuad)
+                        animate()
                     }
                 } else {
                     Log.d("myGetRecordWeek 실패", response.body().toString())
