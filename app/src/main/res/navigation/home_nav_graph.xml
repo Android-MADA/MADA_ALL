@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_fragCalendar_to_fragCalendar"
             app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_fragCalendar_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/calendarAdd"
@@ -78,7 +81,11 @@
     <fragment
         android:id="@+id/fragCustom"
         android:name="com.example.myapplication.Fragment.FragCustom"
-        android:label="FragCustom" />
+        android:label="FragCustom" >
+        <action
+            android:id="@+id/action_fragCustom_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
     <fragment
         android:id="@+id/homeCategoryFragment"
         android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
@@ -183,6 +190,9 @@
         <action
             android:id="@+id/action_fragMy_to_myRecordDayFragment"
             app:destination="@id/myRecordDayFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"

@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.AttrRes
@@ -66,16 +67,19 @@ class DayItemView @JvmOverloads constructor(
             paint2.color = Color.parseColor("#486DA3")
 
             // Draw rounded rectangle
-            val roundedRect = RectF(0f+width*2f/10+3f,  width.toFloat()*6.2f/10, width*8f/10+3f, width.toFloat()*0.2f/10)
-            val cornerRadius = 48f // 반지름 값 설정
+            val roundedRect = RectF(0f+width*2.5f/10+3f,   ((bounds.height() + height/8.87)/5f).toFloat(), width*7.5f/10+3f,
+                width*5f/10+((bounds.height() + height/8.87)/5f).toFloat()
+            )
+            val cornerRadius = width/5f // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
         }
 
+
         canvas.drawText(
             dateString,
             (width / 2 - bounds.width() / 2).toFloat(),
-            (bounds.height() + 40).toFloat(),
+            (bounds.height() + height/8.87).toFloat(),
             paint
         )
     }

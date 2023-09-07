@@ -8,16 +8,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,22 +25,11 @@ import androidx.navigation.Navigation
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.CustomFunction.CustomViewModel
-import com.example.myapplication.databinding.FragCalendarBinding
 import com.example.myapplication.R
-import com.example.myapplication.StartFuction.Splash2Activity
+import com.example.myapplication.databinding.FragCalendarBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shawnlin.numberpicker.NumberPicker
-import com.squareup.picasso.Picasso
-import org.joda.time.DateTime
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Integer.min
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -97,7 +84,7 @@ class FragCalendar : Fragment(){
         tmp.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
             "10:00:00","11:00:00","#2AA1B7","No","N","9fhdfhdfhfdhd",
             -1,false,"","CAL",-1,""))
-        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
+        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-09-4","2023-09-04","2023-09-04",
         //    "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
          //   -1,false,"","CAL",-1,"3"))
         //CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
@@ -147,7 +134,7 @@ class FragCalendar : Fragment(){
             })
         }
 
-        //getMonthDataArray(CalendarUtil.selectedDate.format(viewModelCal.formatterM),CalendarUtil.selectedDate.format(viewModelCal.formatterYYYY),datas)
+
 
         return binding.root
     }
@@ -161,6 +148,15 @@ class FragCalendar : Fragment(){
             bundle.putString("today",CalendarViewModel.todayDate())
             Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
         }
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
     fun hideBootomNavigation(bool : Boolean){
         val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -172,52 +168,5 @@ class FragCalendar : Fragment(){
         }
     }
 
-/*
-    */
-    /*
-    private fun getCustomChar() {
-        val call2 = service.characterRequest(token)
-        call2.enqueue(object : Callback<CharacterResponse> {
-            override fun onResponse(call2: Call<CharacterResponse>, response: Response<CharacterResponse>) {
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse != null) {
-                        val datas = apiResponse.data.datas
-                        if(datas != null) {
-                            for (data in datas) {
-                                //arrays.add(data)
-                                //Log.d("111","datas: ${data.id} ${data.itemType} ${data.filePath}")
-                                if(data.itemType=="color") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.calendarRamdi)
-                                } else if(data.itemType=="set") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.imgCalendarCloth)
-                                } else if(data.itemType=="item") {
-                                    Picasso.get()
-                                        .load(data.filePath)
-                                        .into(binding.imgCalendarItem)
-                                }
-                                // ...
-                            }
-                        } else {
-                            //Log.d("2221","${response.code()}")
-                        }
-                    } else {
-                        //Log.d("222","Request was not successful. Message: hi")
-                    }
-                } else {
-                    //Log.d("3331","itemType: ${response.code()} ${response.message()}")
-                }
-            }
-            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
-                //Log.d("444","itemType: ${t.message}")
-            }
-        })
-    }
-
-     */
 
 }

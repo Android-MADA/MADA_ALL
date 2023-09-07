@@ -14,11 +14,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.myapplication.CustomFunction.ButtonDatabase
+import com.example.myapplication.CustomFunction.ButtonInfo
+import com.example.myapplication.CustomFunction.ButtonInfoEntity
+import com.example.myapplication.CustomFunction.CustomViewModel
+import com.example.myapplication.CustomFunction.DataRepo
+import com.example.myapplication.CustomFunction.RetrofitServiceCustom
+import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.FragCalendar
 import com.example.myapplication.Fragment.FragCustom
 import com.example.myapplication.Fragment.FragDaily
 import com.example.myapplication.Fragment.FragHome
 import com.example.myapplication.Fragment.FragMy
+import com.example.myapplication.Fragment.IdAndItemType
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
@@ -38,12 +46,14 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var viewModel : HomeViewModel
+    lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +66,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.userToken = Splash2Activity.prefs.getString("token", "")
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_con) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fl_con) as NavHostFragment
         val navController = navHostFragment.findNavController()
         binding.bottomNavigationView.setupWithNavController(navController)
 
@@ -69,24 +80,23 @@ class MainActivity : AppCompatActivity() {
             viewModel.deleteAllRepeatTodo()
 
             //서버에서 카테고리 데이터 받아서 로컬 데베에 저장
-            api.getHCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1>{
+            api.getHCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
                 override fun onResponse(
                     call: Call<CategoryList1>,
                     response: Response<CategoryList1>
                 ) {
-                    if(response.isSuccessful){
-                            for(i in response.body()!!.data.CategoryList) {
-                                val cateData = CateEntity(
-                                    id = i.id,
-                                    categoryName = i.categoryName,
-                                    color = i.color,
-                                    iconId = i.iconId,
-                                    isInActive = i.isInActive
-                                )
-                                viewModel.createCate(cateData)
-                            }
-                    }
-                    else {
+                    if (response.isSuccessful) {
+                        for (i in response.body()!!.data.CategoryList) {
+                            val cateData = CateEntity(
+                                id = i.id,
+                                categoryName = i.categoryName,
+                                color = i.color,
+                                iconId = i.iconId,
+                                isInActive = i.isInActive
+                            )
+                            viewModel.createCate(cateData)
+                        }
+                    } else {
                         Log.d("cate안드 잘못", "서버 연결 실패")
                     }
                 }
@@ -149,15 +159,16 @@ class MainActivity : AppCompatActivity() {
 
         }
         //서버에서 커스텀 받아서 저장?
+
     }
 }
 
-fun hideBottomNavigation(bool : Boolean, activity: Activity?){
-    val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-    if(bool){
-        bottomNavigation?.isGone = true
-    }
-    else {
-        bottomNavigation?.isVisible = true
-    }
-}
+        fun hideBottomNavigation(bool: Boolean, activity: Activity?) {
+            val bottomNavigation =
+                activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            if (bool) {
+                bottomNavigation?.isGone = true
+            } else {
+                bottomNavigation?.isVisible = true
+            }
+        }

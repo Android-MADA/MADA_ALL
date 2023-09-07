@@ -39,6 +39,7 @@ class CalendarAddFragment : Fragment() {
 
     lateinit var initPreSchedule : String
     lateinit var initnextSchedule : String
+    lateinit var initCycle : String
     lateinit var calData : AndroidCalendarData
     //"2023-08-01"의 형태
     lateinit var preScheduleNum : TextView
@@ -50,7 +51,6 @@ class CalendarAddFragment : Fragment() {
     var curDday ="N"
     var curEdit = false
     var curYearMonth = ""
-    var curRepeat = "No"
     var curRepeatText =""
     val todayMonth = LocalDate.now()
 
@@ -85,8 +85,9 @@ class CalendarAddFragment : Fragment() {
             curColor = calData.color
             curId = calData.id
             curDday = calData.dDay
+            initCycle =calData.repeat
+            curRepeatText = calData.repeatDate
             curYearMonth= arguments?.getString("yearMonth")?: "2023-6"
-            curRepeat = calData.repeat
         } else {
             val today = arguments?.getString("today")?: "2023-06-01"
             preScheduleNum.text = today
@@ -152,7 +153,8 @@ class CalendarAddFragment : Fragment() {
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.timePicker)
             binding.preScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
-            toggleLayout(true,binding.cal)
+            if(binding.cal.visibility== View.GONE)  toggleLayout(true,binding.cal)
+            else toggleLayout(false,binding.cal)
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonth,binding.calendar2,binding.preScheldule,preScheduleNum ,binding.cal)
             binding.calendar2.adapter = calendarAdapter
@@ -166,7 +168,8 @@ class CalendarAddFragment : Fragment() {
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.timePicker)
             binding.nextScheldule.setBackgroundResource(R.drawable.calendar_prebackground)
-            toggleLayout(true,binding.cal)
+            if(binding.cal.visibility== View.GONE)  toggleLayout(true,binding.cal)
+            else toggleLayout(false,binding.cal)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonth,binding.calendar2,binding.nextScheldule,nextScheduleNum ,binding.cal)
             binding.calendar2.adapter = calendarAdapter
@@ -242,7 +245,8 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.cal)
             schedules[0].setBackgroundResource(R.drawable.calendar_prebackground)
             schedules[1].setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(true,binding.timePicker)
+            if(binding.timePicker.visibility== View.GONE)  toggleLayout(true,binding.timePicker)
+            else toggleLayout(false,binding.timePicker)
             scheduleSelect=0
             val matchResult = regex.find(schedules[0].text.toString())
             if (matchResult != null) {
@@ -263,7 +267,8 @@ class CalendarAddFragment : Fragment() {
             toggleLayout(false,binding.cal)
             schedules[1].setBackgroundResource(R.drawable.calendar_prebackground)
             schedules[0].setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(true,binding.timePicker)
+            if(binding.timePicker.visibility== View.GONE)  toggleLayout(true,binding.timePicker)
+            else toggleLayout(false,binding.timePicker)
             scheduleSelect=1
             val matchResult = regex.find(schedules[1].text.toString())
             if (matchResult != null) {
@@ -286,20 +291,50 @@ class CalendarAddFragment : Fragment() {
         val chip3 = binding.chip3
         val chip4 = binding.chip4
         val chip5 = binding.chip5
+        val textWeek = arrayOf(
+            binding.textWeek1, binding.textWeek2, binding.textWeek3, binding.textWeek4, binding.textWeek5,binding.textWeek6,binding.textWeek7
+        )
+        val textMon = arrayOf(
+            binding.textCal1, binding.textCal2, binding.textCal3, binding.textCal4, binding.textCal5,
+            binding.textCal6, binding.textCal7, binding.textCal8, binding.textCal9, binding.textCal10,
+            binding.textCal11, binding.textCal12, binding.textCal13, binding.textCal14, binding.textCal15,
+            binding.textCal16, binding.textCal17, binding.textCal18, binding.textCal19, binding.textCal20,
+            binding.textCal21, binding.textCal22, binding.textCal23, binding.textCal24, binding.textCal25,
+            binding.textCal26, binding.textCal27, binding.textCal28, binding.textCal29, binding.textCal30,
+            binding.textCal31, binding.textCalFinal
+        )
+        var preTextView = binding.textWeek1
+
         if(curCycle =="Day") {
             binding.cyclebtn.text = "매일"
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
+            binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
+
         } else if(curCycle =="Week") {
             binding.cyclebtn.text = "매주"
+            binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
+            if(calData.repeatDate=="0") {
+                textWeek[6].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+                textWeek[6].setTextColor(Color.WHITE)
+                preTextView = textWeek[6]
+            } else {
+                textWeek[calData.repeatDate.toInt()-1].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+                textWeek[calData.repeatDate.toInt()-1].setTextColor(Color.WHITE)
+                preTextView = textWeek[calData.repeatDate.toInt()-1]
+            }
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
         } else if(curCycle =="Month") {
             binding.cyclebtn.text = "매월"
+            binding.calAll.visibility = View.GONE
+            preTextView = textWeek[calData.repeatDate.toInt()-1]
+            textMon[calData.repeatDate.toInt()-1].setBackgroundResource(R.drawable.calendar_add_repeat_back1)
+            textMon[calData.repeatDate.toInt()-1].setTextColor(Color.WHITE)
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
@@ -330,7 +365,7 @@ class CalendarAddFragment : Fragment() {
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
             toggleLayout(true,binding.calAll)
-            curRepeat = "No"
+            curCycle = "No"
             updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
@@ -338,7 +373,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
-            curRepeat = "Day"
+            curCycle = "Day"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -350,7 +385,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
-            curRepeat = "Week"
+            curCycle = "Week"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -362,7 +397,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
-            curRepeat = "Month"
+            curCycle = "Month"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -374,7 +409,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
-            curRepeat = "Year"
+            curCycle = "Year"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -386,53 +421,43 @@ class CalendarAddFragment : Fragment() {
         }
         var selectedTextWeek = binding.textWeek1
 
-        val textWeek = arrayOf(
-            binding.textWeek1, binding.textWeek2, binding.textWeek3, binding.textWeek4, binding.textWeek5,binding.textWeek6,binding.textWeek7
-        )
-        var preTextView = binding.textWeek1
-        var TmpNum = 0
-        for (textView in textWeek) {
+
+
+        for ((index, textView) in textWeek.withIndex()) {
             textView.setOnClickListener {
                 preTextView.setTextColor(Color.BLACK)
                 preTextView.setBackgroundResource(android.R.color.transparent)
                 // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.
                 selectedTextWeek?.setBackgroundResource(android.R.color.transparent)
-                curRepeatText = "${TmpNum}"
+                if(index == 6) curRepeatText = "0"
+                else curRepeatText = "${index+1}"
+
                 // 클릭한 TextView의 배경을 원하는 배경으로 설정합니다.
                 textView.setBackgroundResource(R.drawable.calendar_add_repeat_back1) // 여기서 R.drawable.selected_background는 적절한 배경 리소스로 변경해야 합니다.
                 preTextView = textView
                 preTextView.setTextColor(Color.WHITE)
                 // 선택된 TextView를 업데이트합니다.
                 selectedTextWeek = textView
+                Log.d(":dsadasdasd",curRepeatText)
             }
-            TmpNum+=1
         }
         var selectedTextMon = binding.textCal1
-        val textMon = arrayOf(
-            binding.textCal1, binding.textCal2, binding.textCal3, binding.textCal4, binding.textCal5,
-            binding.textCal6, binding.textCal7, binding.textCal8, binding.textCal9, binding.textCal10,
-            binding.textCal11, binding.textCal12, binding.textCal13, binding.textCal14, binding.textCal15,
-            binding.textCal16, binding.textCal17, binding.textCal18, binding.textCal19, binding.textCal20,
-            binding.textCal21, binding.textCal22, binding.textCal23, binding.textCal24, binding.textCal25,
-            binding.textCal26, binding.textCal27, binding.textCal28, binding.textCal29, binding.textCal30,
-            binding.textCal31, binding.textCalFinal
-        )
-        TmpNum = 1
-        for (textView in textMon) {
+
+        for ((index, textView) in textMon.withIndex()) {
             textView.setOnClickListener {
                 preTextView.setTextColor(Color.BLACK)
                 preTextView.setBackgroundResource(android.R.color.transparent)
                 // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.
                 selectedTextMon?.setBackgroundResource(android.R.color.transparent)
-                curRepeatText = "${TmpNum}"
+                curRepeatText = "${index+1}"
                 // 클릭한 TextView의 배경을 원하는 배경으로 설정합니다.
                 textView.setBackgroundResource(R.drawable.calendar_add_repeat_back1) // 선택한 배경 리소스로 변경
                 preTextView = textView
                 preTextView.setTextColor(Color.WHITE)
                 // 선택된 TextView를 업데이트합니다.
                 selectedTextMon = textView
+                Log.d("cureRepat",curRepeatText)
             }
-            TmpNum+=1
         }
         binding.numberPickerMonth.value = todayMonth .monthValue
         binding.numberPickerDay.value = todayMonth .dayOfMonth
@@ -485,7 +510,11 @@ class CalendarAddFragment : Fragment() {
                             1 -> {
                                 val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
-                                addCal(tmpId)
+                                if(curCycle=="No") addCal(tmpId)
+                                else CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
+                                    CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
+                                    -1,false,binding.textMemo.text.toString(),"CAL",tmpId,curRepeatText))
+
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                             }
                             2 -> {
@@ -496,11 +525,36 @@ class CalendarAddFragment : Fragment() {
                 } else if(binding.submitBtn.text =="수정"){
                     CalendarViewModel.editCalendar(CalendarData( binding.textTitle.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
                         curColor,curCycle,"N",binding.textMemo.text.toString(), CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),
-                        CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curRepeatText),curId,) { result ->
+                        CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curRepeatText),curId) { result ->
                         when (result) {
                             1 -> {
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
-                                editCal(curId)
+                                if(curCycle=="No"&&initCycle=="No") {
+                                    delCal(curId)
+                                    addCal(curId)
+                                }
+                                else if(curCycle!="No"&&initCycle=="No") {
+                                    delCal(curId)
+                                    CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
+                                        CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
+                                        -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
+                                }
+                                else if(curCycle=="No"&&initCycle!="No") {
+                                    delRepeat(curId)
+                                    addCal(curId)
+                                }
+                                else  {
+                                    val tmp = CalendarViewModel.repeatArrayList
+                                    for(data in tmp) {
+                                        if(data.id == curId) {
+                                            tmp.remove(data)
+                                            tmp.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
+                                                CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
+                                                -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
+                                            break;
+                                        }
+                                    }
+                                }
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                             }
                             2 -> {
@@ -560,30 +614,6 @@ class CalendarAddFragment : Fragment() {
         }
     }
 
-    private fun editCal(curId: Int) {
-        val startDate = LocalDate.parse(initPreSchedule, DateTimeFormatter.ISO_DATE)
-        val endDate = LocalDate.parse(initnextSchedule, DateTimeFormatter.ISO_DATE)
-
-        var currentDate = startDate.plusMonths(-1)
-        val endDatePlusOne = endDate.plusDays(2)  // Including the end date
-
-        while (currentDate.isBefore(endDatePlusOne)) {
-            val yearMonth = YearMonth.from(currentDate)
-            val formattedYearMonth = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-M"))
-            val tmpArrayList = CalendarViewModel.hashMapArrayCal.get(formattedYearMonth)
-            for(data in tmpArrayList!!) {
-                if(data.id==curId) {
-                    tmpArrayList.remove(data)
-                    break
-                }
-            }
-            tmpArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,"No",curDday,binding.textTitle.text.toString(),
-                -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
-            currentDate = currentDate.plusMonths(1)
-        }
-    }
-
     private fun addCal(tmpId : Int) {
         val startDate = LocalDate.parse(preScheduleNum.text.toString(), DateTimeFormatter.ISO_DATE)
         val endDate = LocalDate.parse(nextScheduleNum.text.toString(), DateTimeFormatter.ISO_DATE)
@@ -607,6 +637,36 @@ class CalendarAddFragment : Fragment() {
             currentDate = currentDate.plusMonths(1)
         }
     }
+    private fun delCal(curId: Int) {
+        val startDate = LocalDate.parse(calData.startDate, DateTimeFormatter.ISO_DATE)
+        val endDate = LocalDate.parse(calData.endDate, DateTimeFormatter.ISO_DATE)
 
+        var currentDate = startDate.plusMonths(-1)
+        val endDatePlusOne = endDate.plusDays(2)  // Including the end date
+
+        while (currentDate.isBefore(endDatePlusOne)) {
+            val yearMonth = YearMonth.from(currentDate)
+            val formattedYearMonth = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-M"))
+            val tmpArrayList = CalendarViewModel.hashMapArrayCal.get(formattedYearMonth)
+            if(tmpArrayList!=null) {
+                for(data in tmpArrayList!!) {
+                    if(data.id==curId) {
+                        tmpArrayList.remove(data)
+                        break
+                    }
+                }
+            }
+            currentDate = currentDate.plusMonths(1)
+        }
+    }
+    private fun delRepeat(curId: Int) {
+        val repeatArray = CalendarViewModel.repeatArrayList
+        for(data in repeatArray) {
+            if(data.id == curId) {
+                repeatArray.remove(data)
+                break;
+            }
+        }
+    }
 
 }

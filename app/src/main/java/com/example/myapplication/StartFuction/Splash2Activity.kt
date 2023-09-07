@@ -10,6 +10,7 @@ import com.example.myapplication.databinding.Splash2Binding
 class Splash2Activity : AppCompatActivity() {
     companion object {
         lateinit var prefs: PreferenceUtil
+
     }
 
     private lateinit var binding: Splash2Binding
@@ -21,9 +22,9 @@ class Splash2Activity : AppCompatActivity() {
         prefs = PreferenceUtil(this)
 
         binding.kakaoBtn.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            //val intent = Intent(this, MainActivity::class.java)
+            //startActivity(intent)
+            //finish()
         }
 
         binding.naverBtn.setOnClickListener{

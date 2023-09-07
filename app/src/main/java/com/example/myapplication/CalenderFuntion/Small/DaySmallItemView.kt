@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.LinearLayout
@@ -70,16 +71,17 @@ class DaySmallItemView @JvmOverloads constructor(
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
-
+            Log.d("dddddddddddddd","${width} ${height}")
             // Draw rounded rectangle
-            val roundedRect = RectF(0f+width*2f/10+3f,  width.toFloat()*6.2f/10, width*8f/10+3f, width.toFloat()*0.2f/10)
-            val cornerRadius = 40f // 반지름 값 설정
+            val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
+                width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())
+            val cornerRadius = width/4.37f // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
             canvas.drawText(
                 dateString,
                 (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + 40).toFloat(),
+                (bounds.height() + height/3.5f).toFloat(),
                 paint
 
             )
@@ -87,7 +89,7 @@ class DaySmallItemView @JvmOverloads constructor(
             canvas.drawText(
                 dateString,
                 (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + 40).toFloat(),
+                (bounds.height() + height/3.5f).toFloat(),
                 paint
             )
         }

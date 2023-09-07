@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -80,20 +82,10 @@ class HomeViewpagerTimetableFragment : Fragment() {
         val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
 
         customCircleBarView.setProgress(progressPercentage)
-        //파이차트
-        viewModelTime.getScheduleDatas(today) { result ->
-            when (result) {
-                1 -> {
-                    pirChartOn(viewModelTime.getTimeDatas(today))
-                }
-                2 -> {
-                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
         viewModelHome.homeDate.observe(viewLifecycleOwner, Observer {
             today = viewModelHome.homeDate.value.toString()
+            //Log.d("today",today)
             viewModelTime.getScheduleDatas(today) { result ->
                 when (result) {
                     1 -> {
@@ -108,18 +100,44 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         return binding.root
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // 뷰의 크기가 확정되면 호출됩니다.
+                viewModelTime.range = view.width/80f
+                viewModelTime.getScheduleDatas(today) { result ->
+                    when (result) {
+                        1 -> {
+                            val layoutParams = binding.timetablelayout.layoutParams as ConstraintLayout.LayoutParams
+                            layoutParams.height = view.width
+                            binding.timetablelayout.layoutParams = layoutParams
+
+                            pirChartOn(viewModelTime.getTimeDatas(today))
+
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                // 필요한 작업 수행 후 리스너 제거
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
+
+    }
     companion object {
         @JvmStatic
         fun newInstance() =
             HomeViewpagerTimetableFragment()
     }
-
-
     fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
         val pieChartDataArray = arrays
         //Pi Chart
         var chart = binding.chart
+        chart.clear()
         var tmp = 0     //시작 시간
         val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,pieChartDataArray)
         val entries = ArrayList<PieEntry>()
@@ -127,11 +145,8 @@ class HomeViewpagerTimetableFragment : Fragment() {
 
         val pieDataSet = PieDataSet(entries, "")
         val pieData = PieData(pieDataSet)
-        val smallXY = if(chart.width > chart.height) chart.height else chart.width
 
-        if(smallXY/60f > 0) viewModelTime.range = smallXY/60f
         val range = viewModelTime.range
-        Log.d("dsadas","dddddddddddddddddddddddddddddddddddddd")
         if(pieChartDataArray.size==0) {     //그날 정보가 없다면
             entries.add(PieEntry(10f, "999"))
             colorsItems.add(Color.parseColor("#F0F0F0"))
@@ -139,7 +154,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                 colors = colorsItems
                 setDrawValues(false) // 비율 숫자 없애기
             }
-            chart.clear()
             chart.apply {
                 invalidate()
                 legend.isEnabled = false
@@ -158,7 +172,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                     if (e is PieEntry) {
                         val bundle = Bundle()
                         bundle.putString("today",today)
-                        bundle.putBoolean("viewpager",true)
                         findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                     }
                 }
@@ -229,7 +242,6 @@ class HomeViewpagerTimetableFragment : Fragment() {
                         bundle.putString("today",today)
                         bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-                        bundle.putBoolean("viewpager",true)
                         findNavController().navigate(R.id.action_fragHome_to_timeAddFragment,bundle)
                     }
                     lastSelectedEntry =-1

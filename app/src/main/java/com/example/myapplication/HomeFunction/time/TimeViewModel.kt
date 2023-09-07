@@ -45,13 +45,15 @@ class TimeViewModel : ViewModel() {
     val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
-    var token = Splash2Activity.prefs.getString("token","")?: "123"
+    var token = Splash2Activity.prefs.getString("token","")
 
 
     //2023-08-01 형식
     val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
     val hashMapArraySchedule = HashMap<String, ArrayList<Schedule>>()
     var range : Float = 0.0f
+
+    var addId = 0
 
     data class PieChartData(
         val title: String,
@@ -220,7 +222,9 @@ class TimeViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null) {
+                        Log.d("data",apiResponse.toString())
                         val datas = apiResponse
+                        addId = apiResponse.data.Timetable.id
                         callback(1)
                     } else {
                         callback(2)

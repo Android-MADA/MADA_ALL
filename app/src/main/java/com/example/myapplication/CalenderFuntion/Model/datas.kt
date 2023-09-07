@@ -15,12 +15,6 @@ data class CalendarData(
     @SerializedName("endTime") val end_time: String,
     @SerializedName("repeatInfo") val repeatInfo: String
 )
-{
-    fun toJson(): String {
-        val gson = Gson()
-        return gson.toJson(this)
-    }
-}
 data class CalendarDatas (
     @SerializedName("startTodoAtMonday") val startMon : Boolean ,
     @SerializedName("calendars") val datas: List<CalendarDataId>
@@ -45,13 +39,11 @@ data class CalendarDataId(
     @SerializedName("repeatInfo") val repeatInfo: String
 )
 
-data class AddCalendarData (
-    @SerializedName("data") val datas: CalendarData
+data class AddCalendarData2 (
+    @SerializedName("calendars") val calendars: CalendarDataId
 )
-
-//Dday 모든 정보 요청
-data class DdayCalendar (
-    @SerializedName("calendar") val datas: List<CalendarDataId>
+data class AddCalendarData1 (
+    @SerializedName("data") val data: AddCalendarData2
 )
 
 

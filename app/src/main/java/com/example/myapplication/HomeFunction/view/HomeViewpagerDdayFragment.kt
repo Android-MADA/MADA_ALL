@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Calendar.DayDataItemView
 import com.example.myapplication.CalenderFuntion.Calendar.DdayAdapter
@@ -34,7 +35,7 @@ class HomeViewpagerDdayFragment : Fragment() {
             when (result) {
                 1 -> {
                     val adapter = DdayAdapter(CalendarViewModel,this)
-                    var manager: RecyclerView.LayoutManager = GridLayoutManager(context,1)
+                    var manager: RecyclerView.LayoutManager = LinearLayoutManager(this.requireActivity())
                     binding.ddayRecyclerview.layoutManager = manager
                     binding.ddayRecyclerview.adapter = adapter
                 }
