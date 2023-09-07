@@ -165,13 +165,6 @@ class MyWebviewActivity : AppCompatActivity() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     buttonInfoDao.insertButtonInfo(buttonInfoEntity)
                                 }
-
-                                // 데이터베이스에 추가
-                                Log.d(
-                                    "getCustomPrint",
-                                    "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo?.serverID} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo?.serverID} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo?.serverID} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo?.serverID}"
-                                )
-                                Log.d("getCustomPrint", "Response Code: $responseCode")
                             }
 
                             datas?.forEachIndexed { index, item ->

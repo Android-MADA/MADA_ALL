@@ -14,9 +14,9 @@ data class MyRecordData2(
 )
 
 data class MyRecordData3(
-    val categoryName: String,
-    val color: String,
-    val rate: Double
+    @SerializedName("categoryName") val categoryName: String,
+    @SerializedName("color") val color: String,
+    @SerializedName("rate") val rate: Double
 )
 
 data class MyRecordOptionData(
