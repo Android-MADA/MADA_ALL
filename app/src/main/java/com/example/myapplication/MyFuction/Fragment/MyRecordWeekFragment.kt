@@ -80,7 +80,6 @@ class MyRecordWeekFragment : Fragment() {
         setTodoView(MyRecordOptionData("month", date) , month, iweek)
         setTimetableView(MyRecordOptionData("week", date), month, iweek)
         initCategoryRecycler(MyRecordOptionData("week", date))
-        initCategoryPieChart(MyRecordOptionData("week", date))
     }
 
     // 투두 뷰 설정
