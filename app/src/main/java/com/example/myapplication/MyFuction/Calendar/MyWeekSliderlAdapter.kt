@@ -18,7 +18,7 @@ class MyWeekSliderlAdapter(
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 monthWeekText.text = DateTime(millis).monthOfYear.toString() + "월 " + getWeekOfMonth(DateTime(millis)).toString()+" 주차"
-                (fm as? MyRecordWeekFragment)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)))
+                (fm as? MyRecordWeekFragment)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
             }
         })
     }
