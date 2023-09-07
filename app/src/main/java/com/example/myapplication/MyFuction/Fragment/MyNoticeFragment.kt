@@ -21,6 +21,8 @@ class MyNoticeFragment : Fragment() {
 
     private lateinit var binding: MyNoticeBinding
     lateinit var navController: NavController
+    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +40,6 @@ class MyNoticeFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_myNoticeFragment_to_fragMy)
         }
-
-        // 서버연결 시작
-        val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-        val token = Splash2Activity.prefs.getString("token", "")
 
         // 서버에서 공지사항 불러오기
         api.myGetNotices(token).enqueue(object : retrofit2.Callback<MyGetNoticesData> {
