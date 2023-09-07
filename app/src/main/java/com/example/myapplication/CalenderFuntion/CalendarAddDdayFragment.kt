@@ -3,7 +3,6 @@ package com.example.myapplication.CalenderFuntion
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,24 +14,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
-import com.example.myapplication.CalenderFuntion.Small.CalendarSmallAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CalendarAddDdayBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class CalendarAddDdayFragment : Fragment() {
     private lateinit var calendar: Calendar

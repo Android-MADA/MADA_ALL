@@ -45,7 +45,7 @@ class TimeViewModel : ViewModel() {
     val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
-    var token = Splash2Activity.prefs.getString("token","")?: "123"
+    var token = Splash2Activity.prefs.getString("token","")
 
 
     //2023-08-01 형식

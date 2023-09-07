@@ -31,6 +31,27 @@ class CalendarUtils {
 
             return list
         }
+        fun getWeekList(dateTime: DateTime): List<DateTime> {
+            val list = mutableListOf<DateTime>()
+
+            // 주의 첫 번째 날짜를 찾기 위해 현재 날짜의 요일을 구합니다.
+            val dayOfWeek = dateTime.dayOfWeek
+
+            // 현재 주의 시작일을 찾습니다.
+            val startOfWeek = dateTime.minusDays(dayOfWeek - 1)
+
+            // 주의 마지막 날짜를 찾습니다.
+            val endOfWeek = startOfWeek.plusDays(DateTimeConstants.DAYS_PER_WEEK - 1)
+
+            // 주의 첫 번째 날짜부터 마지막 날짜까지 리스트에 추가합니다.
+            var currentDate = startOfWeek
+            while (currentDate <= endOfWeek) {
+                list.add(currentDate)
+                currentDate = currentDate.plusDays(1)
+            }
+
+            return list
+        }
 
         /**
          * 해당 calendar 의 이전 달의 일 갯수를 반환한다.

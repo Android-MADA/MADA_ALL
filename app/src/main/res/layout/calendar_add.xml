@@ -283,7 +283,7 @@
                     android:orientation="horizontal">
                     <TextView
                         android:id="@+id/preScheldule"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="29dp"
@@ -298,12 +298,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="    ~    "
+                        android:text="~"
+                        android:layout_marginHorizontal="10dp"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/nextScheldule"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
@@ -463,17 +464,15 @@
                             android:layout_height="40dp"
                             android:orientation="horizontal">
 
-                            <View
-                                android:layout_width="30dp"
-                                android:layout_height="40dp" />
 
                             <TextView
+                                android:layout_marginLeft="29dp"
                                 android:id="@+id/preScheldule2"
-                                android:layout_width="90dp"
+                                android:layout_width="100dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="  오전 10:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
@@ -489,11 +488,11 @@
 
                             <TextView
                                 android:id="@+id/nextScheldule2"
-                                android:layout_width="90dp"
+                                android:layout_width="100dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:background="@android:color/transparent"
-                                android:gravity="center"
+                                android:gravity="center_vertical"
                                 android:text="  오전 11:00  "
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
