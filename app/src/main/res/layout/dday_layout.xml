@@ -9,7 +9,7 @@
     <ImageButton
         android:id="@+id/dday1"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@android:color/transparent"
@@ -18,25 +18,24 @@
     <ImageButton
         android:id="@+id/dday2"
         android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@android:color/transparent"
         android:src="@drawable/dday_item"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/dday_remain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginLeft="15dp"
         android:text=""
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/dday2"
         app:layout_constraintBottom_toBottomOf="@id/dday2"
-        app:layout_constraintLeft_toLeftOf="@id/dday2"/>
+        app:layout_constraintLeft_toLeftOf="@id/dday2"
+        app:layout_constraintRight_toRightOf="@+id/dday2"/>
 
     <TextView
         android:id="@+id/dday_text"

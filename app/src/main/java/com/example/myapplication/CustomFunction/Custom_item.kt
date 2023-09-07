@@ -191,10 +191,7 @@ class custom_item : Fragment() {
             R.id.btn_item_hat_sheep -> ButtonInfo(clickedButton.id, 36, R.drawable.hat_sheep)
             R.id.btn_item_bag_e -> ButtonInfo(clickedButton.id,19, R.drawable.bag_e)
             R.id.btn_item_bag_luck -> ButtonInfo(clickedButton.id,20, R.drawable.bag_luck)
-            R.id.btn_item_hat_heart -> ButtonInfo(
-                clickedButton.id,34,
-                R.drawable.hat_heart
-            )
+            R.id.btn_item_hat_heart -> ButtonInfo(clickedButton.id,34, R.drawable.hat_heart)
             R.id.btn_item_hat_bee -> ButtonInfo(clickedButton.id, 29, R.drawable.hat_bee)
             R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, 38, R.drawable.heads)
             else -> throw IllegalArgumentException("Unknown button ID")

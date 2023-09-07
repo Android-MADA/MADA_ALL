@@ -99,8 +99,13 @@ class CalendarViewModel : ViewModel(){
             mBuilder.dismiss()
         })
         mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-            Navigation.findNavController(theView).navigate(moveFragment)
-            mBuilder.dismiss()
+            if(moveFragment!=0) {
+                Navigation.findNavController(theView).navigate(moveFragment)
+                mBuilder.dismiss()
+            } else {
+                System.exit(0)
+            }
+
         })
     }
     fun setPopupOne(theContext: Context,title : String, theView : View) {
@@ -221,23 +226,27 @@ class CalendarViewModel : ViewModel(){
         }
     }
     fun deleteCalendar(id : Int , callback: (Int) -> Unit) {
-        service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData> {
-            override fun onResponse(call: Call<AddCalendarData>, response: Response<AddCalendarData>) {
+        Log.d("id",id.toString())
+        service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData1> {
+            override fun onResponse(call: Call<AddCalendarData1>, response: Response<AddCalendarData1>) {
+                Log.d("rrrrrrrrrrrrrrrrrrrr",response.toString())
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    if(responseBody!=null) callback(1)
-                    else callback(2)
+                    if(responseBody!=null) {
+                        if (responseBody.data != null) {
+                            callback(1)
+                        } else callback(2)
+                    } else callback(2)
                 } else callback(2)
             }
-            override fun onFailure(call: Call<AddCalendarData>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData1>, t: Throwable) {
                 callback(2)
             }
         })
     }
     //달력 불러오고 hashMap에 담기
-    fun getMonthDataArray(month : String,year : String, callback: (Int) -> Unit) {
+    fun getMonthDataArray(month : Int,year : Int, callback: (Int) -> Unit) {
         //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-
         if(hashMapArrayCal.get("${year}-${month}")==null) {
             val monthArray = ArrayList<AndroidCalendarData>()
             val monthArray2 = ArrayList<AndroidCalendarData>()
@@ -252,6 +261,7 @@ class CalendarViewModel : ViewModel(){
                             //startMon = apiResponse.data.startMon
                             if(datas != null) {
                                 for (data in datas) {
+                                    Log.d("data",data.toString())
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
@@ -259,7 +269,7 @@ class CalendarViewModel : ViewModel(){
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,dura,"${data.memo}","CAL",data.id,"")
+                                                -1,dura,"${data.memo}","CAL",data.id,data.repeatInfo)
                                             if(dura) {
                                                 monthArray.add(0,tmp)
                                             } else {
@@ -270,7 +280,7 @@ class CalendarViewModel : ViewModel(){
                                         } else {
                                             val tmp = AndroidCalendarData("${(data.end_date)}","${(data.end_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                                -1,false,"${data.memo}","CAL",data.id,"")
+                                                -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
                                             monthArray2.add(tmp)
                                         }
                                     }
@@ -306,6 +316,7 @@ class CalendarViewModel : ViewModel(){
                             if(datas != null) {
                                 for (data in datas) {
                                     if(data.repeat!="No") {
+                                        //Log.d("Data",data.toString())
                                         val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                             "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                             -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
@@ -339,19 +350,27 @@ class CalendarViewModel : ViewModel(){
         val hashMapDataMonth = HashMap<DateTime, ArrayList<AndroidCalendarData>>()
 
         val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>
-        getRepeat { result ->
-            when (result) {
-                1 -> {
-                }
-
-                2 -> {
-                }
-            }
-        }
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
+                val calendar = Calendar.getInstance()
+                calendar.clear()
+                calendar.set(Calendar.YEAR, Year.toInt())
+                calendar.set(Calendar.MONTH, Month.toInt() - 1) // 월은 0부터 시작합니다 (1월 = 0)
+                calendar.set(Calendar.DAY_OF_MONTH, 1)
 
+                val dates = mutableListOf<Date>()
+
+                // 주어진 월에 해당하는 요일이 있는 경우에만 날짜를 추가합니다.
+                while (calendar.get(Calendar.MONTH) == Month.toInt() - 1) {
+                    val clone = data.copy()
+                    val todayTmp =dateFormat.format(calendar.time)
+                    clone.startDate = todayTmp
+                    clone.startDate2 = todayTmp
+                    clone.endDate = todayTmp
+                    hashMapArrayCalTmp.add(clone)
+                    calendar.add(Calendar.DAY_OF_MONTH, 1) // 7일씩 증가시켜 다음 주로 이동합니다.
+                }
             } else if(data.repeat=="Week") {
                 val calendar = Calendar.getInstance()
                 calendar.clear()
@@ -386,7 +405,7 @@ class CalendarViewModel : ViewModel(){
 
                     todayTmp =dateFormat.format(calendar.time)
                 } else {
-                    todayTmp = String.format("%d-%02d-%02d", Year, Month,data.repeatDate.toInt())
+                    todayTmp = String.format("%d-%02d-%02d", Year.toInt(), Month.toInt(),data.repeatDate.toInt())
                 }
                 clone.startDate = todayTmp
                 clone.startDate = todayTmp
@@ -424,7 +443,6 @@ class CalendarViewModel : ViewModel(){
                         } else tmpFloor++;
                     }
                     if(clone.floor==-1) clone.floor = hashMapDataMonth.get(startDate)!!.size
-
                 }
                 hashMapDataMonth.get(startDate)?.add(clone)
 
@@ -455,21 +473,18 @@ class CalendarViewModel : ViewModel(){
                 }
             }
         }
-        /*
-        for ((key, value) in hashMapDataMonth) {
-            Log.d("HashMap", "Key: $key, Value: $value")
-        }*/
 
         return hashMapDataMonth
     }
 
     fun addCalendar(data : CalendarData,callback: (Int) -> Unit){
-        service.addCal(token,data).enqueue(object : Callback<CalendarDataId> {
-            override fun onResponse(call: Call<CalendarDataId>, response: Response<CalendarDataId>) {
+        service.addCal(token,data).enqueue(object : Callback<AddCalendarData1> {
+            override fun onResponse(call: Call<AddCalendarData1>, response: Response<AddCalendarData1>) {
+                Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {
-                        addId = responseBody.id
+                        addId = responseBody.data.calendars.id    //responseBody.data.id
                         callback(1)
                     }else
                         callback(2)
@@ -479,7 +494,7 @@ class CalendarViewModel : ViewModel(){
                     callback(2)
                 }
             }
-            override fun onFailure(call: Call<CalendarDataId>, t: Throwable) {
+            override fun onFailure(call: Call<AddCalendarData1>, t: Throwable) {
                 callback(2)
             }
 

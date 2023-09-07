@@ -18,6 +18,8 @@ class MySignup2Activity : AppCompatActivity() {
 
         binding.signup2Btn.setOnClickListener {
             val intent = Intent(this@MySignup2Activity, MainActivity::class.java)
+
+
             startActivity(intent)
             finish()
         }

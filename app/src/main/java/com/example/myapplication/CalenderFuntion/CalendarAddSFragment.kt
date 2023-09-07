@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.CalenderFuntion.Model.AddCalendarData
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
@@ -46,6 +45,8 @@ class CalendarAddSFragment : Fragment() {
     lateinit var binding: CalendarAddSBinding
     lateinit var calData : AndroidCalendarData
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+
+    private val weekdays = arrayOf("일", "월","화", "수", "목", "금", "토")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,11 +76,12 @@ class CalendarAddSFragment : Fragment() {
             binding.preScheldule.visibility = View.GONE
             binding.textDday.text = "D - ${CalendarViewModel.daysRemainingToDate(calData.endDate)}"
         }
+        if(calData.repeat!="No") {
+            binding.calAndClock.visibility = View.GONE
+        }
         binding.cycle.text = processInput(calData.repeat)
         if(calData.memo =="") binding.memoLayout.visibility = View.GONE
         else binding.memo.text = calData.memo
-
-
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,7 +117,8 @@ class CalendarAddSFragment : Fragment() {
                     when (result) {
                         1 -> {
                             Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
-                            delCal(calData.id)
+                            if(calData.repeat=="No") delCal(calData.id)
+                            else delRepeat(calData.id)
                             findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
                         }
                         2 -> {
@@ -129,6 +132,12 @@ class CalendarAddSFragment : Fragment() {
             })
         }
         binding.calendarS.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putBoolean("edit",true)
+            bundle.putSerializable("calData",calData)
+            Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_calendarAdd,bundle)
+        }
+        binding.title.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("edit",true)
             bundle.putSerializable("calData",calData)
@@ -148,9 +157,15 @@ class CalendarAddSFragment : Fragment() {
     fun processInput(input: String): String {
         return when (input) {
             "Day" -> "매일"
-            "Week" -> "매일"
-            "Month" -> "매일"
-            "Year" -> "매일"
+            "Week" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
+            "Month" -> {
+                if(calData.repeatDate=="32") "매월 " + "마지막 날"
+                else "매월 " + calData.repeatDate + "일"
+            }
+            "Year" -> {
+                val  tmp = calData.repeatDate.split("-")
+                "매년 ${tmp[0].toInt()}월 ${tmp[1].toInt()}일"
+            }
             else -> "반복 안함"
         }
     }
@@ -174,6 +189,15 @@ class CalendarAddSFragment : Fragment() {
                 }
             }
             currentDate = currentDate.plusMonths(1)
+        }
+    }
+    private fun delRepeat(curId: Int) {
+        val repeatArray = CalendarViewModel.repeatArrayList
+        for(data in repeatArray) {
+            if(data.id == curId) {
+                repeatArray.remove(data)
+                break;
+            }
         }
     }
 }
