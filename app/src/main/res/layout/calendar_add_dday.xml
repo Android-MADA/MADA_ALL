@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+ <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -201,7 +201,7 @@
 
                 <com.shawnlin.numberpicker.NumberPicker
                     android:id="@+id/number_picker1"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     app:np_dividerThickness="1dp"
@@ -214,14 +214,15 @@
                     app:np_selectedTextSize="24sp"
                     app:np_textColor="@color/grey3"
                     app:np_textSize="24sp"
-                    app:np_value="1"
+                    app:np_value="2023"
                     app:np_width="64dp"
+                    android:layout_weight="1"
                     app:np_wrapSelectorWheel="false" />
 
                 <com.shawnlin.numberpicker.NumberPicker
                     app:np_dividerThickness="1dp"
                     android:id="@+id/number_picker2"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="20dp"
@@ -234,13 +235,15 @@
                     app:np_textSize="24sp"
                     app:np_value="1"
                     app:np_width="64dp"
+                    android:layout_weight="1"
                     app:np_wrapSelectorWheel="true" />
 
 
                 <com.shawnlin.numberpicker.NumberPicker
                     app:np_dividerThickness="1dp"
+                    android:layout_weight="1"
                     android:id="@+id/number_picker3"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="20dp"
