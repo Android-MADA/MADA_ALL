@@ -155,9 +155,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         //getCustomPrint()
         //postcustomItemBuy(14)
+        Log.d("datarepo","${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID}")
 
 
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+        /*val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
             17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
@@ -228,11 +229,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             clothbuttonInfo.selectedImageResource ?: 0
         )
         binding.imgCustomItem.setImageResource(
-            DataRepo.buttonInfoEntity?.itemButtonInfo?.selectedImageResource ?: 0
+            itembuttonInfo.selectedImageResource ?: 0
         )
         binding.imgCustomBackground.setImageResource(
             backgroundbuttonInfo.selectedImageResource ?: 0
-        )
+        )*/
 
 
 
@@ -337,8 +338,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         val imgCustomBackground = binding.imgCustomBackground
         val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 1500 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 1500 // 원하는 높이(dp 단위)
+        imgCustomBackground_layoutParams.width = 1600 // 원하는 너비(dp 단위)
+        imgCustomBackground_layoutParams.height = 1600 // 원하는 높이(dp 단위)
         imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
@@ -361,9 +362,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 800).toInt()
                 imgCustomItem.layoutParams = imgCustomItem_layoutParams
 
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
+                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1100).toInt()
                 imgCustomBackground_layoutParams.height =
-                    (height * (1 - slideOffset) + 1500).toInt()
+                    (height * (1 - slideOffset) + 1100).toInt()
                 imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
 
 
