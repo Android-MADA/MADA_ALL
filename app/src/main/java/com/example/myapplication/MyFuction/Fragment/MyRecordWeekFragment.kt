@@ -16,6 +16,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
 import com.example.myapplication.MyFuction.Calendar.MyWeekSliderlAdapter
 import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
+import com.example.myapplication.MyFuction.Data.MyRecordCategoryData2
 import com.example.myapplication.MyFuction.Data.MyRecordData
 import com.example.myapplication.MyFuction.Data.MyRecordOptionData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
@@ -98,12 +99,15 @@ class MyRecordWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
 
-                    val todoCnt = response.body()!!.data.completeTodoPercent
-                    val todoPercent = response.body()!!.data.todosPercent
+                    val todoCnt = response.body()?.data?.todosPercent
+                    val todoPercent = response.body()?.data?.completeTodoPercent
 
                     val formattedText1 = "${month}월 ${weekOfMonth}주 투두"
                     val formattedText2 =
                         "${month}월 ${weekOfMonth}주차의 평균 투두는 ${todoCnt}개이고\n그 중 ${todoPercent}%를 클리어하셨어요"
+
+                    Log.d("평균 투두 개수!!", "${todoCnt}")
+                    Log.d("클리어 투두 퍼센트!!", "${todoPercent}")
 
                     binding.recordTitleTodo.text = formattedText1
                     binding.recordContextTodo.text = formattedText2
@@ -187,35 +191,22 @@ class MyRecordWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
 
-                    datas.apply {
+                    datas.apply{
+                        val categoryStatistics = response.body()?.data?.categoryStatistics
+                        categoryStatistics?.forEach { category ->
+                            val categoryName = category.categoryName
+                            val percentNum = category.rate
+                            val colorCode = category.color
 
-                        val myCategoryNameList = mutableListOf<String>()
-                        val myPercentNumList = mutableListOf<String>()
-                        val myColorCodeList = mutableListOf<String>()
-                        val size = response.body()!!.data.categoryStatistics.size
-
-                        for (i in 0 until size-1) {
-                            val categoryName = response.body()!!.data.categoryStatistics[i].categoryName
-                            val percentNum = response.body()!!.data.categoryStatistics[i].rate
-                            val colorCode = response.body()!!.data.categoryStatistics[i].color
-
-                            myCategoryNameList.add(categoryName) // 리스트에 카테고리명 추가
-                            myPercentNumList.add(percentNum.toString())  // 리스트에 퍼센트 추가
-                            myColorCodeList.add(colorCode)  // 리스트에 컬러코드 추가
-
-                            MyRecordCategoryData(percent = myPercentNumList[i], colorCode = myColorCodeList[i], category = myCategoryNameList[i])
-
-                            Log.d("퍼센트", myPercentNumList[i])
-                            Log.d("컬러코드", myColorCodeList[i])
-                            Log.d("카테고리", myCategoryNameList[i])
+                            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
                         }
 
                         adapter.datas = datas
                         adapter.notifyDataSetChanged()
 
                     }
-                    binding.myCategoryRecycler.adapter = adapter
-                    binding.myCategoryRecycler.layoutManager = manager
+                    binding.myCategoryRecycler.adapter= adapter
+                    binding.myCategoryRecycler.layoutManager= manager
 
                 } else {
                     Log.d("myGetRecordWeek 실패", response.body().toString())
@@ -244,45 +235,27 @@ class MyRecordWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("myGetRecordWeek 성공", response.body().toString())
 
-                    val categoryStatistics = response.body()?.data?.categoryStatistics
-                    val size = categoryStatistics?.size ?: 0 // categoryStatistics가 null일 경우 크기를 0으로 설정
-
-                    val myCategoryNameList = mutableListOf<String>()
-                    val myPercentNumList = mutableListOf<Float>() // Double 대신 Float 사용
-                    val myColorCodeList = mutableListOf<Int>() // String 대신 Int 사용
-
                     val entries = ArrayList<PieEntry>()
+                    val colorsItems = ArrayList<Int>()
 
-                    // 각 리스트에 항목 추가
-                    for (i in 0 until size-1) {
-                        val categoryName = categoryStatistics?.get(i)?.categoryName
-                        val percentNum = categoryStatistics?.get(i)?.rate?.toFloat() // Double을 Float로 변환
-                        val colorCode = Color.parseColor((categoryStatistics?.get(i)?.color)) // String을 Int(색상 코드)로 변환
+                    val categoryStatistics = response.body()?.data?.categoryStatistics
+                    categoryStatistics?.forEach { category ->
+                        val categoryName = category.categoryName
+                        val percentNum = category.rate
+                        val colorCode = Color.parseColor(category.color)
 
-                        if (categoryName != null) {
-                            myCategoryNameList.add(categoryName)
-                        }
-                        if (percentNum != null) {
-                            myPercentNumList.add(percentNum)
-                        }
-                        myColorCodeList.add(colorCode)
-
-                        // 파이차트 수치 속성 설정
-
-                        entries.add(PieEntry(myPercentNumList[i], myCategoryNameList[i]))
-
-                        // 파이차트 색상 속성 설정
-                        val colorsItems = ArrayList<Int>()
-                        colorsItems.add(myColorCodeList[i]) // 기본값 설정 가능
-
+                        // 파이차트 수치, 이름
+                        entries.add(PieEntry(percentNum, categoryName))
+                        colorsItems.add(colorCode)
                     }
+
                     // 데이터셋 초기화
                     val pieDataSet = PieDataSet(entries, "")
                     pieDataSet.apply {
-                        colors = myColorCodeList // setColor 대신에 colors를 설정
+                        colors = colorsItems
                         valueTextColor = Color.BLACK
                         valueTextSize = 12f
-                        setDrawValues(false)
+                        setDrawValues(false) // 차트 내 수치 값 표시 비활성화
                     }
 
                     // 데이터셋 세팅
@@ -290,11 +263,11 @@ class MyRecordWeekFragment : Fragment() {
                     binding.myChart.apply {
                         data = pieData
                         isRotationEnabled = false
-                        description.isEnabled = false
-                        legend.isEnabled = false
-                        setDrawEntryLabels(false)
-                        setDrawMarkers(false)
-                        animateY(1400, Easing.EaseInOutQuad)
+                        description.isEnabled = false // 차트 내 항목 값 표시 비활성화
+                        legend.isEnabled = false // 범례 비활성화
+                        setDrawEntryLabels(false) // 라벨 비활성화
+                        setDrawMarkers(false) // 차트 위에 마우스포인트 올릴 시 마커(필요 시 뷰 구현하겠음!)
+                        animateY(1400, Easing.EaseInOutQuad) // 시계방향 애니메이션
                         animate()
                     }
                 } else {

@@ -8,15 +8,15 @@ data class MyRecordData(
 
 data class MyRecordData2(
     val nickName: String,
-    val todosPercent: Double,
-    val completeTodoPercent: Double,
+    val todosPercent: String,
+    val completeTodoPercent: String,
     val categoryStatistics: ArrayList<MyRecordData3>
 )
 
 data class MyRecordData3(
     val categoryName: String,
     val color: String,
-    val rate: Double
+    val rate: Float
 )
 
 data class MyRecordOptionData(
