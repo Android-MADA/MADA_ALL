@@ -48,7 +48,9 @@ class CateListAdapter : ListAdapter<CateEntity, CateListAdapter.ViewHolder>(Diff
         else {
             //도장 표시
             holder.quitIcon.isVisible = true
-            //클릭리스너 안 됨
+            holder.cateLayout.setOnClickListener {
+                itemClickListener.onClick(it, holder.data!!)
+            }
         }
     }
 

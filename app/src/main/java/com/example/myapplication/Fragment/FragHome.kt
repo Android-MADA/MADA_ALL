@@ -147,6 +147,23 @@ class FragHome : Fragment() {
             binding.tvHomeUsername.text = "${it}님,"
         })
 
+        viewModel.readAllTodo()
+        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
+            CoroutineScope(Dispatchers.Main).launch {
+                var completeNum = 0
+                var todoNum = it.size
+                for(i in it){
+                    if(i.complete == true){
+                        completeNum++
+                    }
+                }
+                binding.tvHomeProgressMax.text = todoNum.toString()
+                binding.tvHomeProgressComplete.text = completeNum.toString()
+                binding.progressBar.max = todoNum
+                binding.progressBar.progress = completeNum
+            }
+        })
+
         //배경설정
 
         val calendarLayout = binding.layoutCalendarviewHome

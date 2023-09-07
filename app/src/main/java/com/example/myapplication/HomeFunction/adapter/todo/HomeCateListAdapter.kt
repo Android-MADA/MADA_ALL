@@ -1,5 +1,9 @@
 package com.example.myapplication.HomeFunction.adapter.todo
 
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -7,6 +11,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -23,6 +28,7 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeCatagoryListBinding
 import com.example.myapplication.databinding.HomeEditCategoryListBinding
+import com.example.myapplication.db.MyApp
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.CoroutineScope
@@ -85,10 +91,19 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
         //edt 저장
 
         holder.edtAdd.setOnKeyListener { view, keyCode, event ->
+
+            var handled = false
             // Enter Key Action
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
+
+                val context = MyApp.context()
+                //키보드 내리기
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(holder.edtAdd.windowToken, 0)
+                handled = true
+
                 val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
                 val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatWeek = null, repeatMonth = null, startRepeatDate = null, endRepeatDate = null, isAlarm = false, startTodoAtMonday = viewModel!!.startMonday, endTodoBackSetting = viewModel!!.completeBottom, newTodoStartSetting = viewModel!!.newTodoTop)
                 //서버 보내기ㅎㅎㅎㅎ
@@ -121,6 +136,7 @@ class HomeCateListAdapter : ListAdapter<CateEntity, HomeCateListAdapter.ViewHold
                 true
             }
 
+            handled
             false
         }
 
