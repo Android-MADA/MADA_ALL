@@ -14,7 +14,7 @@ import com.example.myapplication.CustomFunction.customItemCheckDATA
 import com.example.myapplication.Fragment.OnClothImageChangeListener
 import com.example.myapplication.Fragment.OnItemImageChangeListener
 import com.example.myapplication.Fragment.OnResetButtonClickListener
-import com.example.myapplication.MyFuction.MyWebviewActivity
+import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,7 +33,7 @@ class custom_item : Fragment() {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
-    val token = MyWebviewActivity.prefs.getString("token","")
+    val token = Splash2Activity.prefs.getString("token","")
 
 
     override fun onAttach(context: Context) {

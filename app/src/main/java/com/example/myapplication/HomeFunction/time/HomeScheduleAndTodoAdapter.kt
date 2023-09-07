@@ -9,12 +9,15 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.CalendarDATA
+import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.R
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
-class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>, private  val today : Int, private val editTextTitle : EditText,
+class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<AndroidCalendarData>, private  val today : Int, private val editTextTitle : EditText,
                                  private val textPreClock : TextView, private val textNextClock : TextView, private val view : View) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
@@ -116,21 +119,22 @@ class HomeScheduleAndTodoAdapter(private val dataArray: ArrayList<CalendarDATA>,
     }
 
     fun convertTo12HourFormat(timeString: String): String {
-        val parts = timeString.split(":")
-        val hour = parts[0].toInt()
-        val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else hour
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat("ah:mm", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
 
-        return "$convertedHour:$minute"
+        calendar.time = inputFormat.parse(timeString)
+
+        return outputFormat.format(calendar.time).replace("AM","").replace("PM","")
     }
     fun convertTo12HourFormat2(timeString: String): String {
-        val parts = timeString.split(":")
-        val hour = parts[0].toInt()
-        val minute = parts[1]
-        val convertedHour = if (hour > 12) hour - 12 else if(hour >0) hour else 12
-        val ampm = if (hour > 12&&hour<24) "오후" else if(hour <12 && hour>0) "오전" else if(hour ==12) "오후" else "오전"
+        val inputFormat = SimpleDateFormat("HH:mm:ss", Locale("en", "US"))
+        val outputFormat = SimpleDateFormat(" a h:mm ", Locale("en", "US"))
+        val calendar = Calendar.getInstance()
 
-        return "  $ampm $convertedHour:$minute  "
+        calendar.time = inputFormat.parse(timeString)
+
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
     }
     fun findIcon(iconId : Int) : Int {
         val icon = when(iconId){

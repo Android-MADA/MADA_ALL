@@ -110,6 +110,11 @@ interface HomeApi {
     ): CategoryList1
 
     @GET("/api/home/category")
+    fun getHCategory(
+        @Header("Authorization") token : String?
+    ): Call<CategoryList1>
+
+    @GET("/api/home/category")
     fun getMyCategory(
         @Header("Authorization") token : String?
     ): Call<CategoryList1>
@@ -121,6 +126,12 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): PactchResponseCategory
 
+    @POST("/api/home/category")
+    fun postHCategory(
+        @Header("Authorization") token : String?,
+        @Body data : PostRequestCategory
+    ): Call<PactchResponseCategory>
+
 
     //카테고리 수정 -> 확인 완
     @PATCH("/api/home/category/{categoryId}")
@@ -130,9 +141,22 @@ interface HomeApi {
         @Body data : PostRequestCategory
     ): PactchResponseCategory
 
+    @PATCH("/api/home/category/{categoryId}")
+    fun editHCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int,
+        @Body data : PostRequestCategory
+    ): Call<PactchResponseCategory>
+
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
     @DELETE("/api/home/category/{categoryId}")
     suspend fun deleteCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    )
+
+    @DELETE("/api/home/category/{categoryId}")
+    fun deleteHCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
     )
@@ -141,6 +165,11 @@ interface HomeApi {
     suspend fun getRepeatTodo(
         @Header("Authorization") token : String?
     ) : RepeatData1
+
+    @GET("/api/home/todo/repeat")
+    fun getHRepeatTodo(
+        @Header("Authorization") token : String?
+    ) : Call<RepeatData1>
 
     @GET("/api/custom/")
     fun getHomeRamdi(

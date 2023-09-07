@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_home_timetable"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/main"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/timeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -81,7 +82,7 @@
                     android:src="@drawable/home_baseline_circle_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/sub2" />
+                    app:tint="@color/main" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_marginTop="15dp"
@@ -232,8 +233,9 @@
                 android:background="#F0F0F0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginEnd="22dp">
 
                 <ImageView
@@ -248,7 +250,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-
                     android:id="@+id/edt_home_schedule_memo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -259,16 +260,10 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_home_schedule_memo"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="16dp"
-                android:background="#F0F0F0" />
 
         </LinearLayout>
 

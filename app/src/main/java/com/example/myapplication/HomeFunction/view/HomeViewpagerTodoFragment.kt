@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isGone
@@ -17,18 +16,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.Model.PostRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatCategoryAdapter
+import com.example.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentViewpagerTodoBinding
+import com.example.myapplication.db.entity.CateEntity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 
 
 class HomeViewpagerTodoFragment : Fragment() {
@@ -36,9 +34,6 @@ class HomeViewpagerTodoFragment : Fragment() {
     lateinit var binding: HomeFragmentViewpagerTodoBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private var cateAdapter: HomeViewpager2CategoryAdapter? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,39 +46,53 @@ class HomeViewpagerTodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            Log.d("viewpagerDate", "date 변경 감지")
-            viewModel.getCategory(viewModel.userToken)
-        })
+        //카테고리 데이터 가져와서 adapter 넣기
+        viewModel.readActiveCate(false)
+        viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
+            val cateList = it as List<CateEntity>
+            Log.d("cateList", cateList.toString())
+            val mAdapter = HomeCateListAdapter()
+            mAdapter.viewModel = viewModel
+            mAdapter.submitList(cateList)
+            binding.rvHomeCategory.adapter = mAdapter
+            binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.requireActivity())
 
-        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
-            if (viewModel.categoryList.value!!.isNotEmpty()){
-                Log.d("viewpager cate", viewModel.categoryList.value.toString())
-                viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
-                if (cateAdapter != null) {
-                    if (viewModel.categoryList.value!!.isNotEmpty() == true) {
-                        Log.d("viewpager cate", "어댑터 연결 갱신")
-                        Log.d("viewpager cate", viewModel.todoList.value.toString())
-                    }
-                } else {
-                    if (viewModel.categoryList.value?.isNotEmpty() == true) {
-                        //rv연결
-                        attachCateAdapter()
-                    }
-                }
-            }
         })
 
 
-
-        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
-            if (viewModel.cateTodoList.value!!.isNotEmpty()) {
-                Log.d("viewpager todo", viewModel.todoCateList.toString())
-                if(cateAdapter != null){
-                    attachCateAdapter()
-                }
-            }
-        })
+//        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+//            Log.d("viewpagerDate", "date 변경 감지")
+//            viewModel.getCategory(viewModel.userToken)
+//        })
+//
+//        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
+//            if (viewModel.categoryList.value!!.isNotEmpty()){
+//                Log.d("viewpager cate", viewModel.categoryList.value.toString())
+//                viewModel.getTodo(viewModel.userToken, viewModel.homeDate.value.toString())
+//                if (cateAdapter != null) {
+//                    if (viewModel.categoryList.value!!.isNotEmpty() == true) {
+//                        Log.d("viewpager cate", "어댑터 연결 갱신")
+//                        Log.d("viewpager cate", viewModel.todoList.value.toString())
+//                    }
+//                } else {
+//                    if (viewModel.categoryList.value?.isNotEmpty() == true) {
+//                        //rv연결
+//                        attachCateAdapter()
+//                    }
+//                }
+//            }
+//        })
+//
+//
+//
+//        viewModel.cateTodoList.observe(viewLifecycleOwner, Observer {
+//            if (viewModel.cateTodoList.value!!.isNotEmpty()) {
+//                Log.d("viewpager todo", viewModel.todoCateList.toString())
+//                if(cateAdapter != null){
+//                    attachCateAdapter()
+//                }
+//            }
+//        })
 
     }
 

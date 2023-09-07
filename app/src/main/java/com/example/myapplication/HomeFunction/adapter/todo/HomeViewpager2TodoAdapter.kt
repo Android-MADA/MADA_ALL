@@ -73,8 +73,6 @@ class HomeViewpager2TodoAdapter(private var flag : String?) : RecyclerView.Adapt
 
             var cbColor = R.drawable.home_checkbox1
 
-
-
             when(dataSet[position].category.color){
                 "#E1E9F5" -> {cbColor = R.drawable.home_checkbox1}
                 "#89A9D9" -> {cbColor = R.drawable.home_checkbox2}

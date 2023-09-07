@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".MyFuction.MySignup1Activity">
+    tools:context=".StartFuction.MySignup1Activity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -55,7 +55,8 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:background="@drawable/my_custom_edittext"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:inputType="text|textNoSuggestions|textMultiLine"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
