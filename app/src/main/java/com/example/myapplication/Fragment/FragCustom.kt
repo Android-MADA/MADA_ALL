@@ -430,7 +430,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 uniqueItemIds.add(itemIds[0])
                 serverpatchIds[0] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID.toString()
             } else {
-                Log.d("dd","dd")
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID.toString())
                 serverpatchIds[0] = temdata.selectedColorButtonInfo?.serverID.toString()
             }
