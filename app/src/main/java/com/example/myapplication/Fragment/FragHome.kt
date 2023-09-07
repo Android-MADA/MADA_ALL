@@ -69,8 +69,7 @@ class FragHome : Fragment() {
         homeViewPager.adapter = myAdapter
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
-        Log.d("daaaaaaaaaaaaaaaaaaa",DataRepo.buttonInfoEntity.toString())
-
+        Log.d("dsadas",DataRepo.buttonInfoEntity?.colorButtonInfo.toString())
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
@@ -83,10 +82,6 @@ class FragHome : Fragment() {
             18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
-
-
-
-
 
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
             900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
@@ -146,23 +141,6 @@ class FragHome : Fragment() {
         //유저 이름
         viewModel.dUserName.observe(viewLifecycleOwner, Observer {
             binding.tvHomeUsername.text = "${it}님,"
-        })
-
-        viewModel.readAllTodo()
-        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
-            CoroutineScope(Dispatchers.Main).launch {
-                var completeNum = 0
-                var todoNum = it.size
-                for(i in it){
-                    if(i.complete == true){
-                        completeNum++
-                    }
-                }
-                binding.tvHomeProgressMax.text = todoNum.toString()
-                binding.tvHomeProgressComplete.text = completeNum.toString()
-                binding.progressBar.max = todoNum
-                binding.progressBar.progress = completeNum
-            }
         })
 
         //배경설정

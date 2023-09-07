@@ -182,6 +182,11 @@ class MyWebviewActivity : AppCompatActivity() {
                     return true
                     // 처리됨
                 } else if (url.startsWith("http://www.madaumc.store/user/signup")) {
+
+
+
+
+
                     //회원가입 안한 상태라면
                     getResponseSign(url)
                     return true // 처리됨
