@@ -8,16 +8,17 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.getDateColor
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
 import com.example.myapplication.R
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
-import java.util.Calendar
 
 class DayItemView @JvmOverloads constructor(
     context: Context,
@@ -58,12 +59,9 @@ class DayItemView @JvmOverloads constructor(
 
         val x = width - bounds.width()
         val y = bounds.height() + 40
-        val calendar: Calendar = Calendar.getInstance()
-        val year: Int = calendar.get(Calendar.YEAR)
-        val month: Int = calendar.get(Calendar.MONTH) + 1 // 월은 0부터 시작하므로 1을 더해줍니다.
-        val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
 
-        if((date.toString("yyyy-MM-dd")==String.format("%d-%02d-%02d", year, month,day))) {
+        //날짜 그리기
+        if(isSameDay(date)) {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
@@ -72,7 +70,6 @@ class DayItemView @JvmOverloads constructor(
             val roundedRect = RectF(0f+width*2.5f/10+3f,   ((bounds.height() + height/8.87)/5f).toFloat(), width*7.5f/10+3f,
                 width*5f/10+((bounds.height() + height/8.87)/5f).toFloat()
             )
-
             val cornerRadius = width/5f // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")

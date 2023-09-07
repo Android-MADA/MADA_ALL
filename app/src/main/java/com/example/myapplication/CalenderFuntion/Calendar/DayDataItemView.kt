@@ -223,7 +223,7 @@ class DayDataItemView @JvmOverloads constructor(
                         canvas.drawText(
                             data.title,
                             20f-width*CalendarViewModel.RemainingTwoDates(data.startDate,date.toString("yyyy-MM-dd")),
-                            167f+55f*data.floor,
+                            height/2.2f + 45f*data.floor,
                             paint3
                         )
                     } else {
