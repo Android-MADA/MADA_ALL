@@ -2,6 +2,7 @@ package com.example.myapplication.MyFuction.Adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,8 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
 
         fun bind(item: MyRecordCategoryData) {
             txtPercent.text = item.percent
-            //viewColor.setCardBackgroundColor(Color.parseColor(item.colorCode))
+            Log.d("컬러코드",item.colorCode)
+            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.colorCode))
             txtCategory.text = item.category
         }
     }
