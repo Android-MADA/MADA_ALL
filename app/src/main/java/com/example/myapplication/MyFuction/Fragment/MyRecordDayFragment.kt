@@ -3,6 +3,7 @@ package com.example.myapplication.MyFuction.Fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -138,6 +139,17 @@ class MyRecordDayFragment : Fragment() {
         //투두 데이터 있는지 확인하고
         //out rv 연결하고
         // in rv 연결하기
+
+        // 시스템 뒤로가기
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
     //날짜 클릭시 실행되는 함수
