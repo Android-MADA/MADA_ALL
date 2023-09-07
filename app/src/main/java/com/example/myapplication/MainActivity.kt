@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                     if(response.isSuccessful){
                             for(i in response.body()!!.data.TodoList){
                                 val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                Log.d("todo server", todoData.toString())
                                 viewModel.createTodo(todoData, null)
                             }
                         //닉네임 저장하기
@@ -116,22 +117,30 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-
             //서버에서 반복투두 데이터 받아서 로컬 데베에 저장
             api.getHRepeatTodo(viewModel.userToken).enqueue(object : Callback<RepeatData1>{
                 override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
                     if(response.isSuccessful){
+                        Log.d("Rtodo서버 성공", response.body()!!.data.RepeatTodoList.toString())
+                        //db에 저장
                         for(i in response.body()!!.data.RepeatTodoList){
-                            val RTodoData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, startRepeatDate = i.startRepeatDate, endRepeatDate = i.endRepeatDate)
-                            viewModel.createRepeatTodo(RTodoData, null)
+                            val todoData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                            if(todoData.id == 348) {
+
+                            }else {
+                                Log.d("Rtodo server", todoData.toString())
+                                viewModel.createRepeatTodo(todoData, null)
+                            }
                         }
+
                     } else {
-                        Log.d("repeattodo안드 잘못", "서버 연결 실패")
+                        Log.d("Rtodo서버 실패", "안드 오류")
+
                     }
                 }
 
                 override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
-                    Log.d("repeattodo서버 연결 오류", "서버 연결 실패")
+                    Log.d("Rtodo서버 연결 오류", "서버 연결 실패")
                 }
 
             })
