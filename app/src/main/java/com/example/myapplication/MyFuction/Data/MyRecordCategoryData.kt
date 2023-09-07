@@ -10,4 +10,3 @@ data class MyRecordCategoryData2(
     val colorCode : String,
     val category : String
 )
-

@@ -15,7 +15,7 @@ import com.example.myapplication.R
 class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {
 
     var datas = mutableListOf<MyRecordCategoryData>()
-//        set(value) {
+    //        set(value) {
 //            field = value
 //            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
 //        }
@@ -38,8 +38,7 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
 
         fun bind(item: MyRecordCategoryData) {
             txtPercent.text = item.percent
-            Log.d("컬러코드",item.colorCode)
-            viewColor.setCardBackgroundColor(Color.parseColor(item.colorCode))
+            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.colorCode.replace("#","")))
             txtCategory.text = item.category
         }
     }
