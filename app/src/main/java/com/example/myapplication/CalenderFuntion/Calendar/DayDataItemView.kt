@@ -170,7 +170,7 @@ class DayDataItemView @JvmOverloads constructor(
                     canvas.drawText(
                         "+${size-maxItemNum+1}",
                         10f,
-                        height/2.2f+45f*data.floor,
+                        height/2.0f+45f*data.floor,
                         paint3
                     )
                 }
@@ -223,7 +223,7 @@ class DayDataItemView @JvmOverloads constructor(
                         canvas.drawText(
                             data.title,
                             20f-width*CalendarViewModel.RemainingTwoDates(data.startDate,date.toString("yyyy-MM-dd")),
-                            height/2.7f + 45f*data.floor,
+                            height/2.2f + 45f*data.floor,
                             paint3
                         )
                     } else {
@@ -235,7 +235,7 @@ class DayDataItemView @JvmOverloads constructor(
                         textPaint.color = Color.BLACK
                         textPaint.textSize = TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_SP,
-                            15f,
+                            11f,
                             resources.displayMetrics
                         )
 
@@ -254,14 +254,14 @@ class DayDataItemView @JvmOverloads constructor(
                             canvas.drawText(
                                 newText,
                                 30f,
-                                height/2.2f + 45f * data.floor,
+                                height/2.0f + 45f * data.floor,
                                 textPaint
                             )
                         } else {
                             canvas.drawText(
                                 originalText,
                                 30f,
-                                height/2.2f + 45f * data.floor,
+                                height/2.0f + 45f * data.floor,
                                 textPaint
                             )
                         }
