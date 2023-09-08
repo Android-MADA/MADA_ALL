@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomeFunction.view.CategoryAddFragment"
+        android:background="@color/white"
        >
 
         <androidx.appcompat.widget.Toolbar
