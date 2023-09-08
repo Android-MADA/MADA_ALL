@@ -170,7 +170,7 @@ class DayDataItemView @JvmOverloads constructor(
                     canvas.drawText(
                         "+${size-maxItemNum+1}",
                         11f,
-                        height/1.9f+45f*data.floor,
+                        height/2.05f+45f*data.floor,
                         paint3
                     )
                 }
@@ -223,7 +223,7 @@ class DayDataItemView @JvmOverloads constructor(
                         canvas.drawText(
                             data.title,
                             20f-width*CalendarViewModel.RemainingTwoDates(data.startDate,date.toString("yyyy-MM-dd")),
-                            height/1.9f + 45f*data.floor,
+                            height/2.05f + 45f*data.floor,
                             paint3
                         )
                     } else {
@@ -254,14 +254,14 @@ class DayDataItemView @JvmOverloads constructor(
                             canvas.drawText(
                                 newText,
                                 30f,
-                                height/1.9f + 45f * data.floor,
+                                height/2.05f + 45f * data.floor,
                                 textPaint
                             )
                         } else {
                             canvas.drawText(
                                 originalText,
                                 30f,
-                                height/1.9f + 45f * data.floor,
+                                height/2.05f + 45f * data.floor,
                                 textPaint
                             )
                         }
