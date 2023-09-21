@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.adapter.repeatTodo.HomeRepeatTodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
@@ -29,7 +28,6 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
     lateinit var dataSet : ArrayList<Category>
     var cateTodoSet : ArrayList<ArrayList<Todo>>? = null
     var repeatAdapter : HomeViewpager2TodoAdapter? = null
-    var repeatAdapter2 : HomeRepeatTodoAdapter? = null
     var topFlag = false
     var viewModel : HomeViewModel? = null
     var completeFlag = false
@@ -86,16 +84,6 @@ class HomeViewpager2CategoryAdapter(private var flag : String?) : RecyclerView.A
                 }
                 else {
                     Log.d("my adapter", "실행중")
-                    repeatAdapter2 = HomeRepeatTodoAdapter(null, "my")
-                    repeatAdapter2!!.cateIndex = position
-                    repeatAdapter2!!.dataSet2 = cateTodoSet!![position]
-                    repeatAdapter2!!.topFlag = topFlag
-
-                    holder.todoRv.apply {
-                        adapter = repeatAdapter2
-                        layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-                        setHasFixedSize(true)
-                    }
                 }
 
 
