@@ -24,7 +24,6 @@ import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.time.TimeViewModel
@@ -62,7 +61,6 @@ class MyRecordDayFragment : Fragment() {
     val service = retrofit.create(HomeApi::class.java)
     var token = Splash2Activity.prefs.getString("token", "")
 
-    private var cateAdapter: HomeViewpager2CategoryAdapter? = null
 
     lateinit var pieData2 : PieData
     lateinit var pieDataSet2 : PieDataSet
