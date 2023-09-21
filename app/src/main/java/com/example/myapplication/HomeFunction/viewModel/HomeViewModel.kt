@@ -18,7 +18,6 @@ import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.repeatTodo
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
 import com.example.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2TodoAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
@@ -143,14 +142,14 @@ fun postCategory(token: String?, data: PostRequestCategory) =
         cateIndex: Int,
         todoIndex: Int,
         complete : Boolean,
-        adapater: HomeViewpager2TodoAdapter
+
     ) = viewModelScope.launch {
         //서버 전송
         val response = api.deleteTodo(userToken, todoId)
         Log.d("todo DELETE", "todo delete 실행")
         //live data 수정
         _cateTodoList.value!![cateIndex].removeAt(todoIndex)
-        adapater.notifyDataSetChanged()
+        //adapater.notifyDataSetChanged()
         updateTodoNum("delete")
         if(complete){
             updateCompleteTodo("delete")
