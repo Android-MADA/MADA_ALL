@@ -22,8 +22,6 @@ interface CateDao  {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createCate(cateEntity: CateEntity)
 
-
-
     // isActive ==true 카테고리 읽어오기
     @Query("SELECT * FROM cate_table WHERE isInActive LIKE :isActive")
     fun readActiveCate(isActive : Boolean) : Flow<List<CateEntity>>
@@ -98,7 +96,7 @@ interface CateDao  {
     fun deleteAllRepeatTodo()
 
 
-    //foregin key -> 실제사용...?
+    //foregin key -> 실제사용...
 
     // 카테고리와 카테고리 외래키로 연결된 투두들이 같이 나온다.
     @Transaction
