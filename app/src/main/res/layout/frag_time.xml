@@ -7,49 +7,92 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_home_timetable"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/white">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시간표"
-            android:textColor="@color/font"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </androidx.appcompat.widget.Toolbar>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="100"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_home_time_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:text="2023년 6월 1일"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_height="60dp"
+            android:orientation="horizontal">
 
-        <View
-            android:id="@+id/edt_home_bar"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="#F0F0F0" />
+            <TextView
+                android:id="@+id/text_home_time_name"
+                android:layout_width="130dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:paddingLeft="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/calendar_schedule_background_bar"
+                android:backgroundTint="@color/grey2"
+                android:gravity="center"
+                android:text="2023년 6월 1일"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/calendar_color_select" />
+
+            <ImageView
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/calendar_color_select" />
+
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="217dp"
+            android:background="@drawable/calendar_schedule_background_bar"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/grey2"
+            android:layout_height="53dp">
+
+            <TextView
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingTop="5dp"
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:text="COMMENT"
+                android:textColor="@color/grey1"
+                android:textSize="12sp"/>
+            <EditText
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/text_time_today_hanmadi"
+                android:paddingTop="10dp"
+                android:paddingHorizontal="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:hint="오늘의 한마디!ddddddddddddddddddddddd"
+                android:textColor="@color/grey3"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/iv_home_time_timetable"
