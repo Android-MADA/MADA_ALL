@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/fragHome"
-        android:icon="@drawable/etc_home"
+        android:icon="@drawable/etc_todo"
+        android:enabled="true"
+        android:title="" />
+    <item
+        android:id="@+id/fragTime"
+        android:icon="@drawable/etc_time"
         android:enabled="true"
         android:title="" />
     <item
@@ -17,7 +22,7 @@
         android:title="" />
     <item
         android:id="@+id/fragMy"
-        android:icon="@drawable/etc_my"
+        android:icon="@drawable/etc_chart"
         android:enabled="true"
         android:title="" />
 </menu>

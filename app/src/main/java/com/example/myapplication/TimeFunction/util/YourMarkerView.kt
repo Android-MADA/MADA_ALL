@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.TimeFunction.util
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.myapplication.HomeFunction.time.TimeViewModel
-import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
+import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry

@@ -1,6 +1,5 @@
-package com.example.myapplication.HomeFunction.time
+package com.example.myapplication.TimeFunction.adapter
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 
 class HomeTimeAdapter(private val dataSet : ArrayList<TimeViewModel.PieChartData>) : RecyclerView.Adapter<HomeTimeAdapter.viewHolder>() {
 
@@ -28,12 +28,12 @@ class HomeTimeAdapter(private val dataSet : ArrayList<TimeViewModel.PieChartData
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeTimeAdapter.viewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_time_list, parent, false)
         return viewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeTimeAdapter.viewHolder, position: Int) {
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
         holder.timeImageView.setColorFilter(Color.parseColor(dataSet[position].colorCode), PorterDuff.Mode.SRC_IN)
         holder.timeTextView.text = dataSet[position].title

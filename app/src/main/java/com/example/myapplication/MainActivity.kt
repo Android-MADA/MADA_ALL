@@ -7,26 +7,9 @@ import android.util.Log
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.myapplication.CustomFunction.ButtonDatabase
-import com.example.myapplication.CustomFunction.ButtonInfo
-import com.example.myapplication.CustomFunction.ButtonInfoEntity
-import com.example.myapplication.CustomFunction.CustomViewModel
-import com.example.myapplication.CustomFunction.DataRepo
-import com.example.myapplication.CustomFunction.RetrofitServiceCustom
-import com.example.myapplication.CustomFunction.customPrintDATA
-import com.example.myapplication.Fragment.FragCalendar
-import com.example.myapplication.Fragment.FragCustom
-import com.example.myapplication.Fragment.FragDaily
-import com.example.myapplication.Fragment.FragHome
-import com.example.myapplication.Fragment.FragMy
-import com.example.myapplication.Fragment.IdAndItemType
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
@@ -42,13 +25,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {

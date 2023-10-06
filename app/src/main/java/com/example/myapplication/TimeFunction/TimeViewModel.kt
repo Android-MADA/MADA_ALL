@@ -1,11 +1,10 @@
-package com.example.myapplication.HomeFunction.time
+package com.example.myapplication.TimeFunction
 
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,11 +14,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
-import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
 import com.example.myapplication.HomeFunction.Model.ScheduleListData
@@ -27,7 +22,6 @@ import com.example.myapplication.HomeFunction.Model.ScheduleResponse
 import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.HomeFunction.view.HomeViewpagerTimetableFragment
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import retrofit2.Call
@@ -37,7 +31,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.Serializable
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
