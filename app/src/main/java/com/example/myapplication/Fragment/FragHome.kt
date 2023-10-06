@@ -193,11 +193,6 @@ class FragHome : Fragment() {
             popup.menuInflater.inflate(R.menu.home_menu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.home_menu_timetable -> {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_fragHome_to_homeTimetableFragment)
-                        true
-                    }
 
                     R.id.home_menu_category -> {
                         Navigation.findNavController(view)

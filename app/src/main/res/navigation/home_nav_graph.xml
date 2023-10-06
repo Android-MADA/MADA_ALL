@@ -12,17 +12,13 @@
             android:id="@+id/action_fragHome_to_homeCategoryFragment"
             app:destination="@id/homeCategoryFragment" />
         <action
-            android:id="@+id/action_fragHome_to_homeTimetableFragment"
-            app:destination="@id/homeTimetableFragment" />
-        <action
             android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
             app:destination="@id/homeRepeatTodoFragment" />
-        <action
-            android:id="@+id/action_fragHome_to_timeAddFragment"
-            app:destination="@id/timeAddFragment" />
-        <action
-            android:id="@+id/action_fragHome_to_ddayAddFragment"
-            app:destination="@id/calendarAddDday" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragTime"
+        android:name="com.example.myapplication.Fragment.FragTime"
+        android:label="FragTime" >
     </fragment>
     <fragment
         android:id="@+id/fragCalendar"
@@ -111,9 +107,9 @@
     </fragment>
     <fragment
         android:id="@+id/homeTimetableFragment"
-        android:name="com.example.myapplication.HomeFunction.view.HomeTimetableFragment"
+        android:name="com.example.myapplication.Fragment.FragTime"
         android:label="home_fragment_timetable"
-        tools:layout="@layout/home_fragment_timetable" >
+        tools:layout="@layout/frag_time" >
         <action
             android:id="@+id/action_homeTimetableFragment_to_timeAddFragment"
             app:destination="@id/timeAddFragment" />
@@ -123,7 +119,7 @@
     </fragment>
     <fragment
         android:id="@+id/timeAddFragment"
-        android:name="com.example.myapplication.HomeFunction.view.TimeAddFragment"
+        android:name="com.example.myapplication.TimeFunction.TimeAddFragment"
         android:label="TimeAddFragment" >
         <action
             android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
