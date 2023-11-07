@@ -59,6 +59,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textTODAY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="TODAY"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textWEEK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="WEEK"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textMONTH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="MONTH"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/cal"
                 android:layout_width="match_parent"
@@ -222,14 +263,24 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/record_title_todo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="30dp"
-                    android:text="n월 투두"
+                    android:text="MONTH"
+                    android:textColor="@color/sub6"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/record_title_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="3dp"
+                    android:text="김마다님의 n월 통계예요."
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -241,20 +292,33 @@
                     android:background="@drawable/my_record_todo"
                     android:gravity="center"
                     android:padding="20dp"
-                    android:text="n월의 평균 투두는 n개이고\n그 중 n%를 클리어하셨어요."
+                    android:text="<막대 그래프 자리>"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/record_title_timetable"
+                    android:id="@+id/record_context_todo1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="32dp"
-                    android:text="n월 시간표"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="이번 달 총 n개 완료했어요"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/record_context_todo2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="n월에는 nn개의 투두 중에서\n 평균 nn%인 nn개의 투두를 완료했어요.\n 지난 달에 비해 n개 상승했네요."
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -278,15 +342,64 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/record_context_timetable"
+                    android:id="@+id/record_context_timetable1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="이번 달 총 nn개 추가했어요"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/record_context_timetable2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="n월에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/my_record_todo"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="<꺾은선 그래프 자리>"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/record_context_complete1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="투두 평균도가 nn% 상승했어요"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/record_context_complete2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="80dp"
                     android:gravity="center"
-                    android:text="김마다님이 가장 많은 시간을 투자한 카테고리는\n 공부하기, 데이트, 개발입니다."
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:padding="16dp"
+                    android:text="전체 투두에서 평균적으로 n개 이상의 투두를 완료하면서\n지난달에 비해서 평균 달성 개수가 n개 상승했어요"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
