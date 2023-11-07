@@ -17,21 +17,34 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_home_time_name"
-                android:layout_width="130dp"
-                android:layout_height="34dp"
-                android:layout_gravity="center"
-                android:paddingLeft="15dp"
-                android:layout_marginLeft="15dp"
+            <LinearLayout
                 android:background="@drawable/calendar_schedule_background_bar"
                 android:backgroundTint="@color/grey2"
+                android:paddingLeft="15dp"
+                android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:text="2023년 6월 1일"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/image_cal" />
+                <TextView
+                    android:gravity="center_vertical"
+                    android:id="@+id/text_home_time_name"
+                    android:layout_width="130dp"
+                    android:layout_height="34dp"
+                    android:text="2023년 6월 1일"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="0dp"
@@ -47,51 +60,58 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/calendar_color_select" />
 
-            <ImageView
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/calendar_color_select" />
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_weight="7.5"
+                android:layout_width="0dp"
+                android:background="@drawable/calendar_schedule_background_bar"
+                android:layout_marginLeft="15dp"
+                android:backgroundTint="@color/grey2"
+                android:layout_height="53dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="217dp"
-            android:background="@drawable/calendar_schedule_background_bar"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/grey2"
-            android:layout_height="53dp">
-
+                <TextView
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:text="COMMENT"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp"/>
+                <EditText
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/text_time_today_hanmadi"
+                    android:paddingTop="10dp"
+                    android:paddingHorizontal="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:hint="오늘의 한마디!ddddddddddddddddddddddd"
+                    android:textColor="@color/grey3"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@android:color/transparent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingTop="5dp"
-                android:paddingLeft="15dp"
-                android:layout_width="match_parent"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/time_change_btn"
+                android:layout_weight="2"
+                android:layout_width="0dp"
                 android:layout_height="53dp"
-                android:text="COMMENT"
-                android:textColor="@color/grey1"
-                android:textSize="12sp"/>
-            <EditText
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/text_time_today_hanmadi"
-                android:paddingTop="10dp"
-                android:paddingHorizontal="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="53dp"
-                android:hint="오늘의 한마디!ddddddddddddddddddddddd"
-                android:textColor="@color/grey3"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:background="@android:color/transparent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:src="@drawable/image_change_week"/>
+        </LinearLayout>
+
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -265,7 +265,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             val bundle = Bundle()
                             bundle.putString("today",today)
-                            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                            findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
                         }
                         2 -> {
                             Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -314,7 +314,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -339,7 +339,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -354,7 +354,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         binding.ivHomeAddTimeBack.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
-            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+            findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
@@ -419,7 +419,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     }
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
-            Navigation.findNavController(requireView()).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragTimeAdd_to_fragTime)
         dialog.dismiss()
     }
 

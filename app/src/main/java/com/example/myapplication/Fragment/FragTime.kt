@@ -86,12 +86,15 @@ class FragTime : Fragment() {
         val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
         val outputDateFormat = SimpleDateFormat("yyyy년 M월 d일", Locale("ko", "KR"))
         binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(today))
+        binding.timeChangeBtn.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+        }
 
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
             bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
+            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
         }
     }
     override fun onDestroyView() {
@@ -174,7 +177,7 @@ class FragTime : Fragment() {
                         bundle.putString("today",today)
                         bundle.putSerializable("pieChartData", pieChartDataArray[label.toInt()])
                         bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-                        Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment,bundle)
+                        Navigation.findNavController(requireView()).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
                     } else {
                         pieDataSet.selectionShift = 1f //하이라이트 크기
                     }
