@@ -22,10 +22,10 @@
 
         <ImageButton
             android:id="@+id/backBtn"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:padding="20dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left" />
@@ -36,7 +36,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="20dp"
             android:text="내 기록 확인하기"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -97,7 +96,8 @@
                     android:gravity="center"
                     android:text="MONTH"
                     android:textSize="16sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="#F0768C"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -283,18 +283,12 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/record_context_todo"
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/BarChart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/my_record_todo"
-                    android:gravity="center"
-                    android:padding="20dp"
-                    android:text="<막대 그래프 자리>"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="32dp"
+                    android:layout_marginHorizontal="16dp" />
 
                 <TextView
                     android:id="@+id/record_context_todo1"
@@ -315,7 +309,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:gravity="center"
                     android:padding="16dp"
-                    android:text="n월에는 nn개의 투두 중에서\n 평균 nn%인 nn개의 투두를 완료했어요.\n 지난 달에 비해 n개 상승했네요."
+                    android:text="이번 달에는 nn개의 투두 중에서\n 평균 nn%인 nn개의 투두를 완료했어요.\n 지난 달에 비해 n개 상승했네요."
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
 
@@ -360,21 +354,16 @@
                     android:layout_marginHorizontal="16dp"
                     android:gravity="center"
                     android:padding="16dp"
-                    android:text="n월에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
+                    android:text="이번 달에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
 
-                <TextView
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/LineChart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/my_record_todo"
-                    android:gravity="center"
-                    android:padding="20dp"
-                    android:text="<꺾은선 그래프 자리>"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="32dp"
+                    android:layout_marginHorizontal="16dp" />
 
                 <TextView
                     android:id="@+id/record_context_complete1"
@@ -396,7 +385,7 @@
                     android:layout_marginBottom="80dp"
                     android:gravity="center"
                     android:padding="16dp"
-                    android:text="전체 투두에서 평균적으로 n개 이상의 투두를 완료하면서\n지난달에 비해서 평균 달성 개수가 n개 상승했어요"
+                    android:text="전체 투두에서 평균적으로 n개 이상의 투두를 완료하면서\n지난 달에 비해서 평균 달성 개수가 n개 상승했어요"
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
 
