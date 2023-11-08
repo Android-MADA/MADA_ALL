@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/fragHome">
+
     <fragment
         android:id="@+id/fragHome"
         android:name="com.example.myapplication.Fragment.FragHome"
@@ -15,11 +16,7 @@
             android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
             app:destination="@id/homeRepeatTodoFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fragTime"
-        android:name="com.example.myapplication.Fragment.FragTime"
-        android:label="FragTime" >
-    </fragment>
+
     <fragment
         android:id="@+id/fragCalendar"
         android:name="com.example.myapplication.Fragment.FragCalendar"
@@ -74,6 +71,8 @@
             android:id="@+id/action_calendarAddDday_to_fragHome"
             app:destination="@id/fragHome" />
     </fragment>
+
+
     <fragment
         android:id="@+id/fragCustom"
         android:name="com.example.myapplication.Fragment.FragCustom"
@@ -82,6 +81,8 @@
             android:id="@+id/action_fragCustom_to_fragHome"
             app:destination="@id/fragHome" />
     </fragment>
+
+
     <fragment
         android:id="@+id/homeCategoryFragment"
         android:name="com.example.myapplication.HomeFunction.view.HomeCategoryFragment"
@@ -106,30 +107,6 @@
             app:popUpTo="@id/fragHome" />
     </fragment>
     <fragment
-        android:id="@+id/homeTimetableFragment"
-        android:name="com.example.myapplication.Fragment.FragTime"
-        android:label="home_fragment_timetable"
-        tools:layout="@layout/frag_time" >
-        <action
-            android:id="@+id/action_homeTimetableFragment_to_timeAddFragment"
-            app:destination="@id/timeAddFragment" />
-        <action
-            android:id="@+id/action_homeTimetableFragment_to_fragHome"
-            app:destination="@id/fragHome" />
-    </fragment>
-    <fragment
-        android:id="@+id/timeAddFragment"
-        android:name="com.example.myapplication.TimeFunction.TimeAddFragment"
-        android:label="TimeAddFragment" >
-        <action
-            android:id="@+id/action_timeAddFragment_to_homeTimetableFragment"
-            app:destination="@id/homeTimetableFragment"
-            app:popUpTo="@id/fragHome" />
-        <action
-            android:id="@+id/action_timeAddFragment_to_fragHome"
-            app:destination="@id/fragHome" />
-    </fragment>
-    <fragment
         android:id="@+id/homeRepeatTodoFragment"
         android:name="com.example.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
         android:label="HomeRepeatTodoFragment" >
@@ -150,7 +127,37 @@
             app:destination="@id/homeRepeatTodoFragment"
             app:popUpTo="@id/fragHome" />
     </fragment>
-
+    <!--    Time  부분   -->
+    <fragment
+        android:id="@+id/fragTime"
+        android:name="com.example.myapplication.Fragment.FragTime"
+        android:label="FragTime" >
+        <action
+            android:id="@+id/action_fragTime_to_fragTimeTable"
+            app:destination="@id/fragTimeTable" />
+        <action
+            android:id="@+id/action_fragTime_to_fragTimeAdd"
+            app:destination="@id/fragTimeAdd" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragTimeTable"
+        android:name="com.example.myapplication.TimeFunction.TimeTableFragment"
+        android:label="FragTimeTable" >
+        <action
+            android:id="@+id/action_fragTimeTable_to_fragTime"
+            app:destination="@id/fragTime" />
+        <action
+            android:id="@+id/action_fragTimeTable_to_fragTimeAdd"
+            app:destination="@id/fragTimeAdd" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragTimeAdd"
+        android:name="com.example.myapplication.TimeFunction.TimeAddFragment"
+        android:label="FragTimeAdd" >
+        <action
+            android:id="@+id/action_fragTimeAdd_to_fragTime"
+            app:destination="@id/fragTime" />
+    </fragment>
 <!--    My  부분   -->
     <fragment
         android:id="@+id/fragMy"

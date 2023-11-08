@@ -51,9 +51,9 @@ class TimeViewModel : ViewModel() {
     data class PieChartData(
         val title: String,
         val memo: String,
-        val startHour: Int,
+        var startHour: Int,
         val startMin: Int,
-        val endHour: Int,
+        var endHour: Int,
         val endMin: Int,
         val colorCode: String,
         val divisionNumber: Int,

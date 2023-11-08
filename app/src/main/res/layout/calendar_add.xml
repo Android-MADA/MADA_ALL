@@ -79,7 +79,7 @@
                     android:background="@android:color/transparent"
                     android:ems="12"
                     android:hint="일정 이름"
-                    android:inputType="text"
+                     
                     android:textSize="16sp"
                     android:importantForAutofill="no" />
                 <ImageView
