@@ -4,7 +4,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8e8e8">
+        android:background="@color/grey2">
 
         <LinearLayout
             android:id="@+id/repeat_toolbar"
