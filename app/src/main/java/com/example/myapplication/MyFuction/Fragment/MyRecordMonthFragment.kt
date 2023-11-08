@@ -27,15 +27,12 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
-import java.util.Calendar
 
 class MyRecordMonthFragment : Fragment() {
     private lateinit var binding: MyRecordMonthBinding
-    private lateinit var calendar: Calendar
     lateinit var navController: NavController
     val datas = mutableListOf<MyRecordCategoryData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
@@ -61,7 +58,6 @@ class MyRecordMonthFragment : Fragment() {
         }
 
 
-
         //달력 부분
         val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"Month")
         binding.calendar2.adapter = calendarAdapter
@@ -74,6 +70,7 @@ class MyRecordMonthFragment : Fragment() {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
+        // 일 주 월 버튼 클릭 이동
         binding.dayWeekMonthBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
         }
@@ -91,9 +88,9 @@ class MyRecordMonthFragment : Fragment() {
 
     }
     fun monthChange(month : Int, date : String) {
-        setBarChartView(MyRecordOptionData("month", date) , month)
-        setPieChartView(MyRecordOptionData("month", date) , month)
-        setLineChartView(MyRecordOptionData("month", date) , month)
+        setBarChartView(MyRecordOptionData("month", date), month)
+        setPieChartView(MyRecordOptionData("month", date), month)
+        setLineChartView(MyRecordOptionData("month", date), month)
         initCategoryRecycler(MyRecordOptionData("month", date))
         initCategoryPieChart(MyRecordOptionData("month", date))
     }
