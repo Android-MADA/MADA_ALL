@@ -1,21 +1,14 @@
-package com.example.myapplication.HomeFunction.view
+package com.example.myapplication.TimeFunction
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -31,27 +24,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
-import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
 import com.example.myapplication.HomeFunction.Model.Schedule
 import com.example.myapplication.HomeFunction.Model.ScheduleAdd
-import com.example.myapplication.HomeFunction.Model.ScheduleResponse
-import com.example.myapplication.HomeFunction.Model.ScheduleTodoCalList
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.time.HomeScheduleAndTodoAdapter
-import com.example.myapplication.HomeFunction.time.HomeTimeColorAdapter
-import com.example.myapplication.HomeFunction.time.TimeViewModel
+import com.example.myapplication.TimeFunction.adapter.HomeTimeColorAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.adapter.HomeScheduleAndTodoAdapter
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.Calendar
 import java.util.Locale
 
 class TimeAddFragment : Fragment(), HomeCustomDialogListener {

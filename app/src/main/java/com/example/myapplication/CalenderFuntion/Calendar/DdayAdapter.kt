@@ -51,7 +51,7 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
             holder.dday2.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("today",CalendarViewModel.todayDate())
-                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
+                //Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
             }
         } else {
             if(item.color == "#486DA3") {
@@ -87,7 +87,7 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
                     val bundle = Bundle()
                     bundle.putSerializable("calData",item)
                     bundle.putBoolean("edit",true)
-                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
+                    //Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
                     mBuilder.dismiss()
                 }
                 mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
@@ -170,7 +170,7 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
                     val bundle = Bundle()
                     bundle.putSerializable("calData",item)
                     bundle.putBoolean("edit",true)
-                    Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
+                    //Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
                     mBuilder.dismiss()
                 }
                 mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {

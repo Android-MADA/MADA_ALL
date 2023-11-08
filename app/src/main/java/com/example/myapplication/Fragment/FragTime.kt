@@ -1,50 +1,37 @@
-package com.example.myapplication.HomeFunction.view
+package com.example.myapplication.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.CustomCircleBarView
-import com.example.myapplication.HomeFunction.Model.ScheduleListData
-import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.time.HomeTimeAdapter
-import com.example.myapplication.HomeFunction.time.SampleTimeData
-import com.example.myapplication.HomeFunction.time.TimeViewModel
+import com.example.myapplication.TimeFunction.adapter.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
-import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.HomeFragmentTimetableBinding
-import com.example.myapplication.hideBottomNavigation
+import com.example.myapplication.TimeFunction.TimeViewModel
+import com.example.myapplication.TimeFunction.util.CustomCircleBarView
+import com.example.myapplication.databinding.FragTimeBinding
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 
-class HomeTimetableFragment : Fragment() {
+class FragTime : Fragment() {
 
-    lateinit var binding : HomeFragmentTimetableBinding
+    lateinit var binding : FragTimeBinding
     private val viewModel : HomeViewModel by activityViewModels()
     private val viewModelTime: TimeViewModel by activityViewModels()
-    private var bottomFlag = true
 
     lateinit var today : String
     lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
@@ -59,8 +46,7 @@ class HomeTimetableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_timetable, container, false)
-        hideBottomNavigation(bottomFlag, activity)
+        binding = FragTimeBinding.inflate(layoutInflater)
         today = viewModel.homeDate.value.toString()
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
@@ -101,9 +87,6 @@ class HomeTimetableFragment : Fragment() {
         val outputDateFormat = SimpleDateFormat("yyyy년 M월 d일", Locale("ko", "KR"))
         binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(today))
 
-        binding.ivHomeTimetableBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_homeTimetableFragment_to_fragHome)
-        }
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
@@ -113,7 +96,6 @@ class HomeTimetableFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        hideBottomNavigation(bottomFlag, activity)
     }
 
     private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
