@@ -2,17 +2,14 @@ package com.example.myapplication.MyFuction.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,14 +23,12 @@ import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.HomeFunction.time.TimeViewModel
+import com.example.myapplication.TimeFunction.TimeViewModel
 import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.YourMarkerView
+import com.example.myapplication.TimeFunction.util.YourMarkerView
 import com.example.myapplication.databinding.MyRecordDayBinding
-import com.example.myapplication.databinding.MyRecordMonthBinding
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -48,7 +43,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 class MyRecordDayFragment : Fragment() {
     private lateinit var binding: MyRecordDayBinding

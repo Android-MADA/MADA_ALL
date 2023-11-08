@@ -1,4 +1,4 @@
-package com.example.myapplication.HomeFunction.time
+package com.example.myapplication.TimeFunction.adapter
 
 import android.graphics.Color
 import android.graphics.PorterDuff
