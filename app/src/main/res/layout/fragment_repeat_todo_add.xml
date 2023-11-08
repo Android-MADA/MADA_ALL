@@ -223,8 +223,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_repeat"
-                    android:layout_marginTop="20dp"
-                    android:visibility="gone">
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:id="@+id/tv_repeat_everyday"
