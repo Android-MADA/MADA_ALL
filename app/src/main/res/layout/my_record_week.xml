@@ -275,7 +275,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_title_todo"
+                    android:id="@+id/record_title0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -293,7 +293,7 @@
                     android:layout_marginTop="32dp" />
 
                 <TextView
-                    android:id="@+id/record_context_todo1"
+                    android:id="@+id/record_title1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -305,7 +305,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_context_todo2"
+                    android:id="@+id/record_context1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -338,7 +338,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/record_context_timetable1"
+                    android:id="@+id/record_title2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -350,7 +350,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_context_timetable2"
+                    android:id="@+id/record_context2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -368,7 +368,7 @@
                     android:layout_marginTop="32dp" />
 
                 <TextView
-                    android:id="@+id/record_context_complete1"
+                    android:id="@+id/record_title3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -380,7 +380,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_context_complete2"
+                    android:id="@+id/record_context3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"

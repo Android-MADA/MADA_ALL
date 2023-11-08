@@ -31,7 +31,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -44,7 +43,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
 
