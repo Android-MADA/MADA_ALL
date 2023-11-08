@@ -127,4 +127,7 @@ dependencies {
 
     // Kotlin
     implementation("androidx.activity:activity-ktx:$activity_version")
+
+    // 플레이스토어 광고
+    implementation 'com.google.android.gms:play-services-ads:22.5.0'
 }
