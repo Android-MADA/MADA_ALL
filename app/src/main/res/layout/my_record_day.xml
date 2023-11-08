@@ -294,7 +294,7 @@
                     android:padding="20dp">
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/my_chart"
+                        android:id="@+id/PieChart"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
                         android:layout_weight="3" />
@@ -377,7 +377,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="투두 평균도가 nn% 상승했어요"
+                    android:text="투두 달성도가 nn% 상승했어요"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />

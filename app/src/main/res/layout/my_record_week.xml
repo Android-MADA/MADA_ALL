@@ -374,7 +374,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="투두 평균도가 nn% 상승했어요"
+                    android:text="투두 달성도가 nn% 상승했어요"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />

@@ -7,39 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.example.myapplication.HomeFunction.Model.Category
-import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.TimeFunction.TimeViewModel
 import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.TimeFunction.util.YourMarkerView
 import com.example.myapplication.databinding.MyRecordDayBinding
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
@@ -69,7 +54,7 @@ class MyRecordDayFragment : Fragment() {
         val entries = ArrayList<PieEntry>()
         val colorsItems = ArrayList<Int>()
 
-        //배경 파이차트 (검정색 테두리)
+        /*배경 파이차트 (검정색 테두리)
         pieDataSet2 = PieDataSet(entries, "")
         pieData2 = PieData(pieDataSet2)
         entries.add(PieEntry(10f, "999"))
@@ -78,7 +63,7 @@ class MyRecordDayFragment : Fragment() {
             colors = colorsItems
             setDrawValues(false) // 비율 숫자 없애기
         }
-
+        */
 
         return binding.root
     }
@@ -146,6 +131,7 @@ class MyRecordDayFragment : Fragment() {
         })
 
     }
+
     //날짜 클릭시 실행되는 함수
     fun dayChange(theDate : String) {
         //서버에게서 정보 얻어오기
@@ -154,7 +140,7 @@ class MyRecordDayFragment : Fragment() {
 
                 1 -> {
                     //통신이 된다면
-                    pirChartOn(viewModelTime.getTimeDatas(theDate))
+                    //pirChartOn(viewModelTime.getTimeDatas(theDate))
 
                 }
                 2 -> {
@@ -163,8 +149,10 @@ class MyRecordDayFragment : Fragment() {
                 }
             }
         }
-        findRv(theDate)
+        //findRv(theDate)
     }
+
+    /*
 
     private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
         val pieChartDataArray = arrays
@@ -412,4 +400,5 @@ class MyRecordDayFragment : Fragment() {
         }
         return todoCateList
     }
+    */
 }
