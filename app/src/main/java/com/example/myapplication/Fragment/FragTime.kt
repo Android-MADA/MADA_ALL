@@ -14,6 +14,7 @@ import com.example.myapplication.TimeFunction.adapter.HomeTimeAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
+import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.example.myapplication.TimeFunction.util.CustomCircleBarView
 import com.example.myapplication.databinding.FragTimeBinding
 import com.github.mikephil.charting.data.Entry
@@ -77,6 +78,11 @@ class FragTime : Fragment() {
                 }
             }
         }
+        binding.fragtimeCalendarBtn.setOnClickListener {
+            val bottomSheet = TimeBottomSheetDialog(requireContext())
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+
 
         return binding.root
     }
