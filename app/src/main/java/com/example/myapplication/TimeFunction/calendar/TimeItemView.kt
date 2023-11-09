@@ -16,6 +16,7 @@ import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 import org.joda.time.DateTime
 
 class TimeItemView @JvmOverloads constructor(
@@ -23,12 +24,14 @@ class TimeItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
-    private val date: DateTime = DateTime()
+    private val date: DateTime = DateTime(),
+    private val timeViewModel : TimeViewModel
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
     private var paint: Paint = Paint()
     init {
+
         /* Attributes */
         context.withStyledAttributes(attrs, R.styleable.CalendarSmallView, defStyleAttr, defStyleRes) {
             val dayTextSize = getDimensionPixelSize(R.styleable.CalendarSmallView_dayTextSmallSize, 0).toFloat()
@@ -41,6 +44,7 @@ class TimeItemView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
+            timeViewModel.updateData(date.toString("yyyy-MM-dd"))
         }
     }
 
