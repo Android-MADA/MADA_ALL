@@ -24,6 +24,8 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -36,7 +38,6 @@ class FragTime : Fragment() {
 
     lateinit var today : String
     lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
-
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,10 @@ class FragTime : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragTimeBinding.inflate(layoutInflater)
-        today = viewModel.homeDate.value.toString()
+        val currentDate: LocalDate = LocalDate.now()
+        val formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+
         customCircleBarView = binding.progressbar
         // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
         val currentTime = Calendar.getInstance()
@@ -58,32 +62,34 @@ class FragTime : Fragment() {
         customCircleBarView.setProgress(progressPercentage)
 
         //파이차트
-        viewModelTime.getScheduleDatas(today) { result ->
-            when (result) {
-                1 -> {
-                    val tmpList = viewModelTime.getTimeDatas(today)
-                    pirChartOn(tmpList)
-                    val timeAdapter = HomeTimeAdapter(tmpList)
-                    //rv adpter 연결
-                    timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
-                        override fun onClick(v: View, position: Int) {
-                            //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-                        }
-                    })
-                    binding.rvHomeTimeSchedule.adapter = timeAdapter
-                    binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
-                }
-                2 -> {
-                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+
         binding.fragtimeCalendarBtn.setOnClickListener {
             val bottomSheet = TimeBottomSheetDialog(requireContext())
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
-
-
+        viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
+            viewModelTime.getScheduleDatas(newValue) { result ->
+                when (result) {
+                    1 -> {
+                        val tmpList = viewModelTime.getTimeDatas(today)
+                        pirChartOn(tmpList)
+                        val timeAdapter = HomeTimeAdapter(tmpList)
+                        //rv adpter 연결
+                        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
+                            override fun onClick(v: View, position: Int) {
+                                //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
+                            }
+                        })
+                        binding.rvHomeTimeSchedule.adapter = timeAdapter
+                        binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
+                    }
+                    2 -> {
+                        Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+        viewModelTime.updateData(formattedDate)
         return binding.root
     }
 

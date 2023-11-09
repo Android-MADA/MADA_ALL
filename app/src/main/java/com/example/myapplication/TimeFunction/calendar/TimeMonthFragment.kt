@@ -6,30 +6,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.getMonthList
-import com.example.myapplication.databinding.MyRecordSliderMonthViewBinding
+import com.example.myapplication.TimeFunction.TimeViewModel
+import com.example.myapplication.databinding.TimeSliderMonthViewBinding
 import org.joda.time.DateTime
 
 
 class TimeMonthFragment() : Fragment() {
 
     private var millis: Long = 0L
-    lateinit var binding: MyRecordSliderMonthViewBinding
+    lateinit var binding: TimeSliderMonthViewBinding
     lateinit var fm: Fragment
+    val timeViewModel: TimeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             millis = it.getLong(MILLIS)
 
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = MyRecordSliderMonthViewBinding.inflate(inflater, container, false)
-        binding.calendarView.initCalendar(getMonthList(DateTime(millis)))
+        binding = TimeSliderMonthViewBinding.inflate(inflater, container, false)
+        binding.calendarView.initCalendar(getMonthList(DateTime(millis)),timeViewModel)
         return binding.root
     }
     companion object {

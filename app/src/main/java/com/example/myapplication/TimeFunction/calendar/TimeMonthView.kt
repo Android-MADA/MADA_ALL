@@ -7,9 +7,9 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
-import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
 import kotlin.math.max
@@ -61,12 +61,14 @@ class TimeMonthView @JvmOverloads constructor(
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
      */
     fun initCalendar(
-        list: List<DateTime>
+        list: List<DateTime>,
+        timeViewModel: TimeViewModel
     ) {
         list.forEach {
             addView(TimeItemView(
                 context = context,
-                date = it
+                date = it,
+                timeViewModel = timeViewModel
             ))
         }
 
