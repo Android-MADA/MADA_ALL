@@ -173,20 +173,66 @@
                         android:layout_marginTop="5dp"
                         />
 
-                    <ProgressBar
+<!--                    <ProgressBar-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/todo_progress_ment2_tv"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        style="?android:attr/progressBarStyleHorizontal"-->
+<!--                        android:paddingHorizontal="20dp"-->
+<!--                        android:layout_marginTop="20dp"-->
+<!--                        android:max="10"-->
+<!--                        android:progress="5"-->
+<!--                        android:progressDrawable="@drawable/todo_progress_background"-->
+<!--                        />-->
+
+                    <LinearLayout
+                        android:id="@+id/progress_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="54dp"
                         app:layout_constraintTop_toBottomOf="@id/todo_progress_ment2_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:paddingHorizontal="20dp"
-                        android:layout_marginTop="20dp"
-                        android:max="10"
-                        android:progress="5"
-                        android:progressDrawable="@drawable/todo_progress_background"
-                        />
+                        android:layout_marginHorizontal="16dp"
+                        android:background="@drawable/todo_progress_layout_background"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        >
 
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/progress_done_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:background="@drawable/todo_progress_done_layout_background">
+
+                            <ImageView
+                                android:id="@+id/progress_character_iv"
+                                android:layout_width="27.21dp"
+                                android:layout_height="27dp"
+                                android:paddingBottom="5dp"
+                                android:src="@drawable/progress_ramdi"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/progress_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="50%"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="@color/white"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
