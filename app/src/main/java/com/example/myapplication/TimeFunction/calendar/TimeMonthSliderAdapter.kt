@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment
+import com.example.myapplication.TimeFunction.TimeViewModel
 import org.joda.time.DateTime
 
 class TimeMonthSliderAdapter(
     private val fm: Fragment,
     private val monthText: TextView,
-    private val viewPager: ViewPager2
+    private val viewPager: ViewPager2,
+    private val dialog: TimeBottomSheetDialog,
+    private val viewModelTime: TimeViewModel
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -28,7 +31,7 @@ class TimeMonthSliderAdapter(
 
     override fun createFragment(position: Int): TimeMonthFragment {
         val millis = getItemId(position)
-        return TimeMonthFragment.newInstance(millis,fm)
+        return TimeMonthFragment.newInstance(millis,fm,dialog,viewModelTime)
     }
 
     override fun getItemId(position: Int): Long

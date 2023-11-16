@@ -32,13 +32,14 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.adapter.HomeScheduleAndTodoAdapter
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import java.time.LocalDate
 import java.util.Locale
 
 class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     private lateinit var binding : HomeFragmentTimeAddBinding
-    private var bottomFlag = true
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
     private val viewModel : HomeViewModel by activityViewModels()
@@ -68,18 +69,28 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         initColorArray()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigation(false,  requireActivity())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
-        hideBottomNavigation(bottomFlag,  requireActivity())
+        hideBottomNavigation(true,  requireActivity())
         today = viewModel.homeDate.value.toString()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+/*
+        val adRequest = AdRequest.Builder()
+            .build()
+        binding.adView.loadAd(adRequest)*/
 
         val ivColor = binding.ivHomeTimeColor
         val colorSelector = binding.rvHomeTimeColor
@@ -304,8 +315,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             when (result) {
                                 1 -> {
                                     val tmpId = viewModelTime.addId
-                                    if(viewModelTime.hashMapArrayTime.get(today)==null) {
-                                        viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
+                                    if(viewModelTime.hashMapArraySchedule.get(today)==null) {
+                                        viewModelTime.hashMapArraySchedule.put(today,ArrayList<Schedule>())
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),

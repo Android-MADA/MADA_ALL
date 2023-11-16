@@ -17,11 +17,11 @@
             android:layout_height="60dp"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:padding="10dp"
                 android:id="@+id/iv_home_add_time_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,6 +36,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:padding="15dp"
                 android:id="@+id/btn_home_time_add_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
