@@ -137,7 +137,6 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
                                                 viewModel!!.createTodo(todoData, null)
                                             }
                                             //닉네임 저장하기
-                                            viewModel!!.userHomeName = response.body()!!.data.nickname
                                         }
                                         else {
                                             Log.d("todo안드 잘못", "서버 연결 실패")

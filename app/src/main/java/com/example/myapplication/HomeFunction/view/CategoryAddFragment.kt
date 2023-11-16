@@ -19,12 +19,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.wear.tiles.TileUpdateRequestData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
-import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
+import com.example.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
@@ -171,41 +169,41 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     val popup = PopupMenu(context, it)
                     popup.menuInflater.inflate(R.menu.cate_menu, popup.menu)
                     popup.setOnMenuItemClickListener { item ->
-                        if(item.itemId == R.id.cate_quit) {
-                            //다이얼로그
-                            //종료로 업데이트하고 네비게이션
-                            // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
-                            val cate = CateEntity(
-                                argsArray!![0].toInt(),
-                                argsArray!![1],
-                                argsArray!![2],
-                                true,
-                                argsArray!![3].toInt()
-                            )
-                            CoroutineScope(Dispatchers.IO).launch {
-                                //종료 patch
-                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                        if(response.isSuccessful){
-                                            Log.d("cateupdate", "성공")
-                                        } else {
-                                            Log.d("cateupdate", "안드 잘못 실패")
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                                        Log.d("cateupdate", "서버 연결 실패")
-                                    }
-                                })
-
-                                viewModel.updateCate(cate)
-                                withContext(Dispatchers.Main){
-                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-                                }
-                            }
-
-                        }
-                        else if (item.itemId == R.id.cate_edit) {
+//                        if(item.itemId == R.id.cate_quit) {
+//                            //다이얼로그
+//                            //종료로 업데이트하고 네비게이션
+//                            // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
+//                            val cate = CateEntity(
+//                                argsArray!![0].toInt(),
+//                                argsArray!![1],
+//                                argsArray!![2],
+//                                true,
+//                                argsArray!![3].toInt()
+//                            )
+//                            CoroutineScope(Dispatchers.IO).launch {
+//                                //종료 patch
+//                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
+//                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                                        if(response.isSuccessful){
+//                                            Log.d("cateupdate", "성공")
+//                                        } else {
+//                                            Log.d("cateupdate", "안드 잘못 실패")
+//                                        }
+//                                    }
+//
+//                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+//                                        Log.d("cateupdate", "서버 연결 실패")
+//                                    }
+//                                })
+//
+//                                viewModel.updateCate(cate)
+//                                withContext(Dispatchers.Main){
+//                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+//                                }
+//                            }
+//
+//                        }
+                        if (item.itemId == R.id.cate_edit) {
 
                             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![2]))
                             colorAdapter.selecetedColor = argsArray!![2]
@@ -367,10 +365,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         viewModel.userToken,
                         categoryId = argsArray[0].toInt(),
                         catePostData
-                    ).enqueue(object : Callback<PactchResponseCategory> {
+                    ).enqueue(object : Callback<PatchResponseCategory> {
                         override fun onResponse(
-                            call: Call<PactchResponseCategory>,
-                            response: Response<PactchResponseCategory>
+                            call: Call<PatchResponseCategory>,
+                            response: Response<PatchResponseCategory>
                         ) {
                             if (response.isSuccessful) {
                                 Log.d("cateupdate", "성공")
@@ -380,7 +378,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         }
 
                         override fun onFailure(
-                            call: Call<PactchResponseCategory>,
+                            call: Call<PatchResponseCategory>,
                             t: Throwable
                         ) {
                             Log.d("cateupdate", "서버 연결 실패")
@@ -408,10 +406,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                         //서버 post 후 response id 넣어서 db 저장
                         val catePostData = PostRequestCategory(cateName, cateColor, cateIconId, false, false)
-                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PactchResponseCategory>{
+                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PatchResponseCategory>{
                             override fun onResponse(
-                                call: Call<PactchResponseCategory>,
-                                response: Response<PactchResponseCategory>
+                                call: Call<PatchResponseCategory>,
+                                response: Response<PatchResponseCategory>
                             ) {
                                 if(response.isSuccessful){
                                     viewModel.createCate(CateEntity(id = response.body()!!.data.Category.id, categoryName = cateName, color = cateColor, isInActive = false, iconId = cateIconId))
@@ -422,7 +420,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             }
 
                             override fun onFailure(
-                                call: Call<PactchResponseCategory>,
+                                call: Call<PatchResponseCategory>,
                                 t: Throwable
                             ) {
                                 Log.d("cate서버 연결 오류", "서버 연결 실패")
