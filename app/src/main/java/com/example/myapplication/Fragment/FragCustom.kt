@@ -284,7 +284,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                     val layoutParams = binding.CustomBottomSheet.layoutParams
-                    layoutParams.height = 400.dpToPx(requireContext())  // Set the desired height in pixels
+                    layoutParams.height = 300.dpToPx(requireContext())  // Set the desired height in pixels
                     binding.CustomBottomSheet.layoutParams = layoutParams
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -302,7 +302,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                     val layoutParams = binding.CustomBottomSheet.layoutParams
-                    layoutParams.height = 400.dpToPx(requireContext())  // Set the desired height in pixels
+                    layoutParams.height = 300.dpToPx(requireContext())  // Set the desired height in pixels
                     binding.CustomBottomSheet.layoutParams = layoutParams
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
