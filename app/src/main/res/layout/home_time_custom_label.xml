@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="140dp"
+    android:layout_height="60dp"
 
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
     <ImageView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/background2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/home_time_marker_background2" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/time_marker_background2"/>
     <ImageView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/background1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tint="@color/black"
-        app:srcCompat="@drawable/home_time_marker_background1" />
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/time_marker_background"
+        app:tint="@color/black" />
 
     <TextView
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textStyle="bold"
+        android:textSize="14sp" /><!--
     <TextView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -45,16 +43,17 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="메모메모메모메모메모"
+        android:visibility="gone"
         android:id="@+id/textLabel2"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textSize="12sp" />-->
     <TextView
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
         android:text="AM10:00 - PM12:00"
         android:gravity="center"
         android:id="@+id/textLabel3"

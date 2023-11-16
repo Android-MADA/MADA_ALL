@@ -7,6 +7,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
 import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
@@ -62,13 +63,18 @@ class TimeMonthView @JvmOverloads constructor(
      */
     fun initCalendar(
         list: List<DateTime>,
-        timeViewModel: TimeViewModel
+        timeViewModel: TimeViewModel,
+        dialog: TimeBottomSheetDialog,
+        firstDayOfMonth: DateTime
+
     ) {
         list.forEach {
             addView(TimeItemView(
                 context = context,
                 date = it,
-                timeViewModel = timeViewModel
+                timeViewModel = timeViewModel,
+                dialog = dialog,
+                firstDayOfMonth = firstDayOfMonth
             ))
         }
 

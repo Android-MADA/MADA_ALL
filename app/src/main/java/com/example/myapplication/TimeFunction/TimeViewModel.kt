@@ -47,6 +47,9 @@ class TimeViewModel : ViewModel() {
     val myLiveToday: LiveData<String>
         get() = _myLiveToday
 
+    var todayString : String =""
+
+
     //2023-08-01 형식
     val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
     val hashMapArraySchedule = HashMap<String, ArrayList<Schedule>>()
@@ -67,7 +70,9 @@ class TimeViewModel : ViewModel() {
     ) : Serializable
 
     fun updateData(newValue: String) {
+        todayString = newValue
         _myLiveToday.value = newValue
+        Log.d("update",todayString)
     }
 
     fun extractTime(timeString: String,hourOrMin : Boolean): Int {

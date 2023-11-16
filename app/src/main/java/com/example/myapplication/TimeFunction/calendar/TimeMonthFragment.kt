@@ -11,6 +11,7 @@ import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companio
 import com.example.myapplication.TimeFunction.TimeViewModel
 import com.example.myapplication.databinding.TimeSliderMonthViewBinding
 import org.joda.time.DateTime
+import java.sql.Time
 
 
 class TimeMonthFragment() : Fragment() {
@@ -18,7 +19,8 @@ class TimeMonthFragment() : Fragment() {
     private var millis: Long = 0L
     lateinit var binding: TimeSliderMonthViewBinding
     lateinit var fm: Fragment
-    val timeViewModel: TimeViewModel by viewModels()
+    lateinit var dialog: TimeBottomSheetDialog
+    lateinit var vmTime : TimeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,17 +35,24 @@ class TimeMonthFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = TimeSliderMonthViewBinding.inflate(inflater, container, false)
-        binding.calendarView.initCalendar(getMonthList(DateTime(millis)),timeViewModel)
+        binding.calendarView.initCalendar(getMonthList(DateTime(millis)),vmTime,dialog,DateTime(millis))
         return binding.root
     }
     companion object {
 
         private const val MILLIS = "MILLIS"
 
-        fun newInstance(millis: Long, theFm: Fragment) = TimeMonthFragment().apply {
+        fun newInstance(
+            millis: Long,
+            theFm: Fragment,
+            dl: TimeBottomSheetDialog,
+            viewModelTime: TimeViewModel
+        ) = TimeMonthFragment().apply {
             arguments = Bundle().apply {
                 fm = theFm
                 putLong(MILLIS, millis)
+                dialog = dl
+                vmTime =viewModelTime
             }
         }
     }

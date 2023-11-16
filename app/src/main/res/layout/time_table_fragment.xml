@@ -69,14 +69,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="53dp"
                 android:layout_marginLeft="15dp"
-                android:layout_weight="7.5"
+                android:layout_weight="1"
                 android:background="@drawable/calendar_schedule_background_bar"
                 android:backgroundTint="@color/grey2">
 
@@ -97,28 +97,24 @@
                     android:layout_height="53dp"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
-                    android:hint="오늘의 한마디!ddddddddddddddddddddddd"
+                    android:hint="오늘의 한마디!"
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingTop="10dp"
-                    android:textColor="@color/grey3"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey3"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5" />
-
             <ImageView
                 android:id="@+id/time_change_btn"
-                android:layout_width="0dp"
+                android:layout_width="53dp"
                 android:layout_height="53dp"
-                android:layout_weight="2"
-                android:src="@drawable/image_change_week" />
+                android:layout_marginHorizontal="15dp"
+                android:src="@drawable/time_timetablemode" />
         </LinearLayout>
 
 

@@ -9,10 +9,12 @@ import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class TimeBottomSheetDialog(context: Context) : BottomSheetDialogFragment()
+class TimeBottomSheetDialog(context: Context, viewModelTime: TimeViewModel) : BottomSheetDialogFragment()
 {
+    val vmTime = viewModelTime
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,13 +33,12 @@ class TimeBottomSheetDialog(context: Context) : BottomSheetDialogFragment()
         val preBtn = view?.findViewById<ImageButton>(R.id.preBtn)
         val nextBtn = view?.findViewById<ImageButton>(R.id.nextBtn)
         if (vp != null && preBtn != null && nextBtn != null&&monthText!=null) {
-            val calendarAdapter = TimeMonthSliderAdapter(this,monthText ,vp)
+            val calendarAdapter = TimeMonthSliderAdapter(this,monthText ,vp,this,vmTime)
             vp.adapter = calendarAdapter
             vp.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
-           preBtn.setOnClickListener {
+            preBtn.setOnClickListener {
                 vp.setCurrentItem(vp.currentItem-1, true)
             }
-
             nextBtn.setOnClickListener {
                 vp.setCurrentItem(vp.currentItem+1, true)
             }
