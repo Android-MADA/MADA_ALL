@@ -26,10 +26,10 @@
 
         <ImageButton
             android:id="@+id/backBtn"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:padding="20dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left" />
@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="20dp"
             android:text="내 기록 확인하기"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -62,6 +61,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textTODAY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="TODAY"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textWEEK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="WEEK"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/textMONTH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp"
+                    android:gravity="center"
+                    android:text="MONTH"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/cal"
@@ -225,71 +265,132 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/record_title_todo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="30dp"
-                    android:text="n월 n주 투두"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:text="WEEK"
+                    android:textColor="#F9F2C5"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_context_todo"
+                    android:id="@+id/record_title0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="3dp"
+                    android:text="김마다님의 n째 주 통계예요."
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/BarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp" />
+
+                <TextView
+                    android:id="@+id/record_title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:background="@drawable/my_record_todo"
-                    android:text="n월 n주차의 평균 투두는 n개이고\n그 중 n%를 클리어하셨어요."
+                    android:text="이번 주 총 n개 완료했어요"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/record_title_timetable"
+                    android:id="@+id/record_context1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="32dp"
-                    android:text="n월 n주 시간표"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="이번 주에는 nn개의 투두 중에서\n 평균 nn%인 nn개의 투두를 완료했어요.\n 지난 주에 비해 n개 상승했네요."
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="20dp">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/my_chart"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
-                        android:layout_weight="3"/>
+                        android:layout_weight="3" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_category_recycler"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
-                        android:layout_weight="2"/>
+                        android:layout_weight="2" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/record_context_timetable"
+                    android:id="@+id/record_title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="이번 주 총 nn개 추가했어요"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/record_context2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="이번 주에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 주에 비해 n개 상승했네요."
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/LineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp" />
+
+                <TextView
+                    android:id="@+id/record_title3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="투두 달성도가 nn% 상승했어요"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/record_context3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="80dp"
                     android:gravity="center"
-                    android:text="김마다님이 가장 많은 시간을 투자한 카테고리는\n 공부하기, 데이트, 개발입니다."
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:padding="16dp"
+                    android:text="전체 투두에서 평균적으로 n개 이상의 투두를 완료하면서\n지난 주에 비해서 평균 달성 개수가 n개 상승했어요"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

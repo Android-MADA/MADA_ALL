@@ -31,7 +31,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CalenderFuntion.Model.CharacterResponse
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -40,8 +39,10 @@ import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.squareup.picasso.Picasso
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -51,6 +52,7 @@ class FragMy : Fragment() {
     lateinit var navController: NavController
     private lateinit var alertDialog: AlertDialog
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+    lateinit var mAdView : AdView
 
     //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -67,6 +69,7 @@ class FragMy : Fragment() {
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
+
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
             override fun onResponse(
@@ -83,8 +86,8 @@ class FragMy : Fragment() {
                     else { binding.userType.text = "일반 유저" }
 
                     binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
-                    binding.sayingContent.text = response.body()!!.data.saying[0].content
-                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
+//                    binding.sayingContent.text = response.body()!!.data.saying[0].content
+//                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
                     Log.d("selectfragMy 실패", response.body().toString())
                 }
@@ -93,6 +96,13 @@ class FragMy : Fragment() {
                 Log.d("서버 오류", "selectfragMy 실패")
             }
         })
+
+        // 구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
 
         return binding.root
 
