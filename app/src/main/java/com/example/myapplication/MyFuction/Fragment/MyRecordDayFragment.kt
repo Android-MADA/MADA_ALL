@@ -21,7 +21,6 @@ import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.CategoryList1
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewpager2CategoryAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.TimeFunction.TimeViewModel
@@ -56,7 +55,6 @@ class MyRecordDayFragment : Fragment() {
     val service = retrofit.create(HomeApi::class.java)
     var token = Splash2Activity.prefs.getString("token", "")
 
-    private var cateAdapter: HomeViewpager2CategoryAdapter? = null
 
     lateinit var pieData2 : PieData
     lateinit var pieDataSet2 : PieDataSet
@@ -125,15 +123,6 @@ class MyRecordDayFragment : Fragment() {
             }
         })
 
-        // 홈 투두 받아오기
-        //카테 데이터 받아오기
-        //카태 데이터 있는지 확인하고
-        //카테 어댑터 연결
-
-        //투두 데이터 있는지 확인하고
-        //out rv 연결하고
-        // in rv 연결하기
-
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
         view.requestFocus()
@@ -163,7 +152,8 @@ class MyRecordDayFragment : Fragment() {
                 }
             }
         }
-        findRv(theDate)
+        //데이터 다시 받아서 넣기
+        //findRv(theDate)
     }
 
     private fun pirChartOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
@@ -319,97 +309,5 @@ class MyRecordDayFragment : Fragment() {
 
     }
 
-    private fun attachAdapter(dataSet: ArrayList<Category>, cateTodoSet: ArrayList<ArrayList<Todo>>) {
-
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-        cateAdapter = HomeViewpager2CategoryAdapter("my")
-        cateAdapter!!.dataSet = dataSet
-        cateAdapter!!.cateTodoSet = cateTodoSet
-
-        cateAdapter!!.setItemClickListener(object :
-            HomeViewpager2CategoryAdapter.OnItemClickListener {
-            override fun onClick(
-                v: View,
-                position: Int,
-                cate: Int,
-                edt: EditText,
-                layout: LinearLayout
-            ) {
-
-            }
-        })
-
-        binding.myViewpager2.adapter = cateAdapter
-        binding.myViewpager2.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private fun findRv(date: String) {
-        service.getMyCategory(token).enqueue(object : Callback<CategoryList1> {
-            override fun onResponse(call: Call<CategoryList1>, response: Response<CategoryList1>) {
-                val category = response.body()?.data?.CategoryList
-                if (category?.isEmpty() != true) {
-                    val cate = response.body()?.data?.CategoryList
-                    service.getAllMyTodo(token, date).enqueue(object : Callback<TodoList> {
-                        override fun onResponse(
-                            call: Call<TodoList>,
-                            response: Response<TodoList>
-                        ) {
-                            val cateTodo = classifyTodo(category!!, response.body()!!.data.TodoList)
-                            attachAdapter(category, cateTodo)
-                        }
-
-                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                        }
-
-                    })
-                }
-
-            }
-
-            override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-            }
-        })
-    }
-
-    private fun classifyTodo(dataSet: ArrayList<Category>, todo: ArrayList<Todo>): ArrayList<ArrayList<Todo>> {
-
-        var size = if (dataSet.size != 0) {
-            dataSet.size.minus(1)
-        } else {
-            -1
-        }
-
-        var todoCateList: ArrayList<ArrayList<Todo>> = arrayListOf(
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-        if (size > 0) {
-            for (i in todo) {
-                for (j in 0..size) {
-                    if (i.category.id == dataSet[j].id) {
-                        todoCateList[j].add(i)
-                    }
-                }
-            }
-        } else if (size == 0) {
-            for (i in todo) {
-                todoCateList[0].add(i)
-            }
-        }
-        return todoCateList
-    }
+    //투두 rv연결 메서드
 }

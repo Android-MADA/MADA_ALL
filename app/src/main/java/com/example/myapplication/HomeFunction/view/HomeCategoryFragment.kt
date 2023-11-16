@@ -14,7 +14,6 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.adapter.category.CateListAdapter
 import com.example.myapplication.R
-import com.example.myapplication.HomeFunction.adapter.category.HomeCategoryAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.db.entity.CateEntity
@@ -24,7 +23,6 @@ class HomeCategoryFragment : Fragment() {
 
     lateinit var binding : HomeFragmentCategoryBinding
     private val viewModel : HomeViewModel by activityViewModels()
-    var cateAdapter: HomeCategoryAdapter? = null
 
     private var bottomFlag = true
 
