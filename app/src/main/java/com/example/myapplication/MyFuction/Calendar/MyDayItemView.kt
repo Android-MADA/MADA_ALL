@@ -44,11 +44,11 @@ class MyDayItemView @JvmOverloads constructor(
 
             }
         }
-        setOnClickListener {
-            Log.d("click","${date}")
-            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
-            (fm as? MyRecordDayFragment)?.dayChange(formatter.print(date))
-        }
+//        setOnClickListener {
+//            Log.d("click","${date}")
+//            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+//            (fm as? MyRecordDayFragment)?.dayChange(formatter.print(date))
+//        }
     }
 
     override fun onDraw(canvas: Canvas?) {
