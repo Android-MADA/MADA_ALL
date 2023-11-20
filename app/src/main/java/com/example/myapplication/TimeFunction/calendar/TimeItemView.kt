@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.TimeFunction.calendar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -15,24 +15,27 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.Fragment
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
-import com.example.myapplication.MyFuction.Fragment.MyRecordDayFragment
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.TimeViewModel
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 
-class MyDayItemView @JvmOverloads constructor(
+class TimeItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
     private val date: DateTime = DateTime(),
-    private val fm: Fragment
+    private val timeViewModel : TimeViewModel,
+    private val dialog: TimeBottomSheetDialog,
+    private val firstDayOfMonth: DateTime = DateTime()
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
     private var paint: Paint = Paint()
     init {
+
         /* Attributes */
         context.withStyledAttributes(attrs, R.styleable.CalendarSmallView, defStyleAttr, defStyleRes) {
             val dayTextSize = getDimensionPixelSize(R.styleable.CalendarSmallView_dayTextSmallSize, 0).toFloat()
@@ -41,48 +44,42 @@ class MyDayItemView @JvmOverloads constructor(
             paint = TextPaint().apply {
                 isAntiAlias = true
                 textSize = dayTextSize
-
+                if (!CalendarUtils.isSameMonth(date, firstDayOfMonth)) {
+                    alpha = 50
+                }
             }
         }
-//        setOnClickListener {
-//            Log.d("click","${date}")
-//            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
-//            (fm as? MyRecordDayFragment)?.dayChange(formatter.print(date))
-//        }
+        setOnClickListener {
+            //Log.d("click",date.toString("yyyy-MM-dd"))
+            timeViewModel.updateData(date.toString("yyyy-MM-dd"))
+            dialog.dismiss()
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (canvas == null) return
-
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
-        Log.d("date",date.toString())
+
+        val textWidth = paint.measureText(dateString)
+        val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
+
+        val x =(width - textWidth)/2.toFloat()
+        val y =( height-textHeight)/2.toFloat()- paint.fontMetrics.top
         //날짜 그리기
         if(isSameDay(date)) {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
             // Draw rounded rectangle
-            val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
-                width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())
-            val cornerRadius = width/4.37f // 반지름 값 설정
+            val roundedRect = RectF(width/2-textWidth,   height/2+textWidth, width/2+textWidth, height/2-textWidth)
+            val cornerRadius = textWidth*2/3 // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
-            canvas.drawText(
-                dateString,
-                (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + height/3.5f).toFloat(),
-                paint
-
-            )
+            canvas.drawText(dateString,x,y,paint)
         }else {
-            canvas.drawText(
-                dateString,
-                (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + height/3.5f).toFloat(),
-                paint
-            )
+            canvas.drawText(dateString,x,y,paint)
         }
 
     }

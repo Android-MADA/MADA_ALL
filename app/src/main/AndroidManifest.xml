@@ -51,6 +51,9 @@
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7283679844939244~3566308559"/>
     </application>
 
 </manifest>

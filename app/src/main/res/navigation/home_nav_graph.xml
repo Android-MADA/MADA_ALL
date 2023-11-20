@@ -138,6 +138,9 @@
         <action
             android:id="@+id/action_fragTime_to_fragTimeAdd"
             app:destination="@id/fragTimeAdd" />
+        <action
+            android:id="@+id/action_fragTime_to_fragTime"
+            app:destination="@id/fragTime" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeTable"
