@@ -89,7 +89,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:orientation="vertical"
                 app:behavior_hideable="false"
                 android:id="@+id/CustomBottomSheet"
@@ -145,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"
-                    android:paddingTop="10dp">
+                    android:paddingTop="5dp">
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/CustomBottomSheetViewPager"

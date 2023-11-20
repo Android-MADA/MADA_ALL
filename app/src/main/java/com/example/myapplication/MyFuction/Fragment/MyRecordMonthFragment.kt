@@ -27,15 +27,12 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
-import java.util.Calendar
 
 class MyRecordMonthFragment : Fragment() {
     private lateinit var binding: MyRecordMonthBinding
-    private lateinit var calendar: Calendar
     lateinit var navController: NavController
     val datas = mutableListOf<MyRecordCategoryData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
@@ -61,7 +58,6 @@ class MyRecordMonthFragment : Fragment() {
         }
 
 
-
         //달력 부분
         val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"Month")
         binding.calendar2.adapter = calendarAdapter
@@ -74,6 +70,7 @@ class MyRecordMonthFragment : Fragment() {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
+        // 일 주 월 버튼 클릭 이동
         binding.dayWeekMonthBtn.setOnClickListener {
             navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
         }
@@ -91,14 +88,15 @@ class MyRecordMonthFragment : Fragment() {
 
     }
     fun monthChange(month : Int, date : String) {
-        setTodoView(MyRecordOptionData("month", date) , month)
-        setTimetableView(MyRecordOptionData("month", date) , month)
+        setBarChartView(MyRecordOptionData("month", date), month)
+        setPieChartView(MyRecordOptionData("month", date), month)
+        setLineChartView(MyRecordOptionData("month", date), month)
         initCategoryRecycler(MyRecordOptionData("month", date))
         initCategoryPieChart(MyRecordOptionData("month", date))
     }
 
-    // 투두 뷰 설정
-    private fun setTodoView(wdata: MyRecordOptionData, month : Int) {
+    // 막대그래프 뷰 설정
+    private fun setBarChartView(wdata: MyRecordOptionData, month : Int) {
 
         // 서버 데이터 연결
         api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
@@ -107,37 +105,40 @@ class MyRecordMonthFragment : Fragment() {
                 response: Response<MyRecordData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek, ${wdata.date}", "Response Code: $responseCode")
+                Log.d("myGetRecordMonth, ${wdata.date}", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordWeek 성공", response.body().toString())
+                    Log.d("myGetRecordMonth 성공", response.body().toString())
 
-                    val todoCnt = response.body()?.data?.todosPercent
-                    val todoPercent = response.body()?.data?.completeTodoPercent
+                    val nickName = response.body()?.data?.nickName
+                    val totalTodoCnt = 999
+                    val completeTodoCnt = 9
+                    val completeTodoPercent = response.body()?.data?.completeTodoPercent
+                    val compareTodoCnt = 9.9
 
-                    val formattedText1 = "${month}월 투두"
-                    val formattedText2 =
-                        "${month}월의 평균 투두는 ${todoCnt}개이고\n그 중 ${todoPercent}%를 클리어하셨어요"
+                    val formattedText0 = "${nickName}님의 ${month}월 통계예요."
+                    val formattedText1 = "이번 달 총 ${completeTodoCnt}개 완료했어요"
+                    val formattedText2 = "이번 달에는 ${totalTodoCnt}개의 투두 중에서" +
+                            "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
+                            "\n지난 달에 비해 ${compareTodoCnt}개 상승했네요."
 
-                    Log.d("평균 투두 개수!!", "${todoCnt}")
-                    Log.d("클리어 투두 퍼센트!!", "${todoPercent}")
-
-                    binding.recordTitleTodo.text = formattedText1
-                    binding.recordContextTodo.text = formattedText2
+                    binding.recordTitle0.text = formattedText0
+                    binding.recordTitle1.text = formattedText1
+                    binding.recordContext1.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("myGetRecordMonth 실패", response.body().toString())
                 }
             }
             override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+                Log.d("서버 오류", "myGetRecordMonth 실패")
             }
         })
     }
 
 
-    // 시간표 뷰 설정
-    private fun setTimetableView(wdata: MyRecordOptionData, month : Int) {
+    // 원형그래프 뷰 설정
+    private fun setPieChartView(wdata: MyRecordOptionData, month : Int) {
 
         // 서버 데이터 연결
         api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
@@ -146,43 +147,85 @@ class MyRecordMonthFragment : Fragment() {
                 response: Response<MyRecordData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek", "Response Code: $responseCode")
+                Log.d("myGetRecordMonth", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordWeek 성공", response.body().toString())
+                    Log.d("myGetRecordMonth 성공", response.body().toString())
 
-                    val nickName = response.body()?.data?.nickName
                     val categoryStatistics = response.body()?.data?.categoryStatistics
                     val size = response.body()?.data?.categoryStatistics?.size
+                    val addTodoCnt = 9
+                    val averageCompleteTodoCnt = 9.9
+                    val compareCompleteTodoText = "{1.2}개 상승"
 
-                    val formattedText1 = "${month}월 시간표"
+                    val formattedText1 = "이번 달 총 ${addTodoCnt}개 추가했어요"
                     var formattedText2 = ""
 
                     if (categoryStatistics.isNullOrEmpty()) {
-                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는 없습니다."
-                    } else if(size == 1 || size == 2){
-                        var s = ""
-                        for(data in categoryStatistics) {
-                            s+= ", "+ data.categoryName
-                        }
-                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는\n${s.replaceFirst(",","")} 입니다."
-                    }else{
-                        val s1 = categoryStatistics[0].categoryName
-                        val s2 = categoryStatistics[1].categoryName
-                        val s3 = categoryStatistics[2].categoryName
-                        formattedText2 = "${nickName}님이 가장 많은 시간을 투자한 카테고리는\n${s1}, ${s2}, ${s3} 입니다."
+                        formattedText2 = "추가한 카테고리가 없어요"
+                    } else{
+                        val c1 = categoryStatistics[0].categoryName
+                        formattedText2 =
+                        "이번 달에는 ${c1} 카테고리에서" +
+                                "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
+                                "\n지난 달에 비해 ${compareCompleteTodoText}했네요."
                     }
 
-                    binding.recordTitleTimetable.text = formattedText1
-                    binding.recordContextTimetable.text = formattedText2
+                    binding.recordTitle2.text = formattedText1
+                    binding.recordContext2.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("myGetRecordMonth 실패", response.body().toString())
                 }
             }
 
             override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+                Log.d("서버 오류", "myGetRecordMonth 실패")
+            }
+        })
+
+    }
+
+    // 꺾은선그래프 뷰 설정
+    private fun setLineChartView(wdata: MyRecordOptionData, month : Int) {
+
+        // 서버 데이터 연결
+        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+            override fun onResponse(
+                call: Call<MyRecordData>,
+                response: Response<MyRecordData>
+            ) {
+                val responseCode = response.code()
+                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+
+                if (response.isSuccessful) {
+                    Log.d("myGetRecordMonth 성공", response.body().toString())
+
+                    val totalTodoCnt = 999
+                    val completeTodoCnt = 9
+                    val compareTodoCnt = 9.9
+                    val compareTodoPercent = 99
+
+                    val formattedText1 = "투두 달성도가 ${compareTodoPercent}% 상승했어요"
+                    var formattedText2 = ""
+
+                    if (totalTodoCnt==0) {
+                        formattedText2 = "추가한 투두가 없어요"
+                    } else{
+                        formattedText2 =
+                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 지난 달에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
+                    }
+
+                    binding.recordTitle2.text = formattedText1
+                    binding.recordContext2.text = formattedText2
+
+                } else {
+                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
+                Log.d("서버 오류", "myGetRecordMonth 실패")
             }
         })
 
