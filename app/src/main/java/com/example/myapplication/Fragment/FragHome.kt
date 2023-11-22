@@ -33,7 +33,6 @@ class FragHome : Fragment() {
 
     //lateinit var binding: HomeFragmentBinding
     lateinit var binding : TodoLayoutBinding
-    private var myAdapter: HomeViewPagerAdapter? = null
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,15 +52,6 @@ class FragHome : Fragment() {
         hideBottomNavigation(false, activity)
         //날짜 변경 시 서버에서 cateogry, todo받아오기
 
-
-//        val homeViewPager = binding.homeViewpager2
-//        val homeIndicator = binding.homeIndicator
-//
-//        //viewpager 연결, indicator 연결
-//        //myAdapter = HomeViewPagerAdapter(this@FragHome)
-//        //homeViewPager.adapter = myAdapter
-//        //homeIndicator.setViewPager(homeViewPager)
-//        homeViewPager.setCurrentItem(1,false)
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
@@ -187,9 +177,6 @@ class FragHome : Fragment() {
             binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
-        //배경설정
-        // 클릭 시 나오는 캘린더 -> 삭제 예정
-        //val calendarLayout = binding.layoutCalendarviewHome
 
         //달력은 현재 날짜로 세팅
         var dateCalendar = Calendar.getInstance()
