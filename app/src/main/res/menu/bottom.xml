@@ -21,7 +21,7 @@
         android:enabled="true"
         android:title="" />
     <item
-        android:id="@+id/fragChart"
+        android:id="@+id/fragChartDay"
         android:icon="@drawable/etc_chart"
         android:enabled="true"
         android:title="" />
