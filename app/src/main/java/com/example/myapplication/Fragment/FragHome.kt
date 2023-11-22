@@ -8,10 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -19,29 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.DataRepo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.example.myapplication.HomeFunction.adapter.todo.HomeViewPagerAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.HomeFragmentBinding
 import com.example.myapplication.databinding.TodoLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
-import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.hideBottomNavigation
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.Calendar
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class FragHome : Fragment() {
 
