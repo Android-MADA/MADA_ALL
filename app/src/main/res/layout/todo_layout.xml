@@ -93,6 +93,8 @@
                     android:paddingHorizontal="30dp"
                     />
 
+
+
                 <ImageView
                     android:id="@+id/todo_character_iv"
                     android:layout_width="214.38dp"
@@ -172,20 +174,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="5dp"
                         />
-
-<!--                    <ProgressBar-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/todo_progress_ment2_tv"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        style="?android:attr/progressBarStyleHorizontal"-->
-<!--                        android:paddingHorizontal="20dp"-->
-<!--                        android:layout_marginTop="20dp"-->
-<!--                        android:max="10"-->
-<!--                        android:progress="5"-->
-<!--                        android:progressDrawable="@drawable/todo_progress_background"-->
-<!--                        />-->
 
                     <LinearLayout
                         android:id="@+id/progress_layout"
