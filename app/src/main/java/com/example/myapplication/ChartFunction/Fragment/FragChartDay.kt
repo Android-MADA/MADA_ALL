@@ -1,7 +1,13 @@
 package com.example.myapplication.ChartFunction.Fragment
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -116,14 +122,17 @@ class FragChartDay : Fragment() {
                     val completeTodoPercent = response.body()?.data?.completeTodoPercent
                     val compareTodoCnt = 9.9
 
-                    val formattedText0 = "${nickName}님의 오늘 통계예요."
-                    val formattedText1 = "오늘 총 ${completeTodoCnt}개 완료했어요"
+                    val colorText0 = "오늘"
+                    val colorText1 = "총 ${completeTodoCnt}개"
+
+                    val formattedText0 = "${nickName}님의 ${colorText0} 통계예요."
+                    val formattedText1 = "오늘 ${colorText1} 완료했어요"
                     val formattedText2 = "오늘은 ${totalTodoCnt}개의 투두 중에서" +
                             "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
                             "\n어제에 비해 ${compareTodoCnt}개 상승했네요."
 
-                    binding.recordTitle0.text = formattedText0
-                    binding.recordTitle1.text = formattedText1
+                    binding.recordTitle0.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordTitle1.text = createSpannableString(formattedText1, colorText1)
                     binding.recordContext1.text = formattedText2
 
                 } else {
@@ -157,7 +166,9 @@ class FragChartDay : Fragment() {
                     val averageCompleteTodoCnt = 9.9
                     val compareCompleteTodoText = "{1.2}개 상승"
 
-                    val formattedText1 = "오늘 총 ${addTodoCnt}개 추가했어요"
+                    val colerText1 = "총 ${addTodoCnt}개"
+
+                    val formattedText1 = "오늘 ${colerText1} 추가했어요"
                     var formattedText2 = ""
 
                     if (categoryStatistics.isNullOrEmpty()) {
@@ -170,7 +181,7 @@ class FragChartDay : Fragment() {
                                     "\n어제에 비해 ${compareCompleteTodoText}했네요."
                     }
 
-                    binding.recordTitle2.text = formattedText1
+                    binding.recordTitle2.text = createSpannableString(formattedText1, colerText1)
                     binding.recordContext2.text = formattedText2
 
                 } else {
@@ -205,7 +216,9 @@ class FragChartDay : Fragment() {
                     val compareTodoCnt = 9.9
                     val compareTodoPercent = 99
 
-                    val formattedText1 = "투두 달성도가 ${compareTodoPercent}% 상승했어요"
+                    val colorText1 = "${compareTodoPercent}%"
+
+                    val formattedText1 = "투두 달성도가 ${colorText1} 상승했어요"
                     var formattedText2 = ""
 
                     if (totalTodoCnt==0) {
@@ -215,8 +228,8 @@ class FragChartDay : Fragment() {
                             "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 어제에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
                     }
 
-                    binding.recordTitle2.text = formattedText1
-                    binding.recordContext2.text = formattedText2
+                    binding.recordTitle3.text = createSpannableString(formattedText1, colorText1)
+                    binding.recordContext3.text = formattedText2
 
                 } else {
                     Log.d("myGetRecordMonth 실패", response.body().toString())
@@ -337,6 +350,33 @@ class FragChartDay : Fragment() {
         })
 
 
+    }
+
+    // 텍스트에 색상을 적용하는 함수
+    private fun createSpannableString(text: String, targetText: String): SpannableStringBuilder {
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        val start = text.indexOf(targetText)
+        val end = start + targetText.length
+
+        if (start != -1) {
+            val colorSpan = ForegroundColorSpan(Color.parseColor("#2AA1B7"))
+            spannableStringBuilder.setSpan(colorSpan, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
+
+        return spannableStringBuilder
+    }
+
+    // 텍스트를 굵게 적용하는 함수
+    private fun createSpannableStringBold(text: String, targetText: String): SpannableStringBuilder {
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        val start = text.indexOf(targetText)
+        val end = start + targetText.length
+
+        if (start != -1) {
+            spannableStringBuilder.setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        return spannableStringBuilder
     }
 
 }
