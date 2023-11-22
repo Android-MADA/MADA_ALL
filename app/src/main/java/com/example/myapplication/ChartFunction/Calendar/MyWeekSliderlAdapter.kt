@@ -17,7 +17,16 @@ class MyWeekSliderlAdapter(
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
-                monthWeekText.text = DateTime(millis).monthOfYear.toString() + "월 " + getWeekOfMonth(DateTime(millis)).toString()+" 주차"
+
+                val weekOfMonthText = when (getWeekOfMonth(DateTime(millis))) {
+                    1 -> "첫째"
+                    2 -> "둘째"
+                    3 -> "셋째"
+                    4 -> "넷째"
+                    5 -> "다섯째"
+                    else -> "Invalid week"
+                }
+                monthWeekText.text = DateTime(millis).year.toString() + "년 "+DateTime(millis).monthOfYear.toString() + "월 " + weekOfMonthText +" 주"
 
                 (fm as? FragChartWeek)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
 
