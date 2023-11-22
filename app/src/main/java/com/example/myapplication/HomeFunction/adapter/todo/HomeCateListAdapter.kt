@@ -95,6 +95,7 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
 //                        }
 //                    }
 //                }
+                //종료카테고리 처리 -> 보완 필요
                 runBlocking {
                     viewModel!!.readTodo(cateId, null)
                     if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
@@ -192,11 +193,8 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
     inner class ViewHolder(private val binding : HomeCatagoryListBinding) : RecyclerView.ViewHolder(binding.root){
         var data : CateEntity? = null
         fun bind(cateEntity: CateEntity) : Int {
-            binding.tvRepeatCategory.text = cateEntity.categoryName
-            binding.tvRepeatCategory.text = cateEntity.categoryName
-            binding.icRepeatCategory.setImageResource(findIcon(cateEntity.iconId))
-            val mGradientDrawable : GradientDrawable = binding.layoutHomeViewpagerCateList.background as GradientDrawable
-            mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
+            binding.todoCategoryTitleTv.text = cateEntity.categoryName
+            binding.todoCategoryIconIv.setImageResource(findIcon(cateEntity.iconId))
             data = cateEntity
 
             return cateEntity.id!!
