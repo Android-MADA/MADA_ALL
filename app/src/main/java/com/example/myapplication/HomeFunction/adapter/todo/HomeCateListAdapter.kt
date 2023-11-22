@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,29 +72,39 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
         val cateId = holder.bind(getItem(position))
         Log.d("HomeCateItem", cateId.toString())
         //todoadapter 연결하기
-        CoroutineScope(Dispatchers.Main).launch {
 
             if(holder.data!!.isInActive == true){
-                holder.btnAdd.isGone = true
-                viewModel!!.readTodo(cateId, null)
-                if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
-                    holder.todoRv.isGone = true
-                    view!!.isGone = true
-
-                }
-                else {
-                        val mTodoAdapter = HomeTodoListAdapter()
-                        mTodoAdapter.viewModel = viewModel
-                        mTodoAdapter.category = getItem(position)
-                        viewModel!!.readTodo(cateId, mTodoAdapter)
-
-                        withContext(Dispatchers.Main){
-                            holder.todoRv.adapter = mTodoAdapter
-                            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-
-                        }
+//                holder.btnAdd.isGone = true
+//                runBlocking {
+//                    viewModel!!.readTodo(cateId, null)
+//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
+//                        holder.todoRv.isGone = true
+//                        view!!.isGone = true
+//
+//                    }
+//                    else {
+//                        val mTodoAdapter = HomeTodoListAdapter()
+//                        mTodoAdapter.viewModel = viewModel
+//                        mTodoAdapter.category = getItem(position)
+//                        viewModel!!.readTodo(cateId, mTodoAdapter)
+//
+//                        withContext(Dispatchers.Main){
+//                            holder.todoRv.adapter = mTodoAdapter
+//                            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+//
+//                        }
+//                    }
+//                }
+                runBlocking {
+                    viewModel!!.readTodo(cateId, null)
+                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
+                        Log.d("inactive", cateId.toString())
+                        view!!.isGone = true
                     }
-
+                    else{
+                        Log.d("inactive but have todo", cateId.toString())
+                    }
+                }
 
             }
             else {
@@ -105,15 +116,15 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
                 mTodoAdapter.category = getItem(position)
                 viewModel!!.readTodo(cateId, mTodoAdapter)
 
-                withContext(Dispatchers.Main){
+
                     holder.todoRv.adapter = mTodoAdapter
                     holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
 
-                }
+
             }
 
 
-        }
+
         holder.btnAdd.setOnClickListener {
             if(holder.layoutAdd.isGone == true){
                 holder.layoutAdd.isVisible = true

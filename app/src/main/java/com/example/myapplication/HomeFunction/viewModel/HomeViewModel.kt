@@ -19,6 +19,7 @@ import com.example.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import com.example.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
@@ -150,7 +151,11 @@ class HomeViewModel : ViewModel() {
     fun readTodo(cateId : Int, adapter: HomeTodoListAdapter?) = viewModelScope.launch(Dispatchers.IO){
         repository.readTodo(cateId).collect{
             Log.d("todoList 확인", it.toString())
+
             inActiveTodoList = it
+            if(inActiveTodoList.isNullOrEmpty()){
+                Log.d("empty list", "empty todo list")
+            }
             withContext(Dispatchers.Main){
                 if(adapter != null){
                     adapter.submitList(it)

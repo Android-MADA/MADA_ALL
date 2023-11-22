@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_fragHome_to_homeRepeatTodoFragment"
             app:destination="@id/homeRepeatTodoFragment" />
+        <action
+            android:id="@+id/action_fragHome_to_fragMy"
+            app:destination="@id/fragMy" />
     </fragment>
 
     <fragment
