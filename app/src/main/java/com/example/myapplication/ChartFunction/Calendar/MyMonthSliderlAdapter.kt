@@ -1,10 +1,10 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.ChartFunction.Calendar
 
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment
+import com.example.myapplication.ChartFunction.Fragment.FragChartMonth
 import org.joda.time.DateTime
 
 class MyMonthSliderlAdapter(
@@ -18,7 +18,7 @@ class MyMonthSliderlAdapter(
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 monthWeekText.text = DateTime(millis).year.toString() + "년 " + DateTime(millis).monthOfYear.toString() + "월"
-                (fm as? MyRecordMonthFragment)?.monthChange(DateTime(millis).monthOfYear,DateTime(millis).toString("yyyy-MM-dd"))
+                (fm as? FragChartMonth)?.monthChange(DateTime(millis).monthOfYear,DateTime(millis).toString("yyyy-MM-dd"))
             }
         })
     }
@@ -29,7 +29,7 @@ class MyMonthSliderlAdapter(
 
     override fun createFragment(position: Int): MyMonthFragment {
         val millis = getItemId(position)
-        return MyMonthFragment.newInstance(millis,dayOrMonth,fm)
+        return MyMonthFragment.newInstance(millis, dayOrMonth, fm)
     }
 
     override fun getItemId(position: Int): Long

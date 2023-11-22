@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.ChartFunction.Calendar
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
@@ -7,12 +7,14 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
 import com.example.myapplication.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
 import kotlin.math.max
 
-class MyWeekView @JvmOverloads constructor(
+class MyMonthView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes defStyleAttr: Int = R.attr.calendarSmallViewStyle,
@@ -31,7 +33,7 @@ class MyWeekView @JvmOverloads constructor(
      * Measure
      */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val h = paddingTop + paddingBottom + max(suggestedMinimumHeight, (_height).toInt())
+        val h = paddingTop + paddingBottom + max(suggestedMinimumHeight, (_height* WEEKS_PER_MONTH).toInt())
         setMeasuredDimension(getDefaultSize(suggestedMinimumWidth, widthMeasureSpec), h)
     }
 
@@ -40,7 +42,7 @@ class MyWeekView @JvmOverloads constructor(
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val iWidth = (width / DAYS_PER_WEEK).toFloat()
-        val iHeight = (height).toFloat()
+        val iHeight = (height / WEEKS_PER_MONTH).toFloat()
 
         var index = 0
         children.forEach { view ->
@@ -62,10 +64,27 @@ class MyWeekView @JvmOverloads constructor(
         list: List<DateTime>
     ) {
         list.forEach {
-            addView(MyItemView(
+            addView(
+                MyItemView(
                 context = context,
                 date = it
-            ))
+            )
+            )
+        }
+
+    }
+    fun initCalendar2(
+        list: List<DateTime>,
+        fm: Fragment
+    ) {
+        list.forEach {
+            addView(
+                MyDayItemView(
+                context = context,
+                date = it,
+                fm = fm
+            )
+            )
         }
 
     }

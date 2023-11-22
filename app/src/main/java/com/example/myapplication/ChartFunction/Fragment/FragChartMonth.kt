@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Fragment
+package com.example.myapplication.ChartFunction.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,15 +14,15 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
-import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
-import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
-import com.example.myapplication.MyFuction.Data.MyRecordData
-import com.example.myapplication.MyFuction.Data.MyRecordOptionData
+import com.example.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.example.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.example.myapplication.ChartFunction.Data.MyRecordCategoryData
+import com.example.myapplication.ChartFunction.Data.MyRecordData
+import com.example.myapplication.ChartFunction.Data.MyRecordOptionData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.MyRecordDayBinding
+import com.example.myapplication.databinding.ChartMonthBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -31,18 +31,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
 
-class MyRecordDayFragment : Fragment() {
-    private lateinit var binding: MyRecordDayBinding
-    private lateinit var navController: NavController
+class FragChartMonth : Fragment() {
+    private lateinit var binding: ChartMonthBinding
+    lateinit var navController: NavController
     val datas = mutableListOf<MyRecordCategoryData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = MyRecordDayBinding.inflate(inflater, container, false)
+        binding = ChartMonthBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         return binding.root
     }
@@ -52,12 +53,17 @@ class MyRecordDayFragment : Fragment() {
 
         navController = binding.navHostFragmentContainer.findNavController()
 
-        binding.backBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
+        binding.btnWEEK.setOnClickListener {
+            navController.navigate(R.id.action_fragChartMonth_to_fragChartWeek)
         }
 
+        binding.btnTODAY.setOnClickListener {
+            navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
+        }
+
+
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"DAY")
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"Month")
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
@@ -68,26 +74,19 @@ class MyRecordDayFragment : Fragment() {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
-        // 일 주 월 버튼 클릭 이동
-        binding.dayWeekMonthBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordDayFragment_to_myRecordWeekFragment)
-        }
-
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                navController.navigate(R.id.action_myRecordDayFragment_to_fragMy)
+                navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
                 return@OnKeyListener true
             }
             false
         })
 
     }
-
-    //날짜 클릭시 실행되는 함수
-    fun dayChange(month : Int, date : String) {
+    fun monthChange(month : Int, date : String) {
         setBarChartView(MyRecordOptionData("month", date), month)
         setPieChartView(MyRecordOptionData("month", date), month)
         setLineChartView(MyRecordOptionData("month", date), month)
@@ -105,7 +104,7 @@ class MyRecordDayFragment : Fragment() {
                 response: Response<MyRecordData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("myGetRecordMonth, ${wdata.date}", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
                     Log.d("myGetRecordMonth 성공", response.body().toString())
@@ -116,11 +115,11 @@ class MyRecordDayFragment : Fragment() {
                     val completeTodoPercent = response.body()?.data?.completeTodoPercent
                     val compareTodoCnt = 9.9
 
-                    val formattedText0 = "${nickName}님의 오늘 통계예요."
-                    val formattedText1 = "오늘 총 ${completeTodoCnt}개 완료했어요"
-                    val formattedText2 = "오늘은 ${totalTodoCnt}개의 투두 중에서" +
+                    val formattedText0 = "${nickName}님의 ${month}월 통계예요."
+                    val formattedText1 = "이번 달 총 ${completeTodoCnt}개 완료했어요"
+                    val formattedText2 = "이번 달에는 ${totalTodoCnt}개의 투두 중에서" +
                             "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
-                            "\n어제에 비해 ${compareTodoCnt}개 상승했네요."
+                            "\n지난 달에 비해 ${compareTodoCnt}개 상승했네요."
 
                     binding.recordTitle0.text = formattedText0
                     binding.recordTitle1.text = formattedText1
@@ -135,6 +134,7 @@ class MyRecordDayFragment : Fragment() {
             }
         })
     }
+
 
     // 원형그래프 뷰 설정
     private fun setPieChartView(wdata: MyRecordOptionData, month : Int) {
@@ -157,7 +157,7 @@ class MyRecordDayFragment : Fragment() {
                     val averageCompleteTodoCnt = 9.9
                     val compareCompleteTodoText = "{1.2}개 상승"
 
-                    val formattedText1 = "오늘 총 ${addTodoCnt}개 추가했어요"
+                    val formattedText1 = "이번 달 총 ${addTodoCnt}개 추가했어요"
                     var formattedText2 = ""
 
                     if (categoryStatistics.isNullOrEmpty()) {
@@ -165,9 +165,9 @@ class MyRecordDayFragment : Fragment() {
                     } else{
                         val c1 = categoryStatistics[0].categoryName
                         formattedText2 =
-                            "오늘은 ${c1} 카테고리에서" +
-                                    "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
-                                    "\n어제에 비해 ${compareCompleteTodoText}했네요."
+                        "이번 달에는 ${c1} 카테고리에서" +
+                                "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
+                                "\n지난 달에 비해 ${compareCompleteTodoText}했네요."
                     }
 
                     binding.recordTitle2.text = formattedText1
@@ -212,7 +212,7 @@ class MyRecordDayFragment : Fragment() {
                         formattedText2 = "추가한 투두가 없어요"
                     } else{
                         formattedText2 =
-                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 어제에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
+                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 지난 달에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
                     }
 
                     binding.recordTitle2.text = formattedText1
@@ -277,7 +277,7 @@ class MyRecordDayFragment : Fragment() {
 
     // 통계 좌측 파이차트 뷰 설정
     private fun initCategoryPieChart(wdata: MyRecordOptionData) {
-        binding.PieChart.setUsePercentValues(true)
+        binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
         api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
@@ -316,7 +316,7 @@ class MyRecordDayFragment : Fragment() {
 
                     // 데이터셋 세팅
                     val pieData = PieData(pieDataSet)
-                    binding.PieChart.apply {
+                    binding.myChart.apply {
                         data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화
@@ -338,5 +338,6 @@ class MyRecordDayFragment : Fragment() {
 
 
     }
+
 
 }

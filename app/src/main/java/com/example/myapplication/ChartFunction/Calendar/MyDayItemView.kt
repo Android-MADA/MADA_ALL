@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.ChartFunction.Calendar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -14,16 +14,18 @@ import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
+import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.example.myapplication.R
 import org.joda.time.DateTime
 
-class MyItemView @JvmOverloads constructor(
+class MyDayItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
-    private val date: DateTime = DateTime()
+    private val date: DateTime = DateTime(),
+    private val fm: Fragment
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
@@ -40,8 +42,11 @@ class MyItemView @JvmOverloads constructor(
 
             }
         }
-        setOnClickListener {
-        }
+//        setOnClickListener {
+//            Log.d("click","${date}")
+//            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+//            (fm as? MyRecordDayFragment)?.dayChange(formatter.print(date))
+//        }
     }
 
     override fun onDraw(canvas: Canvas?) {
