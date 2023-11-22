@@ -120,7 +120,7 @@ class HomeCategoryFragment : Fragment() {
 
         //카테고리 추가 버튼 클리리스너
         binding.categoryAddIv.setOnClickListener {
-
+            Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 
     }
