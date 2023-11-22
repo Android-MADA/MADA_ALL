@@ -1,15 +1,14 @@
-package com.example.myapplication.MyFuction.Adapter
+package com.example.myapplication.ChartFunction.Adaptor
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
+import com.example.myapplication.ChartFunction.Data.MyRecordCategoryData
 import com.example.myapplication.R
 
 class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {

@@ -71,18 +71,18 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
 
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
-            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
-            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
-            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
-            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+//        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+//            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+//            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
+//            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
+//            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
+//            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
+//            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
+//            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
+//            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
+//            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 
 
@@ -102,39 +102,39 @@ class FragHome : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+//        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+//            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
+//            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+//            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+//            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+//            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+//            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+//            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+//            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+//            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+//            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+//            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+//            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+//            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+//            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+//            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+//            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+//            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+//            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 
-        binding.ivHomeRamdi.setImageResource(
-            colorbuttonInfo.selectedImageResource ?: 0
-        )
+//        binding.ivHomeRamdi.setImageResource(
+//            colorbuttonInfo.selectedImageResource ?: 0
+//        )
 
         binding.ivHomeCloth.setImageResource(
             clothbuttonInfo.selectedImageResource ?: 0
         )
-        binding.ivHomeItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
-        )
+//        binding.ivHomeItem.setImageResource(
+//            itembuttonInfo.selectedImageResource ?: 0
+//        )
         return view
     }
 

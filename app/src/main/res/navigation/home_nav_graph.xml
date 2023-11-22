@@ -175,20 +175,11 @@
             android:id="@+id/action_fragMy_to_mySetFragment"
             app:destination="@id/mySetFragment" />
         <action
-            android:id="@+id/action_fragMy_to_splash2Activity"
-            app:destination="@id/splash2Activity" />
-        <action
-            android:id="@+id/action_fragMy_to_myRecordWeekFragment"
-            app:destination="@id/myRecordWeekFragment" />
-        <action
-            android:id="@+id/action_fragMy_to_myRecordMonthFragment"
-            app:destination="@id/myRecordMonthFragment" />
-        <action
-            android:id="@+id/action_fragMy_to_myRecordDayFragment"
-            app:destination="@id/myRecordDayFragment" />
-        <action
             android:id="@+id/action_fragMy_to_fragHome"
             app:destination="@id/fragHome" />
+        <action
+            android:id="@+id/action_fragMy_to_splash2Activity"
+            app:destination="@id/splash2Activity" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -258,51 +249,6 @@
         android:label="splash2"
         tools:layout="@layout/splash2" />
     <fragment
-        android:id="@+id/myRecordWeekFragment"
-        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordWeekFragment"
-        android:label="MyRecordWeekFragment" >
-        <action
-            android:id="@+id/action_myRecordWeekFragment_to_fragMy"
-            app:destination="@id/fragMy" />
-        <action
-            android:id="@+id/action_myRecordWeekFragment_to_myRecordMonthFragment"
-            app:destination="@id/myRecordMonthFragment" />
-        <action
-            android:id="@+id/action_myRecordWeekFragment_to_fragMy2"
-            app:destination="@id/fragMy" />
-    </fragment>
-    <fragment
-        android:id="@+id/myRecordMonthFragment"
-        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment"
-        android:label="MyRecordMonthFragment" >
-        <action
-            android:id="@+id/action_myRecordMonthFragment_to_fragMy"
-            app:destination="@id/fragMy" />
-        <action
-            android:id="@+id/action_myRecordMonthFragment_to_myRecordDayFragment"
-            app:destination="@id/myRecordDayFragment" />
-        <action
-            android:id="@+id/action_myRecordMonthFragment_to_myRecordWeekFragment"
-            app:destination="@id/myRecordWeekFragment" />
-        <action
-            android:id="@+id/action_myRecordMonthFragment_to_fragMy2"
-            app:destination="@id/fragMy" />
-    </fragment>
-    <fragment
-        android:id="@+id/myRecordDayFragment"
-        android:name="com.example.myapplication.MyFuction.Fragment.MyRecordDayFragment"
-        android:label="MyRecordDayFragment" >
-        <action
-            android:id="@+id/action_myRecordDayFragment_to_myRecordWeekFragment"
-            app:destination="@id/myRecordWeekFragment" />
-        <action
-            android:id="@+id/action_myRecordDayFragment_to_fragMy"
-            app:destination="@id/fragMy" />
-        <action
-            android:id="@+id/action_myRecordDayFragment_to_fragMy2"
-            app:destination="@id/fragMy" />
-    </fragment>
-    <fragment
         android:id="@+id/categoryInActiveFragment"
         android:name="com.example.myapplication.HomeFunction.view.CategoryInActiveFragment"
         android:label="CategoryInActiveFragment" >
@@ -311,4 +257,46 @@
             app:destination="@id/homeCategoryFragment"
             app:popUpTo="@id/fragHome" />
     </fragment>
+
+    <!--  Chart  부분   -->
+    <fragment
+        android:id="@+id/fragChartDay"
+        android:name="com.example.myapplication.ChartFunction.Fragment.FragChartDay"
+        android:label="chart_day"
+        tools:layout="@layout/chart_day" >
+        <action
+            android:id="@+id/action_fragChartDay_to_fragChartMonth"
+            app:destination="@id/fragChartMonth" />
+        <action
+            android:id="@+id/action_fragChartDay_to_fragChartWeek"
+            app:destination="@id/fragChartWeek" />
+        <action
+            android:id="@+id/action_fragChartDay_to_fragHome"
+            app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragChartMonth"
+        android:name="com.example.myapplication.ChartFunction.Fragment.FragChartMonth"
+        android:label="chart_month"
+        tools:layout="@layout/chart_month" >
+        <action
+            android:id="@+id/action_fragChartMonth_to_fragChartDay"
+            app:destination="@id/fragChartDay" />
+        <action
+            android:id="@+id/action_fragChartMonth_to_fragChartWeek"
+            app:destination="@id/fragChartWeek" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragChartWeek"
+        android:name="com.example.myapplication.ChartFunction.Fragment.FragChartWeek"
+        android:label="chart_week"
+        tools:layout="@layout/chart_week" >
+        <action
+            android:id="@+id/action_fragChartWeek_to_fragChartDay"
+            app:destination="@id/fragChartDay" />
+        <action
+            android:id="@+id/action_fragChartWeek_to_fragChartMonth"
+            app:destination="@id/fragChartMonth" />
+    </fragment>
+
 </navigation>

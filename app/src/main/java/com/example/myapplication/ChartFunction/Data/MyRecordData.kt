@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Data
+package com.example.myapplication.ChartFunction.Data
 
 import com.google.gson.annotations.SerializedName
 
