@@ -8,9 +8,11 @@ import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
 import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
 import kotlin.math.max
@@ -63,8 +65,8 @@ class TimeMonthView @JvmOverloads constructor(
      */
     fun initCalendar(
         list: List<DateTime>,
-        timeViewModel: TimeViewModel,
-        dialog: TimeBottomSheetDialog,
+        timeViewModel: ViewModel,
+        dialog: BottomSheetDialogFragment,
         firstDayOfMonth: DateTime
 
     ) {

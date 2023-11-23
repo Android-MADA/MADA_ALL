@@ -15,10 +15,13 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
+import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.joda.time.DateTime
 
 class TimeItemView @JvmOverloads constructor(
@@ -27,8 +30,8 @@ class TimeItemView @JvmOverloads constructor(
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
     private val date: DateTime = DateTime(),
-    private val timeViewModel : TimeViewModel,
-    private val dialog: TimeBottomSheetDialog,
+    private val viewModel : ViewModel,
+    private val dialog: BottomSheetDialogFragment,
     private val firstDayOfMonth: DateTime = DateTime()
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
@@ -51,7 +54,21 @@ class TimeItemView @JvmOverloads constructor(
         }
         setOnClickListener {
             //Log.d("click",date.toString("yyyy-MM-dd"))
-            timeViewModel.updateData(date.toString("yyyy-MM-dd"))
+            val homeViewModel: HomeViewModel? = if (viewModel is HomeViewModel) {
+                viewModel as HomeViewModel
+            } else {
+                null
+            }
+
+            val timeViewModel: TimeViewModel? = if (viewModel is TimeViewModel) {
+                viewModel as TimeViewModel
+
+            } else {
+                null
+            }
+            if (timeViewModel != null) {
+                timeViewModel.updateData(date.toString("yyyy-MM-dd"))
+            }
             dialog.dismiss()
         }
     }
