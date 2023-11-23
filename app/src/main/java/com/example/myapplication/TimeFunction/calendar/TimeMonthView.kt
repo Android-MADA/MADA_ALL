@@ -74,7 +74,7 @@ class TimeMonthView @JvmOverloads constructor(
             addView(TimeItemView(
                 context = context,
                 date = it,
-                timeViewModel = timeViewModel,
+                viewModel = timeViewModel,
                 dialog = dialog,
                 firstDayOfMonth = firstDayOfMonth
             ))
