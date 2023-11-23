@@ -1,11 +1,10 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.ChartFunction.Calendar
 
-import android.util.Log
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.MyFuction.Fragment.MyRecordWeekFragment
+import com.example.myapplication.ChartFunction.Fragment.FragChartWeek
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
 
@@ -18,9 +17,18 @@ class MyWeekSliderlAdapter(
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
-                monthWeekText.text = DateTime(millis).monthOfYear.toString() + "월 " + getWeekOfMonth(DateTime(millis)).toString()+" 주차"
 
-                (fm as? MyRecordWeekFragment)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
+                val weekOfMonthText = when (getWeekOfMonth(DateTime(millis))) {
+                    1 -> "첫째"
+                    2 -> "둘째"
+                    3 -> "셋째"
+                    4 -> "넷째"
+                    5 -> "다섯째"
+                    else -> "Invalid week"
+                }
+                monthWeekText.text = DateTime(millis).year.toString() + "년 "+DateTime(millis).monthOfYear.toString() + "월 " + weekOfMonthText +" 주"
+
+                (fm as? FragChartWeek)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
 
             }
         })

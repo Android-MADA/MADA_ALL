@@ -98,10 +98,10 @@ class FragMy : Fragment() {
         })
 
         // 구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adView
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+//        MobileAds.initialize(this.requireContext()) {}
+//        mAdView = binding.adView
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
 
 
         return binding.root
@@ -141,27 +141,27 @@ class FragMy : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+//        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+//            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
+//            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+//            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+//            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+//            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+//            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+//            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+//            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+//            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+//            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+//            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+//            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+//            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+//            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+//            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+//            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+//            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+//            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 
         binding.myRamdi.setImageResource(
@@ -171,9 +171,9 @@ class FragMy : Fragment() {
         binding.imgMyCloth.setImageResource(
             clothbuttonInfo.selectedImageResource ?: 0
         )
-        binding.imgMyItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
-        )
+//        binding.imgMyItem.setImageResource(
+//            itembuttonInfo.selectedImageResource ?: 0
+//        )
         setupSwitchColor(binding.myGoogleCalSwitch)
 
         // 바텀 시트 항목 선택 리스너
@@ -205,12 +205,6 @@ class FragMy : Fragment() {
         }
         binding.myWithdraw.setOnClickListener{
             navController.navigate(R.id.action_fragMy_to_myWithdrawFragment)
-        }
-
-        // 내 기록 확인하기
-        binding.myRecordBtn.setOnClickListener {
-            //navController.navigate(R.id.action_fragMy_to_myRecordWeekFragment)
-            navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
         }
 
         // 시스템 뒤로가기

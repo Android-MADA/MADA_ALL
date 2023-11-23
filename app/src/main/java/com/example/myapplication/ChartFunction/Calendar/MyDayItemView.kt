@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Calendar
+package com.example.myapplication.ChartFunction.Calendar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -16,10 +16,8 @@ import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.Fragment
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
-import com.example.myapplication.MyFuction.Fragment.MyRecordDayFragment
 import com.example.myapplication.R
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 
 class MyDayItemView @JvmOverloads constructor(
     context: Context,

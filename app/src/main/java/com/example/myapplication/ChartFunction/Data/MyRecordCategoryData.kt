@@ -1,4 +1,4 @@
-package com.example.myapplication.MyFuction.Data
+package com.example.myapplication.ChartFunction.Data
 
 data class MyRecordCategoryData(
     val percent : String,

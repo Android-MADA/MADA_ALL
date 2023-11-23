@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
     android:orientation="vertical"
-    tools:context=".MyFuction.Fragment.MyRecordDayFragment"
+    tools:context=".ChartFunction.Fragment.FragChartDay"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
 
@@ -25,21 +24,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"/>
 
-        <ImageButton
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:padding="20dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/calendar_arrow_left" />
-
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_gravity="center"
             android:text="내 기록 확인하기"
             android:textColor="@color/black"
@@ -78,7 +68,8 @@
                     android:layout_weight="1"
                     android:text="TODAY"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/point_main"
+                    android:textStyle="bold"
                     android:background="@drawable/my_record_btn_custom"/>
 
                 <Button
@@ -99,8 +90,7 @@
                     android:layout_weight="1"
                     android:text="MONTH"
                     android:textSize="16sp"
-                    android:textColor="@color/point_main"
-                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:background="@drawable/my_record_btn_custom"/>
 
             </LinearLayout>
@@ -113,62 +103,47 @@
                 android:orientation="vertical"
                 android:paddingTop="16dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:gravity="center">
 
                     <ImageButton
                         android:id="@+id/preBtn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="10dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_gravity="start"
                         android:background="@android:color/transparent"
                         android:scaleType="centerInside"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/textCalendar"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/calendar_arrow_left" />
+                        app:srcCompat="@drawable/calendar_arrow_left"/>
 
                     <TextView
                         android:id="@+id/textCalendar"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2023년 8월"
+                        android:text="2023년 8월 n일"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textSize="16sp" />
 
                     <ImageButton
                         android:id="@+id/nextBtn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_gravity="end"
                         android:background="@android:color/transparent"
                         android:scaleType="centerInside"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/textCalendar"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/calendar_arrow_right" />
+                        app:srcCompat="@drawable/calendar_arrow_right"/>
 
-                    <TextView
-                        android:id="@+id/dayWeekMonthBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/calendar_cell_background2"
-                        android:backgroundTint="#F0F0F0"
-                        android:gravity="center"
-                        android:text="일"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
