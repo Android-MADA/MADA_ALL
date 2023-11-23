@@ -19,12 +19,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.wear.tiles.TileUpdateRequestData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
-import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.PactchResponseCategory
+import com.example.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.PostRequestCategory
 import com.example.myapplication.HomeFunction.adapter.category.HomeCateColorAdapter
@@ -367,10 +365,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         viewModel.userToken,
                         categoryId = argsArray[0].toInt(),
                         catePostData
-                    ).enqueue(object : Callback<PactchResponseCategory> {
+                    ).enqueue(object : Callback<PatchResponseCategory> {
                         override fun onResponse(
-                            call: Call<PactchResponseCategory>,
-                            response: Response<PactchResponseCategory>
+                            call: Call<PatchResponseCategory>,
+                            response: Response<PatchResponseCategory>
                         ) {
                             if (response.isSuccessful) {
                                 Log.d("cateupdate", "성공")
@@ -380,7 +378,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         }
 
                         override fun onFailure(
-                            call: Call<PactchResponseCategory>,
+                            call: Call<PatchResponseCategory>,
                             t: Throwable
                         ) {
                             Log.d("cateupdate", "서버 연결 실패")
@@ -408,10 +406,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                         //서버 post 후 response id 넣어서 db 저장
                         val catePostData = PostRequestCategory(cateName, cateColor, cateIconId, false, false)
-                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PactchResponseCategory>{
+                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PatchResponseCategory>{
                             override fun onResponse(
-                                call: Call<PactchResponseCategory>,
-                                response: Response<PactchResponseCategory>
+                                call: Call<PatchResponseCategory>,
+                                response: Response<PatchResponseCategory>
                             ) {
                                 if(response.isSuccessful){
                                     viewModel.createCate(CateEntity(id = response.body()!!.data.Category.id, categoryName = cateName, color = cateColor, isInActive = false, iconId = cateIconId))
@@ -422,7 +420,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             }
 
                             override fun onFailure(
-                                call: Call<PactchResponseCategory>,
+                                call: Call<PatchResponseCategory>,
                                 t: Throwable
                             ) {
                                 Log.d("cate서버 연결 오류", "서버 연결 실패")

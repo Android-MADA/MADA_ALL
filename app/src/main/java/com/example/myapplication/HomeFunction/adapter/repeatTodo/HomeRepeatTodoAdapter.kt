@@ -93,7 +93,7 @@ class HomeRepeatTodoAdapter (private var view : View?, private var flag : String
                         }
                         else{
                             val todoId = dataSet!![position].id
-                            viewModel!!.deleteRepeatTodo(todoId, cateIndex, position, this)
+                            //viewModel!!.deleteRepeatTodo(todoId, cateIndex, position, this)
                         }
                         true
                     }

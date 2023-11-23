@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/home_cate_background"
         android:paddingTop="12dp"
         android:paddingHorizontal="15dp"
         android:paddingBottom="16dp"
@@ -17,26 +16,27 @@
         >
 
         <ImageView
-            android:id="@+id/ic_repeat_category"
+            android:id="@+id/todo_category_icon_iv"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_home_cate_plan"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="3dp"
+            app:layout_constraintStart_toEndOf="@id/todo_category_title_tv"
+            android:layout_marginVertical="3dp"
+            android:layout_marginStart="6dp"
             />
         <TextView
-            android:id="@+id/tv_repeat_category"
+            android:id="@+id/todo_category_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="약속"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:layout_marginStart="6dp"
-            app:layout_constraintTop_toTopOf="@id/ic_repeat_category"
-            app:layout_constraintBottom_toBottomOf="@id/ic_repeat_category"
-            app:layout_constraintStart_toEndOf="@id/ic_repeat_category"
+            android:layout_marginVertical="3dp"
+            app:layout_constraintTop_toTopOf="@id/todo_category_icon_iv"
+            app:layout_constraintBottom_toBottomOf="@id/todo_category_icon_iv"
+            app:layout_constraintStart_toStartOf="parent"
 
             />
         <ImageView
@@ -45,15 +45,15 @@
             android:layout_height="wrap_content"
             android:src="@drawable/home_baseline_add_24"
             android:backgroundTint="#ffffff"
-            app:layout_constraintTop_toTopOf="@id/tv_repeat_category"
-            app:layout_constraintBottom_toBottomOf="@id/tv_repeat_category"
+            app:layout_constraintTop_toTopOf="@id/todo_category_title_tv"
+            app:layout_constraintBottom_toBottomOf="@id/todo_category_title_tv"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <LinearLayout
             android:id="@+id/layout_repeat_todo_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/ic_repeat_category"
+            app:layout_constraintTop_toBottomOf="@id/todo_category_icon_iv"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:weightSum="1"

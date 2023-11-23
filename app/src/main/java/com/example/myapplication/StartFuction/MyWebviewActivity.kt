@@ -41,10 +41,7 @@ import java.net.URL
 
 
 class MyWebviewActivity : AppCompatActivity() {
-
-
     private lateinit var binding: MyWebviewBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Splash2Activity.prefs = PreferenceUtil(applicationContext)
         super.onCreate(savedInstanceState)
@@ -62,10 +59,16 @@ class MyWebviewActivity : AppCompatActivity() {
         binding.myWebview.loadUrl("http://www.madaumc.store/oauth2/authorization/naver")
         binding.myWebview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                val url = request?.url.toString()
+                var url = request?.url.toString()
                 Log.d("url",url)
+                if (url.startsWith("nidlogin://access.naver.com")) {
 
-                binding.myWebview.loadUrl(url)
+                    return true
+                } else {
+                    binding.myWebview.loadUrl(url)
+                }
+
+
                 if (url.startsWith("http://www.madaumc.store/user/test?")) {
                     //회원가입 한 상태라면
                     val intent = Intent(this@MyWebviewActivity, MainActivity::class.java)
@@ -259,7 +262,6 @@ class MyWebviewActivity : AppCompatActivity() {
             // 요청 보내기 (헤더 정보를 얻기 위해 빈 응답을 받아옴)
             connection.requestMethod = "HEAD"
             connection.connect()
-
             // 헤더 정보 가져오기
             return connection.headerFields
         } finally {
