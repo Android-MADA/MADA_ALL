@@ -106,17 +106,17 @@ class FragHome : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        //캐릭터 커스텀
-//        binding.ivHomeRamdi.setImageResource(
-//            colorbuttonInfo.selectedImageResource ?: 0
-//        )
-//
-//        binding.ivHomeCloth.setImageResource(
-//            clothbuttonInfo.selectedImageResource ?: 0
-//        )
-//        binding.ivHomeItem.setImageResource(
-//            itembuttonInfo.selectedImageResource ?: 0
-//        )
+        //캐릭터 커스텀 -> 확인하기
+        binding.todoCharacterIv.setImageResource(
+            colorbuttonInfo.selectedImageResource ?: 0
+        )
+
+        binding.ivHomeCloth.setImageResource(
+            clothbuttonInfo.selectedImageResource ?: 0
+        )
+        binding.ivHomeItem.setImageResource(
+            itembuttonInfo.selectedImageResource ?: 0
+        )
         return view
     }
 
@@ -210,6 +210,10 @@ class FragHome : Fragment() {
         //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
         binding.todoDateLayout.setOnClickListener{
             Log.d("date", "bottomsheetdialog up")
+        }
+
+        binding.categoryIv.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
         }
 
 
