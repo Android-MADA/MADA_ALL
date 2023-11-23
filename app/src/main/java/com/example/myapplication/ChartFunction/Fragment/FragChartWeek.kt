@@ -50,6 +50,7 @@ class FragChartWeek : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ChartWeekBinding.inflate(inflater, container, false)
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
         return binding.root
     }
 
@@ -57,7 +58,6 @@ class FragChartWeek : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = binding.navHostFragmentContainer.findNavController()
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
 
         binding.btnMONTH.setOnClickListener {
             navController.navigate(R.id.action_fragChartWeek_to_fragChartMonth)
