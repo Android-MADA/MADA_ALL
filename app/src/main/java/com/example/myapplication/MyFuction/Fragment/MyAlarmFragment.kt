@@ -41,6 +41,11 @@ class MyAlarmFragment : Fragment() {
 
         navController = binding.navHostFragmentContainer.findNavController()
 
+        binding.backBtn.setOnClickListener {
+            PatchSetAlarm(binding.mySetSwitch1.isChecked)
+            navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
+        }
+
         GetSetAlarm()
 
         // 스위치 색 설정 함수 호출

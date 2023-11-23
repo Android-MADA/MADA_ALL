@@ -95,11 +95,11 @@ class FragMy : Fragment() {
             }
         })
 
-        // 구글 플레이스토어 광고
-//        MobileAds.initialize(this.requireContext()) {}
-//        mAdView = binding.adView
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
 
         return binding.root
@@ -109,7 +109,15 @@ class FragMy : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = binding.navHostFragmentContainer.findNavController()
+        navController = view.findNavController()
+
+        binding.backBtn.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_fragHome)
+        }
+
+        binding.myStampBtn.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myStampFragment)
+        }
 
         // 캐릭터 커스텀 불러오는 함수 호출
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
@@ -172,7 +180,6 @@ class FragMy : Fragment() {
 //        binding.imgMyItem.setImageResource(
 //            itembuttonInfo.selectedImageResource ?: 0
 //        )
-        setupSwitchColor(binding.myGoogleCalSwitch)
 
         // 바텀 시트 항목 선택 리스너
         binding.myEditProfile.setOnClickListener {
@@ -186,14 +193,6 @@ class FragMy : Fragment() {
         }
         binding.myNotice.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
-        }
-        binding.myGoogleCalSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                Toast.makeText(requireContext(), "연동 완료", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                Toast.makeText(requireContext(), "연동 해제", Toast.LENGTH_SHORT).show()
-            }
         }
         binding.myPremium.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myPremiumFragment)
