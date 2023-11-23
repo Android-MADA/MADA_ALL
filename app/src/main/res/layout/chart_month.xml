@@ -259,6 +259,51 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/my_chart"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="3" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/my_category_recycler"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/record_title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="카테고리명"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/record_context2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="이번 달에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/BarChart"
                     android:layout_width="match_parent"
@@ -290,50 +335,7 @@
                     android:textSize="12sp" />
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/my_chart"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="3" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/my_category_recycler"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="2" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/record_title2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="이번 달 총 nn개 추가했어요"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/record_context2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="이번 달에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
-                    android:textColor="@color/grey1"
-                    android:textSize="12sp" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/LineChart"
@@ -349,7 +351,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="투두 달성도가 nn% 상승했어요"
+                    android:text="투두 달성도가 nn%p 상승했어요"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
