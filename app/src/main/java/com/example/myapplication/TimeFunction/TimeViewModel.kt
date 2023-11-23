@@ -13,6 +13,8 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.HomeFunction.Model.Schedule
@@ -40,6 +42,13 @@ class TimeViewModel : ViewModel() {
     val service = RetrofitInstance.getInstance().create(HomeApi::class.java)
     var token = Splash2Activity.prefs.getString("token","")
 
+    //날짜가 변할 때 알아올 LiveData
+    private val _myLiveToday = MutableLiveData<String>()
+    val myLiveToday: LiveData<String>
+        get() = _myLiveToday
+
+    var todayString : String =""
+
 
     //2023-08-01 형식
     val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
@@ -51,14 +60,20 @@ class TimeViewModel : ViewModel() {
     data class PieChartData(
         val title: String,
         val memo: String,
-        val startHour: Int,
+        var startHour: Int,
         val startMin: Int,
-        val endHour: Int,
+        var endHour: Int,
         val endMin: Int,
         val colorCode: String,
         val divisionNumber: Int,
         val id : Int
     ) : Serializable
+
+    fun updateData(newValue: String) {
+        todayString = newValue
+        _myLiveToday.value = newValue
+        Log.d("update",todayString)
+    }
 
     fun extractTime(timeString: String,hourOrMin : Boolean): Int {
         val timeParts = timeString.split(":")

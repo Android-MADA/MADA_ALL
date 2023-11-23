@@ -137,7 +137,6 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
                                                 viewModel!!.createTodo(todoData, null)
                                             }
                                             //닉네임 저장하기
-                                            viewModel!!.userHomeName = response.body()!!.data.nickname
                                         }
                                         else {
                                             Log.d("todo안드 잘못", "서버 연결 실패")
@@ -176,11 +175,8 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
     inner class ViewHolder(private val binding : HomeCatagoryListBinding) : RecyclerView.ViewHolder(binding.root){
         var data : CateEntity? = null
         fun bind(cateEntity: CateEntity) : Int {
-            binding.tvRepeatCategory.text = cateEntity.categoryName
-            binding.tvRepeatCategory.text = cateEntity.categoryName
-            binding.icRepeatCategory.setImageResource(findIcon(cateEntity.iconId))
-            val mGradientDrawable : GradientDrawable = binding.layoutHomeViewpagerCateList.background as GradientDrawable
-            mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
+            binding.todoCategoryTitleTv.text = cateEntity.categoryName
+            binding.todoCategoryIconIv.setImageResource(findIcon(cateEntity.iconId))
             data = cateEntity
             return cateEntity.id
         }

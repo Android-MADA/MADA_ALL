@@ -39,7 +39,6 @@ class MyDayItemView @JvmOverloads constructor(
             paint = TextPaint().apply {
                 isAntiAlias = true
                 textSize = dayTextSize
-
             }
         }
 //        setOnClickListener {
@@ -61,6 +60,7 @@ class MyDayItemView @JvmOverloads constructor(
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
+
             // Draw rounded rectangle
             val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
                 width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())

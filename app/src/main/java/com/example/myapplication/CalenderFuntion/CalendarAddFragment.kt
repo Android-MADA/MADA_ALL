@@ -45,7 +45,7 @@ class CalendarAddFragment : Fragment() {
     lateinit var preScheduleNum : TextView
     lateinit var nextScheduleNum : TextView
 
-    var curCycle = "No"
+    var curCycle = "N"
     var curColor ="#89A9D9"
     var curId : Int = -1
     var curDday ="N"
@@ -305,7 +305,7 @@ class CalendarAddFragment : Fragment() {
         )
         var preTextView = binding.textWeek1
 
-        if(curCycle =="Day") {
+        if(curCycle =="D") {
             binding.cyclebtn.text = "매일"
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.calAll.visibility = View.GONE
@@ -313,7 +313,7 @@ class CalendarAddFragment : Fragment() {
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
 
-        } else if(curCycle =="Week") {
+        } else if(curCycle =="W") {
             binding.cyclebtn.text = "매주"
             binding.calAll.visibility = View.GONE
             binding.repeatWeek.visibility = View.VISIBLE
@@ -329,7 +329,7 @@ class CalendarAddFragment : Fragment() {
                 preTextView = textWeek[calData.repeatDate.toInt()-1]
             }
             updateUIForWeekRepeat(chip3,chip1,chip2,chip4,chip5)
-        } else if(curCycle =="Month") {
+        } else if(curCycle =="M") {
             binding.cyclebtn.text = "매월"
             binding.calAll.visibility = View.GONE
             preTextView = textWeek[calData.repeatDate.toInt()-1]
@@ -339,7 +339,7 @@ class CalendarAddFragment : Fragment() {
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
             binding.repeatYear.visibility = View.GONE
-        } else if(curCycle =="Year") {
+        } else if(curCycle =="Y") {
             binding.cyclebtn.text = "매년"
             binding.calAll.visibility = View.GONE
             updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
@@ -365,7 +365,7 @@ class CalendarAddFragment : Fragment() {
         chip1.setOnClickListener {
             binding.cyclebtn.text = "반복 안함"
             toggleLayout(true,binding.calAll)
-            curCycle = "No"
+            curCycle = "N"
             updateUIForWeekRepeat(chip1,chip2,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
@@ -373,7 +373,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
-            curCycle = "Day"
+            curCycle = "D"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -385,7 +385,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
-            curCycle = "Week"
+            curCycle = "W"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -397,7 +397,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
-            curCycle = "Month"
+            curCycle = "M"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -409,7 +409,7 @@ class CalendarAddFragment : Fragment() {
         }
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
-            curCycle = "Year"
+            curCycle = "Y"
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
@@ -487,7 +487,7 @@ class CalendarAddFragment : Fragment() {
             }
         }
         binding.submitBtn.setOnClickListener {
-            if(curCycle=="Year")  curRepeatText = String.format("%02d-%02d",binding.numberPickerMonth.value, binding.numberPickerDay.value)
+            if(curCycle=="Y")  curRepeatText = String.format("%02d-%02d",binding.numberPickerMonth.value, binding.numberPickerDay.value)
             if(binding.textTitle.text.toString()=="") {
                 CalendarViewModel.setPopupOne(requireContext(),"일정 이름을 입력해 주십시오",view)
             }
@@ -510,7 +510,7 @@ class CalendarAddFragment : Fragment() {
                             1 -> {
                                 val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
-                                if(curCycle=="No") addCal(tmpId)
+                                if(curCycle=="N") addCal(tmpId)
                                 else CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
                                     CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
                                     -1,false,binding.textMemo.text.toString(),"CAL",tmpId,curRepeatText))
@@ -529,17 +529,17 @@ class CalendarAddFragment : Fragment() {
                         when (result) {
                             1 -> {
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
-                                if(curCycle=="No"&&initCycle=="No") {
+                                if(curCycle=="N"&&initCycle=="N") {
                                     delCal(curId)
                                     addCal(curId)
                                 }
-                                else if(curCycle!="No"&&initCycle=="No") {
+                                else if(curCycle!="N"&&initCycle=="N") {
                                     delCal(curId)
                                     CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
                                         CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
                                         -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
                                 }
-                                else if(curCycle=="No"&&initCycle!="No") {
+                                else if(curCycle=="N"&&initCycle!="N") {
                                     delRepeat(curId)
                                     addCal(curId)
                                 }

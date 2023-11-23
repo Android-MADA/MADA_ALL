@@ -32,19 +32,22 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.adapter.HomeScheduleAndTodoAdapter
 import com.example.myapplication.databinding.HomeFragmentTimeAddBinding
 import com.example.myapplication.hideBottomNavigation
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import java.time.LocalDate
 import java.util.Locale
 
 class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     private lateinit var binding : HomeFragmentTimeAddBinding
-    private var bottomFlag = true
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
     private val viewModel : HomeViewModel by activityViewModels()
     private val viewModelTime: TimeViewModel by activityViewModels()
 
     lateinit var today: String
+
+    var preFragment : Int = 0
 
     var curColor = "#89A9D9"
     lateinit var token : String
@@ -68,18 +71,28 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         initColorArray()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigation(false,  requireActivity())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
-        hideBottomNavigation(bottomFlag,  requireActivity())
+        hideBottomNavigation(true,  requireActivity())
         today = viewModel.homeDate.value.toString()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+/*
+        val adRequest = AdRequest.Builder()
+            .build()
+        binding.adView.loadAd(adRequest)*/
 
         val ivColor = binding.ivHomeTimeColor
         val colorSelector = binding.rvHomeTimeColor
@@ -103,6 +116,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
         today = arguments?.getString("today")?: "2023-06-01"
+        preFragment = arguments?.getInt("frag")?:R.id.action_fragTimeAdd_to_fragTime
         var curId = 0
 
         if(recievedPieData != null) {
@@ -265,7 +279,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             val bundle = Bundle()
                             bundle.putString("today",today)
-                            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                            findNavController().navigate(preFragment,bundle)
                         }
                         2 -> {
                             Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -304,8 +318,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             when (result) {
                                 1 -> {
                                     val tmpId = viewModelTime.addId
-                                    if(viewModelTime.hashMapArrayTime.get(today)==null) {
-                                        viewModelTime.hashMapArrayTime.put(today,ArrayList<TimeViewModel.PieChartData>())
+                                    if(viewModelTime.hashMapArraySchedule.get(today)==null) {
+                                        viewModelTime.hashMapArraySchedule.put(today,ArrayList<Schedule>())
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
@@ -314,7 +328,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -339,7 +353,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+                                    findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -354,7 +368,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         binding.ivHomeAddTimeBack.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
-            findNavController().navigate(R.id.action_timeAddFragment_to_homeTimetableFragment,bundle)
+            findNavController().navigate(preFragment,bundle)
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
@@ -419,7 +433,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     }
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
-            Navigation.findNavController(requireView()).navigate(R.id.action_timeAddFragment_to_homeTimetableFragment)
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragTimeAdd_to_fragTime)
         dialog.dismiss()
     }
 
