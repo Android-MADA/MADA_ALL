@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -42,7 +43,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, HomeCateListAdapter.ViewHolder>(DiffCallback) {
+class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentManager) : ListAdapter<CateEntity, HomeCateListAdapter.ViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<CateEntity>(){
@@ -61,6 +62,7 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    private var todoFragmentManager = fragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewHolder = ViewHolder(HomeCatagoryListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -112,7 +114,7 @@ class HomeCateListAdapter(private val view : View?) : ListAdapter<CateEntity, Ho
                 holder.btnAdd.isVisible = true
                 holder.todoRv.isVisible = true
 
-                val mTodoAdapter = HomeTodoListAdapter()
+                val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
                 mTodoAdapter.viewModel = viewModel
                 mTodoAdapter.category = getItem(position)
                 viewModel!!.readTodo(cateId, mTodoAdapter)
