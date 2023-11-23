@@ -94,15 +94,60 @@
                     />
 
 
-
-                <ImageView
-                    android:id="@+id/todo_character_iv"
-                    android:layout_width="214.38dp"
-                    android:layout_height="240dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/todo_character_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="30dp"
-                    android:src="@drawable/c_ramdi"
-                    />
+                    android:layout_marginBottom="30dp">
+
+                    <ImageView
+                        android:id="@+id/character_shadow_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/todo_character_iv"
+                        android:src="@drawable/character_shadow"
+                        android:layout_marginStart="15dp"
+                        />
+
+
+                    <ImageView
+                        android:id="@+id/todo_character_iv"
+                        android:layout_width="214dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/c_ramdi"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_home_cloth"
+                        android:layout_width="214dp"
+                        android:layout_height="200dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_home_item"
+                        android:layout_width="214dp"
+                        android:layout_height="200dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="5dp"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -255,6 +300,7 @@
                             />
 
                         <ImageView
+                            android:id="@+id/category_iv"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/todo_category"
