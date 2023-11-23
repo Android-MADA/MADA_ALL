@@ -1,7 +1,13 @@
-package com.example.myapplication.MyFuction.Fragment
+package com.example.myapplication.ChartFunction.Fragment
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -14,15 +20,15 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MyFuction.Adapter.MyRecordCategoryAdapter
-import com.example.myapplication.MyFuction.Calendar.MyMonthSliderlAdapter
-import com.example.myapplication.MyFuction.Data.MyRecordCategoryData
-import com.example.myapplication.MyFuction.Data.MyRecordData
-import com.example.myapplication.MyFuction.Data.MyRecordOptionData
+import com.example.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.example.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.example.myapplication.ChartFunction.Data.MyRecordCategoryData
+import com.example.myapplication.ChartFunction.Data.MyRecordData
+import com.example.myapplication.ChartFunction.Data.MyRecordOptionData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.MyRecordMonthBinding
+import com.example.myapplication.databinding.ChartMonthBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -31,8 +37,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
 
-class MyRecordMonthFragment : Fragment() {
-    private lateinit var binding: MyRecordMonthBinding
+class FragChartMonth : Fragment() {
+    private lateinit var binding: ChartMonthBinding
     lateinit var navController: NavController
     val datas = mutableListOf<MyRecordCategoryData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
@@ -43,7 +49,7 @@ class MyRecordMonthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = MyRecordMonthBinding.inflate(inflater, container, false)
+        binding = ChartMonthBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
         return binding.root
     }
@@ -53,8 +59,12 @@ class MyRecordMonthFragment : Fragment() {
 
         navController = binding.navHostFragmentContainer.findNavController()
 
-        binding.backBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordMonthFragment_to_fragMy)
+        binding.btnWEEK.setOnClickListener {
+            navController.navigate(R.id.action_fragChartMonth_to_fragChartWeek)
+        }
+
+        binding.btnTODAY.setOnClickListener {
+            navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
         }
 
 
@@ -70,17 +80,12 @@ class MyRecordMonthFragment : Fragment() {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
 
-        // 일 주 월 버튼 클릭 이동
-        binding.dayWeekMonthBtn.setOnClickListener {
-            navController.navigate(R.id.action_myRecordMonthFragment_to_myRecordDayFragment)
-        }
-
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                navController.navigate(R.id.action_myRecordMonthFragment_to_fragMy)
+                navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
                 return@OnKeyListener true
             }
             false
@@ -116,14 +121,17 @@ class MyRecordMonthFragment : Fragment() {
                     val completeTodoPercent = response.body()?.data?.completeTodoPercent
                     val compareTodoCnt = 9.9
 
-                    val formattedText0 = "${nickName}님의 ${month}월 통계예요."
-                    val formattedText1 = "이번 달 총 ${completeTodoCnt}개 완료했어요"
+                    val colorText0 = "${month}월"
+                    val colorText1 = "총 ${completeTodoCnt}개"
+
+                    val formattedText0 = "${nickName}님의 ${colorText0} 통계예요."
+                    val formattedText1 = "이번 달 ${colorText1} 완료했어요"
                     val formattedText2 = "이번 달에는 ${totalTodoCnt}개의 투두 중에서" +
                             "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
                             "\n지난 달에 비해 ${compareTodoCnt}개 상승했네요."
 
-                    binding.recordTitle0.text = formattedText0
-                    binding.recordTitle1.text = formattedText1
+                    binding.recordTitle0.text = createSpannableString(formattedText0,colorText0)
+                    binding.recordTitle1.text = createSpannableString(formattedText1,colorText1)
                     binding.recordContext1.text = formattedText2
 
                 } else {
@@ -158,7 +166,9 @@ class MyRecordMonthFragment : Fragment() {
                     val averageCompleteTodoCnt = 9.9
                     val compareCompleteTodoText = "{1.2}개 상승"
 
-                    val formattedText1 = "이번 달 총 ${addTodoCnt}개 추가했어요"
+                    val colorText1 = "총 ${addTodoCnt}개"
+
+                    val formattedText1 = "이번 주 ${colorText1} 추가했어요"
                     var formattedText2 = ""
 
                     if (categoryStatistics.isNullOrEmpty()) {
@@ -166,12 +176,13 @@ class MyRecordMonthFragment : Fragment() {
                     } else{
                         val c1 = categoryStatistics[0].categoryName
                         formattedText2 =
-                        "이번 달에는 ${c1} 카테고리에서" +
-                                "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
-                                "\n지난 달에 비해 ${compareCompleteTodoText}했네요."
+                            "이번 주에는 ${c1} 카테고리에서" +
+                                    "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
+                                    "\n지난 주에 비해 ${compareCompleteTodoText}했네요."
                     }
 
-                    binding.recordTitle2.text = formattedText1
+                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
+                    binding.recordTitle2.text = createSpannableString(formattedText1, colorText1)
                     binding.recordContext2.text = formattedText2
 
                 } else {
@@ -206,7 +217,9 @@ class MyRecordMonthFragment : Fragment() {
                     val compareTodoCnt = 9.9
                     val compareTodoPercent = 99
 
-                    val formattedText1 = "투두 달성도가 ${compareTodoPercent}% 상승했어요"
+                    val colorText1 = "${compareTodoPercent}%"
+
+                    val formattedText1 = "투두 달성도가 ${colorText1} 상승했어요"
                     var formattedText2 = ""
 
                     if (totalTodoCnt==0) {
@@ -216,8 +229,9 @@ class MyRecordMonthFragment : Fragment() {
                             "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 지난 달에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
                     }
 
-                    binding.recordTitle2.text = formattedText1
-                    binding.recordContext2.text = formattedText2
+                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
+                    binding.recordTitle3.text = createSpannableString(formattedText1, colorText1)
+                    binding.recordContext3.text = formattedText2
 
                 } else {
                     Log.d("myGetRecordMonth 실패", response.body().toString())
@@ -339,6 +353,34 @@ class MyRecordMonthFragment : Fragment() {
 
 
     }
+
+    // 텍스트에 색상을 적용하는 함수
+    private fun createSpannableString(text: String, targetText: String): SpannableStringBuilder {
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        val start = text.indexOf(targetText)
+        val end = start + targetText.length
+
+        if (start != -1) {
+            val colorSpan = ForegroundColorSpan(Color.parseColor("#F0768C"))
+            spannableStringBuilder.setSpan(colorSpan, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
+
+        return spannableStringBuilder
+    }
+
+    // 텍스트를 굵게 적용하는 함수
+    private fun createSpannableStringBold(text: String, targetText: String): SpannableStringBuilder {
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        val start = text.indexOf(targetText)
+        val end = start + targetText.length
+
+        if (start != -1) {
+            spannableStringBuilder.setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        return spannableStringBuilder
+    }
+
 
 
 }
