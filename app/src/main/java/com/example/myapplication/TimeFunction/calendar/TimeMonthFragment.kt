@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.getMonthList
 import com.example.myapplication.TimeFunction.TimeViewModel
 import com.example.myapplication.databinding.TimeSliderMonthViewBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.joda.time.DateTime
 import java.sql.Time
 
@@ -19,8 +21,8 @@ class TimeMonthFragment() : Fragment() {
     private var millis: Long = 0L
     lateinit var binding: TimeSliderMonthViewBinding
     lateinit var fm: Fragment
-    lateinit var dialog: TimeBottomSheetDialog
-    lateinit var vmTime : TimeViewModel
+    lateinit var dialog: BottomSheetDialogFragment
+    lateinit var vmTime : ViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -45,8 +47,8 @@ class TimeMonthFragment() : Fragment() {
         fun newInstance(
             millis: Long,
             theFm: Fragment,
-            dl: TimeBottomSheetDialog,
-            viewModelTime: TimeViewModel
+            dl: BottomSheetDialogFragment,
+            viewModelTime: ViewModel
         ) = TimeMonthFragment().apply {
             arguments = Bundle().apply {
                 fm = theFm

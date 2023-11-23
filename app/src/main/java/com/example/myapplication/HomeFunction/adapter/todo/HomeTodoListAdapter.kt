@@ -6,7 +6,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.PopupMenu
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -14,26 +13,19 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.HomeFunction.Model.Category
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
-import com.example.myapplication.HomeFunction.Model.PostResponseTodo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoMenuBottomSheetDialog
+import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeTodoListBinding
 import com.example.myapplication.db.MyApp
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.db.entity.TodoEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 
 class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHolder>(DiffCallback) {
 
@@ -202,8 +194,11 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 //            }
 //            popup.show()
 
-            val todoMenuBottomSheet = TodoMenuBottomSheetDialog()
-            todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
+
+            val todoMenuBottomSheet = viewModel?.let { it1 -> TodoDateBottomSheetDialog(it1) }
+            if (todoMenuBottomSheet != null) {
+                todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
+            }
         }
 
 

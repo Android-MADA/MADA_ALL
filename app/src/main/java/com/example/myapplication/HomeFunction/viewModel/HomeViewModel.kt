@@ -43,6 +43,16 @@ class HomeViewModel : ViewModel() {
 
     var viewpagerDate: LocalDate? = LocalDate.now()
 
+    //달력 날짜 라이브 데이터
+    private val _myLiveToday = MutableLiveData<String>()
+    val myLiveToday: LiveData<String>
+        get() = _myLiveToday
+
+    fun updateData(newValue: String) {
+        _myLiveToday.value = newValue
+        Log.d("update",newValue)
+    }
+
     //date 변경
     fun changeDate(year: Int, month: Int, dayOfWeek: Int, flag: String?): String {
         var date = homeDate.value!!.toString()

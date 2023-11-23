@@ -13,7 +13,6 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
 
 class HomeTimeAdapter(private val dataSet : ArrayList<TimeViewModel.PieChartData>) : RecyclerView.Adapter<HomeTimeAdapter.viewHolder>() {
-
     class viewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val timeImageView : ImageView
@@ -34,10 +33,8 @@ class HomeTimeAdapter(private val dataSet : ArrayList<TimeViewModel.PieChartData
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-
         holder.timeImageView.setColorFilter(Color.parseColor(dataSet[position].colorCode), PorterDuff.Mode.SRC_IN)
         holder.timeTextView.text = dataSet[position].title
-
         holder.timeLayout.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
