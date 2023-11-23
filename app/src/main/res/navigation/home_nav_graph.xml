@@ -147,10 +147,21 @@
         android:name="com.example.myapplication.TimeFunction.TimeTableFragment"
         android:label="FragTimeTable" >
         <action
-            android:id="@+id/action_fragTimeTable_to_fragTime"
-            app:destination="@id/fragTime" />
+            android:id="@+id/action_fragTimeTable_to_fragTimeTableWeek"
+            app:destination="@id/fragTimeTableWeek" />
         <action
             android:id="@+id/action_fragTimeTable_to_fragTimeAdd"
+            app:destination="@id/fragTimeAdd" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragTimeTableWeek"
+        android:name="com.example.myapplication.TimeFunction.TimeTableWeekFragment"
+        android:label="FragTimeTableWeek" >
+        <action
+            android:id="@+id/action_fragTimeTableWeek_to_fragTime"
+            app:destination="@id/fragTime" />
+        <action
+            android:id="@+id/action_fragTimeTableWeek_to_fragTimeAdd"
             app:destination="@id/fragTimeAdd" />
     </fragment>
     <fragment
@@ -160,6 +171,9 @@
         <action
             android:id="@+id/action_fragTimeAdd_to_fragTime"
             app:destination="@id/fragTime" />
+        <action
+            android:id="@+id/action_fragTimeAdd_to_fragTimeTable"
+            app:destination="@id/fragTimeTable" />
     </fragment>
 <!--    My  부분   -->
     <fragment
