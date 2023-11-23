@@ -10,6 +10,7 @@ import android.widget.PopupMenu
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoMenuBottomSheetDialog
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeTodoListBinding
@@ -33,7 +35,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
-class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHolder>(DiffCallback) {
+class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<TodoEntity>(){
@@ -52,6 +54,7 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
 
     var viewModel : HomeViewModel? = null
     var category : CateEntity? = null
+    private var mFragmentManager = fragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewHolder = ViewHolder(HomeTodoListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -155,50 +158,54 @@ class HomeTodoListAdapter : ListAdapter<TodoEntity, HomeTodoListAdapter.ViewHold
         }
 
         holder.todoMenu.setOnClickListener {
-            val popup = PopupMenu(holder.itemView.context, it)
-            popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
-            popup.setOnMenuItemClickListener { item ->
-                if(item.itemId == R.id.home_todo_edit) {
-//                    Log.d("todoEdit", "수정하기")
-//                    holder.editLayout.isVisible = true
-//                    holder.layoutcb.isGone = true
-//                    holder.edtTodo.setText(holder.data!!.todoName)
-                    if(holder.editLayout.isVisible == true){
-                        holder.editLayout.isGone = true
-                        //checkbox 부분 활성화
-                        holder.layoutcb.isVisible = true
-                    }
-                    else {
-                        holder.editLayout.isVisible = true
-                        holder.layoutcb.isGone = true
-                        //checkbox 부분 비활성화
-                        //edt에 text 채우기
-                        holder.edtTodo.setText(getItem(position).todoName)
-                    }
-                }
-                else{
-                    //데이터 삭제
-                    val data = holder.data
-                    api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
-                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                            if(response.isSuccessful){
-                                Log.d("todo server", "성공")
-                                viewModel!!.deleteTodo(data!!)
-                            }
-                            else {
-                                Log.d("todo안드 잘못", "서버 연결 실패")
-                            }
-                        }
+//            val popup = PopupMenu(holder.itemView.context, it)
+//            popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
+//            popup.setOnMenuItemClickListener { item ->
+//                if(item.itemId == R.id.home_todo_edit) {
+////                    Log.d("todoEdit", "수정하기")
+////                    holder.editLayout.isVisible = true
+////                    holder.layoutcb.isGone = true
+////                    holder.edtTodo.setText(holder.data!!.todoName)
+//                    if(holder.editLayout.isVisible == true){
+//                        holder.editLayout.isGone = true
+//                        //checkbox 부분 활성화
+//                        holder.layoutcb.isVisible = true
+//                    }
+//                    else {
+//                        holder.editLayout.isVisible = true
+//                        holder.layoutcb.isGone = true
+//                        //checkbox 부분 비활성화
+//                        //edt에 text 채우기
+//                        holder.edtTodo.setText(getItem(position).todoName)
+//                    }
+//                }
+//                else{
+//                    //데이터 삭제
+//                    val data = holder.data
+//                    api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
+//                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                            if(response.isSuccessful){
+//                                Log.d("todo server", "성공")
+//                                viewModel!!.deleteTodo(data!!)
+//                            }
+//                            else {
+//                                Log.d("todo안드 잘못", "서버 연결 실패")
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<Void>, t: Throwable) {
+//                            Log.d("서버 문제", "서버 연결 실패")
+//                        }
+//                    })
+//                }
+//                true
+//            }
+//            popup.show()
 
-                        override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Log.d("서버 문제", "서버 연결 실패")
-                        }
-                    })
-                }
-                true
-            }
-            popup.show()
+            val todoMenuBottomSheet = TodoMenuBottomSheetDialog()
+            todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
         }
+
 
 
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->

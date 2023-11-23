@@ -6,6 +6,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/todo_menu_delete_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
@@ -29,6 +30,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/todo_menu_edit_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
@@ -52,6 +54,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/todo_menu_date_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
@@ -73,6 +76,16 @@
             />
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/calendar_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="clanedar"
+        android:paddingVertical="100dp"
+        android:background="#DBE184"
+        android:visibility="gone"
+        />
 
     <!--캘린더 넣기-->
 
