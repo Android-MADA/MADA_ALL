@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.adapter.category.CateListAdapter
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.example.myapplication.databinding.CategoryLayoutBinding
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.hideBottomNavigation
 
 class HomeCategoryFragment : Fragment() {
 
-    lateinit var binding : HomeFragmentCategoryBinding
+    lateinit var binding : CategoryLayoutBinding
     private val viewModel : HomeViewModel by activityViewModels()
 
     private var bottomFlag = true
@@ -35,7 +36,8 @@ class HomeCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
+        //binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.category_layout, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
         return binding.root
@@ -44,13 +46,17 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //리스트에 카테고리 넣기
         viewModel.readActiveCate(false)
+
+        //livedata로 감지
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             Log.d("viewmodel", it.toString())
 
             val cateList = it as List<CateEntity>
 
-            val cateRv = binding.rvHomeCategory
+            //val cateRv = binding.rvHomeCategory
+            val cateRv = binding.categoryActiveRv
             val cateAdapter = CateListAdapter()
             cateAdapter.submitList(cateList)
             cateAdapter.setItemClickListener(object : CateListAdapter.OnItemClickListener{
@@ -80,7 +86,8 @@ class HomeCategoryFragment : Fragment() {
         viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
             //rv에 연결
             val quitCateList = it as List<CateEntity>
-            val quitCateRv = binding.rvHomeCategoryQuit
+            //val quitCateRv = binding.rvHomeCategoryQuit
+            val quitCateRv = binding.categoryInactiveRv
             val quitCateAdapter = CateListAdapter()
             quitCateAdapter.submitList(quitCateList)
             quitCateAdapter.setItemClickListener(object : CateListAdapter.OnItemClickListener{
@@ -105,12 +112,14 @@ class HomeCategoryFragment : Fragment() {
             quitCateRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
-        binding.ivHomeCategoryBack.setOnClickListener {
+        //뒤로가기 버튼 클릭리스너
+        binding.categoryBackTv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
             bottomFlag = false
         }
 
-        binding.btnHomeCategory.setOnClickListener {
+        //카테고리 추가 버튼 클리리스너
+        binding.categoryAddIv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 

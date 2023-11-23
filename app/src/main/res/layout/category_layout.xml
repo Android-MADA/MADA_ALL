@@ -44,11 +44,12 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginHorizontal="16dp"/>
                 <ImageView
+                    android:id="@+id/category_add_iv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_category_btn"
                     android:background="@drawable/category_btn_background"
-                    android:paddingVertical="15dp"
+                    android:paddingVertical="18dp"
                     android:layout_marginHorizontal="16dp"
                     />
                 <TextView

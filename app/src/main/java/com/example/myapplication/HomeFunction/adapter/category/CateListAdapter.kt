@@ -1,5 +1,6 @@
 package com.example.myapplication.HomeFunction.adapter.category
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
@@ -10,7 +11,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.dropFtsSyncTriggers
 import com.example.myapplication.R
+import com.example.myapplication.databinding.CategoryListLayoutBinding
 import com.example.myapplication.databinding.HomeEditCategoryListBinding
 import com.example.myapplication.db.entity.CateEntity
 
@@ -32,7 +35,7 @@ class CateListAdapter : ListAdapter<CateEntity, CateListAdapter.ViewHolder>(Diff
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewHolder = ViewHolder(HomeEditCategoryListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        val viewHolder = ViewHolder(CategoryListLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         return viewHolder
     }
 
@@ -43,28 +46,25 @@ class CateListAdapter : ListAdapter<CateEntity, CateListAdapter.ViewHolder>(Diff
             holder.cateLayout.setOnClickListener {
                 itemClickListener.onClick(it, holder.data!!)
             }
-            holder.quitIcon.isGone = true
         }
         else {
             //도장 표시
-            holder.quitIcon.isVisible = true
             holder.cateLayout.setOnClickListener {
                 itemClickListener.onClick(it, holder.data!!)
             }
         }
     }
 
-    inner class ViewHolder(private val binding : HomeEditCategoryListBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding : CategoryListLayoutBinding) : RecyclerView.ViewHolder(binding.root){
         var data : CateEntity? = null
         fun bind(cateEntity: CateEntity){
-            binding.tvHomeAddCategory.text = cateEntity.categoryName
-            binding.ivHomeAddCategory.setImageResource(findIcon(cateEntity.iconId))
-            val mGradientDrawable : GradientDrawable = binding.layoutHomeCateList.background as GradientDrawable
-            mGradientDrawable.setStroke(6, Color.parseColor(cateEntity.color))
             data = cateEntity
+
+            binding.rvCategoryTitleTv.text = cateEntity.categoryName
+            binding.rvCategoryIconIv.setImageResource(findIcon(cateEntity.iconId))
+            binding.rvCategoryColorIv.backgroundTintList = ColorStateList.valueOf(Color.parseColor(cateEntity.color))
         }
-        val cateLayout = binding.layoutHomeCateList
-        val quitIcon = binding.ivCateQuit
+        val cateLayout = binding.categoryListLayout
     }
 
     fun findIcon(iconId : Int) : Int {

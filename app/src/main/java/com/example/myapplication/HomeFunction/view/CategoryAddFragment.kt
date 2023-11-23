@@ -169,41 +169,41 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     val popup = PopupMenu(context, it)
                     popup.menuInflater.inflate(R.menu.cate_menu, popup.menu)
                     popup.setOnMenuItemClickListener { item ->
-//                        if(item.itemId == R.id.cate_quit) {
-//                            //다이얼로그
-//                            //종료로 업데이트하고 네비게이션
-//                            // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
-//                            val cate = CateEntity(
-//                                argsArray!![0].toInt(),
-//                                argsArray!![1],
-//                                argsArray!![2],
-//                                true,
-//                                argsArray!![3].toInt()
-//                            )
-//                            CoroutineScope(Dispatchers.IO).launch {
-//                                //종료 patch
-//                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-//                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                                        if(response.isSuccessful){
-//                                            Log.d("cateupdate", "성공")
-//                                        } else {
-//                                            Log.d("cateupdate", "안드 잘못 실패")
-//                                        }
-//                                    }
-//
-//                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-//                                        Log.d("cateupdate", "서버 연결 실패")
-//                                    }
-//                                })
-//
-//                                viewModel.updateCate(cate)
-//                                withContext(Dispatchers.Main){
-//                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-//                                }
-//                            }
-//
-//                        }
-                        if (item.itemId == R.id.cate_edit) {
+                        if(item.itemId == R.id.cate_quit) {
+                            //다이얼로그
+                            //종료로 업데이트하고 네비게이션
+                            // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
+                            val cate = CateEntity(
+                                argsArray!![0].toInt(),
+                                argsArray!![1],
+                                argsArray!![2],
+                                true,
+                                argsArray!![3].toInt()
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                //종료 patch
+                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        if(response.isSuccessful){
+                                            Log.d("cateupdate", "성공")
+                                        } else {
+                                            Log.d("cateupdate", "안드 잘못 실패")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.d("cateupdate", "서버 연결 실패")
+                                    }
+                                })
+
+                                viewModel.updateCate(cate)
+                                withContext(Dispatchers.Main){
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                                }
+                            }
+
+                        }
+                        else if (item.itemId == R.id.cate_edit) {
 
                             binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![2]))
                             colorAdapter.selecetedColor = argsArray!![2]

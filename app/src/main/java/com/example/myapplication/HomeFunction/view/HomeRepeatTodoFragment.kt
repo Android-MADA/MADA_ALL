@@ -24,6 +24,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentRepeatTodoBinding
+import com.example.myapplication.databinding.TodoRepeatLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
@@ -32,7 +33,8 @@ import retrofit2.Response
 
 class HomeRepeatTodoFragment : Fragment(){
 
-    lateinit var binding: HomeFragmentRepeatTodoBinding
+    //lateinit var binding: HomeFragmentRepeatTodoBinding
+    lateinit var binding : TodoRepeatLayoutBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
 
@@ -47,7 +49,7 @@ class HomeRepeatTodoFragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_repeat_todo, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.todo_repeat_layout, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
         return binding.root
@@ -64,35 +66,12 @@ class HomeRepeatTodoFragment : Fragment(){
             val mAdapter = RepeatCateListAdapter(view)
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
-            binding.rvHomeRepeatTodo.adapter = mAdapter
-            binding.rvHomeRepeatTodo.layoutManager = LinearLayoutManager(this.requireActivity())
+            binding.repeatRv.adapter = mAdapter
+            binding.repeatRv.layoutManager = LinearLayoutManager(this.requireActivity())
 
         })
-//        //서버 연결
-//        viewModel.getRepeatTodo()
-//
-//        viewModel.repeatList.observe(viewLifecycleOwner, Observer {
-//                    if(cateAdapter != null){
-//                        if(viewModel.repeatList.value!!.isEmpty() != true){
-//                            cateAdapter!!.cateTodoSet = viewModel.repeatList.value
-//                            binding.rvHomeRepeatTodo.post { cateAdapter!!.notifyDataSetChanged() }
-//                        }
-//                        //카테고리를 다 지우고 왔을 때
-//                        else {
-//                            cateAdapter = null
-//                        }
-//
-//                    }
-//                    else{
-//                        if (viewModel.categoryList.value?.isNotEmpty() == true) {
-//                            //rv연결
-//                            attachAdapter(view)
-//                }
-//            }
-//            Log.d("repeatTodo 데이터 확인 중", "cateTodoList observer 작동")
-//        })
 
-        binding.ivHomeRepeatBack.setOnClickListener {
+        binding.repeatBackIv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
             bottomFlag = false
         }
