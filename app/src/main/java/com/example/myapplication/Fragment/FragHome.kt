@@ -158,7 +158,7 @@ class FragHome : Fragment() {
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv)
+            val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.todoActiveCategoryRv.adapter = mAdapter
@@ -170,7 +170,7 @@ class FragHome : Fragment() {
         viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv)
+            val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.todoInactiveCategoryRv.adapter = mAdapter
@@ -218,6 +218,7 @@ class FragHome : Fragment() {
 
 
         // 클릭 시 텍스트 변환 -> bottomsheetdialog에서 처리할 부분
+
 //        binding.calendarviewHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
 //
 //            dateCalendar.set(year, month, dayOfMonth)
