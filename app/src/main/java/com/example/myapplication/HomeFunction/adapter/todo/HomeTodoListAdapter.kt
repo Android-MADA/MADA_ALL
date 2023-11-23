@@ -23,6 +23,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoMenuBottomSheetDialog
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
+import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.example.myapplication.databinding.HomeTodoListBinding
 import com.example.myapplication.db.MyApp
 import com.example.myapplication.db.entity.CateEntity
@@ -202,8 +203,11 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 //            }
 //            popup.show()
 
-            val todoMenuBottomSheet = TodoMenuBottomSheetDialog()
-            todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
+
+            val todoMenuBottomSheet = viewModel?.let { it1 -> TodoMenuBottomSheetDialog(it1) }
+            if (todoMenuBottomSheet != null) {
+                todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
+            }
         }
 
 

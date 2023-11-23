@@ -110,13 +110,13 @@ class FragHome : Fragment() {
         binding.todoCharacterIv.setImageResource(
             colorbuttonInfo.selectedImageResource ?: 0
         )
-
+/*
         binding.ivHomeCloth.setImageResource(
             clothbuttonInfo.selectedImageResource ?: 0
         )
         binding.ivHomeItem.setImageResource(
             itembuttonInfo.selectedImageResource ?: 0
-        )
+        )*/
         return view
     }
 
