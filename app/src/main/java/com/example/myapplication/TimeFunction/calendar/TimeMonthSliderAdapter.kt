@@ -2,18 +2,21 @@ package com.example.myapplication.TimeFunction.calendar
 
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.MyFuction.Fragment.MyRecordMonthFragment
 import com.example.myapplication.TimeFunction.TimeViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.joda.time.DateTime
 
 class TimeMonthSliderAdapter(
     private val fm: Fragment,
     private val monthText: TextView,
     private val viewPager: ViewPager2,
-    private val dialog: TimeBottomSheetDialog,
-    private val viewModelTime: TimeViewModel
+    private val dialog: BottomSheetDialogFragment,
+    private val viewModelTime: ViewModel
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

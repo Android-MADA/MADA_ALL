@@ -31,6 +31,7 @@
                 android:paddingLeft="15dp">
 
                 <ImageView
+                    android:id="@+id/fragtime_calendar_btn"
                     android:layout_width="34dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
@@ -40,10 +41,11 @@
 
                 <TextView
                     android:id="@+id/text_home_time_name"
-                    android:layout_width="130dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
+                    android:layout_marginRight="20dp"
                     android:gravity="center_vertical"
-                    android:text="2023년 6월 1일"
+                    android:text="6월 1일 토요일"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -55,15 +57,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/calendar_color_select" />
 
 
         </LinearLayout>
@@ -122,6 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
+            android:id="@+id/time_timetable_sv"
             android:padding="20dp" >
 
             <FrameLayout
@@ -130,7 +124,7 @@
 
                 <LinearLayout
                     android:layout_marginTop="11dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="35dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -157,11 +151,11 @@
                             android:textSize="11sp"
                             android:textColor="@color/black"
                             android:id="@+id/textView4"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="0시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -176,11 +170,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="1시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -195,11 +189,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="2시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -214,11 +208,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="3시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -233,11 +227,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="4시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -252,11 +246,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="5시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -271,11 +265,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="6시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -290,11 +284,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="7시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -309,11 +303,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="8시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -328,11 +322,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="9시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -343,15 +337,14 @@
                         android:layout_height="20dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="10시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -366,11 +359,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="11시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -385,11 +378,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="12시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -404,11 +397,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="13시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -423,11 +416,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="14시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -442,11 +435,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="15시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -461,11 +454,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="16시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -480,11 +473,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="17시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -499,11 +492,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="18시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -518,11 +511,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
                             android:text="19시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -537,11 +530,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="20시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -556,11 +549,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="21시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -575,11 +568,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="22시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -594,11 +587,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="23시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -613,11 +606,11 @@
                         <TextView
                             android:textSize="11sp"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:text="24시" />
                         <View
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="2dp"
                             android:background="?android:attr/listDivider" />
@@ -629,10 +622,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/timetable_timeline_blank"
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"/>
+                        android:layout_height="120dp" />
 
                     <LinearLayout
 
@@ -643,7 +637,7 @@
 
                         <TextView
                             android:id="@+id/timetable_timeline_tv"
-                            android:layout_width="wrap_content"
+                            android:layout_width="35dp"
                             android:layout_height="wrap_content"
                             android:text="0:00"
                             android:textColor="@color/black"
@@ -652,8 +646,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/timetable_timeline"/>
-                    </LinearLayout
-                        >
+                    </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
         </androidx.core.widget.NestedScrollView>

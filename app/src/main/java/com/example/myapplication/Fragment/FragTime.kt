@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -35,7 +36,7 @@ import java.util.Locale
 class FragTime : Fragment() {
 
     lateinit var binding : FragTimeBinding
-    private val viewModelTime: TimeViewModel by viewModels()
+    private val viewModelTime: TimeViewModel by activityViewModels()
     var lastSelectedEntry = -1
     lateinit var today : String
     lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
@@ -52,7 +53,6 @@ class FragTime : Fragment() {
         binding = FragTimeBinding.inflate(layoutInflater)
         val currentDate: LocalDate = LocalDate.now()
         var formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        Log.e("todayString",viewModelTime.todayString)
         if(viewModelTime.todayString!="")  formattedDate = viewModelTime.todayString
 
 
@@ -74,8 +74,8 @@ class FragTime : Fragment() {
             val bottomSheet = TimeBottomSheetDialog(requireContext(),viewModelTime)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
+        viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
-            Log.d("observe","dsadas")
             binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(newValue))
             today = newValue
             viewModelTime.getScheduleDatas(newValue) { result ->
@@ -83,15 +83,6 @@ class FragTime : Fragment() {
                     1 -> {
                         val tmpList = viewModelTime.getTimeDatas(newValue)
                         pirChartOn(tmpList)
-                        val timeAdapter = HomeTimeAdapter(tmpList)
-                        //rv adpter 연결
-                        timeAdapter.setItemClickListener(object: HomeTimeAdapter.OnItemClickListener{
-                            override fun onClick(v: View, position: Int) {
-                                //Navigation.findNavController(requireView()).navigate(R.id.action_homeTimetableFragment_to_timeAddFragment)
-                            }
-                        })
-                        //binding.rvHomeTimeSchedule.adapter = timeAdapter
-                        //binding.rvHomeTimeSchedule.layoutManager = LinearLayoutManager(requireContext())
                     }
                     2 -> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -105,6 +96,7 @@ class FragTime : Fragment() {
             bundle.putString("today",today)
             bundle.putSerializable("pieChartData", pieChartDataArray[lastSelectedEntry])
             bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
             Navigation.findNavController(requireView()).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
         }
         binding.timeRemoveBtn.setOnClickListener {
@@ -128,7 +120,7 @@ class FragTime : Fragment() {
             }
         }
 
-        viewModelTime.updateData(formattedDate)
+
         return binding.root
     }
 
@@ -144,6 +136,7 @@ class FragTime : Fragment() {
             val bundle = Bundle()
             bundle.putString("today",today)
             bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
             Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
         }
     }
@@ -235,7 +228,7 @@ class FragTime : Fragment() {
                         pieDataSet.selectionShift = smallXY/27f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정
                         binding.timeInfo1Iv.setColorFilter(Color.parseColor(pieChartDataArray[label.toInt()].colorCode))
                         binding.timeInfo2Iv.setColorFilter(Color.parseColor(pieChartDataArray[label.toInt()].colorCode))
-                        binding.timeTimeTv.text = pieChartDataArray[label.toInt()].title
+                        binding.timeTitleTv.text = pieChartDataArray[label.toInt()].title
                         binding.timeMemoTv.text =  pieChartDataArray[label.toInt()].memo
                         val startTime = timeChangeReverse("${String.format("%02d", pieChartDataArray[label.toInt()].startHour)}:${String.format("%02d", pieChartDataArray[label.toInt()].startMin)}:00")
                         val endTime = timeChangeReverse("${String.format("%02d", pieChartDataArray[label.toInt()].endHour)}:${String.format("%02d", pieChartDataArray[label.toInt()].endMin)}:00")

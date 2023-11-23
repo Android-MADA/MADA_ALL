@@ -3,7 +3,6 @@ package com.example.myapplication.TimeFunction
 
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,9 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.adapter.HomeTimeAdapter
 import com.example.myapplication.TimeFunction.adapter.TimeTableAdpater
 import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
+import com.example.myapplication.TimeFunction.util.CustomCircleBarView
 import com.example.myapplication.databinding.TimeTableFragmentBinding
+import com.example.myapplication.databinding.TimeTableWeekFragmentBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -25,9 +26,9 @@ import java.util.Calendar
 import java.util.Locale
 
 
-class TimeTableFragment : Fragment() {
+class TimeTableWeekFragment : Fragment() {
 
-    lateinit var binding : TimeTableFragmentBinding
+    lateinit var binding : TimeTableWeekFragmentBinding
     private val viewModel : HomeViewModel by activityViewModels()
     private val viewModelTime: TimeViewModel by activityViewModels()
 
@@ -43,7 +44,7 @@ class TimeTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = TimeTableFragmentBinding.inflate(layoutInflater)
+        binding = TimeTableWeekFragmentBinding.inflate(layoutInflater)
         today = viewModel.homeDate.value.toString()
         val currentDate: LocalDate = LocalDate.now()
         var formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -59,90 +60,99 @@ class TimeTableFragment : Fragment() {
         val minute = currentTime.get(Calendar.MINUTE)
         val progressPercentage = (hour * 60 + minute)
         val scale = resources.displayMetrics.density
-        val newHeightInPixel = (progressPercentage * scale).toInt()
+        val newWidthInPixel = (progressPercentage * scale).toInt()
         val layoutParams: ViewGroup.LayoutParams = binding.timetableTimelineBlank.layoutParams
 
-        layoutParams.height = newHeightInPixel
+        layoutParams.width = newWidthInPixel
 
         binding.timetableTimelineBlank.layoutParams = layoutParams
         binding.timetableTimelineTv.text = "${hour}:${minute}"
-        scrollToPosition(newHeightInPixel)
+        binding.timeTimetableSv.setHorizontalScrollBarEnabled(false);
+
+        scrollToPosition(newWidthInPixel)
 
         binding.fragtimeCalendarBtn.setOnClickListener {
             val bottomSheet = TimeBottomSheetDialog(requireContext(),viewModelTime)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
-        //시간표
+        //파이차트
+        viewModelTime.getScheduleDatas(today) { result ->
+            when (result) {
+                1 -> {
+                    val tmpList = viewModelTime.getTimeDatas(today)
+                    timeTableOn(tmpList)
+                }
+                2 -> {
+                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
             Log.d("observe","dsadas")
             binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(newValue))
             today = newValue
-            viewModelTime.getScheduleDatas(newValue) { result ->
-                when (result) {
-                    1 -> {
-                        val tmpList = viewModelTime.getTimeDatas(newValue)
-                        timeTableOn(tmpList,today)
-                    }
-                    2 -> {
-                        Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
         })
 
         return binding.root
     }
-    private fun scrollToPosition( y: Int) {
-        binding.timeTimetableSv.post(Runnable {
-            binding.timeTimetableSv.scrollTo(0, y)
-        })
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.timeChangeBtn.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
         }
 
         binding.fabHomeTime.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
             bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTimeTable)
             Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeAdd,bundle)
         }
+
+
     }
+
+    private fun scrollToPosition( x: Int) {
+        binding.timeTimetableSv.post(Runnable {
+            // scrollTo()를 사용하여 스크롤뷰를 이동
+            binding.timeTimetableSv.scrollTo(x, 0)
+
+            // 또는 smoothScrollTo()를 사용하여 부드럽게 스크롤
+            // scrollView.smoothScrollTo(x, y);
+        })
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
     }
 
-    private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>, today : String) {
+    private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
         if(arrays.size==0) {     //그날 정보가 없다
             pieChartDataArray.add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
         } else {
             var tmp = 0     //시작 시간
-            var tmp2 = 0
+
             for(data in arrays) {
-                val start = data.startHour * 60 + data.startMin
-                val end = data.endHour * 60 + data.endMin
-                Log.d("timehelp","$start $end $tmp $tmp2")
-                if((tmp*60 + tmp2)==start) {      //이전 일정과 사이에 빈틈이 없을때
+                val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
+                val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
+                if(tmp==start) {      //이전 일정과 사이에 빈틈이 없을때
+                    data.startHour = start
+                    data.endHour = end
                     pieChartDataArray.add(data)
-                    tmp = data.endHour
-                    tmp2 = data.endMin
+                    tmp = end
                 } else {            //이전 일정 사이에 빈틈이 있을 때
-                    pieChartDataArray.add(TimeViewModel.PieChartData("","",tmp,tmp2,data.startHour,data.startMin,"#FFFFFF",0,0))
+                    pieChartDataArray.add(TimeViewModel.PieChartData("","",tmp,0,start,0,"#FFFFFF",0,0))
+                    data.startHour = start
+                    data.endHour = end
                     pieChartDataArray.add(data)
-                    tmp = data.endHour
-                    tmp2 = data.endMin
+                    tmp = end
                 }
             }
         }
-
+/*
         val recyclerView = binding.timetableRv
 
 // Create and set the layout manager
@@ -150,8 +160,8 @@ class TimeTableFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
 
 // Create and set the adapter
-        val adapter = TimeTableAdpater(pieChartDataArray, today,viewModelTime)
-        recyclerView.adapter = adapter
+        val adapter = TimeTableAdpater(pieChartDataArray)
+        recyclerView.adapter = adapter*/
     }
 
 }

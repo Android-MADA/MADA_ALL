@@ -47,6 +47,8 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var today: String
 
+    var preFragment : Int = 0
+
     var curColor = "#89A9D9"
     lateinit var token : String
     var haveTodoCalDatas = false
@@ -114,6 +116,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
         today = arguments?.getString("today")?: "2023-06-01"
+        preFragment = arguments?.getInt("frag")?:R.id.action_fragTimeAdd_to_fragTime
         var curId = 0
 
         if(recievedPieData != null) {
@@ -276,7 +279,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             val bundle = Bundle()
                             bundle.putString("today",today)
-                            findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
+                            findNavController().navigate(preFragment,bundle)
                         }
                         2 -> {
                             Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -325,7 +328,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
+                                    findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -350,7 +353,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
-                                    findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
+                                    findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -365,7 +368,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         binding.ivHomeAddTimeBack.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
-            findNavController().navigate(R.id.action_fragTimeAdd_to_fragTime,bundle)
+            findNavController().navigate(preFragment,bundle)
         }
         binding.homeFragmentTimeAddLayout.setFocusableInTouchMode(true);
         binding.homeFragmentTimeAddLayout.setOnClickListener {
