@@ -68,7 +68,7 @@ class FragMy : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
 
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
@@ -86,8 +86,6 @@ class FragMy : Fragment() {
                     else { binding.userType.text = "일반 유저" }
 
                     binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
-//                    binding.sayingContent.text = response.body()!!.data.saying[0].content
-//                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
                     Log.d("selectfragMy 실패", response.body().toString())
                 }
