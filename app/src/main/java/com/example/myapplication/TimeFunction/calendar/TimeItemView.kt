@@ -69,6 +69,9 @@ class TimeItemView @JvmOverloads constructor(
             if (timeViewModel != null) {
                 timeViewModel.updateData(date.toString("yyyy-MM-dd"))
             }
+            if (homeViewModel != null) {
+                homeViewModel.updateData(date.toString("yyyy-MM-dd"))
+            }
             dialog.dismiss()
         }
     }

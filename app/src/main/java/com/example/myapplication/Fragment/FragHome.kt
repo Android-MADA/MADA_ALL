@@ -19,6 +19,7 @@ import com.example.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.TodoLayoutBinding
@@ -110,13 +111,13 @@ class FragHome : Fragment() {
         binding.todoCharacterIv.setImageResource(
             colorbuttonInfo.selectedImageResource ?: 0
         )
-/*
+
         binding.ivHomeCloth.setImageResource(
             clothbuttonInfo.selectedImageResource ?: 0
         )
         binding.ivHomeItem.setImageResource(
             itembuttonInfo.selectedImageResource ?: 0
-        )*/
+        )
         return view
     }
 
@@ -210,6 +211,10 @@ class FragHome : Fragment() {
         //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
         binding.todoDateLayout.setOnClickListener{
             Log.d("date", "bottomsheetdialog up")
+            val todoMenuBottomSheet = viewModel?.let { it1 -> TodoDateBottomSheetDialog(it1) }
+            if (todoMenuBottomSheet != null) {
+                todoMenuBottomSheet.show(childFragmentManager, todoMenuBottomSheet.tag)
+            }
         }
 
         binding.categoryIv.setOnClickListener {
