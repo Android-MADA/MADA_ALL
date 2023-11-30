@@ -50,7 +50,7 @@ class FragChartMonth : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ChartMonthBinding.inflate(inflater, container, false)
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
         return binding.root
     }
 

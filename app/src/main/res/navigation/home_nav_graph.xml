@@ -215,6 +215,9 @@
         <action
             android:id="@+id/action_fragMy_to_splash2Activity"
             app:destination="@id/splash2Activity" />
+        <action
+            android:id="@+id/action_fragMy_to_myStampFragment"
+            app:destination="@id/myStampFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -332,6 +335,14 @@
         <action
             android:id="@+id/action_fragChartWeek_to_fragChartMonth"
             app:destination="@id/fragChartMonth" />
+    </fragment>
+    <fragment
+        android:id="@+id/myStampFragment"
+        android:name="com.example.myapplication.MyFuction.Fragment.MyStampFragment"
+        android:label="MyStampFragment" >
+        <action
+            android:id="@+id/action_myStampFragment_to_fragMy"
+            app:destination="@id/fragMy" />
     </fragment>
 
 </navigation>

@@ -22,7 +22,6 @@ class TimeMonthSliderAdapter(
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 monthText.text =DateTime(millis).year.toString() + "년 " + DateTime(millis).monthOfYear.toString() + "월"
-                //(fm as? MyRecordMonthFragment)?.monthChange(DateTime(millis).monthOfYear,DateTime(millis).toString("yyyy-MM-dd"))
             }
         })
     }
