@@ -187,9 +187,6 @@
             android:id="@+id/action_fragMy_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
         <action
-            android:id="@+id/action_fragMy_to_myAlarmFragment"
-            app:destination="@id/myAlarmFragment" />
-        <action
             android:id="@+id/action_fragMy_to_myNoticeFragment"
             app:destination="@id/myNoticeFragment" />
         <action
@@ -236,14 +233,6 @@
         android:label="MySetFragment" >
         <action
             android:id="@+id/action_mySetFragment_to_fragMy"
-            app:destination="@id/fragMy" />
-    </fragment>
-    <fragment
-        android:id="@+id/myAlarmFragment"
-        android:name="com.example.myapplication.MyFuction.Fragment.MyAlarmFragment"
-        android:label="MyAlarmFragment" >
-        <action
-            android:id="@+id/action_myAlarmFragment_to_fragMy"
             app:destination="@id/fragMy" />
     </fragment>
     <fragment
