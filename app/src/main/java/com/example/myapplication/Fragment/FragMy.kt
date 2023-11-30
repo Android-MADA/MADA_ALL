@@ -188,9 +188,6 @@ class FragMy : Fragment() {
         binding.mySetPage.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_mySetFragment)
         }
-        binding.mySetAlarm.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myAlarmFragment)
-        }
         binding.myNotice.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
         }

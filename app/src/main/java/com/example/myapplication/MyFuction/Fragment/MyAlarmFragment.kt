@@ -43,7 +43,7 @@ class MyAlarmFragment : Fragment() {
 
         binding.backBtn.setOnClickListener {
             PatchSetAlarm(binding.mySetSwitch1.isChecked)
-            navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
+            //navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
         }
 
         GetSetAlarm()
@@ -56,7 +56,7 @@ class MyAlarmFragment : Fragment() {
 
         binding.backBtn.setOnClickListener {
             PatchSetAlarm(binding.mySetSwitch1.isChecked)
-            navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
+            //navController.navigate(R.id.action_myAlarmFragment_to_fragMy)
         }
     }
 
