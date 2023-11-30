@@ -12,7 +12,7 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class TimeBottomSheetDialog(context: Context, viewModelTime: TimeViewModel) : BottomSheetDialogFragment()
+class TimeBottomSheetDialog(viewModelTime: TimeViewModel) : BottomSheetDialogFragment()
 {
     val vmTime = viewModelTime
     override fun onCreateView(
@@ -25,7 +25,7 @@ class TimeBottomSheetDialog(context: Context, viewModelTime: TimeViewModel) : Bo
         val view = inflater.inflate(R.layout.time_calendar_view, container, false)
         return view
     }
-    override fun getTheme(): Int = R.style.newDialog
+    override fun getTheme(): Int = R.style.AppBottomSheetDialogTheme
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
         val vp = view?.findViewById<ViewPager2>(R.id.time_vp)
@@ -45,5 +45,12 @@ class TimeBottomSheetDialog(context: Context, viewModelTime: TimeViewModel) : Bo
         }
 
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.setOnClickListener {
+            dismiss()
+        }
     }
 }

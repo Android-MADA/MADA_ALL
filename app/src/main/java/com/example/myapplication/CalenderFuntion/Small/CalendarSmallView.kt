@@ -66,7 +66,8 @@ class CalendarSmallView @JvmOverloads constructor(
         list: List<DateTime>,
         Scheldule: TextView,
         ScheduleNum: TextView,
-        cal: LinearLayout
+        cal: LinearLayout,
+        textDday : TextView
     ) {
         list.forEach {
             addView(DaySmallItemView(
@@ -75,7 +76,8 @@ class CalendarSmallView @JvmOverloads constructor(
                 firstDayOfMonth = firstDayOfMonth,
                 Scheldule= Scheldule,
                 ScheduleNum = ScheduleNum,
-                cal = cal
+                cal = cal,
+                textDday =  textDday
             ))
         }
 
