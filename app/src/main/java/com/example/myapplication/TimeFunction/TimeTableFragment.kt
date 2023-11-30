@@ -69,7 +69,7 @@ class TimeTableFragment : Fragment() {
         scrollToPosition(newHeightInPixel)
 
         binding.fragtimeCalendarBtn.setOnClickListener {
-            val bottomSheet = TimeBottomSheetDialog(requireContext(),viewModelTime)
+            val bottomSheet = TimeBottomSheetDialog(viewModelTime)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
@@ -121,6 +121,7 @@ class TimeTableFragment : Fragment() {
     }
 
     private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>, today : String) {
+        pieChartDataArray.clear()
         if(arrays.size==0) {     //그날 정보가 없다
             pieChartDataArray.add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
         } else {

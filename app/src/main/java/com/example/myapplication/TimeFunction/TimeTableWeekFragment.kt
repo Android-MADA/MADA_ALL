@@ -72,7 +72,7 @@ class TimeTableWeekFragment : Fragment() {
         scrollToPosition(newWidthInPixel)
 
         binding.fragtimeCalendarBtn.setOnClickListener {
-            val bottomSheet = TimeBottomSheetDialog(requireContext(),viewModelTime)
+            val bottomSheet = TimeBottomSheetDialog(viewModelTime)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
@@ -109,7 +109,7 @@ class TimeTableWeekFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("today",today)
             bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeAdd,bundle)
+            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTimeWeekAdd,bundle)
         }
 
 

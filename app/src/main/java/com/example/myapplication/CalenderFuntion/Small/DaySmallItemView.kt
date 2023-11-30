@@ -21,6 +21,8 @@ import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companio
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
 import com.example.myapplication.R
 import org.joda.time.DateTime
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DaySmallItemView @JvmOverloads constructor(
     context: Context,
@@ -31,7 +33,8 @@ class DaySmallItemView @JvmOverloads constructor(
     private val firstDayOfMonth: DateTime = DateTime(),
     private val Scheldule: TextView,
     private val ScheduleNum: TextView,
-    private val cal: LinearLayout
+    private val cal: LinearLayout,
+    private val textDday : TextView
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val weekdays = arrayOf("월","화", "수", "목", "금", "토","일")
     private val bounds = Rect()
@@ -56,6 +59,9 @@ class DaySmallItemView @JvmOverloads constructor(
             cal.visibility = GONE
             ScheduleNum.text = date.toString("yyyy-MM-dd")
             Scheldule.text = "  ${date.monthOfYear}월 ${date.dayOfMonth}일 (${weekdays[date.dayOfWeek().get()-1]})  "
+            var remainDday = daysRemainingToDate(ScheduleNum.text.toString()).toString()
+            if(remainDday.toInt() <=0) remainDday = "DAY"
+            textDday.text = "D - ${remainDday}"
         }
     }
 
@@ -94,5 +100,12 @@ class DaySmallItemView @JvmOverloads constructor(
             )
         }
 
+    }
+    fun daysRemainingToDate(targetDate: String): Int {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val today = LocalDate.now()
+        val target = LocalDate.parse(targetDate, dateFormatter)
+        val daysRemaining = target.toEpochDay() - today.toEpochDay()
+        return daysRemaining.toInt()
     }
 }

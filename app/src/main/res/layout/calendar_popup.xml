@@ -4,45 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/calendar_dday_popup_size"
+    android:background="@drawable/calendar_addpopup_back"
     android:orientation="vertical">
 
     <LinearLayout
+        android:backgroundTint="@color/main"
+        android:background="@drawable/calendar_addpopup_up"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
-
         <TextView
             android:textColor="@color/black"
             android:id="@+id/textDay2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
             android:gravity="bottom"
             android:text="6일"
             android:textSize="20sp"
             android:textStyle="bold" />
-
         <TextView
             android:textColor="@color/black"
             android:id="@+id/textPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
             android:gravity="bottom"
             android:text="화요일"
             android:textSize="16sp" />
     </LinearLayout>
-
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginHorizontal="20dp"
-        android:background="?android:attr/listDivider" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
