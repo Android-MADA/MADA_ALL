@@ -2,12 +2,14 @@ package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
@@ -22,10 +24,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -34,16 +32,23 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MainActivity
 import com.example.myapplication.MyFuction.Data.FragMyData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
+import com.example.myapplication.StartFuction.Splash1Activity
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 
 
 class FragMy : Fragment() {
@@ -139,7 +144,7 @@ class FragMy : Fragment() {
             44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
             40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
             46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
             47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
@@ -305,7 +310,6 @@ class FragMy : Fragment() {
 
         // 버튼 클릭 리스너
         btnYes.setOnClickListener {
-
             // 서버 연결
             val call = api.logout(token)
             call.enqueue(object : Callback<Void> {
@@ -313,7 +317,16 @@ class FragMy : Fragment() {
                     if (response.isSuccessful) {
                         Log.d("로그아웃 성공", response.body().toString())
                         alertDialog.dismiss()
-                        navController.navigate(R.id.action_fragMy_to_splash2Activity)
+                        // 캐시 매니저를 가져오기
+                        clearAppData(requireContext())
+                        // SharedPreferences 초기화
+                        val intent = Intent(requireContext(), Splash2Activity::class.java)
+                        if(intent !=null) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            requireContext().startActivity(intent)
+                            Runtime.getRuntime().exit(0)
+                        }
+                        ///navController.navigate(R.id.action_fragMy_to_splash2Activity)
                         Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("로그아웃 실패", response.body().toString())
@@ -338,5 +351,36 @@ class FragMy : Fragment() {
         // 호출
 
     }
+    fun clearAppData(context: Context) {
+        val cache: File = context.cacheDir // 캐시 폴더 호출
+        val appDir = File(cache.parent) // App Data 삭제를 위해 캐시 폴더의 부모 폴더까지 호출
+        if (appDir.exists()) {
+            val children: Array<String> = appDir.list() ?: return
+            for (s in children) {
+                // App Data 폴더의 리스트를 deleteDir 를 통해 하위 디렉토리 삭제
+                if(!s.equals("lib")&&!s.equals("files"))
+                    deleteDir(File(appDir, s))
+            }
+        }
+    }
+
+    fun deleteDir(dir: File): Boolean {
+        if (dir.isDirectory) {
+            val children: Array<String> = dir.list() ?: return false
+
+            // 파일 리스트를 반복문으로 호출
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+
+        // 디렉토리가 비어있거나 파일이므로 삭제 처리
+        return dir.delete()
+    }
+
+
 
 }
