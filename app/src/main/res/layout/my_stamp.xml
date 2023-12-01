@@ -25,11 +25,385 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/my_stamp_title_txt" />
 
-    <View
-        android:id="@+id/view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="550dp"
         android:layout_margin="16dp"
-        android:background="@drawable/my_stampboard_background" />
+        android:padding="16dp"
+        android:elevation="20dp"
+        android:background="@drawable/my_stampboard_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect1"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp4"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="20"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect2"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/stamp8"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="250"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect3"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp12"
+            app:layout_constraintStart_toEndOf="@id/stamp12"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="20"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect4"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/stamp16"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="250"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect5"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp20"
+            app:layout_constraintStart_toEndOf="@id/stamp20"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="20"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect6"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/stamp24"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="250"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/connect7"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampconnect_background"
+            app:layout_constraintTop_toTopOf="@id/stamp28"
+            app:layout_constraintStart_toEndOf="@id/stamp28"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="27dp"
+            android:rotation="20"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp1"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stamp2"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp2"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp1"
+            app:layout_constraintEnd_toStartOf="@id/stamp3"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp3"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp2"
+            app:layout_constraintEnd_toStartOf="@id/stamp4"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp4"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp3"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="27dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp5"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp4"
+            app:layout_constraintStart_toEndOf="@id/stamp6"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp6"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp3"
+            app:layout_constraintStart_toEndOf="@id/stamp7"
+            app:layout_constraintEnd_toStartOf="@id/stamp5"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp7"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp2"
+            app:layout_constraintStart_toEndOf="@id/stamp8"
+            app:layout_constraintEnd_toStartOf="@id/stamp6"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp8"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stamp7"
+            android:layout_marginStart="27dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp9"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stamp10"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp10"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp7"
+            app:layout_constraintStart_toEndOf="@id/stamp9"
+            app:layout_constraintEnd_toStartOf="@id/stamp11"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp11"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp6"
+            app:layout_constraintStart_toEndOf="@id/stamp10"
+            app:layout_constraintEnd_toStartOf="@id/stamp12"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp12"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp5"
+            app:layout_constraintStart_toEndOf="@id/stamp11"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="27dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp13"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp12"
+            app:layout_constraintStart_toEndOf="@id/stamp14"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp14"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp11"
+            app:layout_constraintStart_toEndOf="@id/stamp15"
+            app:layout_constraintEnd_toStartOf="@id/stamp13"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp15"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp10"
+            app:layout_constraintStart_toEndOf="@id/stamp16"
+            app:layout_constraintEnd_toStartOf="@id/stamp14"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp16"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stamp15"
+            android:layout_marginStart="27dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp17"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stamp18"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp18"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp15"
+            app:layout_constraintStart_toEndOf="@id/stamp17"
+            app:layout_constraintEnd_toStartOf="@id/stamp19"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp19"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp14"
+            app:layout_constraintStart_toEndOf="@id/stamp18"
+            app:layout_constraintEnd_toStartOf="@id/stamp20"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp20"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@id/stamp13"
+            app:layout_constraintStart_toEndOf="@id/stamp19"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="27dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp21"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stamp22"
+            app:layout_constraintTop_toBottomOf="@+id/stamp20" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp22"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@id/stamp5"
+            app:layout_constraintStart_toEndOf="@+id/stamp23"
+            app:layout_constraintTop_toBottomOf="@+id/stamp19" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp23"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintTop_toBottomOf="@+id/stamp18"
+            app:layout_constraintStart_toEndOf="@id/stamp8"
+            app:layout_constraintEnd_toStartOf="@id/stamp6"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp24"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="27dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@+id/stamp23"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stamp17" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp25"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@id/stamp26"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stamp24" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp26"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@id/stamp27"
+            app:layout_constraintStart_toEndOf="@+id/stamp25"
+            app:layout_constraintTop_toBottomOf="@+id/stamp23" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp27"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@+id/stamp28"
+            app:layout_constraintStart_toEndOf="@+id/stamp26"
+            app:layout_constraintTop_toBottomOf="@+id/stamp22" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp28"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="27dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp11"
+            app:layout_constraintTop_toBottomOf="@+id/stamp21" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp29"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stamp22"
+            app:layout_constraintTop_toBottomOf="@+id/stamp28" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp30"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@+id/stamp29"
+            app:layout_constraintStart_toEndOf="@+id/stamp23"
+            app:layout_constraintTop_toBottomOf="@+id/stamp27" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp31"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/my_stampitem_background"
+            app:layout_constraintEnd_toStartOf="@+id/stamp30"
+            app:layout_constraintStart_toEndOf="@id/stamp8"
+            app:layout_constraintTop_toBottomOf="@+id/stamp26" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

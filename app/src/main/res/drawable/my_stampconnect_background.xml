@@ -1,0 +1,37 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 배경 원 -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#F0F0F0" />
+            <size android:width="54dp" android:height="54dp"/>
+        </shape>
+    </item>
+    <!-- 마스크 원 -->
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+            <size android:width="32dp" android:height="32dp"/>
+        </shape>
+    </item>
+    <!-- 마스크 네모 -->
+    <item android:gravity="right|bottom">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <size android:width="27dp" android:height="27dp"/>
+        </shape>
+    </item>
+    <!-- 마스크 네모 -->
+    <item android:gravity="left|bottom">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <size android:width="27dp" android:height="27dp"/>
+        </shape>
+    </item>
+    <!-- 마스크 네모 -->
+    <item android:gravity="left|top">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <size android:width="27dp" android:height="27dp"/>
+        </shape>
+    </item>
+</layer-list>
