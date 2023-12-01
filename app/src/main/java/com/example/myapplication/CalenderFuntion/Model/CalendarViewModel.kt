@@ -533,8 +533,8 @@ class CalendarViewModel : ViewModel(){
                                 }
                             }
                             ddayArrayList.sortBy { daysRemainingToDate(it.endDate) }
-                            ddayArrayList.add(AndroidCalendarData("","","4000-01-01", "","",
-                                "","","","", -1,false,"","BLANK",-1,""))
+                            //ddayArrayList.add(AndroidCalendarData("","","4000-01-01", "","",
+                            //    "","","","", -1,false,"","BLANK",-1,""))
                             callback(1)
                         } else callback(2)
                     } else callback(2)

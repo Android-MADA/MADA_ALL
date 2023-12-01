@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_fragCalendar_to_fragHome"
             app:destination="@id/fragHome" />
+        <action
+            android:id="@+id/action_fragCalendar_to_calendarDday"
+            app:destination="@id/calendarDday" />
     </fragment>
     <fragment
         android:id="@+id/calendarAdd"
@@ -73,6 +76,15 @@
         <action
             android:id="@+id/action_calendarAddDday_to_fragHome"
             app:destination="@id/fragHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarDday"
+        android:name="com.example.myapplication.CalenderFuntion.CalendarDdayFragment"
+        android:label="CalendarDday"
+        tools:layout="@layout/calendar_dday_fragment">
+        <action
+            android:id="@+id/action_calendarDday_to_fragCalendar"
+            app:destination="@id/fragCalendar" />
     </fragment>
 
 

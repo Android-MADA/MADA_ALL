@@ -14,27 +14,22 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
+import com.example.myapplication.CalenderFuntion.CalendarDdayFragment
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.HomeFunction.view.HomeViewpagerDdayFragment
 import com.example.myapplication.R
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
-class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeViewpagerDdayFragment)  : RecyclerView.Adapter<DdayAdapter.ItemViewHolder>()  {
+class DdayAdapter(val CalendarViewModel: CalendarViewModel, val parent2: CalendarDdayFragment)  : RecyclerView.Adapter<DdayAdapter.ItemViewHolder>()  {
 
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val dday1 : ImageButton = itemView.findViewById(R.id.dday2)
-        val dday2 : ImageButton = itemView.findViewById(R.id.dday1)
+        val dday1 : ImageView = itemView.findViewById(R.id.dday1)
         val ddayRemain : TextView = itemView.findViewById(R.id.dday_remain)
         val ddayText : TextView = itemView.findViewById(R.id.dday_text)
         val plus : ImageView = itemView.findViewById(R.id.plus)
+        val day : ImageView = itemView.findViewById(R.id.plus)
     }
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -46,9 +41,9 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
         val item = CalendarViewModel.ddayArrayList[position]
         if(item.what =="BLANK") {
             holder.dday1.visibility = View.GONE
-            holder.dday2.setImageResource(R.drawable.dday_blank)
+            //holder.dday2.setImageResource(R.drawable.dday_blank)
             holder.plus.visibility = View.VISIBLE
-            holder.dday2.setOnClickListener {
+            holder.itemView.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("today",CalendarViewModel.todayDate())
                 //Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
@@ -56,20 +51,16 @@ class DdayAdapter(val CalendarViewModel : CalendarViewModel, val parent2 : HomeV
         } else {
             if(item.color == "#486DA3") {
                 holder.dday1.setColorFilter(Color.parseColor("#486DA3"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#E1E9F5"), PorterDuff.Mode.SRC_IN)
             } else if(item.color =="#F0768C") {
                 holder.dday1.setColorFilter(Color.parseColor("#F0768C"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#FFE7EB"), PorterDuff.Mode.SRC_IN)
             } else if(item.color == "#F8D141"){
                 holder.dday1.setColorFilter(Color.parseColor("#F8D141"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#FEF9E6"), PorterDuff.Mode.SRC_IN)
             }  else {
                 holder.dday1.setColorFilter(Color.parseColor("#2AA1B7"), PorterDuff.Mode.SRC_IN)
-                holder.dday2.setColorFilter(Color.parseColor("#EAF6F8"), PorterDuff.Mode.SRC_IN)
             }
             holder.ddayRemain.text = "D-${CalendarViewModel.daysRemainingToDate(item.endDate)}"
             holder.ddayText.text = item.title
-            holder.dday2.setOnClickListener {
+            holder.itemView.setOnClickListener {
                 val mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_dday_popup_plus, null)
                 mDialogView.findViewById<ImageView>(R.id.plus_up).setColorFilter(Color.parseColor(item.color))
                 mDialogView.findViewById<TextView>(R.id.textTitle).text = item.title
