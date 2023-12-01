@@ -148,6 +148,9 @@ class FragCalendar : Fragment(){
             bundle.putString("today",CalendarViewModel.todayDate())
             Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
         }
+        binding.changeDday.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragCalendar_to_calendarDday)
+        }
         view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->

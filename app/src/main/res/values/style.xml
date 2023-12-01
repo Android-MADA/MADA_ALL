@@ -3,10 +3,6 @@
     <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">20dp</item>
     </style>
-
-
-
-
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/time_calendar_background</item>
     </style>
