@@ -2,7 +2,7 @@
     android:shape="oval">
     <!-- 버튼 색깔 -->
     <solid android:color="#F0F0F0"/>
-    <size android:width="54dp" android:height="54dp"/>
+    <size android:width="100dp" android:height="100dp"/>
     <!-- 그림자 효과 -->
     <corners android:radius="20dp"/> <!-- 조절 가능한 반지름 -->
     <stroke android:color="#00000000" android:width="5dp"/> <!-- 투명한 테두리 -->
