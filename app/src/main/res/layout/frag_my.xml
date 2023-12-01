@@ -240,19 +240,6 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            android:id="@+id/my_set_alarm"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="알림 설정"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
 
                         <View
                             android:layout_width="match_parent"

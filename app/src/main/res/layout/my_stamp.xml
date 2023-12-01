@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/cancelBtn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/ic_delete" />
     </LinearLayout>
 
@@ -31,13 +31,5 @@
         android:layout_height="550dp"
         android:layout_margin="16dp"
         android:background="@drawable/my_stampboard_background" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="오늘 하루 그만보기"
-        android:textColorHint="@color/grey3"
-        android:textSize="12sp"/>
 
 </LinearLayout>
