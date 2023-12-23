@@ -142,6 +142,13 @@ class CalendarViewModel : ViewModel(){
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
     }
+    fun convertToDateKoreanFormatDday(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy년 M월 d일 (E)", Locale("ko", "KR"))
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
         val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
@@ -229,7 +236,6 @@ class CalendarViewModel : ViewModel(){
         Log.d("id",id.toString())
         service.deleteCal(token,id).enqueue(object : Callback<AddCalendarData1> {
             override fun onResponse(call: Call<AddCalendarData1>, response: Response<AddCalendarData1>) {
-                Log.d("rrrrrrrrrrrrrrrrrrrr",response.toString())
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if(responseBody!=null) {

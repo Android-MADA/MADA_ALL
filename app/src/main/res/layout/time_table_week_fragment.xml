@@ -426,6 +426,7 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/mon_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -436,6 +437,8 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+
+                            android:id="@+id/tus_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -446,6 +449,8 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+
+                            android:id="@+id/wed_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -456,6 +461,7 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/thu_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -466,6 +472,7 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/fri_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -476,6 +483,7 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/sat_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
@@ -486,6 +494,7 @@
                             android:background="?android:attr/listDivider" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/sun_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
