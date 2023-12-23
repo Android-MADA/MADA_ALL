@@ -226,7 +226,7 @@ class DayDataItemView @JvmOverloads constructor(
                         )
                     } else {
                         canvas.drawRoundRect(roundedRectNoDuration, 10f, 10f, paint2)
-                        val maxTextWidth = width - 20f // 20f로부터 시작하므로
+                        val maxTextWidth = width - 30f // 20f로부터 시작하므로
                         val ellipsis = "..."
                         val textPaint = Paint()
                         textPaint.isAntiAlias = true

@@ -88,20 +88,61 @@
                 app:tint="@color/main" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="15dp"
-            android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:id="@+id/ddayLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/calendar_dday_check_icon">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="D"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="디데이 설정 여부"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <CheckBox
+                    android:clickable="false"
+                    android:layout_gravity="center"
+                    android:id="@+id/dday_cb"
+                    android:buttonTint="@color/sub4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:id="@+id/textDday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

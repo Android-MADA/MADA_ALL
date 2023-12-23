@@ -92,66 +92,11 @@
                     android:src="@drawable/calendar_color_select" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layout_color_selectors2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    >
-                    <ImageButton
-                        android:id="@+id/calendar_dday_color1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub4"
-                        android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"
-                        />
-                    <ImageButton
-                        android:id="@+id/calendar_dday_color2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/point_main"
-                        android:layout_marginHorizontal="10dp"
-                        android:background="@android:color/transparent"/>
-                    <ImageButton
-                        android:id="@+id/calendar_dday_color3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub1"
-                        android:background="@android:color/transparent"
-                        />
-                    <ImageButton
-                        android:id="@+id/calendar_dday_color4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_color_selector_28"
-                        android:layout_marginHorizontal="10dp"
-                        app:tint="@color/sub3"
-                        android:background="@android:color/transparent"
-                        />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-            <LinearLayout
                 android:id="@+id/layout_color_selectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -166,7 +111,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub1" />
+                        app:tint="#ED3024" />
 
                     <ImageButton
                         android:id="@+id/calendar_color2"
@@ -175,7 +120,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#F68F30" />
+                        app:tint="#F65F55" />
 
                     <ImageButton
                         android:id="@+id/calendar_color3"
@@ -184,7 +129,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#F33E3E" />
+                        app:tint="#FD8415" />
 
                     <ImageButton
                         android:id="@+id/calendar_color4"
@@ -193,7 +138,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#FDA4B4" />
+                        app:tint="#FEBD16" />
 
                     <ImageButton
                         android:id="@+id/calendar_color5"
@@ -202,7 +147,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub3" />
+                        app:tint="#FBA1B1" />
 
                     <ImageButton
                         android:id="@+id/calendar_color6"
@@ -211,7 +156,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub2" />
+                        app:tint="#F46D85" />
                     <ImageButton
                         android:id="@+id/calendar_color7"
                         android:layout_width="wrap_content"
@@ -219,7 +164,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub2" />
+                        app:tint="#D087F2" />
                     <ImageButton
                         android:id="@+id/calendar_color8"
                         android:layout_width="wrap_content"
@@ -227,7 +172,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub2" />
+                        app:tint="#A516BC" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -244,7 +189,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#7FC7D4" />
+                        app:tint="@color/main" />
 
                     <ImageButton
                         android:id="@+id/calendar_color10"
@@ -253,7 +198,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/point_main" />
+                        app:tint="#269CB1" />
 
                     <ImageButton
                         android:id="@+id/calendar_color11"
@@ -262,7 +207,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#21C362" />
+                        app:tint="#3C67A7" />
 
                     <ImageButton
                         android:id="@+id/calendar_color12"
@@ -271,7 +216,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="#0E9746" />
+                        app:tint="@color/sub2" />
 
                     <ImageButton
                         android:id="@+id/calendar_color13"
@@ -280,7 +225,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/main" />
+                        app:tint="#C0D979" />
 
                     <ImageButton
                         android:id="@+id/calendar_color14"
@@ -289,7 +234,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub4" />
+                        app:tint="#8FBC10" />
                     <ImageButton
                         android:id="@+id/calendar_color15"
                         android:layout_width="wrap_content"
@@ -297,7 +242,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub2" />
+                        app:tint="#107E3D" />
                     <ImageButton
                         android:id="@+id/calendar_color16"
                         android:layout_width="wrap_content"
@@ -305,7 +250,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
-                        app:tint="@color/sub2" />
+                        app:tint="#0E4122" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -365,19 +310,18 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/dday_ly"
                     android:orientation="vertical">
-
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/textDday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="15dp"
                         android:gravity="center"
-                        android:text="D - 0"
+                        android:text="D-0"
                         android:textColor="@color/point_main"
                         android:textSize="32sp"
                         android:textStyle="bold" />

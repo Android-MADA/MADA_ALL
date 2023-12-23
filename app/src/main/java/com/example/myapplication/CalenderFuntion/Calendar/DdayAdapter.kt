@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CalenderFuntion.CalendarDdayFragment
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
@@ -44,89 +45,10 @@ class DdayAdapter(val CalendarViewModel: CalendarViewModel, val parent2: Calenda
         holder.ddayText.text = item.title
         holder.day.text = CalendarViewModel.convertToDateKoreanFormat123(item.endDate)
         holder.itemView.setOnClickListener {
-            val mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.calendar_dday_popup_plus, null)
-            mDialogView.findViewById<ImageView>(R.id.plus_up).setColorFilter(Color.parseColor(item.color))
-            mDialogView.findViewById<TextView>(R.id.textTitle).text = item.title
-            mDialogView.findViewById<TextView>(R.id.textDay).text = CalendarViewModel.convertToDate2(item.endDate)
-            mDialogView.findViewById<TextView>(R.id.textDday).text = holder.ddayRemain.text.toString()
-            mDialogView.findViewById<TextView>(R.id.textMemo).text = item.memo
-            val mBuilder = AlertDialog.Builder(holder.itemView.context)
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
+            val bundle = Bundle()
+            bundle.putSerializable("calData",item)
+            Navigation.findNavController(holder.itemView).navigate(R.id.action_calendarDday_to_calendarAddDday,bundle)
 
-            mDialogView.findViewById<ImageButton>(R.id.editbutton).setOnClickListener {
-                val bundle = Bundle()
-                bundle.putSerializable("calData",item)
-                bundle.putBoolean("edit",true)
-                //Navigation.findNavController(holder.itemView).navigate(R.id.action_fragHome_to_ddayAddFragment,bundle)
-                mBuilder.dismiss()
-            }
-            mDialogView.findViewById<ImageButton>(R.id.delbutton).setOnClickListener {
-                mBuilder.dismiss()
-                CalendarViewModel.deleteCalendar(item.id){ result ->
-                    when (result) {
-                        1 -> {
-                            for(data in CalendarViewModel.ddayArrayList) {
-                                if(data.id == item.id) {
-                                    CalendarViewModel.ddayArrayList.remove(data)
-                                    break
-                                }
-                            }
-                            val formattedYear = item.endDate.substring(0,4).toInt()
-                            val formattedMonth = item.endDate.substring(5,7).toInt()
-                            val nextMonth: String
-
-                            if (formattedMonth < 12) {
-                                nextMonth = "${formattedYear}-${formattedMonth + 1}"
-                            } else {
-                                nextMonth = "${formattedYear + 1}-1"
-                            }
-                            val preMonth : String
-                            if (formattedMonth >1) {
-                                preMonth = "${formattedYear}-${formattedMonth - 1}"
-                            } else {
-                                preMonth = "${formattedYear - 1}-12"
-                            }
-                            Log.d("dsadasdsa",nextMonth)
-                            var tmpArrayList = CalendarViewModel.hashMapArrayCal.get(nextMonth)
-                            if(tmpArrayList!=null) {
-                                for(data in tmpArrayList) {
-                                    if(data.id==item.id) {
-                                        tmpArrayList.remove(data)
-                                        break
-                                    }
-                                }
-                            }
-
-                            tmpArrayList = CalendarViewModel.hashMapArrayCal.get(preMonth)
-                            if(tmpArrayList!=null) {
-                                for(data in tmpArrayList) {
-                                    if(data.id==item.id) {
-                                        tmpArrayList.remove(data)
-                                        break
-                                    }
-                                }
-                            }
-                            tmpArrayList = CalendarViewModel.hashMapArrayCal.get("${formattedYear}-${formattedMonth}")
-                            if(tmpArrayList!=null) {
-                                for(data in tmpArrayList) {
-                                    if(data.id==item.id) {
-                                        tmpArrayList.remove(data)
-                                        break
-                                    }
-                                }
-                            }
-                            parent2.updateDdayData()
-                        }
-                        2 -> {
-                            Toast.makeText(holder.itemView.context, "삭제 실패", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
         }
     }
     override fun getItemCount(): Int {

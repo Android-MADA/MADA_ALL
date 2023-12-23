@@ -76,6 +76,7 @@ class CalendarAddFragment : Fragment() {
             binding.textTitle.setText(calData.title)
             preScheduleNum.text = calData.startDate
             nextScheduleNum.text = calData.endDate
+            binding.ddayCb.isChecked = calData.dDay == "Y"
 
             binding.preScheldule2.text = CalendarViewModel.TimeChangeKor(calData.startTime)
             binding.nextScheldule2.text = CalendarViewModel.TimeChangeKor(calData.endTime)
@@ -105,46 +106,28 @@ class CalendarAddFragment : Fragment() {
             binding.submitBtn.text = "수정"
         //색깔 클릭 리스너
         val colorSelectors = listOf(
-            binding.calendarDdayColor1 to R.color.sub4,
-            binding.calendarDdayColor2 to R.color.point_main,
-            binding.calendarDdayColor3 to R.color.sub1,
-            binding.calendarDdayColor4 to R.color.sub3,
-
-            binding.calendarColor1 to R.color.sub1,
-            binding.calendarColor2 to R.color.color1,
-            binding.calendarColor3 to R.color.color2,
-            binding.calendarColor4 to R.color.color3,
-            binding.calendarColor5 to R.color.sub3,
-            binding.calendarColor6 to R.color.sub2,
-            binding.calendarColor7 to R.color.sub2,
-            binding.calendarColor8 to R.color.sub2,
-            binding.calendarColor9 to R.color.color4,
-            binding.calendarColor10 to R.color.point_main,
-            binding.calendarColor11 to R.color.color5,
-            binding.calendarColor12 to R.color.color6,
-            binding.calendarColor13 to R.color.main,
-            binding.calendarColor14 to R.color.sub4,
-            binding.calendarColor15 to R.color.sub2,
-            binding.calendarColor16 to R.color.sub2,
+            binding.calendarColor1 to "#ED3024",
+            binding.calendarColor2 to "#F65F55",
+            binding.calendarColor3 to "#FD8415",
+            binding.calendarColor4 to "#FEBD16",
+            binding.calendarColor5 to "#FBA1B1",
+            binding.calendarColor6 to "#F46D85",
+            binding.calendarColor7 to "#D087F2",
+            binding.calendarColor8 to "#A516BC",
+            binding.calendarColor9 to "#89A9D9",
+            binding.calendarColor10 to "#269CB1",
+            binding.calendarColor11 to "#3C67A7",
+            binding.calendarColor12 to "#405059",
+            binding.calendarColor13 to "#C0D979",
+            binding.calendarColor14 to "#8FBC10",
+            binding.calendarColor15 to "#107E3D",
+            binding.calendarColor16 to "#0E4122",
         )
         for ((colorView, colorResource) in colorSelectors) {
             colorView.setOnClickListener {
-                binding.calendarColor.setColorFilter(resources.getColor(colorResource), PorterDuff.Mode.SRC_IN)
-                curColor = when (colorResource) {
-                    R.color.sub1 -> "#F8D141"
-                    R.color.color1 -> "#F68F30"
-                    R.color.color2 -> "#F33E3E"
-                    R.color.color3 -> "#FDA4B4"
-                    R.color.sub3 -> "#F0768C"
-                    R.color.sub2 -> "#405059"
-                    R.color.color4 -> "#7FC7D4"
-                    R.color.point_main -> "#2AA1B7"
-                    R.color.color5 -> "#21C362"
-                    R.color.color6 -> "#0E9746"
-                    R.color.main -> "#89A9D9"
-                    R.color.sub4 -> "#486DA3"
-                    else -> ""
-                }
+                binding.calendarColor.setColorFilter(Color.parseColor(colorResource), PorterDuff.Mode.SRC_IN)
+                binding.textDday.setTextColor(Color.parseColor(colorResource))
+                curColor = colorResource
                 toggleLayout(false, binding.layoutColorSelectors)
             }
         }
@@ -157,21 +140,14 @@ class CalendarAddFragment : Fragment() {
         //달력 클릭 리스너
         binding.ddayCb.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.calendarColor.setColorFilter(resources.getColor(R.color.sub4), PorterDuff.Mode.SRC_IN)
-                curColor = "#486DA3"
+                curDday = "Y"
                 toggleLayout(true,binding.ddayLy)
-                toggleLayout(true,binding.layoutColorSelectors2)
-                toggleLayout(false,binding.layoutColorSelectors)
                 var remainDday = CalendarViewModel.daysRemainingToDate(nextScheduleNum.text.toString()).toString()
                 if(remainDday.toInt() <=0) remainDday = "DAY"
-                binding.textDday.text = "D - ${remainDday}"
+                binding.textDday.text = "D-${remainDday}"
             } else {
+                curDday ="N"
                 toggleLayout(false,binding.ddayLy)
-                toggleLayout(true,binding.layoutColorSelectors)
-                toggleLayout(false,binding.layoutColorSelectors2)
-                var remainDday = CalendarViewModel.daysRemainingToDate(nextScheduleNum.text.toString()).toString()
-                if(remainDday.toInt() <=0) remainDday = "DAY"
-                binding.textDday.text = "D - ${remainDday}"
             }
         }
 
@@ -578,7 +554,7 @@ class CalendarAddFragment : Fragment() {
 
                     } else {
                         CalendarViewModel.editCalendar(CalendarData( binding.textTitle.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                            curColor,curCycle,"N",binding.textMemo.text.toString(), CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),
+                            curColor,curCycle,curDday,binding.textMemo.text.toString(), CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),
                             CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curRepeatText),curId) { result ->
                             when (result) {
                                 1 -> {

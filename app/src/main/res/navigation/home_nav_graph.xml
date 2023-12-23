@@ -74,8 +74,8 @@
             android:id="@+id/action_calendarAddDday_to_fragCalendar"
             app:destination="@id/fragCalendar" />
         <action
-            android:id="@+id/action_calendarAddDday_to_fragHome"
-            app:destination="@id/fragHome" />
+            android:id="@+id/action_calendarAddDday_to_calendarDday"
+            app:destination="@id/calendarDday" />
     </fragment>
     <fragment
         android:id="@+id/calendarDday"
@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_calendarDday_to_fragCalendar"
             app:destination="@id/fragCalendar" />
+        <action
+            android:id="@+id/action_calendarDday_to_calendarAddDday"
+            app:destination="@id/calendarAddDday" />
     </fragment>
 
 

@@ -32,11 +32,9 @@ class CalendarAddDdayFragment : Fragment() {
     lateinit var initSchedule : String
     lateinit var calData : AndroidCalendarData
 
-    var curColor ="#486DA3"
-    var curEdit = false
-    var curCal = false
+    var curColor ="#F46D85"
     var curId : Int = -1
-
+    var toggleDay = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ScheduleNum = TextView(requireContext())
@@ -55,49 +53,62 @@ class CalendarAddDdayFragment : Fragment() {
             calData = arguments?.getSerializable("calData") as AndroidCalendarData
             binding.textTitle.setText(calData.title)
             ScheduleNum.text = calData.endDate
-            binding.textMemo.setText(calData.memo)
+            //binding.textMemo.setText(calData.memo)
             curColor = calData.color
             curId = calData.id
-            curEdit = arguments?.getBoolean("edit")?: false
-            curCal = arguments?.getBoolean("calendar")?: false
+            binding.layoutColorSelector.visibility = View.GONE
+            binding.addBtn.text ="삭제"
+            binding.timePicker.visibility = View.GONE
+            toggleDay = true
         } else {
             val today = arguments?.getString("today")?: "2023-06-01"
             ScheduleNum.text = today
         }
 
-        binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(ScheduleNum.text.toString())
+        binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormatDday(ScheduleNum.text.toString())
+        binding.textDday.setTextColor(Color.parseColor(curColor))
+        binding.titleLayout.setBackgroundColor(Color.parseColor(curColor))
         binding.calendarColor.setColorFilter(Color.parseColor(curColor), PorterDuff.Mode.SRC_IN)
         var remainDday = CalendarViewModel.daysRemainingToDate(ScheduleNum.text.toString()).toString()
         if(remainDday.toInt() <=0) remainDday = "DAY"
-        binding.textDday.text = "D - ${remainDday}"
+        binding.textDday.text = "D-${remainDday}"
         initSchedule = ScheduleNum.text.toString()
-        if(curEdit) {
-            binding.addBtn.text ="수정"
-        }
-        binding.calendarColor1.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#486DA3"), PorterDuff.Mode.SRC_IN)
-            curColor = "#486DA3"
-            toggleLayout(false,binding.layoutColorSelector)
-        }
-        binding.calendarColor2.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#2AA1B7"), PorterDuff.Mode.SRC_IN)
-            curColor = "#2AA1B7"
-            toggleLayout(false,binding.layoutColorSelector)
-        }
-        binding.calendarColor3.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#F8D141"), PorterDuff.Mode.SRC_IN)
-            curColor = "#F8D141"
-            toggleLayout(false,binding.layoutColorSelector)
-        }
-        binding.calendarColor4.setOnClickListener {
-            binding.calendarColor.setColorFilter(Color.parseColor("#F0768C"), PorterDuff.Mode.SRC_IN)
-            curColor = "#F0768C"
-            toggleLayout(false,binding.layoutColorSelector)
+        val colorSelectors = listOf(
+            binding.calendarColor1 to "#ED3024",
+            binding.calendarColor2 to "#F65F55",
+            binding.calendarColor3 to "#FD8415",
+            binding.calendarColor4 to "#FEBD16",
+            binding.calendarColor5 to "#FBA1B1",
+            binding.calendarColor6 to "#F46D85",
+            binding.calendarColor7 to "#D087F2",
+            binding.calendarColor8 to "#A516BC",
+            binding.calendarColor9 to "#89A9D9",
+            binding.calendarColor10 to "#269CB1",
+            binding.calendarColor11 to "#3C67A7",
+            binding.calendarColor12 to "#405059",
+            binding.calendarColor13 to "#C0D979",
+            binding.calendarColor14 to "#8FBC10",
+            binding.calendarColor15 to "#107E3D",
+            binding.calendarColor16 to "#0E4122",
+        )
+        for ((colorView, colorResource) in colorSelectors) {
+            colorView.setOnClickListener {
+                binding.calendarColor.setColorFilter(Color.parseColor(colorResource), PorterDuff.Mode.SRC_IN)
+                binding.titleLayout.setBackgroundColor(Color.parseColor(colorResource))
+                binding.textDday.setTextColor(Color.parseColor(colorResource))
+                curColor = colorResource
+                toggleLayout(false, binding.layoutColorSelector)
+            }
         }
         binding.calendarColor.setOnClickListener {
-            toggleLayout(true,binding.layoutColorSelector)
-        }
+            binding.addBtn.text ="등록"
 
+            if(binding.layoutColorSelector.visibility == View.GONE)
+                toggleLayout(true,binding.layoutColorSelector)
+        }
+        binding.textTitle.setOnClickListener {
+            binding.addBtn.text ="등록"
+        }
         val ticker1 = binding.numberPicker1
         val ticker2 = binding.numberPicker2
         val ticker3 = binding .numberPicker3
@@ -105,12 +116,19 @@ class CalendarAddDdayFragment : Fragment() {
         ticker2.value = ScheduleNum.text.toString().substring(5,7).toInt()
         ticker3.value = ScheduleNum.text.toString().substring(9).toInt()
 
+        binding.nextScheldule.setOnClickListener {
+            binding.addBtn.text ="등록"
+            toggleLayout(toggleDay,binding.timePicker)
+            if(toggleDay) toggleDay = false
+            else toggleDay = true
+        }
+
         ticker1.setOnValueChangedListener { picker, oldVal, newVal ->
             ScheduleNum.text = String.format("%04d", newVal) +ScheduleNum.text.toString().substring(4)
-            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(ScheduleNum.text.toString())
+            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormatDday(ScheduleNum.text.toString())
             var remainDday = CalendarViewModel.daysRemainingToDate(ScheduleNum.text.toString()).toString()
             if(remainDday.toInt() <=0) remainDday = "DAY"
-            binding.textDday.text = "D - ${remainDday}"
+            binding.textDday.text = "D-${remainDday}"
         }
         ticker2.setOnValueChangedListener { picker, oldVal, newVal ->
             if(newVal ==1 ||newVal ==3 ||newVal ==5 ||newVal ==7 ||newVal ==8 ||newVal ==10 ||newVal ==12)
@@ -119,17 +137,17 @@ class CalendarAddDdayFragment : Fragment() {
             else if(newVal ==3 ||newVal ==4 ||newVal ==6 ||newVal ==9 ||newVal ==11) ticker3.maxValue=30
 
             ScheduleNum.text = ScheduleNum.text.toString().substring(0,5) +String.format("%02d", newVal) + ScheduleNum.text.toString().substring(7)
-            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(ScheduleNum.text.toString())
+            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormatDday(ScheduleNum.text.toString())
             var remainDday = CalendarViewModel.daysRemainingToDate(ScheduleNum.text.toString()).toString()
             if(remainDday.toInt() <=0) remainDday = "DAY"
-            binding.textDday.text = "D - ${remainDday}"
+            binding.textDday.text = "D-${remainDday}"
         }
         ticker3.setOnValueChangedListener { picker, oldVal, newVal ->
             ScheduleNum.text = ScheduleNum.text.toString().substring(0,8) + String.format("%02d", newVal)
-            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormat(ScheduleNum.text.toString())
+            binding.nextScheldule.text = CalendarViewModel.convertToDateKoreanFormatDday(ScheduleNum.text.toString())
             var remainDday = CalendarViewModel.daysRemainingToDate(ScheduleNum.text.toString()).toString()
             if(remainDday.toInt() <=0) remainDday = "DAY"
-            binding.textDday.text = "D - ${remainDday}"
+            binding.textDday.text = "D-${remainDday}"
         }
         return binding.root
     }
@@ -139,10 +157,9 @@ class CalendarAddDdayFragment : Fragment() {
         binding.backButton.setOnClickListener {
             //뭐가 있다면
             if(binding.textTitle.text.toString() != "" || ScheduleNum.text.toString() != (initSchedule) || binding.textMemo.text.toString()!="") {
-                CalendarViewModel.setPopupTwo(requireContext(),"수정하지 않고 나가시겠습니까?",view,R.id.action_calendarAddDday_to_fragHome)
+                CalendarViewModel.setPopupTwo(requireContext(),"수정하지 않고 나가시겠습니까?",view,R.id.action_calendarAddDday_to_calendarDday)
             } else {
-                if(curCal) Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
-                else Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragHome)
+                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
             }
         }
         binding.addBtn.setOnClickListener {
@@ -151,7 +168,7 @@ class CalendarAddDdayFragment : Fragment() {
             } else if(binding.textTitle.text.toString() == "") {
                 CalendarViewModel.setPopupOne(requireContext(),"제목을 입력해 주십시오",view)
             }   else {
-                if(binding.addBtn.text.toString()=="수정") {
+                if(binding.addBtn.text.toString()=="등록") {
                     CalendarViewModel.editCalendar(CalendarData( binding.textTitle.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
                         curColor,"No","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ),curId) { result ->
                         when (result) {
@@ -171,8 +188,7 @@ class CalendarAddDdayFragment : Fragment() {
                                 delDday(initSchedule.substring(0,4).toInt(),initSchedule.substring(5,7).toInt(),curId)
                                 addDday(ScheduleNum.text.substring(0,4).toInt(),ScheduleNum.text.substring(5,7).toInt(),curId
                                 )
-                                if(curCal) Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
-                                else Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragHome)
+                                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
                             }
                             2 -> {
                                 Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
@@ -193,8 +209,7 @@ class CalendarAddDdayFragment : Fragment() {
 
                                 addDday(ScheduleNum.text.substring(0,4).toInt(),ScheduleNum.text.substring(5,7).toInt(),tmpId)
 
-                                if(curCal) Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragCalendar)
-                                else Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_fragHome)
+                                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
                             }
                             2 -> {
                                 Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
@@ -229,55 +244,17 @@ class CalendarAddDdayFragment : Fragment() {
     }
     private fun addDday(Year : Int, Month : Int, tmpId :Int) {
 
-        val nextMonth: String
-
-        if (Month < 12) {
-            nextMonth = "${Year}-${Month + 1}"
-        } else {
-            nextMonth = "${Year + 1}-1"
-        }
-        val preMonth : String
-        if (Month >1) {
-            preMonth = "${Year}-${Month - 1}"
-        } else {
-            preMonth = "${Year - 1}-12"
-        }
         if(CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")==null){
             CalendarViewModel.hashMapArrayCal.put("${Year}-${Month}",ArrayList<AndroidCalendarData>())
         }
-        if(CalendarViewModel.hashMapArrayCal.get(nextMonth)==null){
-            CalendarViewModel.hashMapArrayCal.put(nextMonth,ArrayList<AndroidCalendarData>())
-        }
-        if(CalendarViewModel.hashMapArrayCal.get(preMonth)==null){
-            CalendarViewModel.hashMapArrayCal.put(preMonth,ArrayList<AndroidCalendarData>())
-        }
 
         CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")?.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-            "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(),
-            -1,false,binding.textMemo.text.toString(),"CAL",tmpId,""))
-        CalendarViewModel.hashMapArrayCal.get(nextMonth)?.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-            "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(),
-            -1,false,binding.textMemo.text.toString(),"CAL",tmpId,""))
-        CalendarViewModel.hashMapArrayCal.get(preMonth)?.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
             "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(),
             -1,false,binding.textMemo.text.toString(),"CAL",tmpId,""))
 
     }
     private fun delDday(Year : Int, Month : Int, tmpId :Int) {
 
-        val nextMonth: String
-
-        if (Month < 12) {
-            nextMonth = "${Year}-${Month + 1}"
-        } else {
-            nextMonth = "${Year + 1}-1"
-        }
-        val preMonth : String
-        if (Month >1) {
-            preMonth = "${Year}-${Month - 1}"
-        } else {
-            preMonth = "${Year - 1}-12"
-        }
         if(CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!=null){
             for(data in CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!!) {
                 if(data.id == tmpId) {
@@ -286,23 +263,6 @@ class CalendarAddDdayFragment : Fragment() {
                 }
             }
         }
-        if(CalendarViewModel.hashMapArrayCal.get(nextMonth)!=null){
-            for(data in CalendarViewModel.hashMapArrayCal.get(nextMonth)!!) {
-                if(data.id == tmpId) {
-                    CalendarViewModel.hashMapArrayCal.get(nextMonth)!!.remove(data)
-                    break
-                }
-            }
-        }
-        if(CalendarViewModel.hashMapArrayCal.get(preMonth)!=null){
-            for(data in CalendarViewModel.hashMapArrayCal.get(preMonth)!!) {
-                if(data.id == tmpId) {
-                    CalendarViewModel.hashMapArrayCal.get(preMonth)!!.remove(data)
-                    break
-                }
-            }
-        }
-
 
     }
 }

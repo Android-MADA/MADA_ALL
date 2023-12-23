@@ -68,13 +68,11 @@ class CalendarAddSFragment : Fragment() {
         if(calData.dDay == "N") {
             binding.preScheldule2.text = CalendarViewModel.TimeChangeKor(calData.startTime)
             binding.nextScheldule2.text = CalendarViewModel.TimeChangeKor(calData.endTime)
-            binding.ddayLayout.visibility = View.GONE
         } else {
-            binding.clcckLayoutBar.visibility = View.GONE
-            binding.clockLayout.visibility = View.GONE
-            binding.ddayLayout.visibility = View.VISIBLE
-            binding.preScheldule.visibility = View.GONE
-            binding.textDday.text = "D - ${CalendarViewModel.daysRemainingToDate(calData.endDate)}"
+            binding.textDday.visibility = View.VISIBLE
+            binding.ddayCb.isChecked = true
+            binding.textDday.text = "D-${CalendarViewModel.daysRemainingToDate(calData.endDate)}"
+            binding.textDday.setTextColor(Color.parseColor(calData.color))
         }
         if(calData.repeat!="No") {
             binding.calAndClock.visibility = View.GONE
