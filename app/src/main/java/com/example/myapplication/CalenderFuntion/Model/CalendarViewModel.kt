@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
@@ -37,7 +38,7 @@ import java.util.Locale
 
 class CalendarViewModel : ViewModel(){
     //서버 통신
-    val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
     var token = Splash2Activity.prefs.getString("token","")?: "123"
