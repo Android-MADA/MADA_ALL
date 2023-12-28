@@ -49,7 +49,7 @@ class TimeTableWeekAdpater(private val data: ArrayList<TimeViewModel.PieChartDat
         holder.memo.text = "${item.memo}"
         holder.image.setColorFilter(Color.parseColor(item.colorCode))
         val layoutParams = holder.image.layoutParams
-        layoutParams.height = dpToPx(holder.image.context, end-start)
+        layoutParams.width = dpToPx(holder.image.context, end-start)
         holder.image.layoutParams = layoutParams
         if(item.id!=0) {
             holder.image.setOnClickListener {

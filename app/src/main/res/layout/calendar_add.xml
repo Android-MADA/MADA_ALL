@@ -1379,13 +1379,22 @@
                     android:importantForAutofill="no" />
 
             </LinearLayout>
-
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-7283679844939244/2281147048">
+            </com.google.android.gms.ads.AdView>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textBlank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text="hhhh" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

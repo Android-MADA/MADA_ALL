@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
@@ -114,7 +115,7 @@ class CalendarAddDdayFragment : Fragment() {
         val ticker3 = binding .numberPicker3
         ticker1.value = ScheduleNum.text.toString().substring(0,4).toInt()
         ticker2.value = ScheduleNum.text.toString().substring(5,7).toInt()
-        ticker3.value = ScheduleNum.text.toString().substring(9).toInt()
+        ticker3.value = ScheduleNum.text.toString().substring(8,10).toInt()
 
         binding.nextScheldule.setOnClickListener {
             binding.addBtn.text ="등록"
@@ -163,14 +164,14 @@ class CalendarAddDdayFragment : Fragment() {
             }
         }
         binding.addBtn.setOnClickListener {
-            if(binding.textDday.text.toString()=="D - DAY") {
+            if(binding.textDday.text.toString()=="D-DAY") {
                 CalendarViewModel.setPopupOne(requireContext(),"올바른 날짜를 입력해 주십시오",view)
             } else if(binding.textTitle.text.toString() == "") {
                 CalendarViewModel.setPopupOne(requireContext(),"제목을 입력해 주십시오",view)
             }   else {
-                if(binding.addBtn.text.toString()=="등록") {
+                if(binding.addBtn.text.toString()=="수정") {
                     CalendarViewModel.editCalendar(CalendarData( binding.textTitle.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-                        curColor,"No","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ),curId) { result ->
+                        curColor,"N","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ),curId) { result ->
                         when (result) {
                             1 -> {
                                 Toast.makeText(context, "수정 성공", Toast.LENGTH_SHORT).show()
@@ -181,7 +182,7 @@ class CalendarAddDdayFragment : Fragment() {
                                     }
                                 }
                                 CalendarViewModel.ddayArrayList.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-                                    "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(),
+                                    "10:00:00","11:00:00",curColor,"N","Y",binding.textTitle.text.toString(),
                                     -1,false,binding.textMemo.text.toString(),"CAL",curId,""))
                                 CalendarViewModel.ddayArrayList.sortBy { CalendarViewModel.daysRemainingToDate(it.endDate) }
 
@@ -195,15 +196,15 @@ class CalendarAddDdayFragment : Fragment() {
                             }
                         }
                     }
-                } else {
+                } else  if(binding.addBtn.text.toString()=="등록") {
                     CalendarViewModel.addCalendar( CalendarData( binding.textTitle.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-                        curColor,"No","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ) ) { result ->
+                        curColor,"N","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ) ) { result ->
                         when (result) {
                             1 -> {
                                 val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                 Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
                                 CalendarViewModel.ddayArrayList.add(AndroidCalendarData(ScheduleNum.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
-                                    "10:00:00","11:00:00",curColor,"No","Y",binding.textTitle.text.toString(), -1,false,
+                                    "10:00:00","11:00:00",curColor,"N","Y",binding.textTitle.text.toString(), -1,false,
                                     binding.textMemo.text.toString(),"CAL",tmpId,""))
                                 CalendarViewModel.ddayArrayList.sortBy { CalendarViewModel.daysRemainingToDate(it.endDate) }
 
@@ -213,6 +214,25 @@ class CalendarAddDdayFragment : Fragment() {
                             }
                             2 -> {
                                 Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    CalendarViewModel.deleteCalendar(calData.id) { result ->
+                        when (result) {
+                            1 -> {
+                                Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
+                                for(data in CalendarViewModel.ddayArrayList) {
+                                    if(data.id==curId) {
+                                        CalendarViewModel.ddayArrayList.remove(data)
+                                        break
+                                    }
+                                }
+                                delDday(initSchedule.substring(0,4).toInt(),initSchedule.substring(5,7).toInt(),curId)
+                                Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
+                            }
+                            2 -> {
+                                Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
