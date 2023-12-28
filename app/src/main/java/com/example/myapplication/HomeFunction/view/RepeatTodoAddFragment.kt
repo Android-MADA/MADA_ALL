@@ -18,11 +18,14 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.example.myapplication.HomeFunction.Model.Todo
 import com.example.myapplication.HomeFunction.Model.TodoList
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatTypeAdapter
+import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatWeeklyAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -49,6 +52,22 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var backDialog: HomeBackCustomDialog
+
+    /*반복 종류 rv 설정*/
+    val typeList = arrayListOf<String>("매일", "매주", "매월")
+    val dayList = arrayListOf<String>(
+        "월",
+        "화",
+        "수",
+        "목",
+        "금",
+        "토",
+        "일"
+    )
+    val dateList = arrayListOf<String>(" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31")
+    val typeAdapter = RepeatTypeAdapter(typeList)
+    val weekAdapter = RepeatWeeklyAdapter(dayList)
+    val monthAdapter = RepeatWeeklyAdapter(dateList)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -99,7 +118,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
             if(_argsArrayEdit!![5] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
-                binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
+                //반복 종류 설정 코드 추가 예정
                 binding.tvHomeRepeatStartday.text = _argsArrayEdit!![8]
                 binding.tvHomeRepeatEndday.text = _argsArrayEdit!![9]
             }
@@ -111,59 +130,86 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
         binding.tvHomeRepeatStartday.setOnClickListener {
-            if(binding.layoutCalendarStart.isVisible){
-                binding.layoutCalendarStart.isGone = true
-            }
-            else {
-                binding.layoutCalendarEnd.isGone = true
-                binding.layoutCalendarStart.isVisible = true
-            }
+            //시작일 캘린더 visibility 처리 예정
         }
 
         binding.tvHomeRepeatEndday.setOnClickListener {
-            if(binding.layoutCalendarEnd.isVisible){
-                binding.layoutCalendarEnd.isGone = true
-            }
-            else {
-                binding.layoutCalendarStart.isGone = true
-                binding.layoutCalendarEnd.isVisible = true
-            }
+            //종료일 캘린더 visibility 처리 예정
         }
 
+        //반복tv 클릭리스너
         binding.tvRepeatRepeat.setOnClickListener {
-            if(binding.layoutRepeat.isVisible){
-                binding.layoutRepeat.isGone = true
+            if(binding.repeatLayout.isVisible){
+                binding.repeatLayout.isGone = true
             }
-            else {
-                binding.layoutRepeat.isVisible = true
+            else{
+                binding.repeatLayout.isVisible = true
             }
         }
 
+        val typeRv = binding.repeatTypeRv
+        typeAdapter.setItemClickListener(object : RepeatTypeAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                if(typeAdapter.dataSet[position] == "매일"){
+                    binding.tvRepeatRepeat.text = "매일"
+                    binding.repeatMonthlyLayout.isGone = true
+                    binding.repeatWeeklyRv.isGone = true
+                }
+                else if(typeAdapter.dataSet[position] == "매주"){
+                    binding.tvRepeatRepeat.text = "매주"
+                    binding.repeatWeeklyRv.isVisible = true
+                    binding.repeatMonthlyLayout.isGone = true
+                }
+                else {
+                    binding.tvRepeatRepeat.text = "매월"
+                    binding.repeatWeeklyRv.isGone = true
+                    binding.repeatMonthlyLayout.isVisible = true
+                }
 
-        binding.tvRepeatEveryday.setOnClickListener {
-            binding.tvRepeatEveryday.setBackgroundResource(R.drawable.home_repeat_selected_background)
-            binding.tvRepeatRepeat.text = binding.tvRepeatEveryday.text
+            }
+
+        })
+        typeRv.adapter = typeAdapter
+        typeRv.layoutManager = GridLayoutManager(this.activity, 3)
+
+        weekAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                var selectedDay = weekAdapter.dataSet[position]
+                binding.tvRepeatRepeat.text = "매주 ${selectedDay}요일"
+            }
+
+        })
+        val weekRv = binding.repeatWeeklyRv
+        weekRv.adapter = weekAdapter
+        weekRv.layoutManager = GridLayoutManager(this.activity, 7)
+
+
+        monthAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                var selectedDay = monthAdapter.dataSet[position]
+                binding.tvRepeatRepeat.text = "매월 ${selectedDay} 일"
+                binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
+                binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#F5F5F5"))
+                binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#000000"))
+            }
+
+        })
+        val monthRv = binding.repeatMonthlyRv
+        monthRv.adapter = monthAdapter
+        monthRv.layoutManager = GridLayoutManager(this.activity, 7)
+
+        binding.repeatMonthlyLastDay.setOnClickListener {
+            monthAdapter.selectedDay = "마지막 날"
+            binding.tvRepeatRepeat.text = "매월 마지막 날"
+            binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
+            binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#486DA3"))
+            binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#ffffff"))
+            monthRv.adapter = monthAdapter
+            monthRv.layoutManager = GridLayoutManager(this.activity, 7)
         }
 
-        var todayDate = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli()
 
-        binding.calendarviewRepeatStart.setDate(todayDate)
-        binding.calendarviewRepeatEnd.setDate(todayDate)
-
-        binding.calendarviewRepeatStart.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            var selectedStart = changeDate(year, (month +1), dayOfMonth)
-            binding.tvHomeRepeatStartday.text = selectedStart.toString()
-            binding.layoutCalendarStart.isGone = true
-        }
-
-        binding.calendarviewRepeatEnd.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            var selectedEnd = changeDate(year, (month +1), dayOfMonth)
-            binding.tvHomeRepeatEndday.text = selectedEnd.toString()
-            binding.layoutCalendarEnd.isGone = true
-        }
-
-
-
+        //서버 연결
         binding.btnHomeRepeatAddSave.setOnClickListener {
             if(binding.edtHomeCategoryName.text.isBlank()){
                 Toast.makeText(this.requireActivity(), "TODO 내용을 입력해주세요", Toast.LENGTH_SHORT).show()

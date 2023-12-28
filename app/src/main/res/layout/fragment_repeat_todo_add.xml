@@ -109,22 +109,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
-                <FrameLayout
-                    android:id="@+id/layout_calendar_start"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_repeat_startday"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <CalendarView
-                        android:id="@+id/calendarview_repeat_start"
-                        android:layout_width="260dp"
-                        android:layout_height="300dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/home_calendarview_background"
-                        android:theme="@style/CreateProfileTheme"
-                        />
-                </FrameLayout>
+
+                <!--시작일 캘린더 추가 위치-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,23 +148,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
-                <FrameLayout
-                    android:id="@+id/layout_calendar_end"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_repeat_endday"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <CalendarView
-                        android:id="@+id/calendarview_repeat_end"
-                        android:layout_width="260dp"
-                        android:layout_height="300dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/home_calendarview_background"
-                        android:theme="@style/CreateProfileTheme"
-                        />
-                </FrameLayout>
-
+                <!--종료일 캘린더 추가 위치-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,25 +187,68 @@
                     />
 
                 <LinearLayout
-                    android:id="@+id/layout_repeat"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/repeat_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_repeat"
-                    android:layout_marginTop="20dp">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/tv_repeat_everyday"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/repeat_type_rv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="매일"
-                        android:layout_marginLeft="16dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:background="@drawable/home_reapeat_unselected_background"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
                         />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/repeat_weekly_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_10_strokex"
+                        android:backgroundTint="@color/grey2"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="10dp"
+                        android:paddingVertical="2dp"
+                        android:visibility="gone"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/repeat_monthly_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:visibility="gone">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/repeat_monthly_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@drawable/background_10_strokex"
+                            android:backgroundTint="@color/grey2"
+                            android:padding="5dp"/>
+                        <TextView
+                            android:id="@+id/repeat_monthly_last_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="마지막 날"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:paddingHorizontal="17dp"
+                            android:paddingVertical="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/background_10_strokex"
+                            android:backgroundTint="@color/grey2"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
