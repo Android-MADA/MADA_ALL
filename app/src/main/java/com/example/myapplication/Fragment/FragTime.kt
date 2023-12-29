@@ -69,9 +69,8 @@ class FragTime : Fragment() {
         customCircleBarView.setProgress(progressPercentage)
 
         //파이차트
-
         binding.fragtimeCalendarBtn.setOnClickListener {
-            val bottomSheet = TimeBottomSheetDialog(requireContext(),viewModelTime)
+            val bottomSheet = TimeBottomSheetDialog(viewModelTime)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         viewModelTime.updateData(formattedDate)
@@ -90,7 +89,6 @@ class FragTime : Fragment() {
                 }
             }
         })
-
         binding.timeEditBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("today",today)
@@ -119,8 +117,6 @@ class FragTime : Fragment() {
                 }
             }
         }
-
-
         return binding.root
     }
 

@@ -10,10 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CalenderFuntion.Calendar.DayDataItemView
 import com.example.myapplication.CalenderFuntion.Calendar.DdayAdapter
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.HomeFragmentViewpagerDdayBinding
 
 class HomeViewpagerDdayFragment : Fragment() {
@@ -30,7 +28,7 @@ class HomeViewpagerDdayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = HomeFragmentViewpagerDdayBinding.inflate(inflater, container, false)
+        binding = HomeFragmentViewpagerDdayBinding.inflate(inflater, container, false)/*
         CalendarViewModel.getDdayDataArray { result ->
             when (result) {
                 1 -> {
@@ -43,10 +41,10 @@ class HomeViewpagerDdayFragment : Fragment() {
                     Toast.makeText(context, "서버와의 통신 불안정", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        }*/
 
         return binding.root
-    }
+    }/*
     public fun updateDdayData() {
         CalendarViewModel.getDdayDataArray { result ->
             when (result) {
@@ -61,7 +59,7 @@ class HomeViewpagerDdayFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
     companion object {
         @JvmStatic

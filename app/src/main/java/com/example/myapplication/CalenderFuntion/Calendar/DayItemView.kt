@@ -43,7 +43,6 @@ class DayItemView @JvmOverloads constructor(
             paint = TextPaint().apply {
                 isAntiAlias = true
                 textSize = dayTextSize
-
                 if (!isSameMonth(date, firstDayOfMonth)) {
                     alpha = 50
                 }
@@ -58,30 +57,24 @@ class DayItemView @JvmOverloads constructor(
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
 
-        val x = width - bounds.width()
-        val y = bounds.height() + 40
+        val textWidth = paint.measureText(dateString)
+        val textHeight = bounds.height().toFloat()
 
+        val x =(width - textWidth)/2.toFloat()
+        val y = 72f             //0+textHeight*1.7f = 71.4 ~ 69
         //날짜 그리기
-        if(date.toString("yyyy-MM-dd")==LocalDate.now().toString("yyyy-MM-dd")) {
+        if(isSameDay(date)) {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
-
             // Draw rounded rectangle
-            val roundedRect = RectF(0f+width*2.5f/10+3f,   ((bounds.height() + height/8.87)/5f).toFloat(), width*7.5f/10+3f,
-                width*5f/10+((bounds.height() + height/8.87)/5f).toFloat()
-            )
-            val cornerRadius = width/5f // 반지름 값 설정
+            val roundedRect = RectF(width/2-textHeight*1.2f,   y-textHeight/2 +textHeight*1.2f, width/2+textHeight*1.2f, y-textHeight/2 -textHeight*1.2f)
+            val cornerRadius = textHeight // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
+            canvas.drawText(dateString,x,y,paint)
+        }else {
+            canvas.drawText(dateString,x,y,paint)
         }
-
-
-        canvas.drawText(
-            dateString,
-            (width / 2 - bounds.width() / 2).toFloat(),
-            (bounds.height() + height/8.87).toFloat(),
-            paint
-        )
     }
 }

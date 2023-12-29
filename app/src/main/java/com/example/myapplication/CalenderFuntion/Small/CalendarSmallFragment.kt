@@ -22,7 +22,8 @@ class CalendarSmallFragment() : Fragment() {
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private lateinit var Scheldule: TextView // Change the type if necessary
     private lateinit var ScheduleNum: TextView
-    private lateinit var cal: LinearLayout //
+    private lateinit var cal: LinearLayout
+    private lateinit var textDday :TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +38,24 @@ class CalendarSmallFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CalendarSliderSmallViewBinding.inflate(inflater, container, false)
-        binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)),Scheldule,ScheduleNum,cal)
+        binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)),Scheldule,ScheduleNum,cal,textDday)
         return binding.root
     }
-    fun setValues(Scheldule: TextView, ScheduleNum: TextView, cal: LinearLayout) {
+    fun setValues(Scheldule: TextView, ScheduleNum: TextView, cal: LinearLayout, textDday: TextView) {
         this.Scheldule = Scheldule
         this.ScheduleNum = ScheduleNum
         this.cal = cal
+        this.textDday = textDday
     }
     companion object {
 
         private const val MILLIS = "MILLIS"
 
-        fun newInstance(millis: Long, Scheldule: TextView, SchelduleNum: TextView, cal: LinearLayout) = CalendarSmallFragment().apply {
+        fun newInstance(millis: Long, Scheldule: TextView, SchelduleNum: TextView, cal: LinearLayout,textDday : TextView) = CalendarSmallFragment().apply {
             arguments = Bundle().apply {
                 putLong(MILLIS, millis)
             }
-            setValues(Scheldule, SchelduleNum, cal)
+            setValues(Scheldule, SchelduleNum, cal,textDday)
         }
     }
 }
