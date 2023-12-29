@@ -53,6 +53,12 @@ class TimeViewModel : ViewModel() {
     //2023-08-01 형식
     val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
     val hashMapArraySchedule = HashMap<String, ArrayList<Schedule>>()
+
+    val hashMapArrayWeek = listOf(HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>()
+        ,HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>())
+    val pieChartDataArray : ArrayList<PieChartData> = ArrayList()
+    val pieChartDataArrayList = listOf(ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>()
+        ,ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>())
     var range : Float = 0.0f
 
     var addId = 0
@@ -194,6 +200,30 @@ class TimeViewModel : ViewModel() {
                                arrays.add(data)
                             }
                             hashMapArraySchedule.put(date,arrays)
+                            callback(1)
+                        } else callback(2)
+                    } else callback(2)
+                }
+                override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
+                    callback(2)
+                }
+            })
+        } else callback(1)
+    }
+    fun getScheduleWeeks(date : String, callback: (Int) -> Unit) {
+        if(hashMapArrayWeek[0].get(date)==null) {
+            val call = service.getTimetable(token,date)
+            val arrays = ArrayList<Schedule>()
+            call.enqueue(object : Callback<ScheduleListData> {
+                override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        if (apiResponse != null) {
+                            val datas = apiResponse.datas2.datas
+                            for (data in datas) {
+                                arrays.add(data)
+                            }
+                            hashMapArrayWeek[0].put(date,arrays)
                             callback(1)
                         } else callback(2)
                     } else callback(2)

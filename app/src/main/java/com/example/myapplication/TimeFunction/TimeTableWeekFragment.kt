@@ -15,6 +15,7 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.adapter.HomeTimeAdapter
 import com.example.myapplication.TimeFunction.adapter.TimeTableAdpater
+import com.example.myapplication.TimeFunction.adapter.TimeTableWeekAdpater
 import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.example.myapplication.TimeFunction.util.CustomCircleBarView
 import com.example.myapplication.databinding.TimeTableFragmentBinding
@@ -33,7 +34,7 @@ class TimeTableWeekFragment : Fragment() {
     private val viewModelTime: TimeViewModel by activityViewModels()
 
     lateinit var today : String
-    var pieChartDataArray : ArrayList<TimeViewModel.PieChartData> = ArrayList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +82,8 @@ class TimeTableWeekFragment : Fragment() {
             when (result) {
                 1 -> {
                     val tmpList = viewModelTime.getTimeDatas(today)
-                    timeTableOn(tmpList)
+
+                    timeTableOn(tmpList,0)
                 }
                 2 -> {
                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -106,10 +108,7 @@ class TimeTableWeekFragment : Fragment() {
         }
 
         binding.fabHomeTime.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("today",today)
-            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTimeWeekAdd,bundle)
+            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTimeWeekAdd)
         }
 
 
@@ -129,9 +128,10 @@ class TimeTableWeekFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>) {
+    private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>, i : Int) {
+        viewModelTime.pieChartDataArrayList[i].clear()
         if(arrays.size==0) {     //그날 정보가 없다
-            pieChartDataArray.add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
+            viewModelTime.pieChartDataArrayList[i].add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
         } else {
             var tmp = 0     //시작 시간
 
@@ -141,27 +141,27 @@ class TimeTableWeekFragment : Fragment() {
                 if(tmp==start) {      //이전 일정과 사이에 빈틈이 없을때
                     data.startHour = start
                     data.endHour = end
-                    pieChartDataArray.add(data)
+                    viewModelTime.pieChartDataArrayList[i].add(data)
                     tmp = end
                 } else {            //이전 일정 사이에 빈틈이 있을 때
-                    pieChartDataArray.add(TimeViewModel.PieChartData("","",tmp,0,start,0,"#FFFFFF",0,0))
+                    viewModelTime.pieChartDataArrayList[i].add(TimeViewModel.PieChartData("","",tmp,0,start,0,"#FFFFFF",0,0))
                     data.startHour = start
                     data.endHour = end
-                    pieChartDataArray.add(data)
+                    viewModelTime.pieChartDataArrayList[i].add(data)
                     tmp = end
                 }
             }
         }
-/*
-        val recyclerView = binding.timetableRv
+
+        val recyclerView = binding.monRv
 
 // Create and set the layout manager
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
 // Create and set the adapter
-        val adapter = TimeTableAdpater(pieChartDataArray)
-        recyclerView.adapter = adapter*/
+        val adapter = TimeTableWeekAdpater(viewModelTime.pieChartDataArrayList[i],i,viewModelTime)
+        recyclerView.adapter = adapter
     }
 
 }

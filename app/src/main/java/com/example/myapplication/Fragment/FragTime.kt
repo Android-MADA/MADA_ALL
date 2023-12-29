@@ -2,12 +2,15 @@ package com.example.myapplication.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -115,6 +118,13 @@ class FragTime : Fragment() {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+        binding.textTimeTodayHanmadi.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
+                val enteredText = binding.textTimeTodayHanmadi.text.toString()
+                Log.d("test",enteredText)
             }
         }
         return binding.root

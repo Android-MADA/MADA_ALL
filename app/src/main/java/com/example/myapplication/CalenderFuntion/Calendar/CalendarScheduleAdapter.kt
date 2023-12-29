@@ -52,7 +52,7 @@ class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendar
             }
             VIEW_TYPE_DDAY -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.calendar_schedule_cell1, parent, false)
+                    .inflate(R.layout.calendar_schedule_cell3, parent, false)
                 ItemViewHolderWithDuration(view)
             }
             else -> throw IllegalArgumentException("Invalid view type")
@@ -84,13 +84,9 @@ class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendar
                 }
                 VIEW_TYPE_DDAY -> {
                     val viewHolderWithDuration = holder as ItemViewHolderWithDuration
-                    viewHolderWithDuration.textDay.text = "${today}일"
                     viewHolderWithDuration.textTitle.text = item.title
                     val date2 = LocalDate.parse(item.endDate, formatter)
                     viewHolderWithDuration.textDuration.text = ("${date2.monthValue}월 ${date2.dayOfMonth}일")
-                    viewHolderWithDuration.dday.setImageResource(R.drawable.dday_mark)
-                    viewHolderWithDuration.backgroundBar.setImageResource(R.drawable.calendar_schedule_background_dday)
-                    viewHolderWithDuration.backgroundBar.setColorFilter(Color.parseColor(item.color), PorterDuff.Mode.SRC_IN)
                 }
             }
             holder.itemView.setOnClickListener {
@@ -98,11 +94,7 @@ class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendar
                 val bundle = Bundle()
                 bundle.putSerializable("calData",item)
                 bundle.putBoolean("edit",true)
-                if(item.dDay=="Y")  {
-                    bundle.putBoolean("calendar",true)
-                    Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddDday,bundle)
-                }
-                else Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
+                Navigation.findNavController(parentView).navigate(R.id.action_fragCalendar_to_calendarAddS,bundle)
                 parentDialog.dismiss()
 
             }
@@ -118,7 +110,6 @@ class CalendarScheduleAdapter(private val myDataArray: ArrayList<AndroidCalendar
         val textTitle: TextView = itemView.findViewById(R.id.textTitle)
         val textDuration: TextView = itemView.findViewById(R.id.textDuration)
         val backgroundBar: ImageView = itemView.findViewById(R.id.backgorundBar)
-        val dday: ImageView = itemView.findViewById(R.id.ddayImage)
     }
 
     inner class ItemViewHolderWithoutDuration(itemView: View) : RecyclerView.ViewHolder(itemView) {

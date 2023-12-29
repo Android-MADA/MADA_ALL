@@ -51,6 +51,11 @@ class CalendarDdayFragment: Fragment() {
         binding.changeBase.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_calendarDday_to_fragCalendar)
         }
+        binding.ddayAddBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putSerializable("today", CalendarViewModel.todayDate())
+            Navigation.findNavController(view).navigate(R.id.action_calendarDday_to_calendarAddDday,bundle)
+        }
 
     }
 
