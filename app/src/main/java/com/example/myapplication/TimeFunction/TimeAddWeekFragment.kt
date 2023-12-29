@@ -113,9 +113,6 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
         val textMemo = binding.edtHomeScheduleMemo
 
         val btnBack = binding.ivHomeAddTimeBack
-        // 데이터 받기
-        val receivedData = arguments?.getSerializable("pieChartDataArray") as?  ArrayList<TimeViewModel.PieChartData>?: null
-        Log.d("reciedvd",receivedData.toString())
         val recievedPieData =  arguments?.getSerializable("pieChartData") as  TimeViewModel.PieChartData?
         today = arguments?.getString("today")?: "2023-06-01"
         var curId = 0
@@ -293,8 +290,8 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
                 if(end == 0)
                     end =24*60
                 var check = true
-                if (receivedData != null) {
-                    for (data in receivedData) {
+                if (viewModelTime.pieChartDataArrayList[dayOfWeek] != null) {
+                    for (data in viewModelTime.pieChartDataArrayList[dayOfWeek]) {
                         var tmpStart = data.startHour * 60 + data.startMin
                         var tmpEnd = data.endHour * 60 + data.endMin
                         if(tmpEnd==0)
@@ -418,7 +415,7 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
 
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         if (dayOfWeek == Calendar.SUNDAY) {
-            dayOfWeek = 6 // 일요일은 7로 매핑
+            dayOfWeek = 6 // 일요일은 6로 매핑
         } else {
             dayOfWeek -=2
         }

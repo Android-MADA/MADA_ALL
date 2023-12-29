@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CustomFunction.ButtonDatabase
 import com.example.myapplication.CustomFunction.ButtonInfo
@@ -56,7 +57,7 @@ class MyWebviewActivity : AppCompatActivity() {
             settings.javaScriptCanOpenWindowsAutomatically = true
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
         }
-        binding.myWebview.loadUrl("http://www.madaumc.store/oauth2/authorization/naver")
+        binding.myWebview.loadUrl(BuildConfig.MADA_BASE+"oauth2/authorization/naver")
         binding.myWebview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 var url = request?.url.toString()
@@ -69,14 +70,14 @@ class MyWebviewActivity : AppCompatActivity() {
                 }
 
 
-                if (url.startsWith("http://www.madaumc.store/user/test?")) {
+                if (url.startsWith(BuildConfig.MADA_BASE+"user/test?")) {
                     //회원가입 한 상태라면
                     val intent = Intent(this@MyWebviewActivity, MainActivity::class.java)
 
                     getResponseLogin(url) { result ->
                         when (result) {
                             1 -> {
-                                val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+                                val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
                                     .addConverterFactory(GsonConverterFactory.create()).build()
                                 val service = retrofit.create(RetrofitServiceCustom::class.java)
                                 val token = Splash2Activity.prefs.getString("token", "")
@@ -202,7 +203,7 @@ class MyWebviewActivity : AppCompatActivity() {
 
                     return true
                     // 처리됨
-                } else if (url.startsWith("http://www.madaumc.store/user/signup")) {
+                } else if (url.startsWith(BuildConfig.MADA_BASE+"user/signup")) {
                     //회원가입 안한 상태라면
                     getResponseSign(url)
                     return true // 처리됨
