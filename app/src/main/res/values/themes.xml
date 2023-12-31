@@ -1,6 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MyApplication" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="Base.Theme.MyApplication" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/black</item>
+    </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 

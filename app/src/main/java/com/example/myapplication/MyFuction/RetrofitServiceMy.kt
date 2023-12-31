@@ -7,8 +7,8 @@ import com.example.myapplication.MyFuction.Data.MyChangeNicknameData
 import com.example.myapplication.MyFuction.Data.MyGetNoticesData
 import com.example.myapplication.MyFuction.Data.MyGetProfileData
 import com.example.myapplication.MyFuction.Data.MyPremiumData
-import com.example.myapplication.MyFuction.Data.MyRecordData
-import com.example.myapplication.MyFuction.Data.MyRecordOptionData
+import com.example.myapplication.ChartFunction.Data.MyRecordData
+import com.example.myapplication.ChartFunction.Data.MyRecordOptionData
 import com.example.myapplication.MyFuction.Data.MySetPageData
 import com.example.myapplication.MyFuction.Data.MySetPageData2
 import retrofit2.http.GET
@@ -18,15 +18,9 @@ import retrofit2.http.DELETE
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 
 interface RetrofitServiceMy {
-
-//    // 로그인 -> 필요 없음
-//    @GET("/oauth2/authorization/naver")
-//    fun login() : Call<Void>
 
     // 로그아웃 -> 확인
     @GET("/user/logout")

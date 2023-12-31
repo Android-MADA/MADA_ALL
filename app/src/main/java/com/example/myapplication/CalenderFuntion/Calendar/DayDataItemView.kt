@@ -6,9 +6,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Point
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -21,7 +23,10 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.AttrRes
+import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.withStyledAttributes
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,12 +34,15 @@ import com.example.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarData
 import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.R
+import com.google.android.material.resources.MaterialResources.getDimensionPixelSize
 import org.joda.time.DateTime
 
 class DayDataItemView @JvmOverloads constructor(
 
     context: Context,
     attrs: AttributeSet? = null,
+    @AttrRes private val defStyleAttr: Int = R.attr.itemViewStyle,
+    @StyleRes private val defStyleRes: Int = R.style.Calendar_ItemViewStyle,
     private val date: DateTime = DateTime(),
     private val year: String,
     private val month: String,
@@ -45,7 +53,16 @@ class DayDataItemView @JvmOverloads constructor(
     private lateinit var hashMapDataCal : HashMap<DateTime, ArrayList<AndroidCalendarData>>
     private val weekdays = arrayOf("월","화", "수", "목", "금", "토","일")
     private var maxItemNum = 0
+    private var paint: Paint = Paint()
+    private val bounds = Rect()
     init {
+        context.withStyledAttributes(attrs, R.styleable.CalendarView, defStyleAttr, defStyleRes) {
+            val dayTextSize = getDimensionPixelSize(R.styleable.CalendarView_dayTextSize, 0).toFloat()
+            /* 흰색 배경에 유색 글씨 */
+            paint = TextPaint().apply {
+                textSize = dayTextSize
+            }
+        }
         setOnClickListener {
             // 클릭 이벤트 발생 시 실행할 코드 작성
             var mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_popup,null)
@@ -79,9 +96,8 @@ class DayDataItemView @JvmOverloads constructor(
                 if(mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString()=="") {
                     val bundle = Bundle()
                     bundle.putSerializable("calData",AndroidCalendarData(today,today,today,
-                        "10:00:00","11:00:00","#2AA1B7","No","N","",
+                        "10:00:00","11:00:00","#2AA1B7","N","N","",
                         -1,false,"","CAL",-1,""))
-                    bundle.putString("yearMonth", date.toString("yyyy-M"))
                     Navigation.findNavController(this).navigate(R.id.action_fragCalendar_to_calendarAdd,bundle)
                 }
                 else {
@@ -99,26 +115,6 @@ class DayDataItemView @JvmOverloads constructor(
                                 val inputYear = date.toString("yyyy").toInt() // 연도 정보
                                 val inputMonth = date.toString("M").toInt() // 월 정보 (예: 12는 12월을 나타냄)
 
-                                // 다음 월 계산
-                                val nextMonth: String
-
-                                if (inputMonth < 12) {
-                                    nextMonth = "${inputYear}-${inputMonth + 1}"
-                                } else {
-                                    nextMonth = "${inputYear + 1}-1"
-                                }
-                                val preMonth : String
-                                if (inputMonth >1) {
-                                    preMonth = "${inputYear}-${inputMonth - 1}"
-                                } else {
-                                    preMonth = "${inputYear - 1}-12"
-                                }
-                                CalendarViewModel.hashMapArrayCal.get(nextMonth)?.add(AndroidCalendarData(today,today,today,
-                                    "10:00:00","11:00:00","#89A9D9","No","N",title,
-                                    -1,false,"","CAL",tmpId,""))
-                                CalendarViewModel.hashMapArrayCal.get(preMonth)?.add(AndroidCalendarData(today,today,today,
-                                    "10:00:00","11:00:00","#89A9D9","No","N",title,
-                                    -1,false,"","CAL",tmpId,""))
                                 CalendarViewModel.hashMapArrayCal.get(date.toString("yyyy-M"))?.add(AndroidCalendarData(today,today,today,
                                     "10:00:00","11:00:00","#89A9D9","No","N",title,
                                     -1,false,"","CAL",tmpId,""))
@@ -151,14 +147,16 @@ class DayDataItemView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
+        val dateString = date.dayOfMonth.toString()
+        paint.getTextBounds(dateString, 0, dateString.length, bounds)
+        val textHeight = bounds.height().toFloat()
+        val y =110
 
         hashMapDataCal = CalendarViewModel.setMonthData(year,month,false,(height - 130)/55)
-        maxItemNum = ((height*0.63f)/55).toInt()
+        maxItemNum = ((height-y)/50).toInt()                 //(height)/55).toInt()
         super.onDraw(canvas)
         if (canvas == null) return
-        // date에 있는 데이터 들이
         if(hashMapDataCal.get(date)!=null) {
-            Log.d("height",height.toString())
             val size = hashMapDataCal.get(date)!!.size
             var floor = 0
             for(data in hashMapDataCal.get(date)!!) {
@@ -170,7 +168,7 @@ class DayDataItemView @JvmOverloads constructor(
                     canvas.drawText(
                         "+${size-maxItemNum+1}",
                         11f,
-                        height/2.05f+45f*data.floor,
+                        y+32f+50f*data.floor,       //y는 초기 위치, 32는 글자 크기, 45*data.floor는 층
                         paint3
                     )
                 }
@@ -197,11 +195,11 @@ class DayDataItemView @JvmOverloads constructor(
                     val paint2 = Paint()
                     paint2.isAntiAlias = true
                     paint2.color = Color.parseColor(data.color)
-                    val roundedRect = RectF(0f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
-                    val roundedRectCenter = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
-                    val roundedRectRight = RectF(-50f, height/2.7f+45f*data.floor, width.toFloat(), height/2.7f+40f+45f*data.floor)
-                    val roundedRectLeft = RectF(0f, height/2.7f+45f*data.floor, width.toFloat()+45f, height/2.7f+40f+45f*data.floor)
-                    val roundedRectNoDuration = RectF(0f, height/2.7f+45f*data.floor, 13f, height/2.7f+40f+45f*data.floor)
+                    val roundedRect = RectF(0f, y+43f+50f*data.floor, width.toFloat(), y+50f*data.floor)
+                    val roundedRectCenter = RectF(-50f, y+43f+50f*data.floor, width.toFloat()+45f, y+50f*data.floor)
+                    val roundedRectRight = RectF(-50f, y+43f+50f*data.floor, width.toFloat(), y+50f*data.floor)
+                    val roundedRectLeft = RectF(0f, y+43f+50f*data.floor, width.toFloat()+45f, y+50f*data.floor)
+                    val roundedRectNoDuration = RectF(0f, y+43f+50f*data.floor, 13f, y+50f*data.floor)
                     val paint3 = Paint()
                     paint3.isAntiAlias = true
                     if(data.duration) {
@@ -223,7 +221,7 @@ class DayDataItemView @JvmOverloads constructor(
                         canvas.drawText(
                             data.title,
                             20f-width*CalendarViewModel.RemainingTwoDates(data.startDate,date.toString("yyyy-MM-dd")),
-                            height/2.05f + 45f*data.floor,
+                            y+32f + 50f*data.floor,
                             paint3
                         )
                     } else {
@@ -254,14 +252,14 @@ class DayDataItemView @JvmOverloads constructor(
                             canvas.drawText(
                                 newText,
                                 30f,
-                                height/2.05f + 45f * data.floor,
+                                y+32f+ 50f * data.floor,
                                 textPaint
                             )
                         } else {
                             canvas.drawText(
                                 originalText,
                                 30f,
-                                height/2.05f + 45f * data.floor,
+                                y+32f + 50f * data.floor,
                                 textPaint
                             )
                         }

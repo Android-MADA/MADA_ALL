@@ -25,7 +25,7 @@ class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFra
         val view = inflater.inflate(R.layout.time_calendar_view, container, false)
         return view
     }
-    override fun getTheme(): Int = R.style.newDialog
+    override fun getTheme(): Int = R.style.AppBottomSheetDialogTheme
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 /*

@@ -144,7 +144,7 @@ class CalendarViewModel : ViewModel(){
     }
     fun convertToDateKoreanFormat(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","US"))
-        val outputFormat = SimpleDateFormat("  M월 d일 (E)  ", Locale("ko", "KR"))
+        val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR"))
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date)
@@ -163,7 +163,7 @@ class CalendarViewModel : ViewModel(){
 
         calendar.time = inputFormat.parse(time)
 
-        return "  "+outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")+"  "
+        return outputFormat.format(calendar.time).replace("AM","오전").replace("PM","오후")
     }
     fun timeChangeNum(time: String): String {
         val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
@@ -533,8 +533,8 @@ class CalendarViewModel : ViewModel(){
                                 }
                             }
                             ddayArrayList.sortBy { daysRemainingToDate(it.endDate) }
-                            ddayArrayList.add(AndroidCalendarData("","","4000-01-01", "","",
-                                "","","","", -1,false,"","BLANK",-1,""))
+                            //ddayArrayList.add(AndroidCalendarData("","","4000-01-01", "","",
+                            //    "","","","", -1,false,"","BLANK",-1,""))
                             callback(1)
                         } else callback(2)
                     } else callback(2)

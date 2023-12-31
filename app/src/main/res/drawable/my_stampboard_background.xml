@@ -2,7 +2,7 @@
     android:shape="rectangle">
     <!-- 버튼 둥글게 -->
     <corners
-        android:radius="16dp"/>
+        android:radius="20dp"/>
     <!-- 버튼 색깔 -->
     <solid android:color="@color/white"/>
 </shape>

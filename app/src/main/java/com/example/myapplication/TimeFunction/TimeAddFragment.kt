@@ -409,13 +409,14 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     }
     private fun initColorArray(){
         with(timeColorArray){
-            timeColorArray.add(android.graphics.Color.parseColor("#FDF3CF"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub1))
             timeColorArray.add(android.graphics.Color.parseColor("#F68F30"))
-            timeColorArray.add(android.graphics.Color.parseColor("#F33E3E"))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub6))
+            timeColorArray.add(android.graphics.Color.parseColor("#ED6C64"))
             timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
-            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub3))
+            timeColorArray.add(android.graphics.Color.parseColor("#F076A2"))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
 
             timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.point_main))
@@ -424,7 +425,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.main))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub4))
             timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
-
+            timeColorArray.add(resources.getColor(com.example.myapplication.R.color.sub2))
         }
     }
     private fun customBackDialog() {

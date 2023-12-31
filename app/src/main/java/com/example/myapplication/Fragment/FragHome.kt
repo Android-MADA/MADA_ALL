@@ -22,6 +22,7 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
+import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.example.myapplication.databinding.TodoLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.hideBottomNavigation
@@ -125,7 +126,6 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         Log.d("token", viewModel.userToken)
-
         viewModel.readAllTodo()
         viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
             CoroutineScope(Dispatchers.Main).launch {
@@ -211,7 +211,7 @@ class FragHome : Fragment() {
         //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
         binding.todoDateLayout.setOnClickListener{
             Log.d("date", "bottomsheetdialog up")
-            val todoMenuBottomSheet = viewModel?.let { it1 -> TodoDateBottomSheetDialog(it1) }
+            val todoMenuBottomSheet = TodoDateBottomSheetDialog(viewModel)
             if (todoMenuBottomSheet != null) {
                 todoMenuBottomSheet.show(childFragmentManager, todoMenuBottomSheet.tag)
             }
