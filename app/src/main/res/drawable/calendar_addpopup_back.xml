@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="#FFFFFF"/> //배경색
+    <corners
+        android:bottomLeftRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp"  /> // 선 휘는각도
+    <stroke
+        android:width="4dp"
+        android:color="#89A9D9" /> <!-- 테두리 -->
+
+</shape>

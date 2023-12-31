@@ -2,12 +2,14 @@ package com.example.myapplication.Fragment
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
@@ -22,10 +24,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -34,16 +32,23 @@ import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.DataRepo
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.MainActivity
 import com.example.myapplication.MyFuction.Data.FragMyData
 import com.example.myapplication.MyFuction.RetrofitServiceMy
 import com.example.myapplication.R
+import com.example.myapplication.StartFuction.Splash1Activity
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 
 
 class FragMy : Fragment() {
@@ -68,7 +73,7 @@ class FragMy : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
 
         // 서버 데이터 연결
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
@@ -86,8 +91,6 @@ class FragMy : Fragment() {
                     else { binding.userType.text = "일반 유저" }
 
                     binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
-//                    binding.sayingContent.text = response.body()!!.data.saying[0].content
-//                    binding.sayingSayer.text = response.body()!!.data.saying[0].sayer
                 } else {
                     Log.d("selectfragMy 실패", response.body().toString())
                 }
@@ -97,7 +100,7 @@ class FragMy : Fragment() {
             }
         })
 
-        // 구글 플레이스토어 광고
+        //구글 플레이스토어 광고
         MobileAds.initialize(this.requireContext()) {}
         mAdView = binding.adView
         val adRequest = AdRequest.Builder().build()
@@ -111,7 +114,15 @@ class FragMy : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = binding.navHostFragmentContainer.findNavController()
+        navController = view.findNavController()
+
+        binding.backBtn.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_fragHome)
+        }
+
+        binding.myStampBtn.setOnClickListener {
+            navController.navigate(R.id.action_fragMy_to_myStampFragment)
+        }
 
         // 캐릭터 커스텀 불러오는 함수 호출
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
@@ -133,7 +144,7 @@ class FragMy : Fragment() {
             44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
             40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
             46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
             47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
@@ -141,27 +152,27 @@ class FragMy : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+//        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+//            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
+//            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+//            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+//            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+//            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+//            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+//            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+//            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+//            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+//            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+//            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+//            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+//            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+//            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+//            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+//            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+//            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+//            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 
         binding.myRamdi.setImageResource(
@@ -171,10 +182,9 @@ class FragMy : Fragment() {
         binding.imgMyCloth.setImageResource(
             clothbuttonInfo.selectedImageResource ?: 0
         )
-        binding.imgMyItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
-        )
-        setupSwitchColor(binding.myGoogleCalSwitch)
+//        binding.imgMyItem.setImageResource(
+//            itembuttonInfo.selectedImageResource ?: 0
+//        )
 
         // 바텀 시트 항목 선택 리스너
         binding.myEditProfile.setOnClickListener {
@@ -183,19 +193,8 @@ class FragMy : Fragment() {
         binding.mySetPage.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_mySetFragment)
         }
-        binding.mySetAlarm.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myAlarmFragment)
-        }
         binding.myNotice.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
-        }
-        binding.myGoogleCalSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                Toast.makeText(requireContext(), "연동 완료", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                Toast.makeText(requireContext(), "연동 해제", Toast.LENGTH_SHORT).show()
-            }
         }
         binding.myPremium.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myPremiumFragment)
@@ -205,12 +204,6 @@ class FragMy : Fragment() {
         }
         binding.myWithdraw.setOnClickListener{
             navController.navigate(R.id.action_fragMy_to_myWithdrawFragment)
-        }
-
-        // 내 기록 확인하기
-        binding.myRecordBtn.setOnClickListener {
-            //navController.navigate(R.id.action_fragMy_to_myRecordWeekFragment)
-            navController.navigate(R.id.action_fragMy_to_myRecordDayFragment)
         }
 
         // 시스템 뒤로가기
@@ -317,7 +310,6 @@ class FragMy : Fragment() {
 
         // 버튼 클릭 리스너
         btnYes.setOnClickListener {
-
             // 서버 연결
             val call = api.logout(token)
             call.enqueue(object : Callback<Void> {
@@ -325,7 +317,16 @@ class FragMy : Fragment() {
                     if (response.isSuccessful) {
                         Log.d("로그아웃 성공", response.body().toString())
                         alertDialog.dismiss()
-                        navController.navigate(R.id.action_fragMy_to_splash2Activity)
+                        // 캐시 매니저를 가져오기
+                        clearAppData(requireContext())
+                        // SharedPreferences 초기화
+                        val intent = Intent(requireContext(), Splash2Activity::class.java)
+                        if(intent !=null) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            requireContext().startActivity(intent)
+                            Runtime.getRuntime().exit(0)
+                        }
+                        ///navController.navigate(R.id.action_fragMy_to_splash2Activity)
                         Toast.makeText(requireContext(), "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("로그아웃 실패", response.body().toString())
@@ -350,5 +351,36 @@ class FragMy : Fragment() {
         // 호출
 
     }
+    fun clearAppData(context: Context) {
+        val cache: File = context.cacheDir // 캐시 폴더 호출
+        val appDir = File(cache.parent) // App Data 삭제를 위해 캐시 폴더의 부모 폴더까지 호출
+        if (appDir.exists()) {
+            val children: Array<String> = appDir.list() ?: return
+            for (s in children) {
+                // App Data 폴더의 리스트를 deleteDir 를 통해 하위 디렉토리 삭제
+                if(!s.equals("lib")&&!s.equals("files"))
+                    deleteDir(File(appDir, s))
+            }
+        }
+    }
+
+    fun deleteDir(dir: File): Boolean {
+        if (dir.isDirectory) {
+            val children: Array<String> = dir.list() ?: return false
+
+            // 파일 리스트를 반복문으로 호출
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+
+        // 디렉토리가 비어있거나 파일이므로 삭제 처리
+        return dir.delete()
+    }
+
+
 
 }

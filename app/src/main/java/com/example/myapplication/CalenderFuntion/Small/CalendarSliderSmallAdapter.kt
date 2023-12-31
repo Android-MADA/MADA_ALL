@@ -13,7 +13,8 @@ class CalendarSliderSmallAdapter(
     private val viewPager: ViewPager2,
     private val Scheldule: TextView,
     private val ScheduleNum: TextView,
-    private val cal: LinearLayout
+    private val cal: LinearLayout,
+    private val textDday :TextView
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -31,7 +32,7 @@ class CalendarSliderSmallAdapter(
 
     override fun createFragment(position: Int): CalendarSmallFragment {
         val millis = getItemId(position)
-        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal)
+        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal,textDday)
     }
 
     override fun getItemId(position: Int): Long
