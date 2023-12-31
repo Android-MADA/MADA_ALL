@@ -102,13 +102,15 @@ class CalendarAddDdayFragment : Fragment() {
             }
         }
         binding.calendarColor.setOnClickListener {
-            binding.addBtn.text ="등록"
+            if(curId==-1) binding.addBtn.text ="등록"
+            else binding.addBtn.text = "수정"
 
             if(binding.layoutColorSelector.visibility == View.GONE)
                 toggleLayout(true,binding.layoutColorSelector)
         }
         binding.textTitle.setOnClickListener {
-            binding.addBtn.text ="등록"
+            if(curId==-1) binding.addBtn.text ="등록"
+            else binding.addBtn.text = "수정"
         }
         val ticker1 = binding.numberPicker1
         val ticker2 = binding.numberPicker2
@@ -118,7 +120,8 @@ class CalendarAddDdayFragment : Fragment() {
         ticker3.value = ScheduleNum.text.toString().substring(8,10).toInt()
 
         binding.nextScheldule.setOnClickListener {
-            binding.addBtn.text ="등록"
+            if(curId==-1) binding.addBtn.text ="등록"
+            else binding.addBtn.text = "수정"
             toggleLayout(toggleDay,binding.timePicker)
             if(toggleDay) toggleDay = false
             else toggleDay = true

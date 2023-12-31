@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import java.sql.Time
 import java.time.LocalDate
 data class ScheduleResponse2(
-    @SerializedName("Timetable") val Timetable : Schedule
+    @SerializedName("DailyTimetable") val DailyTimetable : Schedule
 )
 
 data class ScheduleResponse(

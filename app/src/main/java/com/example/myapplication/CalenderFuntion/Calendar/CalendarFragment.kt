@@ -47,7 +47,7 @@ class CalendarFragment() : Fragment() {
                     CalendarViewModel.getRepeat {
                         binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)
                     }
-
+                    //binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)
                 }
                 2 -> {
                     //binding.calendarView2.getCalendarData(getMonthList(DateTime(millis)), DateTime(millis).year.toString(),DateTime(millis).monthOfYear.toString(),CalendarViewModel)

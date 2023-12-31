@@ -312,7 +312,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                     viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
                 } else {
                     val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"d",0,"DAILY")
                     if(btnSubmit.text.toString()=="등록") {
                         viewModelTime.addTimeDatas(tmp) { result ->
                             when (result) {
@@ -323,7 +323,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,"DAILY")
                                     )
 
                                     val bundle = Bundle()
@@ -348,7 +348,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(curId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString())
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,"DAILY")
                                     )
 
                                     val bundle = Bundle()

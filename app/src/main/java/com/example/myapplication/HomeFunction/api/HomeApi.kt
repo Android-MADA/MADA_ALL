@@ -78,7 +78,7 @@ fun editTodo(
     ): Call<ScheduleListData>
 
     //시간표 추가
-    @POST("/api/home/time")
+    @POST("/api/home/time/daily")
     fun addTime(@Header("Authorization") token : String?, @Body data: ScheduleAdd
     ): Call<ScheduleResponse>
 

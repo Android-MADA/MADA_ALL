@@ -56,38 +56,6 @@ class FragCalendar : Fragment(){
         hideBootomNavigation(false)
         binding = FragCalendarBinding.inflate(inflater, container, false)
         val viewPager =binding.calendarViewPager
-        val tmp = ArrayList<AndroidCalendarData>()
-        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-31",
-            "10:00:00","11:00:00","#2AA1B7","No","N","안녕하세요 저의 이름은",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-06",
-            "10:00:00","11:00:00","#2AA1B7","No","N","6",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-07",
-            "10:00:00","11:00:00","#2AA1B7","No","N","7",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-04",
-            "10:00:00","11:00:00","#2AA1B7","No","N","4",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-01","2023-08-01","2023-08-05",
-            "10:00:00","11:00:00","#2AA1B7","No","N","5",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-07","2023-08-07","2023-08-09",
-            "10:00:00","11:00:00","#2AA1B7","No","N","6",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-08","2023-08-08","2023-08-09",
-            "10:00:00","11:00:00","#2AA1B7","No","N","7",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-08","2023-08-08","2023-08-10",
-            "10:00:00","11:00:00","#2AA1B7","No","N","9",
-            -1,true,"","CAL",-1,""))
-        tmp.add(AndroidCalendarData("2023-08-10","2023-08-10","2023-08-10",
-            "10:00:00","11:00:00","#2AA1B7","No","N","9fhdfhdfhfdhd",
-            -1,false,"","CAL",-1,""))
-        //CalendarViewModel.repeatArrayList.add(AndroidCalendarData("2023-09-4","2023-09-04","2023-09-04",
-        //    "10:00:00","11:00:00","#2AA1B7","Week","N","반복",
-         //   -1,false,"","CAL",-1,"3"))
-        //CalendarViewModel.hashMapArrayCal.put("2023-8",tmp)
         val currentDate = LocalDate.now()
         calendarAdapter = CalendarSliderAdapter(this,binding.textYear, binding.textMonth,viewPager)
         binding.textYear.text = currentDate.year.toString() + "년"
