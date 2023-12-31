@@ -541,9 +541,10 @@ class CalendarAddFragment : Fragment() {
                                     val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디
                                     Toast.makeText(context, "추가 성공", Toast.LENGTH_SHORT).show()
                                     if(curCycle=="N") addCal(tmpId)
-                                    else CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
+                                    else CalendarViewModel.hashMapArrayCal.clear()
+                                        /*CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
                                         CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
-                                        -1,false,binding.textMemo.text.toString(),"CAL",tmpId,curRepeatText))
+                                        -1,false,binding.textMemo.text.toString(),"CAL",tmpId,curRepeatText))*/
 
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
@@ -568,28 +569,7 @@ class CalendarAddFragment : Fragment() {
                                         delCal(curId)
                                         addCal(curId)
                                     }
-                                    else if(curCycle!="N"&&initCycle=="N") {
-                                        delCal(curId)
-                                        CalendarViewModel.repeatArrayList.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                                            CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
-                                            -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
-                                    }
-                                    else if(curCycle=="N"&&initCycle!="N") {
-                                        delRepeat(curId)
-                                        addCal(curId)
-                                    }
-                                    else  {
-                                        val tmp = CalendarViewModel.repeatArrayList
-                                        for(data in tmp) {
-                                            if(data.id == curId) {
-                                                tmp.remove(data)
-                                                tmp.add(AndroidCalendarData(preScheduleNum.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                                                    CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
-                                                    -1,false,binding.textMemo.text.toString(),"CAL",curId,curRepeatText))
-                                                break;
-                                            }
-                                        }
-                                    }
+                                    else  CalendarViewModel.hashMapArrayCal.clear()
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
                                 2 -> {
@@ -694,15 +674,6 @@ class CalendarAddFragment : Fragment() {
                 }
             }
             currentDate = currentDate.plusMonths(1)
-        }
-    }
-    private fun delRepeat(curId: Int) {
-        val repeatArray = CalendarViewModel.repeatArrayList
-        for(data in repeatArray) {
-            if(data.id == curId) {
-                repeatArray.remove(data)
-                break;
-            }
         }
     }
     private fun addDday(Year : Int, Month : Int, tmpId :Int) {

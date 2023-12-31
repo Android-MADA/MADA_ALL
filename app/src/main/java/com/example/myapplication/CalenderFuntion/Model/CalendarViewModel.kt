@@ -50,7 +50,7 @@ class CalendarViewModel : ViewModel(){
 
     val hashMapArrayCal = HashMap<String, ArrayList<AndroidCalendarData>>()
     val ddayArrayList = ArrayList<AndroidCalendarData>()
-    val repeatArrayList = ArrayList<AndroidCalendarData>()
+    //val repeatArrayList = ArrayList<AndroidCalendarData>()
 
     var addId = 0
 
@@ -310,42 +310,7 @@ class CalendarViewModel : ViewModel(){
 
     }
 
-    fun getRepeat(callback: (Int) -> Unit) {
-        //임시 데이터, 수정 날짜 순서대로 정렬해야하며 점 일정은 나중으로 넣어야함
-        if(repeatArrayList.size==0) {
-            service.getRepeat(token).enqueue(object : Callback<CalendarDatasData> {
-                override fun onResponse(call2: Call<CalendarDatasData>, response: Response<CalendarDatasData>) {
-                    Log.d("error!",response.code().toString())
-                    if (response.isSuccessful) {
-                        val apiResponse = response.body()
-                        if (apiResponse != null) {
-                            val datas = apiResponse.data.datas
-                            //startMon = apiResponse.data.startMon
-                            if(datas != null) {
-                                for (data in datas) {
-                                    if(data.repeat!="N") {
-                                        Log.d("Data",data.toString())
-                                        val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
-                                            "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
-                                            -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
-                                        repeatArrayList.add(tmp)
-                                    }
 
-                                }
-                            }
-
-                        }
-                        callback(1)
-                    }
-                    callback(2)
-                }
-                override fun onFailure(call: Call<CalendarDatasData>, t: Throwable) {
-                    callback(2)
-                }
-            })
-        } else callback(1)
-
-    }
 
     fun setMonthData(Year : String,Month : String, startMon : Boolean,maxFloor : Int) : HashMap<DateTime,ArrayList<AndroidCalendarData>>{
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -358,7 +323,7 @@ class CalendarViewModel : ViewModel(){
 
         val hashMapDataMonth = HashMap<DateTime, ArrayList<AndroidCalendarData>>()
 
-        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>
+        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>/*
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
@@ -430,7 +395,7 @@ class CalendarViewModel : ViewModel(){
                 clone.endDate = todayTmp
                 hashMapArrayCalTmp.add(clone)
             }
-        }
+        }*/
         hashMapArrayCalTmp.sortWith(compareBy<AndroidCalendarData> { it.startDate }.thenByDescending { it.endDate })
         for(data in hashMapArrayCalTmp) {
             if(data!=null) {
