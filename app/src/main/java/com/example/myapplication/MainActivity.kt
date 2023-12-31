@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fl_con) as NavHostFragment
         val navController = navHostFragment.findNavController()
         binding.bottomNavigationView.setupWithNavController(navController)
-/*
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+/*
         CoroutineScope(Dispatchers.IO).launch {
             //데베 클리어
             CoroutineScope(Dispatchers.IO).async {
@@ -151,8 +151,8 @@ class MainActivity : AppCompatActivity() {
                 })
 
             }
-        }
-        //서버에서 커스텀 받아서 저장?*/
+        }*/
+        //서버에서 커스텀 받아서 저장?
     }
 
 
