@@ -514,7 +514,7 @@ class CalendarAddFragment : Fragment() {
                 if(binding.submitBtn.text =="등록") {
                     if(binding.ddayCb.isChecked) {
                         CalendarViewModel.addCalendar( CalendarData( binding.textTitle.text.toString(),nextScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                            curColor,"No","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ) ) { result ->
+                            curColor,"N","Y",binding.textMemo.text.toString(), "10:00:00","11:00:00","" ) ) { result ->
                             when (result) {
                                 1 -> {
                                     val tmpId = CalendarViewModel.addId        //서버로 부터 얻은 아이디

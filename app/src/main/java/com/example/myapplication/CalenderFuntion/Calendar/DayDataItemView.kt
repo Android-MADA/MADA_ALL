@@ -64,6 +64,7 @@ class DayDataItemView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
+            Log.d("click","dsadsa")
             // 클릭 이벤트 발생 시 실행할 코드 작성
             var mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_popup,null)
             var mBuilder = AlertDialog.Builder(context)
@@ -103,7 +104,7 @@ class DayDataItemView @JvmOverloads constructor(
                 else {
                     val title = mDialogView.findViewById<EditText>(R.id.textTitle222).text.toString()
                     val tmpData = CalendarData(title,today,date.toString("yyyy-MM-dd")
-                        ,"#89A9D9","No","N" , "","10:00:00","11:00:00","")
+                        ,"#89A9D9","N","N" , "","10:00:00","11:00:00","")
 
                     CalendarViewModel.addCalendar(tmpData) { result ->
                         when (result) {
@@ -116,7 +117,7 @@ class DayDataItemView @JvmOverloads constructor(
                                 val inputMonth = date.toString("M").toInt() // 월 정보 (예: 12는 12월을 나타냄)
 
                                 CalendarViewModel.hashMapArrayCal.get(date.toString("yyyy-M"))?.add(AndroidCalendarData(today,today,today,
-                                    "10:00:00","11:00:00","#89A9D9","No","N",title,
+                                    "10:00:00","11:00:00","#89A9D9","N","N",title,
                                     -1,false,"","CAL",tmpId,""))
 
                                 //그 달 달력 재생성
@@ -151,6 +152,7 @@ class DayDataItemView @JvmOverloads constructor(
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
         val textHeight = bounds.height().toFloat()
         val y =110
+        Log.d("draw!!!","dsadas")
 
         hashMapDataCal = CalendarViewModel.setMonthData(year,month,false,(height - 130)/55)
         maxItemNum = ((height-y)/50).toInt()                 //(height)/55).toInt()

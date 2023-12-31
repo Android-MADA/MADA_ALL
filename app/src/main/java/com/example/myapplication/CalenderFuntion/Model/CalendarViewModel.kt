@@ -262,7 +262,7 @@ class CalendarViewModel : ViewModel(){
                     Log.d("respone",response.toString())
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
-                        Log.d("datas",apiResponse.toString())
+                        //Log.d("datas",apiResponse.toString())
                         if (apiResponse != null) {
                             val datas = apiResponse.data.datas
                             //startMon = apiResponse.data.startMon
@@ -272,7 +272,7 @@ class CalendarViewModel : ViewModel(){
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
-                                    if(data.repeat=="No") {
+                                    if(data.repeat=="N") {
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
@@ -283,7 +283,7 @@ class CalendarViewModel : ViewModel(){
                                                 monthArray2.add(tmp)
                                             }
                                         } else if(daysRemainingToDate(data.end_date)<0){
-                                            deleteCalendar(data.id) {}
+                                            //deleteCalendar(data.id) {}
                                         } else {
                                             val tmp = AndroidCalendarData("${(data.end_date)}","${(data.end_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
@@ -315,6 +315,7 @@ class CalendarViewModel : ViewModel(){
         if(repeatArrayList.size==0) {
             service.getRepeat(token).enqueue(object : Callback<CalendarDatasData> {
                 override fun onResponse(call2: Call<CalendarDatasData>, response: Response<CalendarDatasData>) {
+                    Log.d("error!",response.code().toString())
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
                         if (apiResponse != null) {
@@ -322,8 +323,8 @@ class CalendarViewModel : ViewModel(){
                             //startMon = apiResponse.data.startMon
                             if(datas != null) {
                                 for (data in datas) {
-                                    if(data.repeat!="No") {
-                                        //Log.d("Data",data.toString())
+                                    if(data.repeat!="N") {
+                                        Log.d("Data",data.toString())
                                         val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                             "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
                                             -1,false,"${data.memo}","CAL",data.id,data.repeatInfo)
@@ -336,6 +337,7 @@ class CalendarViewModel : ViewModel(){
                         }
                         callback(1)
                     }
+                    callback(2)
                 }
                 override fun onFailure(call: Call<CalendarDatasData>, t: Throwable) {
                     callback(2)

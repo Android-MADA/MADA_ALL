@@ -253,7 +253,6 @@ class TimeViewModel : ViewModel() {
         }
         return arrays
     }
-
     fun addTimeDatas(data : ScheduleAdd, callback: (Int) -> Unit) {
         service.addTime(token,data).enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
@@ -262,16 +261,19 @@ class TimeViewModel : ViewModel() {
                     if (apiResponse != null) {
                         Log.d("data",apiResponse.toString())
                         val datas = apiResponse
-                        addId = apiResponse.data.Timetable.id
+                        addId = apiResponse.data.DailyTimetable.id
                         callback(1)
                     } else {
+                        Log.d("error!!!!","dsadsa")
                         callback(2)
                     }
                 } else {
+                    Log.d(response.errorBody().toString(),response.code().toString())
                     callback(2)
                 }
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
+                Log.d("token",token)
                 callback(2)
             }
         })

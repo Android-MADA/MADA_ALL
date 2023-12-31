@@ -115,7 +115,7 @@ class CalendarAddSFragment : Fragment() {
                     when (result) {
                         1 -> {
                             Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
-                            if(calData.repeat=="No") delCal(calData.id)
+                            if(calData.repeat=="N") delCal(calData.id)
                             else delRepeat(calData.id)
                             findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
                         }
