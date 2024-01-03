@@ -118,17 +118,17 @@ fun getHoneCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
                         iconId = i.iconId,
                         isInActive = i.isInActive
                     )
-                    Log.d("cate 추가중", cateData.id.toString())
+                    Log.d("MainActivity cate 추가중", cateData.id.toString())
                     viewModel.createCate(cateData)
                 }
             } else {
-                Log.d("cate안드 잘못", "서버 연결 실패")
+                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
                 Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
         override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-            Log.d("cate서버 연결 오류", "서버 연결 실패")
+            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
             Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
 
@@ -143,7 +143,7 @@ fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){
                     val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                    Log.d("todo server", todoData.toString())
+                    Log.d("MainActivity todo server", todoData.toString())
                     viewModel.createTodo(todoData, null)
                 }
                 //닉네임 저장하기
