@@ -39,6 +39,8 @@ class HomeViewModel : ViewModel() {
     val homeDate: LiveData<LocalDate>
         get() = _homeDate
 
+    var homeDay = "월요일"
+
     //viewPager date 넘기기 확인 코드 시작
 
     var viewpagerDate: LocalDate? = LocalDate.now()

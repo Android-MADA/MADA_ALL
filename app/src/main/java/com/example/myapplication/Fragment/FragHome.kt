@@ -183,6 +183,11 @@ class FragHome : Fragment() {
 
         binding.todoDateTv.text = todoDateSetting(viewModel)
 
+        /**
+         * 요일별 응원멘트 설정
+         */
+        binding.todoMentTv.text = homeMent(viewModel.homeDay)
+
 
         /**
          * 반복투두 페이지 이동
@@ -192,7 +197,10 @@ class FragHome : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeRepeatTodoFragment)
         }
 
-        //마이페이지 페이지 이동
+
+        /**
+         * 마이페이지 페이지 이동
+         */
         binding.todoMyIv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_fragMy)
         }
@@ -299,19 +307,6 @@ class FragHome : Fragment() {
         return dayOfWeek
     }
 
-    private fun homeMent(day: String): String {
-        var homeMent = when (day) {
-            "월요일" -> "월요병 날려버리고 화이팅!"
-            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
-            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
-            "목요일" -> "오늘도 열심히 달려 봐요"
-            "금요일" -> "주말을 위해 조금만 더 화이팅!"
-            "토요일" -> "주말을 알차게!"
-            else -> "일주일의 마지막도 파이팅!"
-        }
-        return homeMent
-    }
-
     fun todoDateSetting(viewModel: HomeViewModel) : String{
         //달력은 현재 날짜로 세팅
         var dateCalendar = Calendar.getInstance()
@@ -326,8 +321,23 @@ class FragHome : Fragment() {
             viewModel.homeDate.value!!.dayOfMonth,
             dateCalendar
         )
+        viewModel.homeDay = currentDay
         var dateString = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
         return dateString
+    }
+
+    private fun homeMent(day: String): String {
+        Log.d("homeMent", "running")
+        var homeMent = when (day) {
+            "월요일" -> "월요병 날려버리고 화이팅!"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
+            "목요일" -> "오늘도 열심히 달려 봐요"
+            "금요일" -> "주말을 위해 조금만 더 화이팅!"
+            "토요일" -> "주말을 알차게!"
+            else -> "일주일의 마지막도 파이팅!"
+        }
+        return homeMent
     }
 
 }
