@@ -36,9 +36,10 @@ class FragHome : Fragment() {
     lateinit var binding : TodoLayoutBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.userToken = Splash2Activity.prefs.getString("token", "")
 
     }
 
@@ -50,7 +51,12 @@ class FragHome : Fragment() {
         binding = TodoLayoutBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        /**
+         * 바텀네비게이션 활성화
+         */
         hideBottomNavigation(false, activity)
+
+
         //날짜 변경 시 서버에서 cateogry, todo받아오기
 
 //
@@ -123,8 +129,18 @@ class FragHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+        /**
+         * 삭제 예정 코드 시작
+         */
+
+        viewModel.userToken = Splash2Activity.prefs.getString("token", "")
         Log.d("token", viewModel.userToken)
+
+        /**
+         * 삭제 예정 코드 끝
+         */
         viewModel.readAllTodo()
         viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
             CoroutineScope(Dispatchers.Main).launch {
