@@ -13,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -21,13 +20,8 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.entity.CateEntity
-import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         /**
          * 2. GET home Category
          */
-        getHoneCategory(api, viewModel, this)
+        getHomeCategory(api, viewModel, this)
 
 
         /**
@@ -102,8 +96,9 @@ fun clearHomeDatabase(viewModel: HomeViewModel){
     Log.d("MainActivity", "1-1-3 deleteAllRepeatTodo")
 }
 
-fun getHoneCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
+fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
     Log.d("MainActivity", "2. getHomeCategoryStart")
+    viewModel.deleteAllCate()
     api.getHCategory(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
         override fun onResponse(
             call: Call<CategoryList1>,

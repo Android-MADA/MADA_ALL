@@ -130,7 +130,6 @@ class HomeViewModel : ViewModel() {
     fun readHomeCate(){
         homeCateEntityList = repository.readHomeCate().asLiveData()
         Log.d("check readHomecate", "working")
-        Log.d("check readHomecate", cateEntityList.value.toString())
     }
 
     fun readActiveCate(isActive : Boolean) {
