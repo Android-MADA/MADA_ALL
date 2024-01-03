@@ -99,9 +99,10 @@ fun editTodo(
         @Header("Authorization") token : String?
     ): CategoryList1
 
-    @GET("/api/home/category")
+    @GET("/api/home/category/date/{date}")
     fun getHCategory(
-        @Header("Authorization") token : String?
+        @Header("Authorization") token : String?,
+        @Path("date", encoded = true) date: String,
     ): Call<CategoryList1>
 
     @GET("/api/home/category")
