@@ -27,6 +27,7 @@ import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.example.myapplication.databinding.TodoLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.getHomeCategory
 import com.example.myapplication.hideBottomNavigation
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
@@ -132,9 +133,6 @@ class FragHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-
 
         /**
          * 삭제 예정 코드 시작
@@ -149,59 +147,6 @@ class FragHome : Fragment() {
 
 
 
-
-
-        viewModel.readAllTodo()
-        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
-            CoroutineScope(Dispatchers.Main).launch {
-                var completeNum = 0
-                var todoNum = it.size
-                for(i in it){
-                    if(i.complete == true){
-                        completeNum++
-                    }
-                }
-
-                binding.progressLayout.weightSum = todoNum.toFloat()
-                binding.progressDoneLayout.layoutParams.apply {
-                    (this as LinearLayout.LayoutParams).weight = completeNum.toFloat()
-                }
-                binding.todoAllNumTv.text = "${todoNum.toString()}개"
-                binding.todoDoneNumTv.text = "${completeNum.toString()}개"
-                var percent = if(todoNum == 0 || completeNum == 0){
-                    0
-                }
-                else{
-                    (completeNum.toFloat() / todoNum.toFloat() * 100.0).toInt()
-                }
-                binding.progressTv.text = "${percent.toString()}%"
-            }
-        })
-
-        //todo rv
-        //카테고리 데이터 가져와서 adapter 넣기
-        viewModel.readActiveCate(false)
-        viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
-            val cateList = it as List<CateEntity>
-            //Log.d("cateList", cateList.toString())
-            val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
-            mAdapter.viewModel = viewModel
-            mAdapter.submitList(cateList)
-            binding.todoActiveCategoryRv.adapter = mAdapter
-            binding.todoActiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
-
-        })
-
-        viewModel.readQuitCate(true)
-        viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
-            val cateList = it as List<CateEntity>
-            Log.d("cateList", cateList.toString())
-            val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv, requireFragmentManager())
-            mAdapter.viewModel = viewModel
-            mAdapter.submitList(cateList)
-            binding.todoInactiveCategoryRv.adapter = mAdapter
-            binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
-        })
 
         /**
          * 2. 날짜 세팅
@@ -237,7 +182,6 @@ class FragHome : Fragment() {
         checkCategory(viewModel)
         viewModel.homeCateEntityList?.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
-            Log.d("HomecateList", cateList.toString())
             if(cateList.isNullOrEmpty()){
                 binding.cateEmptyLayout.isVisible = true
                 binding.todoActiveCategoryRv.isGone = true
@@ -254,11 +198,81 @@ class FragHome : Fragment() {
         /**
          * 7. 활성 카테고리 rv 연결
          */
+        viewModel.readActiveCate(false)
+        viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
+            val cateList = it as List<CateEntity>
+            val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
+            mAdapter.viewModel = viewModel
+            mAdapter.submitList(cateList)
+            binding.todoActiveCategoryRv.adapter = mAdapter
+            binding.todoActiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
+
+        })
 
 
         /**
          * 8. 종료 카테고리 rv 연결
          */
+        viewModel.readQuitCate(true)
+        viewModel.quitCateEntityList.observe(viewLifecycleOwner, Observer {
+            val cateList = it as List<CateEntity>
+            val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv, requireFragmentManager())
+            mAdapter.viewModel = viewModel
+            mAdapter.submitList(cateList)
+            binding.todoInactiveCategoryRv.adapter = mAdapter
+            binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
+        })
+
+
+
+        /**
+         * 9. 카테고리 페이지 이동
+         */
+        binding.categoryIv.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
+        }
+        binding.todoNoCategoryBtn.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
+        }
+
+
+        /**
+         * 10. 프로그레스바 설정
+         */
+        viewModel.readAllTodo()
+        viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
+            CoroutineScope(Dispatchers.Main).launch {
+                var completeNum = 0
+                var todoNum = it.size
+                for(i in it){
+                    if(i.complete == true){
+                        completeNum++
+                    }
+                }
+
+                binding.progressLayout.weightSum = todoNum.toFloat()
+                binding.progressDoneLayout.layoutParams.apply {
+                    (this as LinearLayout.LayoutParams).weight = completeNum.toFloat()
+                }
+                binding.todoAllNumTv.text = "${todoNum.toString()}개"
+                binding.todoDoneNumTv.text = "${completeNum.toString()}개"
+                var percent = if(todoNum == 0 || completeNum == 0){
+                    0
+                }
+                else{
+                    (completeNum.toFloat() / todoNum.toFloat() * 100.0).toInt()
+                }
+                binding.progressTv.text = "${percent.toString()}%"
+            }
+        })
+
+
+
+
+
+
+
+
 
 
         //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
@@ -270,9 +284,7 @@ class FragHome : Fragment() {
             }
         }
 
-        binding.categoryIv.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
-        }
+
 
 
         // 클릭 시 텍스트 변환 -> bottomsheetdialog에서 처리할 부분
@@ -345,7 +357,10 @@ class FragHome : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
         hideBottomNavigation(false, activity)
+        getHomeCategory(api, viewModel, this.requireActivity())
     }
 
     private fun findDayOfWeek(y: Int, m: Int, d: Int, selected: Calendar): String {
@@ -400,7 +415,7 @@ class FragHome : Fragment() {
 fun checkCategory(viewModel: HomeViewModel) : Boolean {
     var isCate = false
     viewModel.readHomeCate()
-    if(viewModel.cateEntityList.value.isNullOrEmpty()){
+    if(viewModel.homeCateEntityList?.value.isNullOrEmpty()){
         Log.d("checkHomeCate", "blank")
     }
     else{
