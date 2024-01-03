@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 
 class FragHome : Fragment() {
 
-    //lateinit var binding: HomeFragmentBinding
     lateinit var binding : TodoLayoutBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
@@ -178,26 +177,17 @@ class FragHome : Fragment() {
             binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
 
+        /**
+         * 날짜 세팅
+         */
 
-        //달력은 현재 날짜로 세팅
-        var dateCalendar = Calendar.getInstance()
-        dateCalendar.set(
-            viewModel.homeDate.value!!.year,
-            (viewModel.homeDate.value!!.monthValue - 1),
-            viewModel.homeDate.value!!.dayOfMonth
-        )
-        var currentDay = findDayOfWeek(
-            viewModel.homeDate.value!!.year,
-            (viewModel.homeDate.value!!.monthValue - 1),
-            viewModel.homeDate.value!!.dayOfMonth,
-            dateCalendar
-        )
-
-        //date setting
-        binding.todoDateTv.text = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
+        binding.todoDateTv.text = todoDateSetting(viewModel)
 
 
-        //반복투두 페이지 이동
+        /**
+         * 반복투두 페이지 이동
+         */
+
         binding.todoRepeatIv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeRepeatTodoFragment)
         }
@@ -320,6 +310,24 @@ class FragHome : Fragment() {
             else -> "일주일의 마지막도 파이팅!"
         }
         return homeMent
+    }
+
+    fun todoDateSetting(viewModel: HomeViewModel) : String{
+        //달력은 현재 날짜로 세팅
+        var dateCalendar = Calendar.getInstance()
+        dateCalendar.set(
+            viewModel.homeDate.value!!.year,
+            (viewModel.homeDate.value!!.monthValue - 1),
+            viewModel.homeDate.value!!.dayOfMonth
+        )
+        var currentDay = findDayOfWeek(
+            viewModel.homeDate.value!!.year,
+            (viewModel.homeDate.value!!.monthValue - 1),
+            viewModel.homeDate.value!!.dayOfMonth,
+            dateCalendar
+        )
+        var dateString = "${viewModel.homeDate.value!!.monthValue}월 ${viewModel.homeDate.value!!.dayOfMonth}일 ${currentDay}"
+        return dateString
     }
 
 }
