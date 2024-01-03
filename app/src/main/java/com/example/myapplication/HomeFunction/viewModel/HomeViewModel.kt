@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeViewModel : ViewModel() {
 
@@ -46,13 +47,15 @@ class HomeViewModel : ViewModel() {
     var viewpagerDate: LocalDate? = LocalDate.now()
 
     //달력 날짜 라이브 데이터
-    private val _myLiveToday = MutableLiveData<String>()
-    val myLiveToday: LiveData<String>
+    private var _myLiveToday = MutableLiveData<String>()
+    val myLiveToday : LiveData<String>
         get() = _myLiveToday
 
     fun updateData(newValue: String) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         _myLiveToday.value = newValue
         Log.d("update",newValue)
+        _homeDate.value = LocalDate.parse(newValue, DateTimeFormatter.ISO_DATE)
     }
 
     //date 변경

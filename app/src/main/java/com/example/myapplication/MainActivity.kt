@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         /**
          * 1-1 database clear
          */
-        clearHomeDatabase(viewModel)
+        //clearHomeDatabase(viewModel)
 
         /**
          * 1-2 캐릭터 서버에서 받아오기
@@ -61,13 +61,13 @@ class MainActivity : AppCompatActivity() {
         /**
          * 2. GET home Category
          */
-        getHomeCategory(api, viewModel, this)
+        //getHomeCategory(api, viewModel, this)
 
 
         /**
          * 3. GET home Todo
          */
-        getHomeTodo(api, viewModel, this)
+        //getHomeTodo(api, viewModel, this)
 
 
     }
@@ -133,7 +133,7 @@ fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
 
 fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
     Log.d("MainActivity", "3. GET homeTodoStart")
-    api.getAllMyTodo(viewModel.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
+    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
         override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){

@@ -62,12 +62,12 @@
                 android:id="@+id/todo_my_iv"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/my_time_circle"
+                android:src="@drawable/ic_todo_my"
                 android:layout_marginHorizontal="10dp"
                 />
         </LinearLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/todo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -381,7 +381,7 @@
 
 
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
 
