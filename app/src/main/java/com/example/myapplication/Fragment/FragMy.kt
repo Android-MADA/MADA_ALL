@@ -124,33 +124,33 @@ class FragMy : Fragment() {
             navController.navigate(R.id.action_fragMy_to_myStampFragment)
         }
 
-        // 캐릭터 커스텀 불러오는 함수 호출
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
-            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
-            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
-            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
-            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
-            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
-            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
-            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
-            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
-            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
-            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
-            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
-            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
-            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+//        // 캐릭터 커스텀 불러오는 함수 호출
+//        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+//            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+//            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
+//            17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
+//            12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
+//            13 -> ButtonInfo(R.id.btn_color_green, 13, R.drawable.c_ramdyg)
+//            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
+//            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
+//            15 -> ButtonInfo(R.id.btn_color_purple, 15, R.drawable.c_ramdyp)
+//            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
+//
+//        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
+//            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
+//            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
+//            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
+//            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
+//            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
+//            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
+//            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
+//            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
+//            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
+//            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
+//            else -> throw IllegalArgumentException("Unknown button ID")
+//        }
 
 //        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
 //            800 -> ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
@@ -175,13 +175,13 @@ class FragMy : Fragment() {
 //        }
 
 
-        binding.myRamdi.setImageResource(
-            colorbuttonInfo.selectedImageResource ?: 0
-        )
-
-        binding.imgMyCloth.setImageResource(
-            clothbuttonInfo.selectedImageResource ?: 0
-        )
+//        binding.myRamdi.setImageResource(
+//            colorbuttonInfo.selectedImageResource ?: 0
+//        )
+//
+//        binding.imgMyCloth.setImageResource(
+//            clothbuttonInfo.selectedImageResource ?: 0
+//        )
 //        binding.imgMyItem.setImageResource(
 //            itembuttonInfo.selectedImageResource ?: 0
 //        )
