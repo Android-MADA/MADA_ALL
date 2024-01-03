@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -52,7 +54,7 @@ class FragHome : Fragment() {
         val view = binding.root
 
         /**
-         * 바텀네비게이션 활성화
+         * 1. 바텀네비게이션 활성화
          */
         hideBottomNavigation(false, activity)
 
@@ -131,6 +133,9 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+
+
+
         /**
          * 삭제 예정 코드 시작
          */
@@ -141,6 +146,11 @@ class FragHome : Fragment() {
         /**
          * 삭제 예정 코드 끝
          */
+
+
+
+
+
         viewModel.readAllTodo()
         viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
             CoroutineScope(Dispatchers.Main).launch {
@@ -173,7 +183,7 @@ class FragHome : Fragment() {
         viewModel.readActiveCate(false)
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
-            Log.d("cateList", cateList.toString())
+            //Log.d("cateList", cateList.toString())
             val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
@@ -194,19 +204,19 @@ class FragHome : Fragment() {
         })
 
         /**
-         * 날짜 세팅
+         * 2. 날짜 세팅
          */
 
         binding.todoDateTv.text = todoDateSetting(viewModel)
 
         /**
-         * 요일별 응원멘트 설정
+         * 3. 요일별 응원멘트 설정
          */
         binding.todoMentTv.text = homeMent(viewModel.homeDay)
 
 
         /**
-         * 반복투두 페이지 이동
+         * 4. 반복투두 페이지 이동
          */
 
         binding.todoRepeatIv.setOnClickListener {
@@ -215,11 +225,40 @@ class FragHome : Fragment() {
 
 
         /**
-         * 마이페이지 페이지 이동
+         * 5. 마이페이지 페이지 이동
          */
         binding.todoMyIv.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_fragMy)
         }
+
+        /**
+         * 6. 카테고리 존재 여부 확인
+         */
+        checkCategory(viewModel)
+        viewModel.homeCateEntityList?.observe(viewLifecycleOwner, Observer {
+            val cateList = it as List<CateEntity>
+            Log.d("HomecateList", cateList.toString())
+            if(cateList.isNullOrEmpty()){
+                binding.cateEmptyLayout.isVisible = true
+                binding.todoActiveCategoryRv.isGone = true
+                binding.todoInactiveCategoryRv.isGone = true
+            }
+            else{
+                binding.cateEmptyLayout.isGone = true
+                binding.todoActiveCategoryRv.isVisible = true
+                binding.todoInactiveCategoryRv.isVisible = true
+            }
+
+        })
+
+        /**
+         * 7. 활성 카테고리 rv 연결
+         */
+
+
+        /**
+         * 8. 종료 카테고리 rv 연결
+         */
 
 
         //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
@@ -356,4 +395,16 @@ class FragHome : Fragment() {
         return homeMent
     }
 
+}
+
+fun checkCategory(viewModel: HomeViewModel) : Boolean {
+    var isCate = false
+    viewModel.readHomeCate()
+    if(viewModel.cateEntityList.value.isNullOrEmpty()){
+        Log.d("checkHomeCate", "blank")
+    }
+    else{
+        Log.d("checkHomeCate", "not blank")
+    }
+    return isCate
 }

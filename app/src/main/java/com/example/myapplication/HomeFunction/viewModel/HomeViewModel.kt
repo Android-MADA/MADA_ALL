@@ -99,6 +99,7 @@ class HomeViewModel : ViewModel() {
     private val repository = HomeRepository()
 
     //카테고리 리스트
+    var homeCateEntityList : LiveData<List<CateEntity>>? = null
     lateinit var cateEntityList : LiveData<List<CateEntity>>
     lateinit var quitCateEntityList : LiveData<List<CateEntity>>
 
@@ -124,6 +125,12 @@ class HomeViewModel : ViewModel() {
     //CRUD 선언
     fun createCate(cateEntity: CateEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.createCate(cateEntity)
+    }
+
+    fun readHomeCate(){
+        homeCateEntityList = repository.readHomeCate().asLiveData()
+        Log.d("check readHomecate", "working")
+        Log.d("check readHomecate", cateEntityList.value.toString())
     }
 
     fun readActiveCate(isActive : Boolean) {
