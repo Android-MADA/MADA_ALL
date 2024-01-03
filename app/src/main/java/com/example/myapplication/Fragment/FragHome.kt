@@ -25,20 +25,25 @@ import com.example.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSh
 import com.example.myapplication.R
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
+import com.example.myapplication.clearHomeDatabase
 import com.example.myapplication.databinding.TodoLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.getHomeCategory
+import com.example.myapplication.getHomeTodo
 import com.example.myapplication.hideBottomNavigation
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class FragHome : Fragment() {
 
     lateinit var binding : TodoLayoutBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+    private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,6 +159,7 @@ class FragHome : Fragment() {
 
         binding.todoDateTv.text = todoDateSetting(viewModel)
 
+
         /**
          * 3. 요일별 응원멘트 설정
          */
@@ -237,7 +243,7 @@ class FragHome : Fragment() {
 
 
         /**
-         * 10. 프로그레스바 설정
+         * 10. progressbar 설정
          */
         viewModel.readAllTodo()
         viewModel.todoEntityList.observe(viewLifecycleOwner, Observer {
@@ -266,16 +272,9 @@ class FragHome : Fragment() {
             }
         })
 
-
-
-
-
-
-
-
-
-
-        //날짜 텍스트 클릭 시 -> bottomsheetdialog 연결하기
+        /**
+         * 날짜 변경 시 bottomsheetdialog 처리
+         */
         binding.todoDateLayout.setOnClickListener{
             Log.d("date", "bottomsheetdialog up")
             val todoMenuBottomSheet = TodoDateBottomSheetDialog(viewModel)
@@ -283,6 +282,18 @@ class FragHome : Fragment() {
                 todoMenuBottomSheet.show(childFragmentManager, todoMenuBottomSheet.tag)
             }
         }
+        viewModel.myLiveToday.observe(viewLifecycleOwner, Observer {
+            Log.d("bottomsheet Todo", it)
+        })
+        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
+            Log.d("date변경", it.toString())
+            binding.todoDateTv.text = todoDateSetting(viewModel)
+            binding.todoMentTv.text = homeMent(viewModel.homeDay)
+            //서버에서 데이터 새로 받아오기
+            clearHomeDatabase(viewModel)
+            getHomeCategory(api, viewModel, this.requireActivity())
+            getHomeTodo(api, viewModel, this.requireActivity())
+        })
 
 
 
@@ -332,9 +343,7 @@ class FragHome : Fragment() {
 //            }
 //        }
 
-        viewModel.homeDate.observe(viewLifecycleOwner, Observer {
-            Log.d("date변경", binding.todoDateTv.text.toString())
-        })
+
 
         //시작요일 변경 -> bottomsheetdialog에서 처리할 부분
 //        viewModel.startDay.observe(viewLifecycleOwner, Observer{
@@ -353,11 +362,12 @@ class FragHome : Fragment() {
             }
             false
         })
+
+
     }
 
     override fun onResume() {
         super.onResume()
-        val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         hideBottomNavigation(false, activity)
         getHomeCategory(api, viewModel, this.requireActivity())
