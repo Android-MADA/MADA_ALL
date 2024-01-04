@@ -94,10 +94,10 @@ fun editTodo(
 
 
     //카테고리 조회 -> 확인 완
-    @GET("/api/home/category")
-    suspend fun getCategory(
+    @GET("/api/home/category/all")
+    fun getCategory(
         @Header("Authorization") token : String?
-    ): CategoryList1
+    ): Call<CategoryList1>
 
     @GET("/api/home/category/date/{date}")
     fun getHCategory(

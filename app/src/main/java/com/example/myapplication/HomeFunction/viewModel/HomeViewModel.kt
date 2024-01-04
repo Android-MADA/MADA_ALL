@@ -149,8 +149,8 @@ class HomeViewModel : ViewModel() {
         Log.d("check readHomecate", "working")
     }
 
-    fun readActiveCate(isActive : Boolean) {
-        cateEntityList = repository.readActiveCate(isActive).asLiveData()
+    fun readActiveCate(isInActive : Boolean) {
+        cateEntityList = repository.readActiveCate(isInActive).asLiveData()
         Log.d("readActivecate", "working")
     }
 

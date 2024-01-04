@@ -13,11 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.HomeFunction.adapter.category.CateListAdapter
+import com.example.myapplication.HomeFunction.api.HomeApi
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.R
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.databinding.CategoryLayoutBinding
 import com.example.myapplication.databinding.HomeFragmentCategoryBinding
 import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.getAllCategory
 import com.example.myapplication.hideBottomNavigation
 
 class HomeCategoryFragment : Fragment() {
@@ -26,6 +29,7 @@ class HomeCategoryFragment : Fragment() {
     private val viewModel : HomeViewModel by activityViewModels()
 
     private var bottomFlag = true
+    private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +49,26 @@ class HomeCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //리스트에 카테고리 넣기
+
+        /**
+         * 1. 카테고리 서버 연결
+         */
+        getAllCategory(api, viewModel, this.requireActivity())
+
+
+        /**
+         * 리스트에 카테고리 넣기
+         */
+        Log.d("Category", "read start")
         viewModel.readActiveCate(false)
+        Log.d("Category", "read fin")
 
         //livedata로 감지
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
-            Log.d("viewmodel", it.toString())
+            Log.d("Category", it.toString())
 
             val cateList = it as List<CateEntity>
 
-            //val cateRv = binding.rvHomeCategory
             val cateRv = binding.categoryActiveRv
             val cateAdapter = CateListAdapter()
             cateAdapter.submitList(cateList)
