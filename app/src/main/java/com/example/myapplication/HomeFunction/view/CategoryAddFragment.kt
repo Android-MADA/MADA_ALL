@@ -217,7 +217,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                             //edt 꺼내고 text들 없애기
                             binding.edtHomeCategoryNameShow.isGone = true
-                            binding.tvHomeCategoryName.isGone = true
                             binding.edtHomeCategoryName.isVisible = true
 
                             //iv 교체하기
@@ -270,14 +269,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             }
         }
         else {
-            colorAdapter.selecetedColor = "#21C362"
+            colorAdapter.selecetedColor = "#89A9D9"
             iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
             binding.btnHomeCateAddSaveMenu.isGone = true
             binding.btnHomeCateAddSave.isVisible = true
 
             //edt 꺼내고 text들 없애기
             binding.edtHomeCategoryNameShow.isGone = true
-            binding.tvHomeCategoryName.isGone = true
             binding.edtHomeCategoryName.isVisible = true
 
             //iv 교체하기
@@ -291,8 +289,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         }
 
-        val iconListManager = GridLayoutManager(this.activity, 6)
-        val colorListManager = GridLayoutManager(this.activity, 6)
+        val iconListManager = GridLayoutManager(this.activity, 9)
+        val colorListManager = GridLayoutManager(this.activity, 8)
 
         iconAdapter.setItemClickListener(object : HomeCateIconAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
@@ -456,35 +454,39 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             cateIconArray.add(R.drawable.ic_home_cate_health.toString())
             cateIconArray.add(R.drawable.ic_home_cate_phone.toString())
             cateIconArray.add(R.drawable.ic_home_cate_rest.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_heart.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_study.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_laptop.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_plan.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_pen.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_burn.toString())
             cateIconArray.add(R.drawable.ic_home_cate_music.toString())
             cateIconArray.add(R.drawable.ic_home_cate_lightup.toString())
             cateIconArray.add(R.drawable.ic_home_cate_lightout.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_pen.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_burn.toString())
-            cateIconArray.add(R.drawable.ic_home_cate_plan.toString())
             cateIconArray.add(R.drawable.ic_home_cate_work.toString())
             cateIconArray.add(R.drawable.ic_home_cate_mic.toString())
             cateIconArray.add(R.drawable.ic_home_cate_sony.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_heart.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_study.toString())
+            cateIconArray.add(R.drawable.ic_home_cate_laptop.toString())
         }
     }
 
     private fun initColorArray() {
         with(cateColorArray) {
-            cateColorArray.add("#21C362")
-            cateColorArray.add("#0E9746")
-            cateColorArray.add("#7FC7D4")
-            cateColorArray.add("#2AA1B7")
+            cateColorArray.add("#ED3024")
+            cateColorArray.add("#F65F55")
+            cateColorArray.add("#FD8415")
+            cateColorArray.add("#FEBD16")
+            cateColorArray.add("#FBA1B1")
+            cateColorArray.add("#F46D85")
+            cateColorArray.add("#D087F2")
+            cateColorArray.add("#A516BC")
             cateColorArray.add("#89A9D9")
-            cateColorArray.add("#486DA3")
-            cateColorArray.add("#FDA4B4")
-            cateColorArray.add("#F0768C")
-            cateColorArray.add("#F8D141")
-            cateColorArray.add("#F68F30")
-            cateColorArray.add("#F33E3E")
+            cateColorArray.add("#269CB1")
+            cateColorArray.add("#3C67A7")
             cateColorArray.add("#405059")
+            cateColorArray.add("#C0D979")
+            cateColorArray.add("#8FBC10")
+            cateColorArray.add("#107E3D")
+            cateColorArray.add("#0E4122")
         }
     }
 
