@@ -1,11 +1,15 @@
 package com.example.myapplication.HomeFunction.bottomsheetdialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -15,6 +19,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFragment() {
     val viewModel = viewModel
+    var menuFlag = "calendar"
+    private var listener: OnSendFromBottomSheetDialog? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,27 +29,59 @@ class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFra
     ): View?
     {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.time_calendar_view, container, false)
+
+        var view = if(menuFlag == "todoMenu"){
+            inflater.inflate(R.layout.todo_menu_bottomsheet_dialog, container, false)
+        }
+        else{
+            inflater.inflate(R.layout.time_calendar_view, container, false)
+        }
         return view
     }
     override fun getTheme(): Int = R.style.AppBottomSheetDialogTheme
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-/*
-        view?.findViewById<LinearLayout>(R.id.todo_menu_delete_layout)?.setOnClickListener {
-            //다이얼로그 띄우기
-            Log.d("todo menu", "delete click")
-            dismiss()
-        }
 
-        view?.findViewById<LinearLayout>(R.id.todo_menu_edit_layout)?.setOnClickListener {
-            Log.d("todo menu", "edit click")
-            dismiss()
-        }
+        if(menuFlag == "todoMenu"){
+            viewModel.isTodoMenu = true
+            val todoMenuDelete = view?.findViewById<LinearLayout>(R.id.todo_menu_delete_layout)
+            val todoMenuEdit = view?.findViewById<LinearLayout>(R.id.todo_menu_edit_layout)
+            val todoMenuChangeDate = view?.findViewById<LinearLayout>(R.id.todo_menu_date_layout)
+            val calView = view?.findViewById<LinearLayout>(R.id.cal)
+            val dateSaveBtn = view?.findViewById<TextView>(R.id.todo_menu_date_save_btn)
 
-        view?.findViewById<LinearLayout>(R.id.todo_menu_date_layout)?.setOnClickListener {
-            view?.findViewById<TextView>(R.id.calendar_tv)?.isVisible = true
-        }*/
+            todoMenuDelete?.setOnClickListener {
+                Log.d("todo menu", "delete click")
+                if(listener == null) return@setOnClickListener
+                listener?.sendValue("delete")
+                dismiss()
+            }
+
+            todoMenuEdit?.setOnClickListener {
+                Log.d("todo menu", "edit click")
+                if(listener == null) return@setOnClickListener
+                listener?.sendValue("edit")
+                dismiss()
+            }
+
+            todoMenuChangeDate?.setOnClickListener {
+
+                if(calView!!.isVisible){
+                    calView?.isGone = true
+                }
+                else{
+                    calView?.isVisible = true
+                }
+            }
+
+            dateSaveBtn?.setOnClickListener {
+                if(listener == null) return@setOnClickListener
+                listener?.sendValue("date")
+                dismiss()
+            }
+
+
+        }
 
         //달력 view
         val vp = view?.findViewById<ViewPager2>(R.id.time_vp)
@@ -61,5 +100,13 @@ class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFra
             }
         }
 
+    }
+
+    interface OnSendFromBottomSheetDialog {
+        fun sendValue(value: String)
+    }
+
+    fun setCallback(listener: OnSendFromBottomSheetDialog) {
+        this.listener = listener
     }
 }

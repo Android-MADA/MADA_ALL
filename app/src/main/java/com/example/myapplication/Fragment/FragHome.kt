@@ -151,8 +151,6 @@ class FragHome : Fragment() {
          */
 
 
-
-
         /**
          * 2. 날짜 세팅
          */
@@ -273,18 +271,15 @@ class FragHome : Fragment() {
         })
 
         /**
-         * 날짜 변경 시 bottomsheetdialog 처리
+         * 11. 날짜 변경 시 bottomsheetdialog 처리
          */
         binding.todoDateLayout.setOnClickListener{
-            Log.d("date", "bottomsheetdialog up")
             val todoMenuBottomSheet = TodoDateBottomSheetDialog(viewModel)
             if (todoMenuBottomSheet != null) {
+                viewModel.isTodoMenu = false
                 todoMenuBottomSheet.show(childFragmentManager, todoMenuBottomSheet.tag)
             }
         }
-        viewModel.myLiveToday.observe(viewLifecycleOwner, Observer {
-            Log.d("bottomsheet Todo", it)
-        })
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             Log.d("date변경", it.toString())
             binding.todoDateTv.text = todoDateSetting(viewModel)
@@ -297,62 +292,10 @@ class FragHome : Fragment() {
 
 
 
+        /**
+         * 12. 시스템 뒤로가기
+          */
 
-        // 클릭 시 텍스트 변환 -> bottomsheetdialog에서 처리할 부분
-
-//        binding.calendarviewHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
-//
-//            dateCalendar.set(year, month, dayOfMonth)
-//            var calendarDay = findDayOfWeek(year, month, dayOfMonth, dateCalendar)
-//            binding.tvHomeCalendar.text = "${month + 1}월 ${dayOfMonth}일 ${calendarDay}"
-//            calendarLayout.isGone = true
-//            binding.tvHomeSentence.text = homeMent(calendarDay)
-//            viewModel.changeDate(year, (month +1), dayOfMonth, "home")
-//            //db 투두 데이터 전체 삭제 후 해당 날짜의 데이터를 서버에서 받아서 db에 저장하고 어댑터에 연결하기
-//            CoroutineScope(Dispatchers.IO).launch {
-//                CoroutineScope(Dispatchers.IO).async {
-//                    viewModel.deleteAllTodo()
-//                }.await()
-//
-//                CoroutineScope(Dispatchers.IO).async {
-//                    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
-//                        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-//                            if(response.isSuccessful){
-//                                for(i in response.body()!!.data.TodoList){
-//                                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-//                                    Log.d("todo server", todoData.toString())
-//                                    viewModel.createTodo(todoData, null)
-//                                }
-//                                //닉네임 저장하기
-//                                viewModel.userHomeName = response.body()!!.data.nickname
-//                            }
-//                            else {
-//                                Log.d("todo안드 잘못", "서버 연결 실패")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<TodoList>, t: Throwable) {
-//                            Log.d("todo서버 연결 오류", "서버 연결 실패")
-//                        }
-//
-//                    })
-//                }
-//
-//                //투두 새로 서버 에서 읽어오기
-//
-//            }
-//        }
-
-
-
-        //시작요일 변경 -> bottomsheetdialog에서 처리할 부분
-//        viewModel.startDay.observe(viewLifecycleOwner, Observer{
-//            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
-//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//        })
-
-
-        // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
@@ -362,6 +305,14 @@ class FragHome : Fragment() {
             }
             false
         })
+
+
+
+        //시작요일 변경 -> bottomsheetdialog에서 처리할 부분
+//        viewModel.startDay.observe(viewLifecycleOwner, Observer{
+//            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
+//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
+//        })
 
 
     }

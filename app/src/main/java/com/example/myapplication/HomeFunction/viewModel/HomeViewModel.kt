@@ -94,6 +94,20 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    //bottomsheet dialog
+    private var _todoMenuMode = MutableLiveData<String>("show")
+
+    val todoMenuMode : LiveData<String>
+        get() = _todoMenuMode
+
+    fun updateTodoMenuMode(mode : String){
+        _todoMenuMode.value = mode
+    }
+
+    var isTodoMenu = false
+
+    var selectedChangedDate = homeDate.value.toString()
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //ROOM
