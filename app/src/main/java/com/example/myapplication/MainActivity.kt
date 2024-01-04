@@ -159,4 +159,39 @@ fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
     Log.d("MainActivity", "3. GET homeTodoFin")
 }
 
+fun getAllCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
+    Log.d("Category", "AllCategoryStart")
+    viewModel.deleteAllCate()
+    api.getCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for (i in response.body()!!.data.CategoryList) {
+                    val cateData = CateEntity(
+                        id = i.id,
+                        categoryName = i.categoryName,
+                        color = i.color,
+                        iconId = i.iconId,
+                        isInActive = i.isInActive
+                    )
+                    Log.d("Category cate 추가중", cateData.id.toString())
+                    viewModel.createCate(cateData)
+                }
+            } else {
+                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+    Log.d("Category", " AllCategoryFin")
+}
+
 
