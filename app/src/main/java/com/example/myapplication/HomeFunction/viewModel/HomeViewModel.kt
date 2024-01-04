@@ -154,8 +154,8 @@ class HomeViewModel : ViewModel() {
         Log.d("readActivecate", "working")
     }
 
-    fun readQuitCate(isActive : Boolean) {
-        quitCateEntityList = repository.readQuitCate(isActive).asLiveData()
+    fun readQuitCate(isInActive : Boolean) {
+        quitCateEntityList = repository.readQuitCate(isInActive).asLiveData()
         Log.d("readQuitcate", "working")
     }
 

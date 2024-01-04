@@ -140,7 +140,7 @@ fun editTodo(
     ): Call<PatchResponseCategory>
 
     //카테고리 종료
-    @PATCH("/api/home/category/active/{categoryId}")
+    @PATCH("/api/home/category/inactive/{categoryId}")
     fun quitCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int

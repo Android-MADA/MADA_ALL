@@ -82,7 +82,6 @@
                     android:textSize="16sp"
                     android:hint="카테고리명"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@null"
@@ -97,7 +96,6 @@
                     android:textColor="@color/black"
                     android:textAlignment="textEnd"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <ImageButton
                     android:id="@+id/iv_home_cate_color_show"
