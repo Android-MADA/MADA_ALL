@@ -174,44 +174,24 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
 
                 binding.btnHomeCateAddSaveMenu.setOnClickListener {
-                    //메뉴바 show
-                    val popup = PopupMenu(context, it)
-                    popup.menuInflater.inflate(R.menu.category_inactive_menu, popup.menu)
-                    popup.setOnMenuItemClickListener { item ->
-                        if(item.itemId == R.id.cate_quit_delete){
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val cateData = CateEntity(
-                                    argsArray!![0].toInt(),
-                                    argsArray!![1],
-                                    argsArray!![2],
-                                    true,
-                                    argsArray!![3].toInt())
-
-                                viewModel.deleteCate(cateData)
-                                //서버 전송
-                                api.deleteHCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
-                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                        if(response.isSuccessful){
-                                            Log.d("catedelete", "성공")
-                                        } else {
-                                            Log.d("cateupdate", "안드 잘못 실패")
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                                        Log.d("cateupdate", "서버 연결 실패")
-                                    }
-
-                                })
-                                //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
-                                withContext(Dispatchers.Main){
-                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-                                }
+                    /**
+                     * bottomsheetdialog
+                     */
+                    val inactiveBottomSheetDialog : ActiveBottomSheetDialog = ActiveBottomSheetDialog() {
+                        when(it){
+                            2 -> {
+                                // 복원 동작
+                                restoreCategory()
+                            }
+                            1 -> {
+                                // 삭제 동작
+                                deleteCategory()
                             }
                         }
-                        true
                     }
-                    popup.show()
+                    inactiveBottomSheetDialog.flag = "inactive"
+                    inactiveBottomSheetDialog.show(parentFragmentManager, inactiveBottomSheetDialog.tag)
+
                 }
             }
             else {
@@ -239,9 +219,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                 //메뉴 클릭 시 active bottomSheetDialog
                 binding.btnHomeCateAddSaveMenu.setOnClickListener {
-                    /**
-                     * bottomsheet dialog
-                     */
                     val activeBottomSheetDialog : ActiveBottomSheetDialog = ActiveBottomSheetDialog() {
                         when(it){
                             0 -> {
@@ -256,38 +233,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     }
                     activeBottomSheetDialog.flag = "active"
                     activeBottomSheetDialog.show(parentFragmentManager, activeBottomSheetDialog.tag)
-
-
-//                            val cate = CateEntity(
-//                                argsArray!![0].toInt(),
-//                                argsArray!![1],
-//                                argsArray!![2],
-//                                true,
-//                                argsArray!![3].toInt()
-//                            )
-//                            CoroutineScope(Dispatchers.IO).launch {
-//                                //종료 patch
-//                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-//                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                                        if(response.isSuccessful){
-//                                            Log.d("cateQuitupdate", "성공")
-//                                        } else {
-//                                            Log.d("cateQuitupdate", "안드 잘못 실패")
-//                                        }
-//                                    }
-//
-//                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-//                                        Log.d("cateQuitupdate", "서버 연결 실패")
-//                                    }
-//                                })
-//
-//                                viewModel.updateCate(cate)
-//                                withContext(Dispatchers.Main){
-//                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-//                                }
-//                            }
-//
-//                        }
                 }
             }
         }
@@ -749,6 +694,29 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d("catequit", "서버 연결 실패")
+                }
+
+            })
+            withContext(Dispatchers.Main){
+                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
+        }
+    }
+
+    fun restoreCategory(){
+        CoroutineScope(Dispatchers.IO).launch {
+            api.activeCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("caterestore", "성공")
+                    }
+                    else{
+                        Log.d("caterestore", "안드 잘못")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("caterestore", "서버 연결 실패")
                 }
 
             })

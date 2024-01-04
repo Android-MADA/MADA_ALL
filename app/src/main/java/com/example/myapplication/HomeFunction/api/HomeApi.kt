@@ -146,6 +146,13 @@ fun editTodo(
         @Path("categoryId", encoded = true) categoryId: Int
     ): Call<Void>
 
+    //카테고리 복원
+    @PATCH("/api/home/category/active/{categoryId}")
+    fun activeCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    ) : Call<Void>
+
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
     @PATCH("/api/home/category/delete/{categoryId}")
     suspend fun deleteCategory(
