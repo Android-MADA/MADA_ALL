@@ -36,7 +36,6 @@ class HomeCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_category, container, false)
         binding = DataBindingUtil.inflate(inflater, R.layout.category_layout, container, false)
         hideBottomNavigation(bottomFlag, activity)
 
