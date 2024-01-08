@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeViewModel : ViewModel() {
 
@@ -39,18 +40,22 @@ class HomeViewModel : ViewModel() {
     val homeDate: LiveData<LocalDate>
         get() = _homeDate
 
+    var homeDay = "월요일"
+
     //viewPager date 넘기기 확인 코드 시작
 
     var viewpagerDate: LocalDate? = LocalDate.now()
 
     //달력 날짜 라이브 데이터
-    private val _myLiveToday = MutableLiveData<String>()
-    val myLiveToday: LiveData<String>
+    private var _myLiveToday = MutableLiveData<String>()
+    val myLiveToday : LiveData<String>
         get() = _myLiveToday
 
     fun updateData(newValue: String) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         _myLiveToday.value = newValue
         Log.d("update",newValue)
+        _homeDate.value = LocalDate.parse(newValue, DateTimeFormatter.ISO_DATE)
     }
 
     //date 변경
@@ -89,6 +94,20 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    //bottomsheet dialog
+    private var _todoMenuMode = MutableLiveData<String>("show")
+
+    val todoMenuMode : LiveData<String>
+        get() = _todoMenuMode
+
+    fun updateTodoMenuMode(mode : String){
+        _todoMenuMode.value = mode
+    }
+
+    var isTodoMenu = false
+
+    var selectedChangedDate = homeDate.value.toString()
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //ROOM
@@ -97,6 +116,7 @@ class HomeViewModel : ViewModel() {
     private val repository = HomeRepository()
 
     //카테고리 리스트
+    var homeCateEntityList : LiveData<List<CateEntity>>? = null
     lateinit var cateEntityList : LiveData<List<CateEntity>>
     lateinit var quitCateEntityList : LiveData<List<CateEntity>>
 
@@ -124,13 +144,18 @@ class HomeViewModel : ViewModel() {
         repository.createCate(cateEntity)
     }
 
-    fun readActiveCate(isActive : Boolean) {
-        cateEntityList = repository.readActiveCate(isActive).asLiveData()
+    fun readHomeCate(){
+        homeCateEntityList = repository.readHomeCate().asLiveData()
+        Log.d("check readHomecate", "working")
+    }
+
+    fun readActiveCate(isInActive : Boolean) {
+        cateEntityList = repository.readActiveCate(isInActive).asLiveData()
         Log.d("readActivecate", "working")
     }
 
-    fun readQuitCate(isActive : Boolean) {
-        quitCateEntityList = repository.readQuitCate(isActive).asLiveData()
+    fun readQuitCate(isInActive : Boolean) {
+        quitCateEntityList = repository.readQuitCate(isInActive).asLiveData()
         Log.d("readQuitcate", "working")
     }
 

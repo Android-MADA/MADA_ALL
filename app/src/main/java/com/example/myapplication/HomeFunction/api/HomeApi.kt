@@ -94,14 +94,15 @@ fun editTodo(
 
 
     //카테고리 조회 -> 확인 완
-    @GET("/api/home/category")
-    suspend fun getCategory(
+    @GET("/api/home/category/all")
+    fun getCategory(
         @Header("Authorization") token : String?
-    ): CategoryList1
+    ): Call<CategoryList1>
 
-    @GET("/api/home/category")
+    @GET("/api/home/category/date/{date}")
     fun getHCategory(
-        @Header("Authorization") token : String?
+        @Header("Authorization") token : String?,
+        @Path("date", encoded = true) date: String,
     ): Call<CategoryList1>
 
     @GET("/api/home/category")
@@ -139,11 +140,18 @@ fun editTodo(
     ): Call<PatchResponseCategory>
 
     //카테고리 종료
-    @PATCH("/api/home/category/active/{categoryId}")
+    @PATCH("/api/home/category/inactive/{categoryId}")
     fun quitCategory(
         @Header("Authorization") token : String?,
         @Path("categoryId", encoded = true) categoryId: Int
     ): Call<Void>
+
+    //카테고리 복원
+    @PATCH("/api/home/category/active/{categoryId}")
+    fun activeCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId: Int
+    ) : Call<Void>
 
     //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
     @PATCH("/api/home/category/delete/{categoryId}")

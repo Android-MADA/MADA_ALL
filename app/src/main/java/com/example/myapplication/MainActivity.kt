@@ -1,9 +1,11 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.HomeFunction.Model.CategoryList1
-import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -19,13 +20,8 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.entity.CateEntity
-import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,8 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -54,125 +48,150 @@ class MainActivity : AppCompatActivity() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            //데베 클리어
-            CoroutineScope(Dispatchers.IO).async {
-                viewModel.deleteAllCate()
-                viewModel.deleteAllTodo()
-                viewModel.deleteAllRepeatTodo()
-            }.await()
+        /**
+         * 1-1 database clear
+         */
+        //clearHomeDatabase(viewModel)
+
+        /**
+         * 1-2 캐릭터 서버에서 받아오기
+         */
 
 
-            CoroutineScope(Dispatchers.IO).async {
-                //서버에서 카테고리 데이터 받아서 로컬 데베에 저장
-                api.getHCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
-                    override fun onResponse(
-                        call: Call<CategoryList1>,
-                        response: Response<CategoryList1>
-                    ) {
-                        if (response.isSuccessful) {
-                            for (i in response.body()!!.data.CategoryList) {
-                                val cateData = CateEntity(
-                                    id = i.id,
-                                    categoryName = i.categoryName,
-                                    color = i.color,
-                                    iconId = i.iconId,
-                                    isInActive = i.isInActive
-                                )
-                                Log.d("cate 추가중", cateData.id.toString())
-                                viewModel.createCate(cateData)
-                            }
-                        } else {
-                            Log.d("cate안드 잘못", "서버 연결 실패")
-                        }
-                    }
+        /**
+         * 2. GET home Category
+         */
+        //getHomeCategory(api, viewModel, this)
 
-                    override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-                        Log.d("cate서버 연결 오류", "서버 연결 실패")
-                    }
 
-                })
-            }.await()
-
-            CoroutineScope(Dispatchers.IO).async {
-                viewModel.readAllTodo()
-            }.await()
-
-            CoroutineScope(Dispatchers.IO).async {
-                //서버에서 투두 데이터 받아서 로컬 데베에 저장
-                api.getAllMyTodo(viewModel.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
-                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                        if(response.isSuccessful){
-                            for(i in response.body()!!.data.TodoList){
-                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                Log.d("todo server", todoData.toString())
-                                viewModel.createTodo(todoData, null)
-                            }
-                            //닉네임 저장하기
-                            viewModel._dUserName.value = response.body()!!.data.nickname
-                        }
-                        else {
-                            Log.d("todo안드 잘못", "서버 연결 실패")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                        Log.d("todo서버 연결 오류", "서버 연결 실패")
-                    }
-
-                })
-
-                //서버에서 반복투두 데이터 받아서 로컬 데베에 저장
-                api.getHRepeatTodo(viewModel.userToken).enqueue(object : Callback<RepeatData1>{
-                    override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
-                        if(response.isSuccessful){
-                            Log.d("Rtodo서버 성공", response.body()!!.data.RepeatTodoList.toString())
-                            //db에 저장
-                            for(i in response.body()!!.data.RepeatTodoList){
-                                val todoData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
-                                if(todoData.id == 348) {
-
-                                }else {
-                                    Log.d("Rtodo server", todoData.toString())
-                                    viewModel.createRepeatTodo(todoData, null)
-                                }
-                            }
-
-                        } else {
-                            Log.d("Rtodo서버 실패", "안드 오류")
-
-                        }
-                    }
-
-                    override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
-                        Log.d("Rtodo서버 연결 오류", "서버 연결 실패")
-                    }
-
-                })
-
-            }
-        }
-        //서버에서 커스텀 받아서 저장?
-    }
-
+        /**
+         * 3. GET home Todo
+         */
+        //getHomeTodo(api, viewModel, this)
 
 
     }
 
 
 
-        fun hideBottomNavigation(bool: Boolean, activity: Activity?) {
-            val bottomNavigation =
-                activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            if (bool) {
-                bottomNavigation?.isGone = true
+}
+
+
+
+fun hideBottomNavigation(bool: Boolean, activity: Activity?) {
+    val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+    if (bool) {
+        bottomNavigation?.isGone = true
+    } else {
+        bottomNavigation?.isVisible = true
+    }
+}
+
+fun clearHomeDatabase(viewModel: HomeViewModel){
+    viewModel.deleteAllCate()
+    Log.d("MainActivity", "1-1-1 deleteAllCate")
+    viewModel.deleteAllTodo()
+    Log.d("MainActivity", "1-1-2 deleteAllTodo")
+    viewModel.deleteAllRepeatTodo()
+    Log.d("MainActivity", "1-1-3 deleteAllRepeatTodo")
+}
+
+fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
+    Log.d("MainActivity", "2. getHomeCategoryStart")
+    viewModel.deleteAllCate()
+    api.getHCategory(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for (i in response.body()!!.data.CategoryList) {
+                    val cateData = CateEntity(
+                        id = i.id,
+                        categoryName = i.categoryName,
+                        color = i.color,
+                        iconId = i.iconId,
+                        isInActive = i.isInActive
+                    )
+                    Log.d("MainActivity cate 추가중", cateData.id.toString())
+                    viewModel.createCate(cateData)
+                }
             } else {
-                bottomNavigation?.isVisible = true
+                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
 
+    })
+    Log.d("MainActivity", "2. getHomeCategoryFin")
+}
 
+fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
+    Log.d("MainActivity", "3. GET homeTodoStart")
+    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+            if(response.isSuccessful){
+                for(i in response.body()!!.data.TodoList){
+                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                    Log.d("MainActivity todo server", todoData.toString())
+                    viewModel.createTodo(todoData, null)
+                }
+                //닉네임 저장하기
+                viewModel._dUserName.value = response.body()!!.data.nickname
+            }
+            else {
+                Log.d("todo안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
+        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+            Log.d("todo서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+    Log.d("MainActivity", "3. GET homeTodoFin")
+}
+
+fun getAllCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
+    Log.d("Category", "AllCategoryStart")
+    viewModel.deleteAllCate()
+    api.getCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for (i in response.body()!!.data.CategoryList) {
+                    val cateData = CateEntity(
+                        id = i.id,
+                        categoryName = i.categoryName,
+                        color = i.color,
+                        iconId = i.iconId,
+                        isInActive = i.isInActive
+                    )
+                    Log.d("Category cate 추가중", cateData.id.toString())
+                    viewModel.createCate(cateData)
+                }
+            } else {
+                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+    Log.d("Category", " AllCategoryFin")
+}
 
 
