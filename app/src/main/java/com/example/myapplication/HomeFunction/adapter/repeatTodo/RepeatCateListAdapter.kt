@@ -21,8 +21,6 @@ import com.example.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.example.myapplication.HomeFunction.Model.PostResponseTodo
 import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
-import com.example.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
-import com.example.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
