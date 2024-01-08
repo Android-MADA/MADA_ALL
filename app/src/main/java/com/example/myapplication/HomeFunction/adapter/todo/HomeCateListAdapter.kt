@@ -76,7 +76,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
         //todoadapter 연결하기
 
             if(holder.data!!.isInActive == true){
-//                holder.btnAdd.isGone = true
+                holder.btnAdd.isGone = true
 //                runBlocking {
 //                    viewModel!!.readTodo(cateId, null)
 //                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
@@ -98,19 +98,20 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 //                    }
 //                }
                 //종료카테고리 처리 -> 보완 필요
-                runBlocking {
-                    viewModel!!.readTodo(cateId, null)
-                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
-                        Log.d("inactive", cateId.toString())
-                        view!!.isGone = true
-                    }
-                    else{
-                        Log.d("inactive but have todo", cateId.toString())
-                    }
-                }
+//                runBlocking {
+//                    viewModel!!.readTodo(cateId, null)
+//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
+//                        Log.d("inactive", cateId.toString())
+//                        view!!.isGone = true
+//                    }
+//                    else{
+//                        Log.d("inactive but have todo", cateId.toString())
+//                    }
+//                }
 
             }
             else {
+                Log.d("homecateRV", "추가중..")
                 holder.btnAdd.isVisible = true
                 holder.todoRv.isVisible = true
 
@@ -120,8 +121,8 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                 viewModel!!.readTodo(cateId, mTodoAdapter)
 
 
-                    holder.todoRv.adapter = mTodoAdapter
-                    holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
+                holder.todoRv.adapter = mTodoAdapter
+                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
 
 
             }

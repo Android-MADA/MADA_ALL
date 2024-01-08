@@ -55,15 +55,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     /*반복 종류 rv 설정*/
     val typeList = arrayListOf<String>("매일", "매주", "매월")
-    val dayList = arrayListOf<String>(
-        "월",
-        "화",
-        "수",
-        "목",
-        "금",
-        "토",
-        "일"
-    )
+    val dayList = arrayListOf<String>("월", "화", "수", "목", "금", "토", "일")
     val dateList = arrayListOf<String>(" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31")
     val typeAdapter = RepeatTypeAdapter(typeList)
     val weekAdapter = RepeatWeeklyAdapter(dayList)
@@ -137,7 +129,12 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             //종료일 캘린더 visibility 처리 예정
         }
 
-        //반복tv 클릭리스너
+
+
+
+        /**
+         * 반복 종류 선택 클릭 리스너
+        **/
         binding.tvRepeatRepeat.setOnClickListener {
             if(binding.repeatLayout.isVisible){
                 binding.repeatLayout.isGone = true
@@ -200,7 +197,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         binding.repeatMonthlyLastDay.setOnClickListener {
             monthAdapter.selectedDay = "마지막 날"
-            binding.tvRepeatRepeat.text = "매월 마지막 날"
+            binding.tvRepeatRepeat.text = "매월 마지막 ㅍ"
             binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
             binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#486DA3"))
             binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#ffffff"))
@@ -209,7 +206,12 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
 
-        //서버 연결
+
+
+        /**
+         * 서버 연결
+         */
+
         binding.btnHomeRepeatAddSave.setOnClickListener {
             if(binding.edtHomeCategoryName.text.isBlank()){
                 Toast.makeText(this.requireActivity(), "TODO 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -229,7 +231,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         CoroutineScope(Dispatchers.IO).launch {
 
                             val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
-                            val patchData = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeat = repeatString, repeatWeek = null, repeatMonth = null, startRepeatDate = startDay, endRepeatDate = endDay, complete = false)
+                            val patchData = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeat = repeatString, repeatWeek = null, repeatMonth = null, startRepeatDate = startDay, endRepeatDate = endDay, complete = false, date = _argsArrayEdit[2])
                             viewModel.updateRepeatTodo(updateData)
                             //서버 연결 patch
                             api.editTodo(viewModel!!.userToken, _argsArrayEdit[1].toInt(), patchData).enqueue(object : Callback<Void>{
