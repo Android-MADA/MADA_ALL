@@ -22,6 +22,10 @@ interface CateDao  {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createCate(cateEntity: CateEntity)
 
+    //모든 homeCategory 읽어오기
+    @Query("SELECT * FROM cate_table")
+    fun readHomeCate() : Flow<List<CateEntity>>
+
     // isActive ==true 카테고리 읽어오기
     @Query("SELECT * FROM cate_table WHERE isInActive LIKE :isActive")
     fun readActiveCate(isActive : Boolean) : Flow<List<CateEntity>>

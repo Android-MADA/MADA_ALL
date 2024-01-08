@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Todo(
     @SerializedName("id") val id: Int,
-    @SerializedName("date") val date: String,
+    @SerializedName("date") var date: String,
     @SerializedName("category") var category: Category,
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
@@ -41,7 +41,7 @@ data class PostRequestTodoCateId(
 )
 
 data class PostRequestTodo(
-    @SerializedName("date") val date: String?,
+    @SerializedName("date") var date: String?,
     @SerializedName("category") var category: PostRequestTodoCateId,
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
@@ -64,7 +64,8 @@ data class PatchRequestTodo(
     @SerializedName("repeatMonth") var repeatMonth: String?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?,
-    @SerializedName("complete") var complete : Boolean
+    @SerializedName("complete") var complete : Boolean,
+    @SerializedName("date") var date: String?
 )
 
 

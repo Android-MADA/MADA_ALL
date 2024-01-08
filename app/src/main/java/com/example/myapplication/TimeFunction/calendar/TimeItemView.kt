@@ -70,9 +70,16 @@ class TimeItemView @JvmOverloads constructor(
                 timeViewModel.updateData(date.toString("yyyy-MM-dd"))
             }
             if (homeViewModel != null) {
-                homeViewModel.updateData(date.toString("yyyy-MM-dd"))
+                if(homeViewModel.isTodoMenu){
+                    homeViewModel.selectedChangedDate = date.toString("yyyy-MM-dd")
+                }
+                else{
+                    homeViewModel.updateData(date.toString("yyyy-MM-dd"))
+                    dialog.dismiss()
+                }
+
             }
-            dialog.dismiss()
+
         }
     }
 

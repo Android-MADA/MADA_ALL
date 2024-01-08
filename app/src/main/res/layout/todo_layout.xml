@@ -62,12 +62,12 @@
                 android:id="@+id/todo_my_iv"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/my_time_circle"
+                android:src="@drawable/ic_todo_my"
                 android:layout_marginHorizontal="10dp"
                 />
         </LinearLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/todo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,6 +82,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/todo_ment_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -326,6 +327,48 @@
                         android:layout_marginHorizontal="15dp"
                         android:layout_marginTop="20dp"
                         />
+                    <LinearLayout
+                        android:id="@+id/cate_empty_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="20dp"
+                        >
+                        <ImageView
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:src="@drawable/cate_empty_ramdi"
+                            android:layout_gravity="center_horizontal"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="아직 카테고리가 없어요!"
+                            android:textColor="@color/grey3"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/todo_no_category_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="카테고리 추가하러 가기"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:background="@drawable/background_10_strokex"
+                            android:backgroundTint="@color/sub4"
+                            />
+
+                    </LinearLayout>
 
                 </LinearLayout>
                 <View
@@ -338,7 +381,7 @@
 
 
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
 
