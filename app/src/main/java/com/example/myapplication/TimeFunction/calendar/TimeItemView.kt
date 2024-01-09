@@ -23,6 +23,8 @@ import com.example.myapplication.R
 import com.example.myapplication.TimeFunction.TimeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.joda.time.DateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class TimeItemView @JvmOverloads constructor(
     context: Context,
@@ -47,7 +49,7 @@ class TimeItemView @JvmOverloads constructor(
             paint = TextPaint().apply {
                 isAntiAlias = true
                 textSize = dayTextSize
-                if (!CalendarUtils.isSameMonth(date, firstDayOfMonth)) {
+                if (getMonth()!="${date.monthOfYear}") {
                     alpha = 50
                 }
             }
@@ -95,13 +97,13 @@ class TimeItemView @JvmOverloads constructor(
         val x =(width - textWidth)/2.toFloat()
         val y =( height-textHeight)/2.toFloat()- paint.fontMetrics.top
         //날짜 그리기
-        if(isSameDay(date)) {
+        if(getToday()=="${date.year}-${date.monthOfYear}-${date.dayOfMonth}") {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
             // Draw rounded rectangle
-            val roundedRect = RectF(width/2-textWidth,   height/2+textWidth, width/2+textWidth, height/2-textWidth)
-            val cornerRadius = textWidth*2/3 // 반지름 값 설정
+            val roundedRect = RectF(width/2-textWidth*3/2,   height/2+textWidth*3/2, width/2+textWidth*3/2, height/2-textWidth*3/2)
+            val cornerRadius = textWidth // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
             canvas.drawText(dateString,x,y,paint)
@@ -109,5 +111,40 @@ class TimeItemView @JvmOverloads constructor(
             canvas.drawText(dateString,x,y,paint)
         }
 
+    }
+
+    fun getToday():String {
+        try {
+            // 한국 시간대를 지정
+            val koreaZoneId = ZoneId.of("Asia/Seoul")
+
+            // 현재 날짜를 한국 시간대로 가져오기
+            val currentDate = java.time.LocalDate.now(koreaZoneId)
+
+            // 날짜를 원하는 형식으로 포맷팅
+            val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+            return currentDate.format(formatter)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ""
+        }
+    }
+    fun getMonth():String {
+        try {
+            // 한국 시간대를 지정
+            val koreaZoneId = ZoneId.of("Asia/Seoul")
+
+            // 현재 날짜를 한국 시간대로 가져오기
+            val currentDate = java.time.LocalDate.now(koreaZoneId)
+
+            // 날짜를 원하는 형식으로 포맷팅
+            val formatter = DateTimeFormatter.ofPattern("M")
+            return currentDate.format(formatter)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ""
+        }
     }
 }
