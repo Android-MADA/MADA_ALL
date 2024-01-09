@@ -3,6 +3,7 @@ package com.example.myapplication.HomeFunction.adapter.repeatTodo
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -87,13 +89,19 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
         }
 
         holder.btnAdd.setOnClickListener {
-            if(holder.layoutAdd.isGone == true){
-                holder.layoutAdd.isVisible = true
-            }
-            else {
-                holder.edtAdd.text.clear()
-                holder.layoutAdd.isGone = true
-            }
+//            if(holder.layoutAdd.isGone == true){
+//                holder.layoutAdd.isVisible = true
+//            }
+//            else {
+//                holder.edtAdd.text.clear()
+//                holder.layoutAdd.isGone = true
+//            }
+            var bundle = Bundle()
+
+            bundle.putStringArrayList("keyAdd", arrayListOf(
+                holder.data!!.id.toString(),
+            ))
+            Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
         }
 
         //edt 저장
