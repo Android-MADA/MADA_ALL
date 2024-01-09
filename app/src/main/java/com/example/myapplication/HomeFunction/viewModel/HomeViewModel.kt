@@ -222,11 +222,11 @@ class HomeViewModel : ViewModel() {
 
     //repeatTodo
 
-    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) { repository.createRepeatTodo(repeatTodoEntity)
+    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {
+        repository.createRepeatTodo(repeatTodoEntity)
         if(edt != null) {
             edt!!.text.clear()
         }
-
         //readAllTodo()
     }
 
