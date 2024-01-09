@@ -67,7 +67,7 @@ class HomeRepeatTodoFragment : Fragment(){
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = RepeatCateListAdapter(view, requireFragmentManager())
+            val mAdapter = RepeatCateListAdapter(view, requireFragmentManager(), this.requireActivity())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.repeatRv.adapter = mAdapter
