@@ -26,6 +26,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.HomeFragmentRepeatTodoBinding
 import com.example.myapplication.databinding.TodoRepeatLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.getRepeatTodo
 import com.example.myapplication.hideBottomNavigation
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +38,7 @@ class HomeRepeatTodoFragment : Fragment(){
     lateinit var binding : TodoRepeatLayoutBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
-
+    private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +61,13 @@ class HomeRepeatTodoFragment : Fragment(){
 
         //카테고리 데이터 가져와서 adapter 넣기
         viewModel.readActiveCate(false)
+        viewModel.deleteAllRepeatTodo()
+        getRepeatTodo(api, viewModel, context = this.requireActivity())
+
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = RepeatCateListAdapter(view)
+            val mAdapter = RepeatCateListAdapter(view, requireFragmentManager())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.repeatRv.adapter = mAdapter

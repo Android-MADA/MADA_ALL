@@ -30,6 +30,7 @@ import com.example.myapplication.databinding.TodoLayoutBinding
 import com.example.myapplication.db.entity.CateEntity
 import com.example.myapplication.getHomeCategory
 import com.example.myapplication.getHomeTodo
+import com.example.myapplication.getRepeatTodo
 import com.example.myapplication.hideBottomNavigation
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
@@ -305,6 +306,7 @@ class FragHome : Fragment() {
             }
             false
         })
+
 
 
 

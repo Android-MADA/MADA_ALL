@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.HomeFunction.Model.CategoryList1
+import com.example.myapplication.HomeFunction.Model.RepeatData1
 import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.api.HomeApi
 import com.example.myapplication.HomeFunction.api.RetrofitInstance
@@ -20,6 +21,7 @@ import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.StartFuction.Splash2Activity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.entity.CateEntity
+import com.example.myapplication.db.entity.RepeatEntity
 import com.example.myapplication.db.entity.TodoEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
@@ -192,6 +194,30 @@ fun getAllCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
 
     })
     Log.d("Category", " AllCategoryFin")
+}
+
+fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
+    api.getHRepeatTodo(viewModel.userToken).enqueue(object :Callback<RepeatData1>{
+        override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
+            if(response.isSuccessful){
+                for(i in response.body()!!.data.RepeatTodoList){
+                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    viewModel.createRepeatTodo(repeatData, null)
+                }
+            }
+            else{
+                Log.d("RepeatTodo GET", "android error")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
+            Log.d("RepeatTodo GET", "server error")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+
 }
 
 
