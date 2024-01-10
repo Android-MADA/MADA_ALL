@@ -17,10 +17,6 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
         <activity
             android:name=".StartFuction.Splash1Activity"
             android:exported="true"
@@ -51,9 +47,6 @@
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7283679844939244~3566308559"/>
     </application>
 
 </manifest>
