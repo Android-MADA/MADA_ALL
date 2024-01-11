@@ -19,13 +19,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
-import com.mada.myapplication.CalenderFuntion.ToggleAnimation
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
-import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
-import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTypeAdapter
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatWeeklyAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -33,16 +28,7 @@ import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.databinding.FragmentRepeatTodoAddBinding
-import com.mada.myapplication.db.entity.RepeatEntity
-import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.hideBottomNavigation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -52,6 +38,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var backDialog: HomeBackCustomDialog
+    private var modeFlag = "add"
 
     /*반복 종류 rv 설정*/
     val typeList = arrayListOf<String>("매일", "매주", "매월")
@@ -60,6 +47,11 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     val typeAdapter = RepeatTypeAdapter(typeList)
     val weekAdapter = RepeatWeeklyAdapter(dayList)
     val monthAdapter = RepeatWeeklyAdapter(dateList)
+    private var selectedType = "DAY"
+    private lateinit var selectedStartDay : LocalDate
+    private lateinit var selectedEndDay : LocalDate
+    private var selectedDay = "월"
+    private var selectedDate = " 1 "
 
     //시작 날짜
     lateinit var startDay : TextView
@@ -74,7 +66,6 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             override fun handleOnBackPressed() {
                 customBackDialog()
             }
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
@@ -99,6 +90,39 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         val _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
+        val _argsArrayAdd = requireArguments().getStringArrayList("keyAdd")
+
+        /**
+         * 1. repeatTodo Add
+         */
+
+        if(!_argsArrayAdd.isNullOrEmpty()){
+
+            modeFlag = "add"
+            selectedType = "DAY"
+            selectedStartDay = changeDate(viewModel.homeDate.value!!.year, viewModel.homeDate.value!!.monthValue, viewModel.homeDate.value!!.dayOfMonth)
+            selectedEndDay = changeDate((viewModel.homeDate.value!!.year+1), viewModel.homeDate.value!!.monthValue, viewModel.homeDate.value!!.dayOfMonth)
+
+            //set add btn
+            binding.btnHomeRepeatAddSave.isVisible = true
+
+            //set startDay
+            binding.tvHomeRepeatStartday.text = "${selectedStartDay.year}년 ${selectedStartDay.monthValue}월 ${selectedStartDay.dayOfMonth}일"
+
+            //set endDay
+            binding.tvHomeRepeatEndday.text = "${selectedEndDay.year}년 ${selectedEndDay.monthValue}월 ${selectedEndDay.dayOfMonth}일"
+
+            //set repeatType
+            binding.tvRepeatRepeat.text = "매일"
+            typeAdapter.selectedType = "매일"
+            weekAdapter.selectedDay = selectedDay
+            monthAdapter.selectedDay = selectedDate
+
+        }
+
+        /**
+         * 2. repeatTodo Edit
+         */
 
 //        0 : todoId,
 //        1 : id,
@@ -111,21 +135,67 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 //        8 : startDay,
 //        9 : endDay
 
+        if(!_argsArrayEdit.isNullOrEmpty()){
 
-        binding.edtHomeCategoryName.setText(_argsArrayEdit!![4])
+            modeFlag = "edit"
+            selectedType = _argsArrayEdit[5]
+            Log.d("date 확인", _argsArrayEdit[2])
+            selectedStartDay = LocalDate.parse(_argsArrayEdit[8])
+            selectedEndDay = LocalDate.parse(_argsArrayEdit[9])
 
+            //set add btn
+            binding.btnHomeRepeatAddSave.isGone = true
+
+            //set repeatTodo title
+            binding.edtHomeCategoryName.setText(_argsArrayEdit!![4])
+
+            //set startday
+            binding.tvHomeRepeatStartday.text = "${selectedStartDay.year}년 ${selectedStartDay.monthValue}월 ${selectedStartDay.dayOfMonth}일"
+
+            //set endday
+            binding.tvHomeRepeatEndday.text = "${selectedEndDay.year}년 ${selectedEndDay.monthValue}월 ${selectedEndDay.dayOfMonth}일"
+
+            //set repeat type
             if(_argsArrayEdit!![5] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
-                //반복 종류 설정 코드 추가 예정
-                binding.tvHomeRepeatStartday.text = _argsArrayEdit!![8]
-                binding.tvHomeRepeatEndday.text = _argsArrayEdit!![9]
+                typeAdapter.selectedType = "매일"
+            }
+            else if(_argsArrayEdit!![5] == "WEEK"){
+                binding.tvRepeatRepeat.text = "매주 ${findDay(_argsArrayEdit[6])}"
+                typeAdapter.selectedType = "매주"
+                selectedDay = findDay(_argsArrayEdit[6])
+            }
+            else{
+                binding.tvRepeatRepeat.text = "매월 ${findDate(_argsArrayEdit[7].toInt())}"
+                typeAdapter.selectedType = "매월"
+                selectedDate = findRvDate(_argsArrayEdit[7].toInt())
             }
 
 
-        binding.ivHomeRepeatAddBack.setOnClickListener {
-            customBackDialog()
-            //Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
         }
+
+        /**
+         * 3. 공통
+         */
+
+
+        /**
+         * 3-1 페이지 이동
+         */
+        binding.ivHomeRepeatAddBack.setOnClickListener {
+            if(modeFlag == "add"){
+                customBackDialog()
+            }
+            else {
+                //edit 상황
+                // 빈칸 확인 -> 수정 내용 저장
+            }
+
+        }
+
+        /**
+         * 3-2 캘린더 클릭 리스너
+         */
 
         binding.tvHomeRepeatStartday.setOnClickListener {
             //시작일 캘린더 visibility 처리 예정
@@ -152,10 +222,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         }
 
 
-
-
         /**
-         * 반복 종류 선택 클릭 리스너
+         * 3-3 반복 종류 선택 클릭 리스너
         **/
         binding.tvRepeatRepeat.setOnClickListener {
             if(binding.repeatLayout.isVisible){
@@ -173,6 +241,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                     binding.tvRepeatRepeat.text = "매일"
                     binding.repeatMonthlyLayout.isGone = true
                     binding.repeatWeeklyRv.isGone = true
+                    selectedType = "N"
                 }
                 else if(typeAdapter.dataSet[position] == "매주"){
                     binding.tvRepeatRepeat.text = "매주"
@@ -193,8 +262,10 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         weekAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                var selectedDay = weekAdapter.dataSet[position]
-                binding.tvRepeatRepeat.text = "매주 ${selectedDay}요일"
+                var selectedRvDay = weekAdapter.dataSet[position]
+                selectedType = "WEEK"
+                selectedDay = findDay2(selectedRvDay)
+                binding.tvRepeatRepeat.text = "매주 ${selectedRvDay}요일"
             }
 
         })
@@ -205,11 +276,13 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         monthAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                var selectedDay = monthAdapter.dataSet[position]
-                binding.tvRepeatRepeat.text = "매월 ${selectedDay} 일"
+                var selectedRvDay = monthAdapter.dataSet[position]
+                binding.tvRepeatRepeat.text = "매월 ${selectedRvDay} 일"
                 binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
                 binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#F5F5F5"))
                 binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#000000"))
+                selectedType = "MONTH"
+                selectedDate = selectedRvDay
             }
 
         })
@@ -219,12 +292,14 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         binding.repeatMonthlyLastDay.setOnClickListener {
             monthAdapter.selectedDay = "마지막 날"
-            binding.tvRepeatRepeat.text = "매월 마지막 ㅍ"
+            binding.tvRepeatRepeat.text = "매월 마지막 날"
             binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
             binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#486DA3"))
             binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#ffffff"))
             monthRv.adapter = monthAdapter
             monthRv.layoutManager = GridLayoutManager(this.activity, 7)
+            selectedType = "MONTH"
+            selectedDate = "마지막 날"
         }
 
 
@@ -250,57 +325,58 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         //Log.d("repeat patch", data.toString())
                         //viewModel.patchTodo(_argsArrayEdit!![0].toInt(), data, _argsArrayEdit!![7].toInt(), _argsArrayEdit!![8].toInt(), view)
                         //db에 반복투두 수정 저장
-                        CoroutineScope(Dispatchers.IO).launch {
+//                        CoroutineScope(Dispatchers.IO).launch {
+//
+//                            val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
+//                            val patchData = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeat = repeatString, repeatWeek = null, repeatMonth = null, startRepeatDate = startDay, endRepeatDate = endDay, complete = false, date = _argsArrayEdit[2])
+//                            viewModel.updateRepeatTodo(updateData)
+//                            //서버 연결 patch
+//                            api.editTodo(viewModel!!.userToken, _argsArrayEdit[1].toInt(), patchData).enqueue(object : Callback<Void>{
+//                                override fun onResponse(
+//                                    call: Call<Void>,
+//                                    response: Response<Void>
+//                                ) {
+//                                    if(response.isSuccessful){
+//                                        Log.d("editRTodo", "success")
+//                                        viewModel!!.deleteAllTodo()
+//                                        //투두 새로 서버 에서 읽어오기
+//                                        api.getAllMyTodo(viewModel!!.userToken, viewModel!!.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+//                                            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+//                                                if(response.isSuccessful){
+//                                                    for(i in response.body()!!.data.TodoList){
+//                                                        val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+//                                                        Log.d("todo server", todoData.toString())
+//                                                        viewModel!!.createTodo(todoData, null)
+//                                                    }
+//                                                    //닉네임 저장하기
+//                                                    viewModel!!.userHomeName = response.body()!!.data.nickname
+//                                                }
+//                                                else {
+//                                                    Log.d("todo안드 잘못", "서버 연결 실패")
+//                                                }
+//                                            }
+//
+//                                            override fun onFailure(call: Call<TodoList>, t: Throwable) {
+//                                                Log.d("todo서버 연결 오류", "서버 연결 실패")
+//                                            }
+//
+//                                        })
+//                                    } else {
+//                                        Log.d("editRTodo", "And fail")
+//
+//                                    }
+//                                }
+//
+//                                override fun onFailure(call: Call<Void>, t: Throwable) {
+//                                    Log.d("editRTodo", "server fail")
+//                                }
+//
+//                            })
+//                            withContext(Dispatchers.Main){
+//                                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+//                            }
+//                        }
 
-                            val updateData = RepeatEntity(_argsArrayEdit[0].toInt(), _argsArrayEdit[1].toInt(), _argsArrayEdit[2], _argsArrayEdit[3].toInt(), binding.edtHomeCategoryName.text.toString(), repeatString, null, null, startDay, endDay)
-                            val patchData = PatchRequestTodo(binding.edtHomeCategoryName.text.toString(), repeat = repeatString, repeatWeek = null, repeatMonth = null, startRepeatDate = startDay, endRepeatDate = endDay, complete = false, date = _argsArrayEdit[2])
-                            viewModel.updateRepeatTodo(updateData)
-                            //서버 연결 patch
-                            api.editTodo(viewModel!!.userToken, _argsArrayEdit[1].toInt(), patchData).enqueue(object : Callback<Void>{
-                                override fun onResponse(
-                                    call: Call<Void>,
-                                    response: Response<Void>
-                                ) {
-                                    if(response.isSuccessful){
-                                        Log.d("editRTodo", "success")
-                                        viewModel!!.deleteAllTodo()
-                                        //투두 새로 서버 에서 읽어오기
-                                        api.getAllMyTodo(viewModel!!.userToken, viewModel!!.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
-                                            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                                                if(response.isSuccessful){
-                                                    for(i in response.body()!!.data.TodoList){
-                                                        val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                                        Log.d("todo server", todoData.toString())
-                                                        viewModel!!.createTodo(todoData, null)
-                                                    }
-                                                    //닉네임 저장하기
-                                                    viewModel!!.userHomeName = response.body()!!.data.nickname
-                                                }
-                                                else {
-                                                    Log.d("todo안드 잘못", "서버 연결 실패")
-                                                }
-                                            }
-
-                                            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                                                Log.d("todo서버 연결 오류", "서버 연결 실패")
-                                            }
-
-                                        })
-                                    } else {
-                                        Log.d("editRTodo", "And fail")
-
-                                    }
-                                }
-
-                                override fun onFailure(call: Call<Void>, t: Throwable) {
-                                    Log.d("editRTodo", "server fail")
-                                }
-
-                            })
-                            withContext(Dispatchers.Main){
-                                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-                            }
-                        }
 
                     }
 
@@ -322,6 +398,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         return LocalDate.parse("${year}-${monthString}-${dayString}")
     }
+
 
     private fun findRepeat(repeat : String) : String{
         val repeatString  = when(repeat){
@@ -354,6 +431,64 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onNoButtonClicked(dialog: Dialog) {
         dialog.dismiss()
+    }
+
+    fun findDay(enString : String) : String{
+        var korString : String = when(enString){
+            "MON" -> "월요일"
+            "TUE" -> "화요일"
+            "WED" -> "수요일"
+            "THU" -> "목요일"
+            "FRI" -> "금요일"
+            "SAT" -> "토요일"
+            else -> "일요일"
+        }
+        return korString
+    }
+
+    fun findDay2(korString: String) : String{
+        var enString : String = when(korString){
+            "월" -> "MON"
+            "화" -> "TUE"
+            "수" -> "WED"
+            "목" -> "THU"
+            "금" -> "FRI"
+            "토"-> "SAT"
+            else -> "SUN"
+        }
+        return enString
+    }
+
+    fun findDate(dateInput : Int) : String {
+        var dateOutput =
+            if(dateInput in 1..31){
+                "${dateInput.toString()}일"
+            }
+        else{
+            "마지막 날"
+            }
+        return dateOutput
+    }
+
+    fun findDate2(inputString: String) : String{
+        var resultString =
+            if(inputString == " 1 " || inputString == " 2 " || inputString == " 3 " || inputString == " 4 " || inputString == " 5 " || inputString == " 6 " || inputString == " 7 " || inputString == " 8 " || inputString == " 9 "){
+                inputString.toCharArray()[1]
+            }
+        else {
+            inputString
+            }
+        return resultString.toString()
+    }
+
+    fun findRvDate(inputInt: Int) : String {
+        val resultString = if(inputInt in 1..9){
+            " ${inputInt}"
+        }
+        else{
+            inputInt.toString()
+        }
+        return resultString
     }
 
     // 레이아웃 자연스럽게 열기 위한 애니메이션 함수

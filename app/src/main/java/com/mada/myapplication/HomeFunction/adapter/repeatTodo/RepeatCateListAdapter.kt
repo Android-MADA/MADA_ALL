@@ -1,6 +1,9 @@
 package com.mada.myapplication.HomeFunction.adapter.repeatTodo
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -9,6 +12,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -35,7 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
-class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, RepeatCateListAdapter.ViewHolder>(DiffCallback) {
+class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentManager, context : Context) : ListAdapter<CateEntity, RepeatCateListAdapter.ViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<CateEntity>(){
@@ -54,6 +59,8 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    private var repeatFragmentManager = fragmentManager
+    private var mContext = context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewHolder = ViewHolder(HomeCatagoryListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -69,7 +76,7 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
 
         CoroutineScope(Dispatchers.IO).launch {
             //todoadapter 연결하기
-            val mTodoAdapter = RepeatTodoListAdapter(view)
+            val mTodoAdapter = RepeatTodoListAdapter(view, repeatFragmentManager, mContext)
             mTodoAdapter.viewModel = viewModel
             // 반복투두 읽어오기
             viewModel!!.readRepeatTodo(cateId, mTodoAdapter)
@@ -80,13 +87,19 @@ class RepeatCateListAdapter(private val view : View) : ListAdapter<CateEntity, R
         }
 
         holder.btnAdd.setOnClickListener {
-            if(holder.layoutAdd.isGone == true){
-                holder.layoutAdd.isVisible = true
-            }
-            else {
-                holder.edtAdd.text.clear()
-                holder.layoutAdd.isGone = true
-            }
+//            if(holder.layoutAdd.isGone == true){
+//                holder.layoutAdd.isVisible = true
+//            }
+//            else {
+//                holder.edtAdd.text.clear()
+//                holder.layoutAdd.isGone = true
+//            }
+            var bundle = Bundle()
+
+            bundle.putStringArrayList("keyAdd", arrayListOf(
+                holder.data!!.id.toString(),
+            ))
+            Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
         }
 
         //edt 저장
