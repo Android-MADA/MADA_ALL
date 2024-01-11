@@ -2,9 +2,7 @@ package com.example.myapplication.HomeFunction.view
 
 import android.app.Dialog
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,9 +19,6 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
-import com.example.myapplication.HomeFunction.Model.PatchRequestTodo
-import com.example.myapplication.HomeFunction.Model.Todo
-import com.example.myapplication.HomeFunction.Model.TodoList
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatTypeAdapter
 import com.example.myapplication.HomeFunction.adapter.repeatTodo.RepeatWeeklyAdapter
 import com.example.myapplication.HomeFunction.api.HomeApi
@@ -31,20 +26,8 @@ import com.example.myapplication.HomeFunction.api.RetrofitInstance
 import com.example.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRepeatTodoAddBinding
-import com.example.myapplication.db.entity.RepeatEntity
-import com.example.myapplication.db.entity.TodoEntity
 import com.example.myapplication.hideBottomNavigation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.temporal.ChronoField
 
 class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
@@ -61,9 +44,11 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     val typeAdapter = RepeatTypeAdapter(typeList)
     val weekAdapter = RepeatWeeklyAdapter(dayList)
     val monthAdapter = RepeatWeeklyAdapter(dateList)
-    private var selectedDay = "DAY"
+    private var selectedType = "DAY"
     private lateinit var selectedStartDay : LocalDate
     private lateinit var selectedEndDay : LocalDate
+    private var selectedDay = "월"
+    private var selectedDate = " 1 "
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -101,10 +86,11 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         /**
          * 1. repeatTodo Add
          */
+
         if(!_argsArrayAdd.isNullOrEmpty()){
 
             modeFlag = "add"
-            selectedDay = "DAY"
+            selectedType = "DAY"
             selectedStartDay = changeDate(viewModel.homeDate.value!!.year, viewModel.homeDate.value!!.monthValue, viewModel.homeDate.value!!.dayOfMonth)
             selectedEndDay = changeDate((viewModel.homeDate.value!!.year+1), viewModel.homeDate.value!!.monthValue, viewModel.homeDate.value!!.dayOfMonth)
 
@@ -118,6 +104,11 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             binding.tvHomeRepeatEndday.text = "${selectedEndDay.year}년 ${selectedEndDay.monthValue}월 ${selectedEndDay.dayOfMonth}일"
 
             //set repeatType
+            binding.tvRepeatRepeat.text = "매일"
+            typeAdapter.selectedType = "매일"
+            weekAdapter.selectedDay = selectedDay
+            monthAdapter.selectedDay = selectedDate
+
         }
 
         /**
@@ -138,7 +129,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         if(!_argsArrayEdit.isNullOrEmpty()){
 
             modeFlag = "edit"
-            selectedDay = _argsArrayEdit[5]
+            selectedType = _argsArrayEdit[5]
             Log.d("date 확인", _argsArrayEdit[2])
             selectedStartDay = LocalDate.parse(_argsArrayEdit[8])
             selectedEndDay = LocalDate.parse(_argsArrayEdit[9])
@@ -156,16 +147,19 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             binding.tvHomeRepeatEndday.text = "${selectedEndDay.year}년 ${selectedEndDay.monthValue}월 ${selectedEndDay.dayOfMonth}일"
 
             //set repeat type
-
-
             if(_argsArrayEdit!![5] == "DAY"){
                 binding.tvRepeatRepeat.text = "매일"
+                typeAdapter.selectedType = "매일"
             }
             else if(_argsArrayEdit!![5] == "WEEK"){
                 binding.tvRepeatRepeat.text = "매주 ${findDay(_argsArrayEdit[6])}"
+                typeAdapter.selectedType = "매주"
+                selectedDay = findDay(_argsArrayEdit[6])
             }
             else{
                 binding.tvRepeatRepeat.text = "매월 ${findDate(_argsArrayEdit[7].toInt())}"
+                typeAdapter.selectedType = "매월"
+                selectedDate = findRvDate(_argsArrayEdit[7].toInt())
             }
 
 
@@ -180,7 +174,14 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
          * 3-1 페이지 이동
          */
         binding.ivHomeRepeatAddBack.setOnClickListener {
-            customBackDialog()
+            if(modeFlag == "add"){
+                customBackDialog()
+            }
+            else {
+                //edit 상황
+                // 빈칸 확인 -> 수정 내용 저장
+            }
+
         }
 
         /**
@@ -215,6 +216,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                     binding.tvRepeatRepeat.text = "매일"
                     binding.repeatMonthlyLayout.isGone = true
                     binding.repeatWeeklyRv.isGone = true
+                    selectedType = "N"
                 }
                 else if(typeAdapter.dataSet[position] == "매주"){
                     binding.tvRepeatRepeat.text = "매주"
@@ -235,8 +237,10 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         weekAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                var selectedDay = weekAdapter.dataSet[position]
-                binding.tvRepeatRepeat.text = "매주 ${selectedDay}요일"
+                var selectedRvDay = weekAdapter.dataSet[position]
+                selectedType = "WEEK"
+                selectedDay = findDay2(selectedRvDay)
+                binding.tvRepeatRepeat.text = "매주 ${selectedRvDay}요일"
             }
 
         })
@@ -247,11 +251,13 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         monthAdapter.setItemClickListener(object : RepeatWeeklyAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                var selectedDay = monthAdapter.dataSet[position]
-                binding.tvRepeatRepeat.text = "매월 ${selectedDay} 일"
+                var selectedRvDay = monthAdapter.dataSet[position]
+                binding.tvRepeatRepeat.text = "매월 ${selectedRvDay} 일"
                 binding.repeatMonthlyLastDay.setBackgroundResource(R.drawable.background_10_strokex)
                 binding.repeatMonthlyLastDay.background.setTint(Color.parseColor("#F5F5F5"))
                 binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#000000"))
+                selectedType = "MONTH"
+                selectedDate = selectedRvDay
             }
 
         })
@@ -267,6 +273,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             binding.repeatMonthlyLastDay.setTextColor(Color.parseColor("#ffffff"))
             monthRv.adapter = monthAdapter
             monthRv.layoutManager = GridLayoutManager(this.activity, 7)
+            selectedType = "MONTH"
+            selectedDate = "마지막 날"
         }
 
 
@@ -413,6 +421,19 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         return korString
     }
 
+    fun findDay2(korString: String) : String{
+        var enString : String = when(korString){
+            "월" -> "MON"
+            "화" -> "TUE"
+            "수" -> "WED"
+            "목" -> "THU"
+            "금" -> "FRI"
+            "토"-> "SAT"
+            else -> "SUN"
+        }
+        return enString
+    }
+
     fun findDate(dateInput : Int) : String {
         var dateOutput =
             if(dateInput in 1..31){
@@ -422,6 +443,27 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             "마지막 날"
             }
         return dateOutput
+    }
+
+    fun findDate2(inputString: String) : String{
+        var resultString =
+            if(inputString == " 1 " || inputString == " 2 " || inputString == " 3 " || inputString == " 4 " || inputString == " 5 " || inputString == " 6 " || inputString == " 7 " || inputString == " 8 " || inputString == " 9 "){
+                inputString.toCharArray()[1]
+            }
+        else {
+            inputString
+            }
+        return resultString.toString()
+    }
+
+    fun findRvDate(inputInt: Int) : String {
+        val resultString = if(inputInt in 1..9){
+            " ${inputInt}"
+        }
+        else{
+            inputInt.toString()
+        }
+        return resultString
     }
 
 

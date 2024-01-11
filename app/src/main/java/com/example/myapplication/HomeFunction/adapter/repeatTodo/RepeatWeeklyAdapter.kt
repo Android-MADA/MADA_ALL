@@ -14,7 +14,7 @@ import com.example.myapplication.R
 
 class RepeatWeeklyAdapter(val dataSet : ArrayList<String>) : RecyclerView.Adapter<RepeatWeeklyAdapter.ViewHolder>() {
 
-    var selectedDay : String? = null
+    var selectedDay : String? = "월"
 
     interface OnItemClickListener {
         fun onClick(v: View, position: Int)

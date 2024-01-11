@@ -40,7 +40,17 @@ class RepeatTypeAdapter(val dataSet : ArrayList<String>) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: RepeatTypeAdapter.ViewHolder, position: Int) {
+
         holder.typeText.text = dataSet[position]
+        if(dataSet[position] == selectedType){
+            holder.typeText.setBackgroundResource(R.drawable.background_10_strokex)
+            holder.typeText.background.setTint(Color.parseColor("#E1E9F5"))
+        }
+        else{
+            holder.typeText.setBackgroundResource(R.drawable.background_10)
+        }
+
+
         holder.typeText.setOnClickListener {
             itemClickListener.onClick(it, position)
             selectedType = dataSet[position]
