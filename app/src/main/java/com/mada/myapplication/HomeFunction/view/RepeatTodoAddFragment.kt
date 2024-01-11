@@ -19,6 +19,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
+import com.mada.myapplication.CalenderFuntion.ToggleAnimation
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTypeAdapter
