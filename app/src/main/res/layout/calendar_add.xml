@@ -1378,7 +1378,7 @@
                     android:textColor="@color/black"
                     android:importantForAutofill="no" />
 
-            </LinearLayout><!--
+            </LinearLayout>
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:layout_gravity="center"
@@ -1389,7 +1389,7 @@
                 android:layout_alignParentBottom="true"
                 ads:adSize="BANNER"
                 ads:adUnitId="ca-app-pub-4086521113003670/1878645147">
-            </com.google.android.gms.ads.AdView>-->
+            </com.google.android.gms.ads.AdView>
             <TextView
                 android:id="@+id/textBlank"
                 android:layout_width="match_parent"

@@ -22,9 +22,9 @@ import com.mada.myapplication.CalenderFuntion.Model.CalendarDataEdit
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
 import com.mada.myapplication.R
-import com.mada.myapplication.databinding.CalendarAddBinding/*
+import com.mada.myapplication.databinding.CalendarAddBinding
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds*/
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import java.time.LocalDate
@@ -473,10 +473,10 @@ class CalendarAddFragment : Fragment() {
             else if(newVal == 2) binding.numberPickerDay.maxValue=29
             else if(newVal ==3 ||newVal ==4 ||newVal ==6 ||newVal ==9 ||newVal ==11) binding.numberPickerDay.maxValue=30
         }
-/*
+
         MobileAds.initialize(this.requireContext()) {}
         val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)*/
+        binding.adView.loadAd(adRequest)
         return binding.root
     }
 

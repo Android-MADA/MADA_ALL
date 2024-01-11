@@ -33,10 +33,10 @@ import com.mada.myapplication.MyFuction.Data.FragMyData
 import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFuction.Splash2Activity
-import com.mada.myapplication.databinding.FragMyBinding/*
+import com.mada.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds*/
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,8 +51,8 @@ class FragMy : Fragment() {
     private lateinit var binding: FragMyBinding
     lateinit var navController: NavController
     private lateinit var alertDialog: AlertDialog
-    private val CalendarViewModel : CalendarViewModel by activityViewModels()/*
-    lateinit var mAdView : AdView*/
+    private val CalendarViewModel : CalendarViewModel by activityViewModels()
+    lateinit var mAdView : AdView
 
     //서버연결 시작
     val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
@@ -94,14 +94,14 @@ class FragMy : Fragment() {
                 Log.d("서버 오류", "selectfragMy 실패")
             }
         })
-/*
+
 
         //구글 플레이스토어 광고
         MobileAds.initialize(this.requireContext()) {}
         mAdView = binding.adView
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
-*/
+
 
 
         return binding.root
