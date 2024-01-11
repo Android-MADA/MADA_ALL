@@ -4,19 +4,24 @@ plugins {
     id "kotlin-kapt"
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
-    namespace 'com.example.myapplication'
+    namespace 'com.mada.myapplication'
     compileSdk 33
 
 
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.mada.myapplication"
         minSdk 26
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "MADA_BASE", properties['mada_base']
     }
 
     buildTypes {
@@ -40,6 +45,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -85,9 +91,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
-
-    // 이미지 불러오기
-    implementation 'com.squareup.picasso:picasso:2.71828'  // 최신 버전 확인
 
     //
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
