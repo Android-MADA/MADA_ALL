@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
@@ -17,6 +19,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
+import com.mada.myapplication.CalenderFuntion.ToggleAnimation
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
@@ -39,6 +44,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
@@ -54,6 +60,12 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     val typeAdapter = RepeatTypeAdapter(typeList)
     val weekAdapter = RepeatWeeklyAdapter(dayList)
     val monthAdapter = RepeatWeeklyAdapter(dateList)
+
+    //시작 날짜
+    lateinit var startDay : TextView
+    lateinit var endDay : TextView
+    //오늘 달
+    val todayMonth = LocalDate.now()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -117,10 +129,26 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         binding.tvHomeRepeatStartday.setOnClickListener {
             //시작일 캘린더 visibility 처리 예정
+            binding.calendar2Start.adapter = null
+            if(binding.calHomeRepeatStart.visibility== View.GONE)  toggleLayout(true,binding.calHomeRepeatStart)
+            else toggleLayout(false,binding.calHomeRepeatStart)
+            val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonthStart,binding.calendar2Start,binding.tvHomeRepeatStartday,startDay ,binding.calHomeRepeatStart,binding.textBlank)
+            binding.calendar2Start.adapter = calendarAdapter
+            val comparisonResult =  ChronoUnit.MONTHS.between(todayMonth,LocalDate.parse(startDay.text.toString()))
+
+            binding.calendar2Start.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt(), false)
         }
 
         binding.tvHomeRepeatEndday.setOnClickListener {
             //종료일 캘린더 visibility 처리 예정
+            binding.calendar2End.adapter = null
+            if(binding.calHomeRepeatEnd.visibility== View.GONE)  toggleLayout(true,binding.calHomeRepeatEnd)
+            else toggleLayout(false,binding.calHomeRepeatEnd)
+            val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonthEnd,binding.calendar2End,binding.tvHomeRepeatStartday,startDay ,binding.calHomeRepeatStart,binding.textBlank)
+            binding.calendar2End.adapter = calendarAdapter
+            val comparisonResult =  ChronoUnit.MONTHS.between(todayMonth,LocalDate.parse(startDay.text.toString()))
+
+            binding.calendar2End.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt(), false)
         }
 
 
@@ -326,6 +354,16 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onNoButtonClicked(dialog: Dialog) {
         dialog.dismiss()
+    }
+
+    // 레이아웃 자연스럽게 열기 위한 애니메이션 함수
+    private fun toggleLayout(isExpanded: Boolean, layoutExpand: LinearLayout): Boolean {
+        if (isExpanded &&layoutExpand.visibility == View.GONE) {
+            ToggleAnimation.expand(layoutExpand)
+        } else if(!isExpanded &&layoutExpand.visibility == View.VISIBLE){
+            ToggleAnimation.collapse(layoutExpand)
+        }
+        return isExpanded
     }
 
 
