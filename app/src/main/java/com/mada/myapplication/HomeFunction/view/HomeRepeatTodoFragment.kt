@@ -11,12 +11,23 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
+import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
+import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
+import com.mada.myapplication.HomeFunction.Model.repeatTodo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatCateListAdapter
+import com.mada.myapplication.HomeFunction.api.HomeApi
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
+import com.mada.myapplication.databinding.HomeFragmentRepeatTodoBinding
 import com.mada.myapplication.databinding.TodoRepeatLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
+import com.mada.myapplication.getRepeatTodo
 import com.mada.myapplication.hideBottomNavigation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeRepeatTodoFragment : Fragment(){
 
@@ -24,7 +35,7 @@ class HomeRepeatTodoFragment : Fragment(){
     lateinit var binding : TodoRepeatLayoutBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
-
+    private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +58,13 @@ class HomeRepeatTodoFragment : Fragment(){
 
         //카테고리 데이터 가져와서 adapter 넣기
         viewModel.readActiveCate(false)
+        viewModel.deleteAllRepeatTodo()
+        getRepeatTodo(api, viewModel, context = this.requireActivity())
+
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             val cateList = it as List<CateEntity>
             Log.d("cateList", cateList.toString())
-            val mAdapter = RepeatCateListAdapter(view)
+            val mAdapter = RepeatCateListAdapter(view, requireFragmentManager(), this.requireActivity())
             mAdapter.viewModel = viewModel
             mAdapter.submitList(cateList)
             binding.repeatRv.adapter = mAdapter

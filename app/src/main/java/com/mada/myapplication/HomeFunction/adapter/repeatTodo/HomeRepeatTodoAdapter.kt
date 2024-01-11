@@ -20,7 +20,7 @@ import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 
-class HomeRepeatTodoAdapter (private var view : View?, private var flag : String? ) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
+class HomeRepeatTodoAdapter (private var view : View?, private var flag : String?) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
 
     var dataSet : ArrayList<repeatTodo>? = null
     var dataSet2 : ArrayList<Todo>? = null
@@ -71,33 +71,51 @@ class HomeRepeatTodoAdapter (private var view : View?, private var flag : String
                 holder.todoMenu.isVisible = true
 
                 holder.todoMenu.setOnClickListener {
-                    val popup = PopupMenu(holder.itemView.context, it)
-                    popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
-                    popup.setOnMenuItemClickListener { item ->
-                        if(item.itemId == R.id.home_todo_edit) {
-                            val bundle = Bundle()
+//                    val popup = PopupMenu(holder.itemView.context, it)
+//                    popup.menuInflater.inflate(R.menu.home_todo_edit_menu, popup.menu)
+//                    popup.setOnMenuItemClickListener { item ->
+//                        if(item.itemId == R.id.home_todo_edit) {
+//                            val bundle = Bundle()
+//
+//                            bundle.putStringArrayList("keyEdit", arrayListOf(
+//                                dataSet!![position].id.toString(),
+//                                dataSet!![position].todoName,
+//                                dataSet!![position].repeat,
+//                                dataSet!![position].repeatWeek,
+//                                dataSet!![position].repeatMonth,
+//                                dataSet!![position].startRepeatDate,
+//                                dataSet!![position].endRepeatDate,
+//                                cateIndex.toString(),
+//                                position.toString()
+//                            ))
+//
+//                            Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+//                        }
+//                        else{
+//                            val todoId = dataSet!![position].id
+//                            //viewModel!!.deleteRepeatTodo(todoId, cateIndex, position, this)
+//                        }
+//                        true
+//                    }
+//                    popup.show()
 
-                            bundle.putStringArrayList("keyEdit", arrayListOf(
-                                dataSet!![position].id.toString(),
-                                dataSet!![position].todoName,
-                                dataSet!![position].repeat,
-                                dataSet!![position].repeatWeek,
-                                dataSet!![position].repeatMonth,
-                                dataSet!![position].startRepeatDate,
-                                dataSet!![position].endRepeatDate,
-                                cateIndex.toString(),
-                                position.toString()
-                            ))
-
-                            Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+                    val repeatMenuBottomSheet = RepeatBottomSheetDialog(){
+                        when(it){
+                            0 -> {
+                            //삭제
+                            }
+                            1 -> {
+                            //수정
+                            }
                         }
-                        else{
-                            val todoId = dataSet!![position].id
-                            //viewModel!!.deleteRepeatTodo(todoId, cateIndex, position, this)
-                        }
-                        true
                     }
-                    popup.show()
+
+
+
+
+
+
+
                 }
             }
         }
