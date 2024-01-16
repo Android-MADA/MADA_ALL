@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="캘린더와 디데이로 스케줄 관리하기"
+        android:text="차트에서 내 통계 확인하기"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_marginTop="16dp"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="캘린더와 디데이 기능을 통해 스케줄을 관리할 수 있어요.\n등록된 일정을 시간표에도 반영할 수 있어요."
+        android:text="마다에서 작성한 투두와 시간표의 기록을 분석해서\n통계를 보여 드려요."
         android:textSize="14sp"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/on_title"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/on_content"
-        app:srcCompat="@drawable/on3" />
+        app:srcCompat="@drawable/on5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
