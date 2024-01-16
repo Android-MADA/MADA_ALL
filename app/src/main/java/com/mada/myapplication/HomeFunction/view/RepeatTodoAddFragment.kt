@@ -75,7 +75,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        startDay = TextView(requireContext())
+        endDay = TextView(requireContext())
     }
 
     override fun onCreateView(
@@ -94,6 +95,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
         val _argsArrayEdit = requireArguments().getStringArrayList("keyEdit")
         val _argsArrayAdd = requireArguments().getStringArrayList("keyAdd")
+
+        startDay.text= "2024-01-12"
 
         /**
          * 1. repeatTodo Add

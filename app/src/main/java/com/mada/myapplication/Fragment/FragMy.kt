@@ -27,17 +27,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.mada.myapplication.HomeFunction.api.RetrofitInstance
-import com.mada.myapplication.MyFuction.Data.FragMyData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
-import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
-import com.mada.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFuction.Data.FragMyData
+import com.mada.myapplication.MyFuction.PremiumActivity
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.R
+import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.databinding.FragMyBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -195,6 +196,8 @@ class FragMy : Fragment() {
         }
         binding.myPremium.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myPremiumFragment)
+            //val intent = Intent(requireContext(), PremiumActivity::class.java)
+            //startActivity(intent)
         }
         binding.myLogout.setOnClickListener {
             showLogoutPopup()

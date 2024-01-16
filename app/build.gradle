@@ -16,8 +16,8 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 26
         targetSdk 33
-        versionCode 4
-        versionName "4"
+        versionCode 9
+        versionName "test_version:0.24.0115.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,6 +58,7 @@ dependencies {
     implementation 'androidx.wear.tiles:tiles-material:1.1.0-alpha04'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
@@ -133,4 +134,10 @@ dependencies {
 
     // 플레이스토어 광고
     implementation 'com.google.android.gms:play-services-ads:22.5.0'
+
+    // 구글 결제
+    def billing_version = "6.1.0"
+    implementation("com.android.billingclient:billing-ktx:$billing_version")
+    implementation ("com.android.billingclient:billing:$billing_version")
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
