@@ -59,8 +59,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     binding.onStartBtn.visibility = View.VISIBLE
                     binding.onSkipBtn.visibility = View.INVISIBLE
                     binding.onIndicator.visibility = View.INVISIBLE
-                    binding.onFramelayout.setBackgroundColor(Color.parseColor("#28374C"))
-                    binding.onLinearlayout.setBackgroundColor(Color.parseColor("#28374C"))
+                    binding.onFramelayout.setBackgroundColor(Color.parseColor("#26354A"))
+                    binding.onLinearlayout.setBackgroundColor(Color.parseColor("#26354A"))
                 }
                 // on1,2,3 다시 돌아오면 기본값으로 복구
                 if (position == 0 || position == 1 || position == 2 || position == 3 || position == 4){
