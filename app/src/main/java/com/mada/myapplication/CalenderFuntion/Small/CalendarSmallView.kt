@@ -9,7 +9,9 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
+import androidx.lifecycle.ViewModel
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.WEEKS_PER_MONTH
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
@@ -67,7 +69,8 @@ class CalendarSmallView @JvmOverloads constructor(
         Scheldule: TextView,
         ScheduleNum: TextView,
         cal: LinearLayout,
-        textDday : TextView
+        textDday : TextView,
+        repeatFlag: Boolean = false
     ) {
         list.forEach {
             addView(DaySmallItemView(
@@ -77,7 +80,8 @@ class CalendarSmallView @JvmOverloads constructor(
                 Scheldule= Scheldule,
                 ScheduleNum = ScheduleNum,
                 cal = cal,
-                textDday =  textDday
+                textDday =  textDday,
+                repeatFlag = repeatFlag
             ))
         }
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -20,6 +21,8 @@ import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
+import com.mada.myapplication.MyFuction.Data.FragMyData
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.clearHomeDatabase
@@ -32,6 +35,9 @@ import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FragHome : Fragment() {
 
@@ -39,6 +45,7 @@ class FragHome : Fragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+    private val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -300,6 +307,26 @@ class FragHome : Fragment() {
             }
             false
         })
+
+        /**
+         * 13. 구독여부 받아오기
+         */
+        apiMy.selectfragMy(viewModel.userToken).enqueue(object : Callback<FragMyData>{
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    viewModel.isSubscribe = response.body()!!.data.subscribe
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
 
 
 

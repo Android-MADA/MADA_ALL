@@ -114,7 +114,7 @@ fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
                         iconId = i.iconId,
                         isInActive = i.isInActive
                     )
-                    Log.d("MainActivity cate 추가중", cateData.id.toString())
+                    Log.d("MainActivity cate 추가중", cateData.categoryName.toString())
                     viewModel.createCate(cateData)
                 }
             } else {
