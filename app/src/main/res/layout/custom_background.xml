@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/CustomBackgroundScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,18 +15,21 @@
 
     <TableLayout
         android:id="@+id/custom_backgroundtable"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+
         >
 
-        <TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageButton
+
                 android:id="@+id/btn_back_basic"
                 android:src="@drawable/custom_null"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -35,6 +38,7 @@
                 android:id="@+id/btn_back_brid_s"
                 android:src="@drawable/back_bird_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
@@ -44,19 +48,17 @@
                 android:id="@+id/btn_back_n_s"
                 android:src="@drawable/back_n_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-        </TableRow>
-
-        <TableRow>
-
             <ImageButton
                 android:id="@+id/btn_back_win_s"
                 android:src="@drawable/back_win_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
@@ -66,15 +68,7 @@
                 android:id="@+id/btn_back_normal_s"
                 android:src="@drawable/back_normal_s_1"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="#FFFFFF"></ImageButton>
-
-            <ImageButton
-                android:id="@+id/btn_back_store_s"
-                android:src="@drawable/back_store_s_1"
-                android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
@@ -82,12 +76,25 @@
 
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_back_store_s"
+                android:src="@drawable/back_store_s_1"
+                android:layout_margin ="10dp"
+                android:layout_width="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_back_zzim_s"
                 android:src="@drawable/back_zzim_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
@@ -97,6 +104,7 @@
                 android:id="@+id/btn_back_uni_s"
                 android:src="@drawable/back_sp_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
@@ -106,50 +114,24 @@
                 android:id="@+id/btn_back_cin_s"
                 android:src="@drawable/back_cin_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_marginBottom="25dp">
-
             <ImageButton
                 android:id="@+id/btn_back_sum_s"
                 android:src="@drawable/back_sr_s_1"
                 android:layout_margin ="10dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>
-
-            <ImageButton
-                android:src="@drawable/set_snowman_s"
-                android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="#FFFFFF"
-                android:visibility="invisible"
-                ></ImageButton>
-
-            <ImageButton
-                android:src="@drawable/set_snowman_s"
-                android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="#FFFFFF"
-                android:visibility="invisible"
-                ></ImageButton>
-
-
 
         </TableRow>
-
     </TableLayout>
-    </ScrollView>
+    </HorizontalScrollView>
 </LinearLayout>

@@ -29,7 +29,7 @@ class custom_item : Fragment() {
     private var imageChangeListener: OnItemImageChangeListener? = null
     private var resetButtonClickListener: OnResetButtonClickListener? = null
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 

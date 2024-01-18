@@ -13,8 +13,6 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
-import com.mada.myapplication.CustomBottomSheetViewPager
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.CustomViewModel
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
@@ -35,11 +33,15 @@ import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.mada.myapplication.CustomFunction.DataRepo
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mada.myapplication.BuildConfig
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,13 +77,11 @@ data class IdAndItemType(
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
     OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
     lateinit var binding: FragCustomBinding
-    private lateinit var viewPager: ViewPager2
     private var selectedColorButtonInfo: ButtonInfo? = null
     private var selectedClothButtonInfo: ButtonInfo? = null
     private var selectedItemButtonInfo: ButtonInfo? = null
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
     private var custom_save = false
-    private var button_temdata: selectedButtonInfo? = null
     private val viewModel: CustomViewModel by viewModels()
 
 
@@ -90,33 +90,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var itemFragment: custom_item? = null
     private var backgroundFragment: custom_background? = null
 
-    private var adapter: CustomBottomSheetViewPager? = null
-
-    private var printId: Int = 0
     private val printIds = mutableListOf<IdAndItemType>()
-    private var itemType: String = "z"
-    private var printfilePath: String = "z"
     private var curMenuItem : Int = 0
 
     private var unsavedChanges = false
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-    private lateinit var customBottomSheet: ViewGroup
-
     private lateinit var alertDialog: AlertDialog
 
 
-
-    val baseUrl = "http://15.165.210.13:8080/"
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
     val token = Splash2Activity.prefs.getString("token", "")
-
-
-
-
 
 
     data class selectedButtonInfo(
@@ -139,21 +125,51 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val clothFragment = custom_cloth()
         val itemFragment = custom_item()
         val backgroundFragment = custom_background()
-        binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
-        viewPager = binding.CustomBottomSheetViewPager
 
 
 
-
-
-        customBottomSheet = binding.CustomBottomSheet
-        bottomSheetBehavior = BottomSheetBehavior.from(customBottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         //getCustomPrint()
         //postcustomItemBuy(14)
         val savedData = viewModel.getSavedButtonInfo()
+
+        val fragmentManager: FragmentManager = childFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.commit()
+        customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val inflater1: LayoutInflater = layoutInflater
+                var pos = tab.position
+                when (pos) {
+                    0 -> {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, colorFragment)
+                            .commit()
+                    }
+                    1 -> {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, clothFragment)
+                            .commit()
+                    }
+                    2 -> {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, itemFragment)
+                            .commit()
+                    }
+                    3 -> {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.CustomBottomSheetTable, backgroundFragment)
+                            .commit()
+                    }
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                // do nothing
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                // do nothing
+            }
+        })
 
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
@@ -262,109 +278,13 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         /*val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()*/
-        adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
-        binding.CustomBottomSheetViewPager.adapter = adapter
 
         fun Int.dpToPx(context: Context): Int {
             return (this * context.resources.displayMetrics.density).toInt()
         }
 
-        val tabTitles = listOf("색깔", "의상", "소품", "배경")
-
-        TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
-            tab.text = tabTitles[position]
-        }.attach()
-
-        customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
-
-                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    val layoutParams = binding.CustomBottomSheet.layoutParams
-                    layoutParams.height = 300.dpToPx(requireContext())  // Set the desired height in pixels
-                    binding.CustomBottomSheet.layoutParams = layoutParams
-
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-
-                // Here you can add code specific to handling the selected tab if needed
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                // Do nothing
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-                val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
-
-                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    val layoutParams = binding.CustomBottomSheet.layoutParams
-                    layoutParams.height = 300.dpToPx(requireContext())  // Set the desired height in pixels
-                    binding.CustomBottomSheet.layoutParams = layoutParams
-
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                } else {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-
-                // Here you can add code specific to handling the reselected tab if needed
-            }
-        })
 
 
-        var width = 500
-        var height = 500
-        val customRamdi = binding.customRamdi
-        val customRamdi_layoutParams = customRamdi.layoutParams
-        customRamdi_layoutParams.width = 1200 // 원하는 너비(dp 단위)
-        customRamdi_layoutParams.height = 1200  // 원하는 높이(dp 단위)
-        customRamdi.layoutParams = customRamdi_layoutParams
-
-        val imgCustomCloth = binding.imgCustomCloth
-        val imgCustomCloth_layoutParams = imgCustomCloth.layoutParams
-        imgCustomCloth_layoutParams.width = 1200  // 원하는 너비(dp 단위)
-        imgCustomCloth_layoutParams.height = 1200 // 원하는 높이(dp 단위)
-        imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
-
-        val imgCustomItem = binding.imgCustomItem
-        val imgCustomItem_layoutParams = imgCustomItem.layoutParams
-        imgCustomItem_layoutParams.width = 1200 // 원하는 너비(dp 단위)
-        imgCustomItem_layoutParams.height = 1200 // 원하는 높이(dp 단위)
-        imgCustomItem.layoutParams = imgCustomItem_layoutParams
-
-        val imgCustomBackground = binding.imgCustomBackground
-        val imgCustomBackground_layoutParams = imgCustomBackground.layoutParams
-        imgCustomBackground_layoutParams.width = 1600 // 원하는 너비(dp 단위)
-        imgCustomBackground_layoutParams.height = 1600 // 원하는 높이(dp 단위)
-        imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
-
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.CustomBottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // 바텀시트 상태 변화를 감지하는 메서드
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                customRamdi_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                customRamdi_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
-                customRamdi.layoutParams = imgCustomCloth_layoutParams
-
-                imgCustomCloth_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                imgCustomCloth_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
-                imgCustomCloth.layoutParams = imgCustomCloth_layoutParams
-
-                imgCustomItem_layoutParams.width = (width * (1 - slideOffset) + 700).toInt()
-                imgCustomItem_layoutParams.height = (height * (1 - slideOffset) + 700).toInt()
-                imgCustomItem.layoutParams = imgCustomItem_layoutParams
-
-                imgCustomBackground_layoutParams.width = (width * (1 - slideOffset) + 1500).toInt()
-                imgCustomBackground_layoutParams.height = (height * (1 - slideOffset) + 1500).toInt()
-                imgCustomBackground.layoutParams = imgCustomBackground_layoutParams
-
-
-            }
-        })
 
         binding.btnCustomReset.setOnClickListener {
             val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
@@ -379,17 +299,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
             binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
             binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
-            val color_resetinfo = true
-            val cloth_resetinfo = true
-            val item_resetinfo = true
-            val background_resetinfo = true
             onResetButtonClicked()
             getcustomReset()
-            //getCustomPrint()
 
         }
-
-
 
 
 
@@ -667,7 +580,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager = binding.CustomBottomSheetViewPager
 
 
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
