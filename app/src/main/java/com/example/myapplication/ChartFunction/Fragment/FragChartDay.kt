@@ -1,6 +1,5 @@
 package com.example.myapplication.ChartFunction.Fragment
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -12,9 +11,11 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -40,13 +41,19 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
 
 class FragChartDay : Fragment() {
+    private var curMenuItem : Int = 0
     private lateinit var binding: ChartDayBinding
     private lateinit var navController: NavController
+    private var mInterstitialAd: InterstitialAd? = null
     val datas = mutableListOf<MyRecordCategoryData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
@@ -62,6 +69,9 @@ class FragChartDay : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 전면 광고 부분
+        setupInterstitialAd()
 
         navController = binding.navHostFragmentContainer.findNavController()
 
@@ -84,7 +94,6 @@ class FragChartDay : Fragment() {
         binding.nextBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
-
 
         // 시스템 뒤로가기
         view.isFocusableInTouchMode = true
@@ -502,4 +511,23 @@ class FragChartDay : Fragment() {
         return spannableStringBuilder
     }
 
+    // 전면 광고
+    private fun setupInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(requireContext(),
+            "ca-app-pub-4086521113003670/4380505190",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d("DEBUG: ", adError?.message.toString())
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    Log.d("DEBUG: ", "Ad was loaded.")
+                    mInterstitialAd = interstitialAd
+                }
+            })
+    }
 }

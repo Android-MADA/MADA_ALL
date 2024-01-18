@@ -41,7 +41,7 @@ class MyStampFragment : Fragment() {
         val daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth)
         setStampNumInDaysCnt(daysInCurrentMonth)
 
-        // 도장 찍기 & 이미 찍은 거 불러오기
+        // 도장 찍기 & 이미 찍은 거 불러오기(임시데이터)
         val stampCnt = 21
 
         val stampViews = arrayOf(
@@ -119,8 +119,10 @@ class MyStampFragment : Fragment() {
         stampTexts[stampCnt].isVisible = false
         stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_click)
 
+        // 스탬프 클릭
         stampViews[stampCnt].setOnClickListener{
             stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_my)
+            // 서버 연결
         }
 
         // 엑스 버튼
