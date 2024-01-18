@@ -59,6 +59,7 @@ class OnBoardingActivity : AppCompatActivity() {
                     binding.onStartBtn.visibility = View.VISIBLE
                     binding.onSkipBtn.visibility = View.INVISIBLE
                     binding.onIndicator.visibility = View.INVISIBLE
+                    binding.header.setBackgroundColor(Color.parseColor("#26354A"))
                     binding.onFramelayout.setBackgroundColor(Color.parseColor("#26354A"))
                     binding.onLinearlayout.setBackgroundColor(Color.parseColor("#26354A"))
                 }
