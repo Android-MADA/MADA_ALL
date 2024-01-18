@@ -18,6 +18,9 @@ import com.example.myapplication.CustomFunction.ButtonDatabase
 import com.example.myapplication.CustomFunction.ButtonInfo
 import com.example.myapplication.CustomFunction.ButtonInfoEntity
 import com.example.myapplication.CustomFunction.CustomViewModel
+
+import com.example.myapplication.CustomFunction.DataRepo
+
 import com.example.myapplication.CustomFunction.RetrofitServiceCustom
 import com.example.myapplication.CustomFunction.customPrintDATA
 import com.example.myapplication.Fragment.FragCalendar
@@ -56,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -105,67 +110,55 @@ class MainActivity : AppCompatActivity() {
             })
 
             //서버에서 투두 데이터 받아서 로컬 데베에 저장
-            api.getAllMyTodo(viewModel.userToken, LocalDate.now().toString())
-                .enqueue(object : Callback<TodoList> {
-                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                        if (response.isSuccessful) {
-                            for (i in response.body()!!.data.TodoList) {
-                                val todoData = TodoEntity(
-                                    id = i.id,
-                                    date = i.date,
-                                    category = i.category.id,
-                                    todoName = i.todoName,
-                                    complete = i.complete,
-                                    repeat = i.repeat,
-                                    repeatWeek = i.repeatWeek,
-                                    repeatMonth = i.repeatMonth,
-                                    endRepeatDate = i.endRepeatDate,
-                                    startRepeatDate = i.startRepeatDate,
-                                    isAlarm = i.isAlarm,
-                                    startTodoAtMonday = i.startTodoAtMonday,
-                                    endTodoBackSetting = i.endTodoBackSetting,
-                                    newTodoStartSetting = i.newTodoStartSetting
-                                )
+
+            api.getAllMyTodo(viewModel.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
+                override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                    if(response.isSuccessful){
+                            for(i in response.body()!!.data.TodoList){
+                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                Log.d("todo server", todoData.toString())
                                 viewModel.createTodo(todoData, null)
                             }
-                            //닉네임 저장하기
-                            viewModel.userHomeName = response.body()!!.data.nickname
-                        } else {
-                            Log.d("todo안드 잘못", "서버 연결 실패")
-                        }
+                        //닉네임 저장하기
+                        viewModel._dUserName.value = response.body()!!.data.nickname
+                    }
+                    else {
+                        Log.d("todo안드 잘못", "서버 연결 실패")
+
                     }
 
                     override fun onFailure(call: Call<TodoList>, t: Throwable) {
                         Log.d("todo서버 연결 오류", "서버 연결 실패")
                     }
 
-                })
+
+            })
 
             //서버에서 반복투두 데이터 받아서 로컬 데베에 저장
             api.getHRepeatTodo(viewModel.userToken).enqueue(object : Callback<RepeatData1> {
                 override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
-                    if (response.isSuccessful) {
-                        for (i in response.body()!!.data.RepeatTodoList) {
-                            val RTodoData = RepeatEntity(
-                                id = i.id,
-                                date = i.date,
-                                category = i.category.id,
-                                todoName = i.todoName,
-                                repeat = i.repeat,
-                                repeatWeek = i.repeatWeek,
-                                repeatMonth = i.repeatMonth,
-                                startRepeatDate = i.startRepeatDate,
-                                endRepeatDate = i.endRepeatDate
-                            )
-                            viewModel.createRepeatTodo(RTodoData, null)
+
+                    if(response.isSuccessful){
+                        Log.d("Rtodo서버 성공", response.body()!!.data.RepeatTodoList.toString())
+                        //db에 저장
+                        for(i in response.body()!!.data.RepeatTodoList){
+                            val todoData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                            if(todoData.id == 348) {
+
+                            }else {
+                                Log.d("Rtodo server", todoData.toString())
+                                viewModel.createRepeatTodo(todoData, null)
+                            }
                         }
+
                     } else {
-                        Log.d("repeattodo안드 잘못", "서버 연결 실패")
+                        Log.d("Rtodo서버 실패", "안드 오류")
+
                     }
                 }
 
                 override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
-                    Log.d("repeattodo서버 연결 오류", "서버 연결 실패")
+                    Log.d("Rtodo서버 연결 오류", "서버 연결 실패")
                 }
 
             })
@@ -173,111 +166,12 @@ class MainActivity : AppCompatActivity() {
         }
         //서버에서 커스텀 받아서 저장?
 
-        val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        val service = retrofit.create(RetrofitServiceCustom::class.java)
-        val token = Splash2Activity.prefs.getString("token", "")
-
-        val appDatabase =
-            ButtonDatabase.getInstance(applicationContext) // AppDatabase는 Room 데이터베이스 클래스
-        val buttonInfoDao = appDatabase.buttonInfoDao()
-
-        val printIds = mutableListOf<IdAndItemType>()
-        var printId: Int = 0
-        var itemType: String = "z"
-
-        val call: Call<customPrintDATA> = service.customPrint(token)
-        call.enqueue(object : Callback<customPrintDATA> {
-            override fun onResponse(
-                call: Call<customPrintDATA>,
-                response: Response<customPrintDATA>
-            ) {
-                val printInfo = response.body()
-                val responseCode = response.code()
-                val datas = printInfo?.data?.wearingItems
-
-                datas?.forEachIndexed { index, item ->
-                    printId = item.id
-                    itemType = item.itemType
-                    Log.d(
-                        "getCustomPrint",
-                        "Item $index - id: ${item.id} itemType: ${item.itemType}"
-                    )
-                    Log.d("getCustomPrint", "Response Code: $responseCode")
-                }
-
-                datas?.forEachIndexed { index, item ->
-                    val idAndItemType = IdAndItemType(item.id, item.itemType)
-                    printIds.add(idAndItemType)
-                }
-
-                var colorid: Int? = null // 변수를 초기화
-
-                var clothid: Int? = null // 변수를 초기화
-
-                var itemid: Int? = null // 변수를 초기화
-
-                var backgroundid: Int? = null // 변수를 초기화
-
-                datas?.forEach { item ->
-                    if (item.itemType == "color") {
-                        colorid = item.id
-                    } else if (item.itemType == "set") {
-                        clothid = item.id
-                    } else if (item.itemType == "item") {
-                        itemid = item.id
-                    } else if (item.itemType == "background") {
-                        backgroundid = item.id
-                    }
-
-                    var buttonInfoEntity = ButtonInfoEntity(
-                        id = 0,
-                        colorButtonInfo = ButtonInfo(
-                            buttonId = colorid ?: 0, // 기본값을 설정할 수 있음
-                            serverID = colorid ?: 10, // 기본값을 설정할 수 있음
-                            selectedImageResource = R.drawable.c_ramdi
-                        ),
-                        clothButtonInfo = ButtonInfo(
-                            buttonId = clothid ?: 0, // 기본값을 설정할 수 있음
-                            serverID = clothid ?: 900, // 기본값을 설정할 수 있음
-                            selectedImageResource = R.drawable.custom_empty
-                        ),
-                        itemButtonInfo = ButtonInfo(
-                            buttonId = itemid ?: 0, // 기본값을 설정할 수 있음
-                            serverID = itemid ?: 800, // 기본값을 설정할 수 있음
-                            selectedImageResource = R.drawable.custom_empty
-                        ),
-                        backgroundButtonInfo = ButtonInfo(
-                            buttonId = backgroundid ?: 0, // 기본값을 설정할 수 있음
-                            serverID = backgroundid ?: 700, // 기본값을 설정할 수 있음
-                            selectedImageResource = R.drawable.custom_empty
-                        )
-                    )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        buttonInfoDao.insertButtonInfo(buttonInfoEntity)
-                    }
-
-                    // 데이터베이스에 추가
-                    Log.d(
-                        "getCustomPrint",
-                        "colorButtonInfo: ${buttonInfoEntity.colorButtonInfo} clothButtonInfo: ${buttonInfoEntity.clothButtonInfo} itmeButtonInfo: ${buttonInfoEntity.itemButtonInfo} backgroundButtonInfo: ${buttonInfoEntity.backgroundButtonInfo}"
-                    )
-                    Log.d("getCustomPrint", "Response Code: $responseCode")
-                }
-
-
-                datas?.forEachIndexed { index, item ->
-                    val idAndItemType = IdAndItemType(item.id, item.itemType)
-                    printIds.add(idAndItemType)
-                }
-            }
-
-            override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
-                Log.d("error", t.message.toString())
-            }
-        })
     }
-}
+
+
+
+    }
+
 
 
         fun hideBottomNavigation(bool: Boolean, activity: Activity?) {

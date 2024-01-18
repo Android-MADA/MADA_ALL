@@ -62,11 +62,11 @@ class HomeCategoryFragment : Fragment() {
 
                     val bundle = Bundle()
                     bundle.putStringArrayList("key", arrayListOf(
-                        dataSet.cateId.toString(),
                         dataSet.id.toString(),
                         dataSet.categoryName,
                         dataSet.color,
-                        dataSet.iconId.toString()
+                        dataSet.iconId.toString(),
+                        "active"
                     ))
 
                     Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
@@ -85,6 +85,24 @@ class HomeCategoryFragment : Fragment() {
             val quitCateRv = binding.rvHomeCategoryQuit
             val quitCateAdapter = CateListAdapter()
             quitCateAdapter.submitList(quitCateList)
+            quitCateAdapter.setItemClickListener(object : CateListAdapter.OnItemClickListener{
+                override fun onClick(v: View, dataSet: CateEntity) {
+
+                    viewModel._cate.value = dataSet
+
+                    val bundle = Bundle()
+                    bundle.putStringArrayList("key", arrayListOf(
+                        dataSet.id.toString(),
+                        dataSet.categoryName,
+                        dataSet.color,
+                        dataSet.iconId.toString(),
+                        "inactive"
+                    ))
+
+                    Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
+                }
+
+            })
             quitCateRv.adapter = quitCateAdapter
             quitCateRv.layoutManager = LinearLayoutManager(this.requireActivity())
         })
@@ -98,87 +116,10 @@ class HomeCategoryFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
         }
 
-
-
-//        val bundle = Bundle()
-//
-//
-//        viewModel.getCategory(viewModel.userToken)
-//
-//        viewModel.categoryList.observe(viewLifecycleOwner, Observer {
-//            if (viewModel.categoryList.value?.isNotEmpty() == true) {
-//                //rv연결
-//                cateAdapter = HomeCategoryAdapter()
-//                cateAdapter!!.dataSet = viewModel.categoryList.value!!
-//
-//                cateAdapter!!.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
-//                    override fun onClick(v: View, position: Int, dataSet: Category) {
-//                        //페이지 이동 + 데이터 전달
-//                        bundle.putStringArrayList("key", arrayListOf(
-//                            dataSet.id.toString(),
-//                            dataSet.categoryName,
-//                            dataSet.iconId.toString(),
-//                            dataSet.color,
-//                            position.toString()
-//                        ))
-//                        Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
-//
-//                    }
-//                })
-//
-//                binding.rvHomeCategory.adapter = cateAdapter
-//                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
-//            }
-//            else {
-//                cateAdapter = null
-//                binding.rvHomeCategory.adapter = cateAdapter
-//                binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
-//            }
-//        })
-//
-//        binding.ivHomeCategoryBack.setOnClickListener {
-//            Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_fragHome)
-//            bottomFlag = false
-//        }
-//
-//        binding.btnHomeCategory.setOnClickListener {
-//            Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
-//        }
-//
-//
-//
-//        if (viewModel.categoryList.value?.isNotEmpty() == true) {
-//            //rv연결
-//            cateAdapter = HomeCategoryAdapter()
-//            cateAdapter!!.dataSet = viewModel.categoryList.value!!
-//
-//            cateAdapter!!.setItemClickListener(object: HomeCategoryAdapter.OnItemClickListener{
-//                override fun onClick(v: View, position: Int, dataSet: Category) {
-//                    //페이지 이동 + 데이터 전달
-//                    bundle.putStringArrayList("key", arrayListOf(
-//                        dataSet.id.toString(),
-//                        dataSet.categoryName,
-//                        dataSet.iconId.toString(),
-//                        dataSet.color,
-//                        position.toString()
-//                    ))
-//                    Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
-//
-//                }
-//            })
-//
-//            binding.rvHomeCategory.adapter = cateAdapter
-//            binding.rvHomeCategory.layoutManager = LinearLayoutManager(this.activity)
-//        }
-        //
-
     }
 
     override fun onResume() {
         super.onResume()
-        //viewModel.getCategory(viewModel.userToken)
-        //cateAdapter?.notifyDataSetChanged()
-
     }
     override fun onDestroyView() {
         super.onDestroyView()

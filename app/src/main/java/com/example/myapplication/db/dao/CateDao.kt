@@ -19,7 +19,7 @@ interface CateDao  {
     //CRUD
 
     //카테고리 추가
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createCate(cateEntity: CateEntity)
 
     // isActive ==true 카테고리 읽어오기
@@ -31,7 +31,7 @@ interface CateDao  {
     fun readQuitCate(isActive : Boolean) : Flow<List<CateEntity>>
 
     //특정 id 값을 가진 카테고리 읽어오기
-    @Query("SELECT * FROM cate_table WHERE cateId LIKE :cateId")
+    @Query("SELECT * FROM cate_table WHERE id LIKE :cateId")
     fun readCateId(cateId : Int) : Flow<CateEntity>
 
     @Query("DELETE FROM cate_table")
@@ -104,7 +104,7 @@ interface CateDao  {
     suspend fun getAllCateAndTodos() : List<CategoryTodos>
 
     @Transaction
-    @Query("SELECT * FROM cate_table WHERE cateId LIKE :cateId")
+    @Query("SELECT * FROM cate_table WHERE id LIKE :cateId")
     suspend fun getCategory(cateId: Int) : CategoryTodos?
 
 

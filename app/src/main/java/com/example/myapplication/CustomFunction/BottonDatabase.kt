@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 
-
-@Database(entities = [ButtonInfoEntity::class], version = 1)
-@TypeConverters(ButtonInfoTypeConverter::class)
+@Database(entities = [ButtonInfoEntity::class], version = 2, exportSchema = false)
 abstract class ButtonDatabase : RoomDatabase() {
     abstract fun buttonInfoDao(): ButtonInfoDao
 

@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.wear.tiles.TileUpdateRequestData
 import com.example.myapplication.HomeFunction.HomeBackCustomDialog
 import com.example.myapplication.HomeFunction.HomeCustomDialogListener
 import com.example.myapplication.HomeFunction.HomeDeleteCustomDialog
@@ -59,67 +60,17 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     private lateinit var argsArray: java.util.ArrayList<String>
 
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-
-    //    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//        val callback : OnBackPressedCallback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                //cateogry 수정 상황 일 때
-//                if(binding.btnHomeCateAddSave.text == "삭제"){
-//                    //수정 사항 저장
-//                    val data = PostRequestCategory(
-//                        binding.edtHomeCategoryName.text.toString(),
-//                        colorAdapter.selecetedColor,
-//                        findIconId(iconAdapter.selectedIcon)
-//                    )
-//                    Log.d("cateAdd 뒤로가기", data.toString())
-//                  //viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, null)
-//
-//                }
-//                //카테고리 추가 상황 일 때
-//                else {
-//                    customBackDialog()
-//                }
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-//    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //뒤로가기 버튼 클릭 리스너 -> 등록 : 다이얼로그, 수정 : 수정후 페이지 전환
+                //1. 투두 조회 시 -> 아무런 액션 없음
+                //2. 수정 상황 시 -> 저장 안 됨 다이얼로그
+                //3. 등록 상황 시 -> 저장 안 됨 다이얼로그
                 if (binding.btnHomeCateAddSaveMenu.isVisible) {
-                    CoroutineScope(Dispatchers.IO).launch {
 
-                        val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
-                        val cateData = CateEntity(cateId = argsArray[0].toInt(), id = argsArray[1].toInt(), categoryName = binding.edtHomeCategoryName.text.toString(), color = colorAdapter.selecetedColor, iconId = findIconId(iconAdapter.selectedIcon), isInActive = false)
-                        //서버에 patch 전송
-                        api.editHCategory(viewModel.userToken, argsArray[1].toInt(), catePostData).enqueue(object : Callback<PactchResponseCategory>{
-                            override fun onResponse(
-                                call: Call<PactchResponseCategory>,
-                                response: Response<PactchResponseCategory>
-                            ) {
-                                if(response.isSuccessful){
-                                    Log.d("cateupdate", "성공")
-                                } else {
-                                    Log.d("cateupdate", "안드 잘못 실패")
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<PactchResponseCategory>,
-                                t: Throwable
-                            ) {
-                                Log.d("cateupdate", "서버 연결 실패")
-                            }
-
-                        })
-                        viewModel.updateCate(cateData)
-
-                    }
+                    //1. 투두 조회 시 -> 아무런 액션 없음
                     Navigation.findNavController(view!!)
                         .navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                 }
@@ -152,23 +103,194 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
+        //기존 카테고리 조회 시
         if(arguments != null){
             argsArray =requireArguments().getStringArrayList("key")!!
-            binding.edtHomeCategoryName.setText(argsArray!![2])
-            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
-            colorAdapter.selecetedColor = argsArray!![3]
-            binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![4].toInt()))
-            iconAdapter.selectedIcon = findIcon(argsArray!![4].toInt()).toString()
+            //카테고리명 적용
+            binding.edtHomeCategoryNameShow.isVisible = true
+            binding.edtHomeCategoryNameShow.text = argsArray!![1]
+            //edt gone
+            binding.edtHomeCategoryName.isGone = true
+            //color, icon click listener 없는 걸로 교체
+            binding.ivHomeCateColorShow.isVisible = true
+            binding.ivHomeCateColorShow.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![2]))
+            binding.ivHomeCateColor.isGone = true
+
+            binding.ivHomeCateIconShow.isVisible = true
+            binding.ivHomeCateIconShow.setImageResource(findIcon(argsArray!![3].toInt()))
+            binding.ivHomeCateIcon.isGone = true
+
             binding.btnHomeCateAddSaveMenu.isVisible = true
             binding.btnHomeCateAddSave.isGone = true
+
+            if(argsArray[4] == "inactive"){
+                binding.btnHomeCateAddSaveMenu.setOnClickListener {
+                    //메뉴바 show
+                    val popup = PopupMenu(context, it)
+                    popup.menuInflater.inflate(R.menu.category_inactive_menu, popup.menu)
+                    popup.setOnMenuItemClickListener { item ->
+                        if(item.itemId == R.id.cate_quit_delete){
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val cateData = CateEntity(
+                                    argsArray!![0].toInt(),
+                                    argsArray!![1],
+                                    argsArray!![2],
+                                    true,
+                                    argsArray!![3].toInt())
+
+                                viewModel.deleteCate(cateData)
+                                //서버 전송
+                                api.deleteHCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        if(response.isSuccessful){
+                                            Log.d("cateupdate", "성공")
+                                        } else {
+                                            Log.d("cateupdate", "안드 잘못 실패")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.d("cateupdate", "서버 연결 실패")
+                                    }
+
+                                })
+                                //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
+                                withContext(Dispatchers.Main){
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                                }
+                            }
+                        }
+                        true
+                    }
+                    popup.show()
+                }
+            }
+            else {
+                binding.btnHomeCateAddSaveMenu.setOnClickListener {
+                    //메뉴바 show
+                    val popup = PopupMenu(context, it)
+                    popup.menuInflater.inflate(R.menu.cate_menu, popup.menu)
+                    popup.setOnMenuItemClickListener { item ->
+                        if(item.itemId == R.id.cate_quit) {
+                            //다이얼로그
+                            //종료로 업데이트하고 네비게이션
+                            // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
+                            val cate = CateEntity(
+                                argsArray!![0].toInt(),
+                                argsArray!![1],
+                                argsArray!![2],
+                                true,
+                                argsArray!![3].toInt()
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                //종료 patch
+                                api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        if(response.isSuccessful){
+                                            Log.d("cateupdate", "성공")
+                                        } else {
+                                            Log.d("cateupdate", "안드 잘못 실패")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.d("cateupdate", "서버 연결 실패")
+                                    }
+                                })
+
+                                viewModel.updateCate(cate)
+                                withContext(Dispatchers.Main){
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                                }
+                            }
+
+                        }
+                        else if (item.itemId == R.id.cate_edit) {
+
+                            binding.ivHomeCateColor.imageTintList = ColorStateList.valueOf(Color.parseColor(argsArray!![2]))
+                            colorAdapter.selecetedColor = argsArray!![2]
+                            binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![3].toInt()))
+                            iconAdapter.selectedIcon = findIcon(argsArray!![3].toInt()).toString()
+                            binding.edtHomeCategoryName.setText(argsArray!![1])
+
+
+                            binding.btnHomeCateAddSaveMenu.isGone = true
+                            binding.btnHomeCateAddSave.isVisible = true
+
+                            //edt 꺼내고 text들 없애기
+                            binding.edtHomeCategoryNameShow.isGone = true
+                            binding.tvHomeCategoryName.isGone = true
+                            binding.edtHomeCategoryName.isVisible = true
+
+                            //iv 교체하기
+                            binding.ivHomeCateColorShow.isGone = true
+                            binding.ivHomeCateColor.isVisible = true
+
+                            binding.ivHomeCateColorShow.isGone = true
+                            binding.ivHomeCateIcon.isVisible = true
+
+                            binding.btnHomeCateAddSave.text = "수정"
+                        }
+                        else{
+                            //다이얼로그
+                            //카테고리 테이블에서 삭제
+                            //해당 카테고리 내 모든 반복 투두와 투두 삭제
+                            val cateData = CateEntity(
+                                argsArray!![0].toInt(),
+                                argsArray!![1],
+                                argsArray!![2],
+                                true,
+                                argsArray!![3].toInt())
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.deleteCate(cateData)
+                                //서버 전송
+                                api.deleteHCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        if(response.isSuccessful){
+                                            Log.d("cateupdate", "성공")
+                                        } else {
+                                            Log.d("cateupdate", "안드 잘못 실패")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.d("cateupdate", "서버 연결 실패")
+                                    }
+
+                                })
+                                //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
+                                withContext(Dispatchers.Main){
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                                }
+                            }
+                            Log.d("catedelete", "click")
+                        }
+                        true
+                    }
+                    popup.show()
+                }
+            }
         }
         else {
-            colorAdapter.selecetedColor = "#89A9D9"
+            colorAdapter.selecetedColor = "#21C362"
             iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
             binding.btnHomeCateAddSaveMenu.isGone = true
             binding.btnHomeCateAddSave.isVisible = true
+
+            //edt 꺼내고 text들 없애기
+            binding.edtHomeCategoryNameShow.isGone = true
+            binding.tvHomeCategoryName.isGone = true
+            binding.edtHomeCategoryName.isVisible = true
+
+            //iv 교체하기
+            binding.ivHomeCateColorShow.isGone = true
+            binding.ivHomeCateColor.isVisible = true
+
+            binding.ivHomeCateColorShow.isGone = true
+            binding.ivHomeCateIcon.isVisible = true
+
+            binding.btnHomeCateAddSave.text = "등록"
+
         }
 
         val iconListManager = GridLayoutManager(this.activity, 6)
@@ -222,26 +344,35 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
         //좌상단 뒤로가기 버튼 클릭 시
         binding.ivHomeCateAddBack.setOnClickListener {
-            //cateogry 수정 상황 일 때
+            //cateogry 조회 상황 일 때
             if (binding.btnHomeCateAddSaveMenu.isVisible) {
-                //수정 사항 저장
-                val cate = CateEntity(
-                    argsArray!![0].toInt(),
-                    argsArray!![1].toInt(),
-                    binding.edtHomeCategoryName.text.toString(),
-                    colorAdapter.selecetedColor,
-                    false,
-                    findIconId(iconAdapter.selectedIcon)
-                )
-                //서버 patch, db 저장
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
+            //카테고리 추가 상황 일 때
+            else {
+                customBackDialog()
+            }
+        }
+
+
+        binding.btnHomeCateAddSave.setOnClickListener {
+            if(binding.btnHomeCateAddSave.text == "수정"){
+                //수정 처리
                 CoroutineScope(Dispatchers.IO).launch {
+
                     val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
-                    api.editHCategory(viewModel.userToken, argsArray[1].toInt(), catePostData).enqueue(object : Callback<PactchResponseCategory>{
+                    val cateData = CateEntity(id = argsArray[0].toInt(), categoryName = binding.edtHomeCategoryName.text.toString(), color = colorAdapter.selecetedColor, iconId = findIconId(iconAdapter.selectedIcon), isInActive = false)
+                    //서버에 patch 전송
+                    api.editHCategory(
+                        viewModel.userToken,
+                        categoryId = argsArray[0].toInt(),
+                        catePostData
+                    ).enqueue(object : Callback<PactchResponseCategory> {
                         override fun onResponse(
                             call: Call<PactchResponseCategory>,
                             response: Response<PactchResponseCategory>
                         ) {
-                            if(response.isSuccessful){
+                            if (response.isSuccessful) {
                                 Log.d("cateupdate", "성공")
                             } else {
                                 Log.d("cateupdate", "안드 잘못 실패")
@@ -256,27 +387,19 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         }
 
                     })
-                    viewModel.updateCate(cate)
+                    viewModel.updateCate(cateData)
                     withContext(Dispatchers.Main){
                         Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                     }
+
                 }
 
-
-            }
-            //카테고리 추가 상황 일 때
-            else {
-                customBackDialog()
-            }
-        }
-
-
-        binding.btnHomeCateAddSave.setOnClickListener {
-
-            if (binding.edtHomeCategoryName.text.isBlank()) {
-                Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
+                //카테고리 등록 상황
+                if (binding.edtHomeCategoryName.text.isBlank()) {
+                    Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
+                else {
                     CoroutineScope(Dispatchers.IO).launch {
                         //내용 db 저장
                         val cateName = binding.edtHomeCategoryName.text.toString()
@@ -291,7 +414,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                                 response: Response<PactchResponseCategory>
                             ) {
                                 if(response.isSuccessful){
-                                    viewModel.createCate(CateEntity(0, response.body()!!.data.Category.id, cateName, cateColor, false, cateIconId))
+                                    viewModel.createCate(CateEntity(id = response.body()!!.data.Category.id, categoryName = cateName, color = cateColor, isInActive = false, iconId = cateIconId))
                                 } else {
                                     Log.d("cate안드 잘못", "서버 연결 실패")
 
@@ -313,199 +436,12 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                         }
                     }
+                }
             }
 
         }
 
-        binding.btnHomeCateAddSaveMenu.setOnClickListener {
-            //메뉴바 show
-            val popup = PopupMenu(context, it)
-            popup.menuInflater.inflate(R.menu.cate_menu, popup.menu)
-            popup.setOnMenuItemClickListener { item ->
-                if(item.itemId == R.id.cate_quit) {
-                //다이얼로그
-                //종료로 업데이트하고 네비게이션
-                    // 해당 카테고리 내 모든 투두 삭제, 모든 반복 투두 삭제
-                    val cate = CateEntity(
-                        argsArray!![0].toInt(),
-                        argsArray!![1].toInt(),
-                        binding.edtHomeCategoryName.text.toString(),
-                        colorAdapter.selecetedColor,
-                        true,
-                        findIconId(iconAdapter.selectedIcon)
-                    )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        //종료 patch
-                        val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), true, false)
-                        api.editHCategory(viewModel.userToken, argsArray[1].toInt(), catePostData).enqueue(object : Callback<PactchResponseCategory>{
-                            override fun onResponse(
-                                call: Call<PactchResponseCategory>,
-                                response: Response<PactchResponseCategory>
-                            ) {
-                                if(response.isSuccessful){
-                                    Log.d("cateupdate", "성공")
-                                } else {
-                                    Log.d("cateupdate", "안드 잘못 실패")
-                                }
-                            }
 
-                            override fun onFailure(
-                                call: Call<PactchResponseCategory>,
-                                t: Throwable
-                            ) {
-                                Log.d("cateupdate", "서버 연결 실패")
-                            }
-
-                        })
-                        viewModel.updateCate(cate)
-                        withContext(Dispatchers.Main){
-                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-                        }
-                    }
-
-                }
-                else{
-                    //다이얼로그
-                    //카테고리 테이블에서 삭제
-                    //해당 카테고리 내 모든 반복 투두와 투두 삭제
-                    val cateData = CateEntity(
-                        argsArray!![0].toInt(),
-                        argsArray!![1].toInt(),
-                        argsArray!![2],
-                        argsArray!![3],
-                        true,
-                        argsArray!![4].toInt())
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.deleteCate(cateData)
-                        //서버 전송
-                        //api.deleteHCategory()
-                        //viewModel.deleteCategory(viewModel.userToken, argsArray!![1].toInt(), null)
-                        //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
-                        withContext(Dispatchers.Main){
-                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-                        }
-                    }
-                    Log.d("catedelete", "click")
-                }
-                true
-            }
-            popup.show()
-        }
-
-
-
-//        if (arguments != null) {
-//            //카테고리 수정 시 데이터 뿌리기
-//            argsArray = requireArguments().getStringArrayList("key")!!
-//            Log.d("argsArray", argsArray!!.toString())
-//            binding.ivHomeCateIcon.setImageResource(findIcon(argsArray!![2].toInt()))
-//            binding.edtHomeCategoryName.setText(argsArray!![1])
-//            binding.ivHomeCateColor.imageTintList =
-//                ColorStateList.valueOf(Color.parseColor(argsArray!![3]))
-//            colorAdapter.selecetedColor = argsArray!![3]
-//            iconAdapter.selectedIcon = findIcon(argsArray!![2].toInt()).toString()
-//            // 삭제버튼으로 변경
-//            binding.btnHomeCateAddSave.text = "삭제"
-//
-//        }
-//        //카텍리 추가시
-//        else {
-//            colorAdapter.selecetedColor = "#89A9D9"
-//            iconAdapter.selectedIcon = R.drawable.ic_home_cate_study.toString()
-//        }
-//
-//        // 아이콘, 색상 선택창
-//        val iconListManager = GridLayoutManager(this.activity, 6)
-//        val colorListManager = GridLayoutManager(this.activity, 6)
-//
-//        iconAdapter.setItemClickListener(object : HomeCateIconAdapter.OnItemClickListener {
-//            override fun onClick(v: View, position: Int) {
-//                binding.ivHomeCateIcon.setImageResource(cateIconArray[position].toInt())
-//                binding.rvHomeCateIcon.isGone = true
-//                iconAdapter.selectedIcon = cateIconArray[position]
-//
-//            }
-//        })
-//
-//        colorAdapter.setItemClickListener(object : HomeCateColorAdapter.OnItemClickListener {
-//            override fun onClick(v: View, position: Int) {
-//                binding.ivHomeCateColor.imageTintList =
-//                    ColorStateList.valueOf(Color.parseColor(cateColorArray[position]))
-//                binding.rvHomeCateColor.isGone = true
-//                colorAdapter.selecetedColor = cateColorArray[position]
-//            }
-//        })
-//
-//        var iconRecyclerList = binding.rvHomeCateIcon.apply {
-//            setHasFixedSize(true)
-//            layoutManager = iconListManager
-//            adapter = iconAdapter
-//
-//        }
-//        var colorRecyclerList = binding.rvHomeCateColor.apply {
-//            setHasFixedSize(true)
-//            layoutManager = colorListManager
-//            adapter = colorAdapter
-//        }
-//
-//        binding.ivHomeCateIcon.setOnClickListener {
-//            if (binding.rvHomeCateIcon.isVisible) {
-//                binding.rvHomeCateIcon.isGone = true
-//            } else {
-//                binding.rvHomeCateIcon.isVisible = true
-//            }
-//        }
-//
-//        binding.ivHomeCateColor.setOnClickListener {
-//            if (binding.rvHomeCateColor.isVisible) {
-//                binding.rvHomeCateColor.isGone = true
-//            } else {
-//                binding.rvHomeCateColor.isVisible = true
-//            }
-//        }
-//
-//        val data = PostRequestCategory(
-//            binding.edtHomeCategoryName.text.toString(),
-//            colorAdapter.selecetedColor,
-//            findIconId(iconAdapter.selectedIcon)
-//        )
-//
-//        //좌상단 뒤로가기 버튼 클릭 시
-//        binding.ivHomeCateAddBack.setOnClickListener {
-//            //cateogry 수정 상황 일 때
-//            if (binding.btnHomeCateAddSave.text == "삭제") {
-//                //수정 사항 저장
-//                viewModel.patchCategory(viewModel.userToken, argsArray!![0].toInt(), data, view)
-//            }
-//            //카테고리 추가 상황 일 때
-//            else {
-//                customBackDialog()
-//            }
-//        }
-//
-//        //등록 버튼, 삭제 버튼 클릭 시
-//        binding.btnHomeCateAddSave.setOnClickListener {
-//
-//            //카테고리명 빈칸 확인
-//            if (binding.edtHomeCategoryName.text.isBlank()) {
-//                Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
-//            } else {
-//
-//                //데이터 삭제
-//                if (binding.btnHomeCateAddSave.text == "삭제") {
-//                    customDeleteDialog()
-//                }
-//                //데이터 추가
-//                else {
-//                    Log.d("addCAte", data.toString())
-//                    //viewModel.postCategory(viewModel.userToken, data, view)
-//                    //db에 데이터 저장
-//                    //viewModel.createCategory(DBCategory(0, null, data.categoryName, data.color, data.iconId))
-//                    //Log.d("dbcategory", viewModel.getCategory().toString())
-//                }
-//
-//            }
-//        }
 
 
     }
@@ -539,17 +475,17 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     private fun initColorArray() {
         with(cateColorArray) {
-            cateColorArray.add("#E1E9F5")
-            cateColorArray.add("#89A9D9")
-            cateColorArray.add("#486DA3")
-            cateColorArray.add("#FFE7EB")
-            cateColorArray.add("#FDA4B4")
-            cateColorArray.add("#F0768C")
-            cateColorArray.add("#D4ECF1")
+            cateColorArray.add("#21C362")
+            cateColorArray.add("#0E9746")
             cateColorArray.add("#7FC7D4")
             cateColorArray.add("#2AA1B7")
-            cateColorArray.add("#FDF3CF")
+            cateColorArray.add("#89A9D9")
+            cateColorArray.add("#486DA3")
+            cateColorArray.add("#FDA4B4")
+            cateColorArray.add("#F0768C")
             cateColorArray.add("#F8D141")
+            cateColorArray.add("#F68F30")
+            cateColorArray.add("#F33E3E")
             cateColorArray.add("#405059")
         }
     }

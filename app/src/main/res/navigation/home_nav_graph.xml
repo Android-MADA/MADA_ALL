@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/fragCalendar">
+    app:startDestination="@id/fragHome">
     <fragment
         android:id="@+id/fragHome"
         android:name="com.example.myapplication.Fragment.FragHome"
@@ -96,6 +96,9 @@
         <action
             android:id="@+id/action_homeCategoryFragment_to_fragHome"
             app:destination="@id/fragHome" />
+        <action
+            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"
+            app:destination="@id/categoryInActiveFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
@@ -293,5 +296,14 @@
         <action
             android:id="@+id/action_myRecordDayFragment_to_fragMy"
             app:destination="@id/fragMy" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryInActiveFragment"
+        android:name="com.example.myapplication.HomeFunction.view.CategoryInActiveFragment"
+        android:label="CategoryInActiveFragment" >
+        <action
+            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment"
+            app:popUpTo="@id/fragHome" />
     </fragment>
 </navigation>

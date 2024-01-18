@@ -192,7 +192,6 @@ class custom_cloth() : Fragment() {
     }
 
     fun resetButtonCloth() {
-
         binding.btnClothBasic.setImageResource(R.drawable.custom_null)
         binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
         binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
