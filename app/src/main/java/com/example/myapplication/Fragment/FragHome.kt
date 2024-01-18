@@ -70,7 +70,7 @@ class FragHome : Fragment() {
         homeIndicator.setViewPager(homeViewPager)
         homeViewPager.setCurrentItem(1,false)
 
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+        /* val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
             17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
@@ -133,7 +133,7 @@ class FragHome : Fragment() {
         )
         binding.ivHomeItem.setImageResource(
             itembuttonInfo.selectedImageResource ?: 0
-        )
+        )*/
         return view
     }
 
