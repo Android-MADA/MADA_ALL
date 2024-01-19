@@ -2,18 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".MyFuction.Fragment.MyPremiumFragment"
-    android:id="@+id/nav_host_fragment_container"
-    app:navGraph="@navigation/home_nav_graph">
+    android:background="#E1E9F5"
+    app:navGraph="@navigation/home_nav_graph"
+    tools:context=".MyFuction.Fragment.MyPremiumFragment">
 
     <LinearLayout
         android:id="@+id/toolbar_my"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:padding="20dp"
             android:background="@android:color/transparent"
+            android:padding="20dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left" />
 
@@ -47,161 +46,220 @@
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="97dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="83dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_my"
-        app:srcCompat="@drawable/my_mada_logo1" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="프리미엄 월정액"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="1200원/월"
-        android:textStyle="bold"
-        android:textColor="@color/point_main"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView17"
-        app:layout_constraintStart_toStartOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="320dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center|start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/my_premium_custom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18">
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="66dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/some_id"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginStart="50dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="73dp"
+            android:layout_marginStart="20dp"
+            android:text="마다 프리미엄에서는 어떤 혜택을\n받을 수 있나요?"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:paddingHorizontal="3dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/my_premium_ic_check" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="328dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/my_list_sheet">
 
             <TextView
+                android:id="@id/textView1"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                android:text="광고제거"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="top"
+                android:text="통계 페이지의 광고 제거"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginStart="50dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/my_premium_ic_check" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                android:text="캐릭터 커스텀 잠금 해제"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginStart="50dp"
-            android:orientation="horizontal">
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:text="통계 페이지에 접속할 때 불필요한 광고 없이\n빠르게 접속할 수 있어요."
+                android:textColor="@color/grey1"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView1" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/my_premium_ic_check" />
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/my_premium_ic1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="328dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/my_list_sheet">
+
+            <TextView
+                android:id="@id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="top"
+                android:text="커스텀 잠금 해제"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                android:text="다양한 색상 테마"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginStart="50dp"
-            android:orientation="horizontal">
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:text="커스텀 페이지의 모든 아이템을 제한 없이\n이용할 수 있어요."
+                android:textColor="@color/grey1"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView2" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/my_premium_ic_check" />
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/my_premium_ic2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="328dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/my_list_sheet">
+
+            <TextView
+                android:id="@id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="top"
+                android:text="카테고리 개수 제한 해제"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                android:text="카테고리 개수 무제한"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:text="투두 카테고리 개수가 기존의 최대 5개에서\n무제한으로 변경돼요."
+                android:textColor="@color/grey1"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView3" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/my_premium_ic3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="328dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/my_list_sheet">
+
+            <TextView
+                android:id="@id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="top"
+                android:text="마이페이지 배너 커스텀"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:text="마이페이지 배너를 원하는 모습으로 변경할 수\n있어요."
+                android:textColor="@color/grey1"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView4" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/my_premium_ic4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </LinearLayout>
 
-    <android.widget.Button
+    <Button
         android:id="@+id/my_premium_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/my_btn_ok"
-        android:text="결제하기"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        android:background="@color/sub4"
+        android:text="월 1,200원 결제하기"
         android:textColor="@color/white"
-        android:textSize="16sp"
         android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.781"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 

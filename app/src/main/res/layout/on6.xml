@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#26354A"
     android:orientation="vertical">
 
 
@@ -11,29 +11,19 @@
         android:id="@+id/on_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="72dp"
         android:gravity="center"
-        android:text="시간표로 시간 관리하기"
+        android:text="그럼 이제 마다에서\n일정 관리를 시작해 볼까요?"
+        android:textColor="#F5F5F5"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textAlignment="center"/>
-
-    <TextView
-        android:id="@+id/on_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="원형 시간표와 타임 테이블 시간표를 통해\n시간을 꼼꼼하게 관리할 수 있어요."
-        android:textSize="14sp" />
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/on_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="35dp"
-        app:srcCompat="@drawable/on2"
+        app:srcCompat="@drawable/on6"
         android:scaleType="centerCrop"/>
-
 
 </LinearLayout>

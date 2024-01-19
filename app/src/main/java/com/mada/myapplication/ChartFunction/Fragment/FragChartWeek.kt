@@ -1,4 +1,4 @@
-package com.mada.myapplication.ChartFunction.Fragment
+package com.example.myapplication.ChartFunction.Fragment
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -13,26 +13,33 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.HomeFunction.api.RetrofitInstance
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
-import com.mada.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
-import com.mada.myapplication.ChartFunction.Data.MyRecordCategoryData
-import com.mada.myapplication.ChartFunction.Data.MyRecordData
-import com.mada.myapplication.ChartFunction.Data.MyRecordOptionData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
-import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
-import com.mada.myapplication.databinding.ChartWeekBinding
+import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.example.myapplication.HomeFunction.api.RetrofitInstance
+import com.example.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.example.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
+import com.example.myapplication.ChartFunction.Data.MyRecordCategoryData
+import com.example.myapplication.ChartFunction.Data.MyRecordData
+import com.example.myapplication.ChartFunction.Data.MyRecordOptionData
+import com.example.myapplication.MyFuction.RetrofitServiceMy
+import com.example.myapplication.R
+import com.example.myapplication.StartFuction.Splash2Activity
+import com.example.myapplication.databinding.ChartWeekBinding
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
@@ -360,6 +367,7 @@ class FragChartWeek : Fragment() {
 
 
     }
+
 
     // 텍스트에 색상을 적용하는 함수
     private fun createSpannableString(text: String, targetText: String): SpannableStringBuilder {
