@@ -32,6 +32,8 @@ class HomeViewModel : ViewModel() {
 
     var userHomeName = "김마다"
 
+    var isSubscribe = false
+
 
     //날짜
     //2023-08-13

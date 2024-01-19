@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.mada.myapplication"
-        minSdk 26
+        minSdk 28
         targetSdk 33
         versionCode 9
         versionName "test_version:0.24.0115.0"

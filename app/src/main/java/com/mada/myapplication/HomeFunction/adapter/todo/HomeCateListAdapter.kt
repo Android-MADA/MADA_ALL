@@ -145,7 +145,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                 handled = true
 
                 val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-                val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatWeek = null, repeatMonth = null, startRepeatDate = null, endRepeatDate = null, isAlarm = false, startTodoAtMonday = viewModel!!.startMonday, endTodoBackSetting = viewModel!!.completeBottom, newTodoStartSetting = viewModel!!.newTodoTop)
+                val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatWeek = null, repeatMonth = null, startRepeatDate = null, endRepeatDate = null)
                 //서버 보내기ㅎㅎㅎㅎ
                 CoroutineScope(Dispatchers.IO).launch {
                     api.addTodo(viewModel!!.userToken, todoData).enqueue(object : Callback<PostResponseTodo>{

@@ -120,7 +120,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
                 var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
                 //서버 post
                 //response로 id 값 넣기
-                val addData = PostRequestTodo(date = null, todoName = holder.edtAdd.text.toString(), category = PostRequestTodoCateId(holder.data!!.id), complete = false, repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate, isAlarm = viewModel!!.isAlarm, startTodoAtMonday = viewModel!!.startMonday, endTodoBackSetting = viewModel!!.completeBottom, newTodoStartSetting = viewModel!!.newTodoTop )
+                val addData = PostRequestTodo(date = null, todoName = holder.edtAdd.text.toString(), category = PostRequestTodoCateId(holder.data!!.id), complete = false, repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
                 CoroutineScope(Dispatchers.IO).launch {
                     api.addTodo(viewModel!!.userToken, addData).enqueue(object : Callback<PostResponseTodo>{
                         override fun onResponse(

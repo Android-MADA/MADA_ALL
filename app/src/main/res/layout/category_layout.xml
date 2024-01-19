@@ -53,6 +53,17 @@
                     android:layout_marginHorizontal="16dp"
                     />
                 <TextView
+                    android:visibility="gone"
+                    android:id="@+id/category_add_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="프리미엄을 결제하면 카테고리를 더 추가할 수 있어요"
+                    android:gravity="center"
+                    android:background="@drawable/category_btn_background"
+                    android:paddingVertical="18dp"
+                    android:layout_marginHorizontal="16dp"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="종료된 카테고리"

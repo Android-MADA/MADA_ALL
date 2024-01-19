@@ -24,12 +24,6 @@ import retrofit2.http.Path
 
 interface HomeApi {
 
-    //todo조회 -> 확인 완
-    @GET("/api/home/todo/date/{date}")
-    suspend fun getAllTodo(
-        @Header("Authorization") token: String?,
-        @Path("date", encoded = true) date: String
-    ): TodoList
 
     @GET("/api/home/todo/date/{date}")
     fun getAllMyTodo(
@@ -105,17 +99,7 @@ fun editTodo(
         @Path("date", encoded = true) date: String,
     ): Call<CategoryList1>
 
-    @GET("/api/home/category")
-    fun getMyCategory(
-        @Header("Authorization") token : String?
-    ): Call<CategoryList1>
 
-    //카테고리 추가 -> 확인 완
-    @POST("/api/home/category")
-    suspend fun postCategory(
-        @Header("Authorization") token : String?,
-        @Body data : PostRequestCategory
-    ): PatchResponseCategory
 
     @POST("/api/home/category")
     fun postHCategory(
@@ -124,13 +108,6 @@ fun editTodo(
     ): Call<PatchResponseCategory>
 
 
-    //카테고리 수정 -> 확인 완
-    @PATCH("/api/home/category/{categoryId}")
-    suspend fun editCategory(
-        @Header("Authorization") token : String?,
-        @Path("categoryId", encoded = true) categoryId: Int,
-        @Body data : PostRequestCategory
-    ): PatchResponseCategory
 
     @PATCH("/api/home/category/{categoryId}")
     fun editHCategory(
@@ -153,12 +130,6 @@ fun editTodo(
         @Path("categoryId", encoded = true) categoryId: Int
     ) : Call<Void>
 
-    //카테고리 삭제 -> 확인 완, todotest만 삭제 오류
-    @PATCH("/api/home/category/delete/{categoryId}")
-    suspend fun deleteCategory(
-        @Header("Authorization") token : String?,
-        @Path("categoryId", encoded = true) categoryId: Int
-    ) : Call<Void>
 
     @PATCH("/api/home/category/delete/{categoryId}")
     fun deleteHCategory(
@@ -166,10 +137,12 @@ fun editTodo(
         @Path("categoryId", encoded = true) categoryId: Int
     ) : Call<Void>
 
-    @GET("/api/home/todo/repeat")
-    suspend fun getRepeatTodo(
-        @Header("Authorization") token : String?
-    ) : RepeatData1
+    @PATCH("/api/home/category/delete/{categoryId}")
+    fun deleteCategory(
+        @Header("Authorization") token : String?,
+        @Path("categoryId", encoded = true) categoryId : Int
+    ) : Call<Void>
+
 
     @GET("/api/home/todo/repeat")
     fun getHRepeatTodo(

@@ -3,6 +3,7 @@ package com.mada.myapplication.CalenderFuntion.Small
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import org.joda.time.DateTime
@@ -14,7 +15,8 @@ class CalendarSliderSmallAdapter(
     private val Scheldule: TextView,
     private val ScheduleNum: TextView,
     private val cal: LinearLayout,
-    private val textDday :TextView
+    private val textDday :TextView,
+    private var repeatFlag : Boolean = false
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -32,7 +34,7 @@ class CalendarSliderSmallAdapter(
 
     override fun createFragment(position: Int): CalendarSmallFragment {
         val millis = getItemId(position)
-        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal,textDday)
+        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal,textDday, repeatFlag)
     }
 
     override fun getItemId(position: Int): Long

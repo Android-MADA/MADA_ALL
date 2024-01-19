@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -29,6 +31,7 @@ class HomeCategoryFragment : Fragment() {
 
     private var bottomFlag = true
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+    private var activeCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,16 @@ class HomeCategoryFragment : Fragment() {
             Log.d("Category", it.toString())
 
             val cateList = it as List<CateEntity>
+
+            activeCount = cateList.size
+            if(!viewModel.isSubscribe && activeCount >= 5){
+                binding.categoryAddTv.isVisible = true
+                binding.categoryAddIv.isGone = true
+            }
+            else{
+                binding.categoryAddTv.isGone = true
+                binding.categoryAddIv.isVisible = true
+            }
 
             val cateRv = binding.categoryActiveRv
             val cateAdapter = CateListAdapter()

@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
+import androidx.lifecycle.ViewModel
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
 import com.mada.myapplication.R
@@ -33,7 +34,8 @@ class DaySmallItemView @JvmOverloads constructor(
     private val Scheldule: TextView,
     private val ScheduleNum: TextView,
     private val cal: LinearLayout,
-    private val textDday : TextView
+    private val textDday : TextView,
+    private var repeatFlag: Boolean = false
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val weekdays = arrayOf("월","화", "수", "목", "금", "토","일")
     private val bounds = Rect()
@@ -57,7 +59,13 @@ class DaySmallItemView @JvmOverloads constructor(
         setOnClickListener {
             cal.visibility = GONE
             ScheduleNum.text = date.toString("yyyy-MM-dd")
-            Scheldule.text = "  ${date.monthOfYear}월 ${date.dayOfMonth}일 (${weekdays[date.dayOfWeek().get()-1]})  "
+            if(repeatFlag){
+                Scheldule.text = " ${date.year}년 ${date.monthOfYear}월 ${date.dayOfMonth}일"
+
+            }
+            else{
+                Scheldule.text = "  ${date.monthOfYear}월 ${date.dayOfMonth}일 (${weekdays[date.dayOfWeek().get()-1]})  "
+            }
             var remainDday = daysRemainingToDate(ScheduleNum.text.toString()).toString()
             if(remainDday.toInt() <=0) remainDday = "DAY"
             textDday.text = "D - ${remainDday}"

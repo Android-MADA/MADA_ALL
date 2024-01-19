@@ -181,7 +181,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             1 -> {
                                 // 삭제 동작
-                                deleteCategory()
+                                //deleteCategory()
+                                removeCategory()
                             }
                         }
                     }
@@ -223,7 +224,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             1 -> {
                                 // 삭제 동작
-                                deleteCategory()
+                                //deleteCategory()
+                                removeCategory()
                             }
                         }
                     }
@@ -649,16 +651,16 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     }
 
     fun deleteCategory(){
-        val cateData = CateEntity(argsArray!![0].toInt(), argsArray!![1], argsArray!![2], true, argsArray!![3].toInt())
+        //val cateData = CateEntity(argsArray!![0].toInt(), argsArray!![1], argsArray!![2], true, argsArray!![3].toInt())
         CoroutineScope(Dispatchers.IO).launch {
             //서버 전송
-            api.deleteHCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
+            api.deleteHCategory(token = viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
                         Log.d("catedelete", "성공")
-                        viewModel.deleteCate(cateData)
-                        viewModel.readActiveCate(false)
-                        viewModel.readQuitCate(true)
+                        //viewModel.deleteCate(cateData)
+                        //viewModel.readActiveCate(false)
+                        //viewModel.readQuitCate(true)
                     } else {
                         Log.d("catedelete", "안드 잘못 실패")
                     }
@@ -673,6 +675,26 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             withContext(Dispatchers.Main){
                 Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
             }
+        }
+    }
+
+    fun removeCategory(){
+        CoroutineScope(Dispatchers.IO).launch {
+            api.deleteCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("categoryRemove", "success")
+                    }
+                    else{
+                        Log.d("categoryRemove", "Android fail")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("categoryRemove", "Server fail")
+                }
+
+            })
         }
     }
 
