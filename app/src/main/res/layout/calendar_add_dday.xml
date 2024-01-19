@@ -129,7 +129,7 @@
                         android:id="@+id/calendar_color1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#ED3024" />
@@ -174,7 +174,7 @@
                         android:id="@+id/calendar_color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#F46D85" />
@@ -182,7 +182,7 @@
                         android:id="@+id/calendar_color7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#D087F2" />
@@ -207,7 +207,7 @@
                         android:id="@+id/calendar_color9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="@color/main" />
@@ -252,7 +252,7 @@
                         android:id="@+id/calendar_color14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#8FBC10" />
@@ -260,7 +260,7 @@
                         android:id="@+id/calendar_color15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#107E3D" />
