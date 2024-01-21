@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.mada.myapplication.HomeFunction.Model.Todo
-import com.mada.myapplication.HomeFunction.Model.repeatTodo
+import com.mada.myapplication.HomeFunction.Model.rRepeatTodo
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.dialog.RepeatBottomSheetDialog
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
@@ -23,7 +23,7 @@ import com.mada.myapplication.R
 
 class HomeRepeatTodoAdapter (private var view : View?, private var flag : String?) : RecyclerView.Adapter<HomeRepeatTodoAdapter.viewHolder>() {
 
-    var dataSet : ArrayList<repeatTodo>? = null
+    var dataSet : ArrayList<rRepeatTodo>? = null
     var dataSet2 : ArrayList<Todo>? = null
     var topFlag = false
     var cateIndex = 0

@@ -156,7 +156,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                             if(response.isSuccessful){
                                 //db에 저장
                                 val Tresponse = response.body()!!.data.Todo
-                                val data = TodoEntity(0, Tresponse.id, viewModel!!.homeDate.value.toString(), Tresponse.category.id, holder.edtAdd.text.toString(), false, "N", null, null, null, null, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
+                                val data = TodoEntity(0, id = Tresponse.id, date = viewModel!!.homeDate.value.toString(), category = Tresponse.category.id, todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
                                 viewModel!!.createTodo(data, holder.edtAdd)
 
                             } else{

@@ -20,6 +20,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
 import com.mada.myapplication.CalenderFuntion.ToggleAnimation
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
@@ -40,6 +41,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     lateinit var binding: FragmentRepeatTodoAddBinding
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
+    private val calendarViewModel : CalendarViewModel by activityViewModels()
     private lateinit var backDialog: HomeBackCustomDialog
     private var modeFlag = "add"
 
@@ -334,12 +336,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
         binding.btnHomeRepeatAddSave.setOnClickListener {
             if(binding.edtHomeCategoryName.text.isBlank()){
-                Toast.makeText(this.requireActivity(), "TODO 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
+                calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
             }
-            else {
-                    if(binding.tvHomeRepeatStartday.text == "없음" || binding.tvHomeRepeatEndday.text == "없음"){
-                        Toast.makeText(this.requireActivity(), "시작일과 종료일을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
-                    }
                     else {
                         val repeatString = findRepeat(binding.tvRepeatRepeat.text.toString())
                         val startDay = binding.tvHomeRepeatStartday.text.toString()
@@ -401,7 +399,6 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 //                        }
 
 
-                    }
 
             }
         }
@@ -430,15 +427,6 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             else -> "N"
         }
         return repeatString
-    }
-
-    fun findNull(day : String) : String?{
-        val repeatDay = when(day){
-            "시작일" -> null
-            "종료일" -> null
-            else -> day
-        }
-        return repeatDay
     }
 
     private fun customBackDialog() {

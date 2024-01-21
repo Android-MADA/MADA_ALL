@@ -7,10 +7,10 @@ data class RepeatData1(
 )
 
 data class RepeatData2(
-    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<repeatTodo>
+    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<rRepeatTodo>
 )
 
-data class repeatTodo(
+data class rRepeatTodo(
     @SerializedName("id") val id: Int,
     @SerializedName("date") val date: String?,
     @SerializedName("category") var category: Category,

@@ -9,14 +9,18 @@ data class Todo(
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
     @SerializedName("repeat") var repeat: String,
-    @SerializedName("repeatWeek") var repeatWeek: String?,
-    @SerializedName("repeatMonth") var repeatMonth: String?,
+    @SerializedName("repeatInfo") var repeatInfo : String?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
-    @SerializedName("endRepeatDate") var endRepeatDate: String?,
-    @SerializedName("isAlarm") var isAlarm: Boolean,
-    @SerializedName("startTodoAtMonday") var startTodoAtMonday: Boolean,
-    @SerializedName("endTodoBackSetting") var endTodoBackSetting: Boolean,
-    @SerializedName("newTodoStartSetting") var newTodoStartSetting: Boolean
+    @SerializedName("endRepeatDate") var endRepeatDate: String?
+)
+
+data class RepeatTodo(
+    @SerializedName("id") val id: Int,
+    @SerializedName("todoId") val todoId : Int,
+    @SerializedName("date") var date: String,
+    @SerializedName("todoName") var todoName: String,
+    @SerializedName("category") var category : Category,
+    @SerializedName("complete") var complete: Boolean
 )
 
 data class todoData(
@@ -26,7 +30,7 @@ data class todoData(
 data class todoData2(
     @SerializedName("nickname") val nickname : String,
     @SerializedName("TodoList") val TodoList : ArrayList<Todo>,
-    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<Todo>
+    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<RepeatTodo>
 )
 
 data class TodoList(
@@ -41,22 +45,6 @@ data class PostRequestTodoCateId(
     @SerializedName("id") val id: Int
 )
 
-//data class PostRequestTodo(
-//    @SerializedName("date") var date: String?,
-//    @SerializedName("category") var category: PostRequestTodoCateId,
-//    @SerializedName("todoName") var todoName: String,
-//    @SerializedName("complete") var complete: Boolean,
-//    @SerializedName("repeat") var repeat: String,
-//    @SerializedName("repeatWeek") var repeatWeek: String?,
-//    @SerializedName("repeatMonth") var repeatMonth: String?,
-//    @SerializedName("startRepeatDate") var startRepeatDate: String?,
-//    @SerializedName("endRepeatDate") var endRepeatDate: String?,
-//    @SerializedName("isAlarm") var isAlarm: Boolean,
-//    @SerializedName("startTodoAtMonday") var startTodoAtMonday: Boolean,
-//    @SerializedName("endTodoBackSetting") var endTodoBackSetting: Boolean,
-//    @SerializedName("newTodoStartSetting") var newTodoStartSetting: Boolean
-//
-//)
 
 data class PostRequestTodo(
     @SerializedName("date") var date: String?,
@@ -72,9 +60,8 @@ data class PostRequestTodo(
 
 data class PatchRequestTodo(
     @SerializedName("todoName") var todoName: String,
-    @SerializedName("repeat") var repeat: String,
-    @SerializedName("repeatWeek") var repeatWeek: String?,
-    @SerializedName("repeatMonth") var repeatMonth: String?,
+    @SerializedName("repeat") var repeat: String?,
+    @SerializedName("repeatInfo") var repeatInfo: String?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?,
     @SerializedName("complete") var complete : Boolean,

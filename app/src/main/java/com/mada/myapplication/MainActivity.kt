@@ -138,9 +138,13 @@ fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
         override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){
-                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
                     Log.d("MainActivity todo server", todoData.toString())
                     viewModel.createTodo(todoData, null)
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete)
+                    viewModel.createTodo(repeatData, null)
                 }
                 //닉네임 저장하기
                 viewModel._dUserName.value = response.body()!!.data.nickname

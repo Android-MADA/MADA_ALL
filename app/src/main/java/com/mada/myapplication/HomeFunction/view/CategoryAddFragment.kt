@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
 import com.mada.myapplication.HomeFunction.HomeDeleteCustomDialog
@@ -45,6 +46,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var binding: HomeFragmentCategoryAddBinding
     private val viewModel: HomeViewModel by activityViewModels()
+    private val calendarViewModel : CalendarViewModel by activityViewModels()
 
     val cateIconArray = ArrayList<String>()
     val cateColorArray = ArrayList<String>()
@@ -69,7 +71,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 else if(binding.btnHomeCateAddSave.isGone && binding.edtHomeCategoryName.isVisible){
                     //active 수정 상황
                     if (binding.edtHomeCategoryName.text.isBlank()) {
-                        Toast.makeText(context, "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", requireView())
                     }
                     else {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -177,12 +180,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             2 -> {
                                 // 복원 동작
-                                restoreCategory()
+                                calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
+                                //restoreCategory()
                             }
                             1 -> {
                                 // 삭제 동작
-                                //deleteCategory()
-                                removeCategory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
+                                //removeCategory()
                             }
                         }
                     }
@@ -220,12 +224,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             0 -> {
                                 // 종료 동작
-                                quitCateegory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 종료하시겠습니까?", view, 0, "quit", argsArray!![0].toInt())
+                                //quitCateegory()
                             }
                             1 -> {
                                 // 삭제 동작
-                                //deleteCategory()
-                                removeCategory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
+                                //removeCategory()
                             }
                         }
                     }
@@ -313,9 +318,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             }
             else if(binding.btnHomeCateAddSave.isGone && binding.edtHomeCategoryName.isVisible){
                 //active 수정 상황
-
                 if (binding.edtHomeCategoryName.text.isBlank()) {
-                    Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
                 }
                 else {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -370,7 +374,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         binding.btnHomeCateAddSave.setOnClickListener {
                 //카테고리 등록 상황
                 if (binding.edtHomeCategoryName.text.isBlank()) {
-                    Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
                 }
                 else {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -695,6 +699,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 }
 
             })
+
+            withContext(Dispatchers.Main){
+                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
         }
     }
 

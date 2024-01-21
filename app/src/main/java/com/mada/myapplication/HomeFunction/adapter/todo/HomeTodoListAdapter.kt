@@ -123,9 +123,9 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                 handled = true
 
                 //update
-                val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.date, holder.data!!.category, holder.edtTodo.text.toString(), holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
+                val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, date = holder.data!!.date, category = holder.data!!.category, todoName = holder.edtTodo.text.toString(), complete = holder.data!!.complete, repeat = holder.data!!.repeat, repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate)
                 viewModel!!.updateTodo(data)
-                val updateData = PatchRequestTodo(todoName = holder.edtTodo.text.toString(), repeat = "N",  repeatWeek = holder.data!!.repeatWeek, repeatMonth = holder.data!!.repeatMonth, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, holder.data!!.date)
+                val updateData = PatchRequestTodo(todoName = holder.edtTodo.text.toString(), repeat = "N",  repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, holder.data!!.date)
                 api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if(response.isSuccessful){
@@ -186,7 +186,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                                 Log.d("바꿀 날짜", viewModel.selectedChangedDate)
                                 //val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.todoName, holder.data!!.category, holder.data!!.todoName, holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
                                 //viewModel!!.updateTodo(data)
-                                val updateData = PatchRequestTodo(todoName = holder.data!!.todoName, repeat = "N",  repeatWeek = holder.data!!.repeatWeek, repeatMonth = holder.data!!.repeatMonth, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, date = viewModel.selectedChangedDate)
+                                val updateData = PatchRequestTodo(todoName = holder.data!!.todoName, repeat = "N",  repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, date = viewModel.selectedChangedDate)
                                 Log.d("todo server", updateData.toString())
                                 api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
                                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -220,8 +220,8 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
 
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate , endTodoBackSetting = holder.data!!.endTodoBackSetting, newTodoStartSetting = holder.data!!.newTodoStartSetting, isAlarm = holder.data!!.isAlarm, startTodoAtMonday = holder.data!!.startTodoAtMonday, repeat = holder.data!!.repeat, repeatMonth = holder.data!!.repeatMonth, repeatWeek = holder.data!!.repeatWeek , startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
-                val updateData = PatchRequestTodo(checkUpdateData.todoName, checkUpdateData.repeat, checkUpdateData.repeatWeek, checkUpdateData.repeatMonth, checkUpdateData.startRepeatDate, checkUpdateData.endRepeatDate, complete = isChecked, date = holder.data!!.date)
+                val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate, repeat = holder.data!!.repeat, repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
+                val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = checkUpdateData.repeat, repeatInfo = checkUpdateData.repeatInfo,startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = isChecked, date = holder.data!!.date)
             Log.d("todo server", updateData.toString())
             //서버 연결
                 api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{

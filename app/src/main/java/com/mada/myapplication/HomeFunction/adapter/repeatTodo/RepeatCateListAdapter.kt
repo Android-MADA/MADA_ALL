@@ -139,7 +139,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
                                     override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
                                         if(response.isSuccessful){
                                             for(i in response.body()!!.data.TodoList){
-                                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
                                                 Log.d("todo server", todoData.toString())
                                                 viewModel!!.createTodo(todoData, null)
                                             }

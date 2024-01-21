@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
-import com.mada.myapplication.HomeFunction.Model.repeatTodo
+import com.mada.myapplication.HomeFunction.Model.rRepeatTodo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatCateListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
