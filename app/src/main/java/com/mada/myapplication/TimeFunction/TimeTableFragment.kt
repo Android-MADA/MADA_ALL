@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mada.myapplication.HomeFunction.Model.CommentAdd
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.TimeFunction.adapter.TimeTableAdpater
@@ -71,6 +72,7 @@ class TimeTableFragment : Fragment() {
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
+        var commentIs = false
         //시간표
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
@@ -88,8 +90,52 @@ class TimeTableFragment : Fragment() {
                     }
                 }
             }
-        })
+            viewModelTime.getComment(newValue) { result, content ->
+                when (result) {
+                    1 -> {
+                        binding.textTimeTodayHanmadi.setText(content)
+                        commentIs = true
+                    }
+                    2 -> {
+                        binding.textTimeTodayHanmadi.setText("")
+                        commentIs = false
 
+                    }
+                    3-> {
+                        Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+        binding.textTimeTodayHanmadi.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
+                val enteredText = binding.textTimeTodayHanmadi.text.toString()
+                Log.d("test",enteredText)
+                if(commentIs) {
+                    viewModelTime.editComment(today, CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
         return binding.root
     }
     private fun scrollToPosition( y: Int) {
@@ -121,7 +167,7 @@ class TimeTableFragment : Fragment() {
     private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>, today : String) {
         pieChartDataArray.clear()
         if(arrays.size==0) {     //그날 정보가 없다
-            pieChartDataArray.add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
+            pieChartDataArray.add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",-1,0))
         } else {
             var tmp = 0     //시작 시간
             var tmp2 = 0
@@ -134,14 +180,14 @@ class TimeTableFragment : Fragment() {
                     tmp = data.endHour
                     tmp2 = data.endMin
                 } else {            //이전 일정 사이에 빈틈이 있을 때
-                    pieChartDataArray.add(TimeViewModel.PieChartData("","",tmp,tmp2,data.startHour,data.startMin,"#FFFFFF",0,0))
+                    pieChartDataArray.add(TimeViewModel.PieChartData("","",tmp,tmp2,data.startHour,data.startMin,"#FFFFFF",-1,0))
                     pieChartDataArray.add(data)
                     tmp = data.endHour
                     tmp2 = data.endMin
                 }
             }
         }
-
+        Log.d("daydata", pieChartDataArray.toString())
         val recyclerView = binding.timetableRv
 
 // Create and set the layout manager

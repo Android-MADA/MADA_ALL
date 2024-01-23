@@ -17,11 +17,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mada.myapplication.CalenderFuntion.Model.AndroidCalendarData
+import com.mada.myapplication.HomeFunction.Model.CommentAdd
+import com.mada.myapplication.HomeFunction.Model.CommentData
 import com.mada.myapplication.HomeFunction.Model.Schedule
 import com.mada.myapplication.HomeFunction.Model.ScheduleAdd
 import com.mada.myapplication.HomeFunction.Model.ScheduleListData
 import com.mada.myapplication.HomeFunction.Model.ScheduleResponse
 import com.mada.myapplication.HomeFunction.Model.ScheduleTodoCalList
+import com.mada.myapplication.HomeFunction.Model.ScheduleWeekListData
+import com.mada.myapplication.HomeFunction.Model.ScheduleWeekResponse
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
@@ -51,13 +55,11 @@ class TimeViewModel : ViewModel() {
 
 
     //2023-08-01 형식
-    val hashMapArrayTime = HashMap<String, ArrayList<PieChartData>>()
     val hashMapArraySchedule = HashMap<String, ArrayList<Schedule>>()
 
-    val hashMapArrayWeek = listOf(HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>()
-        ,HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>(),HashMap<String, ArrayList<Schedule>>())
-    val pieChartDataArray : ArrayList<PieChartData> = ArrayList()
-    val pieChartDataArrayList = listOf(ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>()
+    val pieChartDataArrayList = listOf(ArrayList<Schedule>(),ArrayList<Schedule>(),ArrayList<Schedule>(),ArrayList<Schedule>()
+        ,ArrayList<Schedule>(),ArrayList<Schedule>(),ArrayList<Schedule>())
+    val pieChartWeekDatas = listOf(ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>()
         ,ArrayList<PieChartData>(),ArrayList<PieChartData>(),ArrayList<PieChartData>())
     var range : Float = 0.0f
 
@@ -65,20 +67,19 @@ class TimeViewModel : ViewModel() {
 
     data class PieChartData(
         val title: String,
-        val memo: String,
+        val memo: String="",
         var startHour: Int,
         val startMin: Int,
         var endHour: Int,
         val endMin: Int,
-        val colorCode: String,
-        val divisionNumber: Int,
+        var colorCode: String,
+        var divisionNumber: Int,
         val id : Int
     ) : Serializable
 
     fun updateData(newValue: String) {
         todayString = newValue
         _myLiveToday.value = newValue
-        Log.d("update",todayString)
     }
 
     fun extractTime(timeString: String,hourOrMin : Boolean): Int {
@@ -121,7 +122,7 @@ class TimeViewModel : ViewModel() {
 
         calendar1.time = inputFormat.parse(time1Modified)
         calendar2.time = inputFormat.parse(time2Modified)
-
+        calendar2.add(Calendar.MINUTE,-29)
         val hour1 = calendar1.get(Calendar.HOUR_OF_DAY)
         val minute1 = calendar1.get(Calendar.MINUTE)
 
@@ -189,7 +190,7 @@ class TimeViewModel : ViewModel() {
     fun getScheduleDatas(date : String, callback: (Int) -> Unit) {
         if(hashMapArraySchedule.get(date)==null) {
             val call = service.getTimetable(token,date)
-            val arrays = ArrayList<Schedule>()
+            var arrays = ArrayList<Schedule>()
             call.enqueue(object : Callback<ScheduleListData> {
                 override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
                     if (response.isSuccessful) {
@@ -197,8 +198,10 @@ class TimeViewModel : ViewModel() {
                         if (apiResponse != null) {
                             val datas = apiResponse.datas2.datas
                             for (data in datas) {
-                               arrays.add(data)
+                                if(!data.isDeleted)
+                                    arrays.add(data)
                             }
+
                             hashMapArraySchedule.put(date,arrays)
                             callback(1)
                         } else callback(2)
@@ -210,35 +213,46 @@ class TimeViewModel : ViewModel() {
             })
         } else callback(1)
     }
-    fun getScheduleWeeks(date : String, callback: (Int) -> Unit) {
-        if(hashMapArrayWeek[0].get(date)==null) {
-            val call = service.getTimetable(token,date)
-            val arrays = ArrayList<Schedule>()
-            call.enqueue(object : Callback<ScheduleListData> {
-                override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
+    fun getScheduleWeeks(callback: (Int) -> Unit) {
+        val hasValues = pieChartDataArrayList.any { it.isNotEmpty() }
+        if(!hasValues) {
+            val call = service.getWeekTimetable(token)
+            call.enqueue(object : Callback<ScheduleWeekListData> {
+                override fun onResponse(call2: Call<ScheduleWeekListData>, response: Response<ScheduleWeekListData>) {
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
+                        Log.d("week",apiResponse.toString())
                         if (apiResponse != null) {
                             val datas = apiResponse.datas2.datas
                             for (data in datas) {
-                                arrays.add(data)
+                                if(!data.isDeleted) {
+                                    if (data.dayOfWeek == "MONDAY") pieChartDataArrayList[0].add(data)
+                                    else if (data.dayOfWeek == "TUESDAY") pieChartDataArrayList[1].add(data)
+                                    else if (data.dayOfWeek == "WEDNESDAY") pieChartDataArrayList[2].add(data)
+                                    else if (data.dayOfWeek == "THURSDAY") pieChartDataArrayList[3].add(data)
+                                    else if (data.dayOfWeek == "FRIDAY") pieChartDataArrayList[4].add(data)
+                                    else if (data.dayOfWeek == "SATURDAY") pieChartDataArrayList[5].add(data)
+                                    else if (data.dayOfWeek == "SUNDAY") pieChartDataArrayList[6].add(data)
+                                }
                             }
-                            hashMapArrayWeek[0].put(date,arrays)
                             callback(1)
                         } else callback(2)
                     } else callback(2)
                 }
-                override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
+                override fun onFailure(call: Call<ScheduleWeekListData>, t: Throwable) {
                     callback(2)
                 }
             })
         } else callback(1)
     }
     fun getTimeDatas(date : String) :  ArrayList<PieChartData>{
-        val arrays = ArrayList<PieChartData>()
+        var arrays = ArrayList<PieChartData>()
         if(hashMapArraySchedule.get(date) != null) {
+            val arrays2 = hashMapArraySchedule.get(date)!!.sortedWith(compareBy(
+                { it.startTime }
+            ))
             var i = 0
-            for (data in hashMapArraySchedule.get(date)!!) {
+            for (data in arrays2) {
                 var end00 = 0
                 if(data.endTime=="00:00:00")
                     end00 = 24
@@ -246,12 +260,33 @@ class TimeViewModel : ViewModel() {
                     extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
                 arrays.add(tmp)
             }
-            arrays.sortedWith(compareBy(
-                { it.startHour },
-                { it.startMin }
-            ))
+
         }
-        return arrays
+
+        return  arrays
+    }
+    fun getTimeWeekDatas(week : Int) :  List<PieChartData>{
+        var arrays = ArrayList<PieChartData>()
+        arrays.clear()
+        if(pieChartDataArrayList[week] != null) {
+            var i = 0
+            for (data in pieChartDataArrayList[week]) {
+                var end00 = 0
+                if(data.endTime=="00:00:00")
+                    end00 = 24
+                if(data.memo==null) data.memo=""
+                val tmp = PieChartData(data.scheduleName,data.memo,extractTime(data.startTime,true),extractTime(data.startTime,false),
+                    extractTime(data.endTime,true)+end00,extractTime(data.endTime,false),data.color,i++,data.id)
+                arrays.add(tmp)
+            }
+
+        }
+        val arrays2 = arrays.sortedWith(compareBy(
+            { it.startHour },
+            { it.startMin }
+        ))
+        Log.d("week arranged",arrays2.toString())
+        return arrays2
     }
     fun addTimeDatas(data : ScheduleAdd, callback: (Int) -> Unit) {
         service.addTime(token,data).enqueue(object : Callback<ScheduleResponse> {
@@ -278,6 +313,28 @@ class TimeViewModel : ViewModel() {
             }
         })
     }
+    fun addTimeWeekDatas(data : ScheduleAdd, callback: (Int) -> Unit) {
+        service.addWeekTime(token,data).enqueue(object : Callback<ScheduleWeekResponse> {
+            override fun onResponse(call2: Call<ScheduleWeekResponse>, response: Response<ScheduleWeekResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse
+                        addId = apiResponse.data.DailyTimetable.id
+                        callback(1)
+                    } else {
+                        callback(2)
+                    }
+                } else {
+                    callback(2)
+                }
+            }
+            override fun onFailure(call: Call<ScheduleWeekResponse>, t: Throwable) {
+                Log.d("token",token)
+                callback(2)
+            }
+        })
+    }
     fun delTimeDatas(id : Int, callback: (Int) -> Unit) {
         service.deleteTime(token, id).enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
@@ -299,7 +356,28 @@ class TimeViewModel : ViewModel() {
             }
         })
     }
-    fun editTimeData(id : Int,data : ScheduleAdd, callback: (Int) -> Unit) {
+    fun delTimeWeekDatas(id : Int, callback: (Int) -> Unit) {
+        service.deleteWeekTime(token, id).enqueue(object : Callback<ScheduleWeekResponse> {
+            override fun onResponse(call2: Call<ScheduleWeekResponse>, response: Response<ScheduleWeekResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse
+                        callback(1)
+                    } else {
+                        callback(2)
+                    }
+
+                } else {
+                    callback(2)
+                }
+            }
+            override fun onFailure(call: Call<ScheduleWeekResponse>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+    fun editTimeData(id : Int, data : ScheduleAdd, callback: (Int) -> Unit) {
         service.editTime(token, id,data).enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(call2: Call<ScheduleResponse>, response: Response<ScheduleResponse>) {
                 if (response.isSuccessful) {
@@ -322,6 +400,25 @@ class TimeViewModel : ViewModel() {
                 }
             }
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+    fun editTimeWeekData(id : Int, data : ScheduleAdd, callback: (Int) -> Unit) {
+        service.editWeekTime(token, id,data).enqueue(object : Callback<ScheduleWeekResponse> {
+            override fun onResponse(call2: Call<ScheduleWeekResponse>, response: Response<ScheduleWeekResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        callback(1)
+                    } else {
+                        callback(2)
+                    }
+                } else {
+                    callback(2)
+                }
+            }
+            override fun onFailure(call: Call<ScheduleWeekResponse>, t: Throwable) {
                 callback(2)
             }
         })
@@ -353,6 +450,66 @@ class TimeViewModel : ViewModel() {
                 } else callback(2)
             }
             override fun onFailure(call: Call<ScheduleTodoCalList>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+    fun getComment(date : String, callback: (Int, String) -> Unit) {
+        service.getComment(token, date).enqueue(object : Callback<CommentData> {
+            override fun onResponse(call2: Call<CommentData>, response: Response<CommentData>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    Log.d("comment",apiResponse.toString())
+                    if (apiResponse != null) {
+                        callback(1,apiResponse.data.comment.content)
+                    } else {
+                        callback(2,"")
+                    }
+                } else {
+                    callback(2,"")
+                }
+            }
+            override fun onFailure(call: Call<CommentData>, t: Throwable) {
+                callback(2,"")
+            }
+        })
+    }
+    fun addComment(data : CommentAdd, callback: (Int) -> Unit) {
+        service.addComment(token, data).enqueue(object : Callback<CommentData> {
+            override fun onResponse(call2: Call<CommentData>, response: Response<CommentData>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    Log.d("comment",apiResponse.toString())
+                    if (apiResponse != null) {
+                        callback(1)
+                    } else {
+                        callback(2)
+                    }
+                } else {
+                    callback(2)
+                }
+            }
+            override fun onFailure(call: Call<CommentData>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+    fun editComment(date : String, data : CommentAdd, callback: (Int) -> Unit) {
+        service.editComment(token, date, data).enqueue(object : Callback<CommentData> {
+            override fun onResponse(call2: Call<CommentData>, response: Response<CommentData>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    Log.d("comment",apiResponse.toString())
+                    if (apiResponse != null) {
+                        callback(1)
+                    } else {
+                        callback(2)
+                    }
+                } else {
+                    callback(2)
+                }
+            }
+            override fun onFailure(call: Call<CommentData>, t: Throwable) {
                 callback(2)
             }
         })

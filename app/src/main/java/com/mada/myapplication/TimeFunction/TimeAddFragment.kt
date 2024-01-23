@@ -21,6 +21,14 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
@@ -30,14 +38,16 @@ import com.mada.myapplication.TimeFunction.adapter.HomeTimeColorAdapter
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.TimeFunction.adapter.HomeScheduleAndTodoAdapter
-import com.mada.myapplication.databinding.HomeFragmentTimeAddBinding
+import com.mada.myapplication.TimeFunction.util.YourMarkerView
+import com.mada.myapplication.databinding.TimeFragmentTimeAddBinding
 import com.mada.myapplication.hideBottomNavigation
 import java.time.LocalDate
+import java.util.Calendar
 import java.util.Locale
 
 class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
-    private lateinit var binding : HomeFragmentTimeAddBinding
+    private lateinit var binding : TimeFragmentTimeAddBinding
     var timeColorArray = ArrayList<Int>()
     var colorAdapter = HomeTimeColorAdapter(timeColorArray)
     private val viewModel : HomeViewModel by activityViewModels()
@@ -78,7 +88,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment_time_add, container, false)
+        binding = TimeFragmentTimeAddBinding.inflate(layoutInflater)
         hideBottomNavigation(true,  requireActivity())
         today = viewModel.homeDate.value.toString()
         return binding.root
@@ -86,6 +96,14 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 원형 프로그레스 바 진행 상태 변경 (0부터 100까지)
+        val currentTime = Calendar.getInstance()
+        val hour = currentTime.get(Calendar.HOUR_OF_DAY)
+        val minute = currentTime.get(Calendar.MINUTE)
+        val progressPercentage = ((hour * 60 + minute).toFloat() / (24 * 60) * 100).toInt()
+        binding.progressbar2.setProgress(progressPercentage)
+
 
 
         val ivColor = binding.ivHomeTimeColor
@@ -113,6 +131,14 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         preFragment = arguments?.getInt("frag")?:R.id.action_fragTimeAdd_to_fragTime
         var curId = 0
 
+        if (receivedData != null) {
+            pirChartOn2(receivedData)
+        } else {
+            pirChartOn2(ArrayList<TimeViewModel.PieChartData>())
+        }
+        MobileAds.initialize(this.requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
         if(recievedPieData != null) {
             btnSubmit.text = "삭제"
             //btnDelete.isVisible = true
@@ -129,7 +155,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
             textMemo.setText(recievedPieData.memo)
         }
         //색상 선택창
-        val colorListManager = GridLayoutManager(this.activity, 7)
+        val colorListManager = GridLayoutManager(this.activity, 8)
         colorAdapter.setItemClickListener(object : HomeTimeColorAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 binding.ivHomeTimeColor.imageTintList =
@@ -288,25 +314,27 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 var check = true
                 if (receivedData != null) {
                     for (data in receivedData) {
-                        var tmpStart = data.startHour * 60 + data.startMin
-                        var tmpEnd = data.endHour * 60 + data.endMin
-                        if(tmpEnd==0)
-                            tmpEnd = 24*60
-                        if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
-                            if (data.divisionNumber != recievedPieData?.divisionNumber)
-                                check = false
+                        if(data.divisionNumber!=-1) {
+                            var tmpStart = data.startHour * 60 + data.startMin
+                            var tmpEnd = data.endHour * 60 + data.endMin
+                            if (tmpEnd == 0)
+                                tmpEnd = 24 * 60
+                            if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
+                                if (data.divisionNumber != recievedPieData?.divisionNumber)
+                                    check = false
+                            }
                         }
                     }
                 }
                 if(binding.edtHomeCategoryName.text.toString()=="") {
                     viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
                 } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                    viewModelTime.setPopupOne(requireContext(),"올바른 시간을 입력하시오", view)
+                    viewModelTime.setPopupOne(requireContext(),"30분 미만의 시간표는 추가하실수 없습니다", view)
                 } else if(!check){            //이미 해당 시간에 일정이 있을 때
                     viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
                 } else {
                     val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"d",0,"DAILY")
+                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,"DAILY")
                     if(btnSubmit.text.toString()=="등록") {
                         viewModelTime.addTimeDatas(tmp) { result ->
                             when (result) {
@@ -317,7 +345,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,"DAILY")
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,"DAILY")
                                     )
 
                                     val bundle = Bundle()
@@ -342,7 +370,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                                     }
                                     viewModelTime.hashMapArraySchedule.get(today)!!.add(
                                         Schedule(curId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,"DAILY")
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,"DAILY")
                                     )
 
                                     val bundle = Bundle()
@@ -382,7 +410,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                     binding.homeTimeTodoList.adapter = adapter
                 }
                 2 -> {
-                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -403,23 +431,23 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
     }
     private fun initColorArray(){
         with(timeColorArray){
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub1))
-            timeColorArray.add(android.graphics.Color.parseColor("#F68F30"))
-            timeColorArray.add(android.graphics.Color.parseColor("#ED6C64"))
-            timeColorArray.add(android.graphics.Color.parseColor("#FDA4B4"))
-            timeColorArray.add(android.graphics.Color.parseColor("#F076A2"))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub2))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub2))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub2))
+            timeColorArray.add(android.graphics.Color.parseColor("#ED3024"))
+            timeColorArray.add(android.graphics.Color.parseColor("#F65F55"))
+            timeColorArray.add(android.graphics.Color.parseColor("#FD8415"))
+            timeColorArray.add(android.graphics.Color.parseColor("#FEBD16"))
+            timeColorArray.add(android.graphics.Color.parseColor("#FBA1B1"))
+            timeColorArray.add(android.graphics.Color.parseColor("#F46D85"))
+            timeColorArray.add(android.graphics.Color.parseColor("#D087F2"))
+            timeColorArray.add(android.graphics.Color.parseColor("#A516BC"))
 
-            timeColorArray.add(android.graphics.Color.parseColor("#7FC7D4"))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.point_main))
-            timeColorArray.add(android.graphics.Color.parseColor("#21C362"))
-            timeColorArray.add(android.graphics.Color.parseColor("#0E9746"))
             timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.main))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub4))
+            timeColorArray.add(android.graphics.Color.parseColor("#269CB1"))
+            timeColorArray.add(android.graphics.Color.parseColor("#3C67A7"))
             timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub2))
-            timeColorArray.add(resources.getColor(com.mada.myapplication.R.color.sub2))
+            timeColorArray.add(android.graphics.Color.parseColor("#C0D979"))
+            timeColorArray.add(android.graphics.Color.parseColor("#8FBC10"))
+            timeColorArray.add(android.graphics.Color.parseColor("#107E3D"))
+            timeColorArray.add(android.graphics.Color.parseColor("#0E4122"))
         }
     }
     private fun customBackDialog() {
@@ -434,6 +462,93 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onNoButtonClicked(dialog: Dialog) {
         dialog.dismiss()
+    }
+    private fun pirChartOn2(arrays : ArrayList<TimeViewModel.PieChartData>) {
+        //Pi Chart
+        var chart = binding.chart2
+
+        val entries = ArrayList<PieEntry>()
+        val colorsItems = ArrayList<Int>()
+        val marker_ = YourMarkerView(requireContext(), R.layout.home_time_custom_label,arrays)
+
+        if(arrays.size==0) {     //그날 정보가 없다면
+            entries.add(PieEntry(10f, "999"))
+            colorsItems.add(Color.parseColor("#F0F0F0"))
+        } else {
+            var tmp = 0     //시작 시간
+
+            for(data in arrays) {
+                val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
+                val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
+                if(data.divisionNumber==-1) {
+                    data.colorCode = "#F0F0F0"
+                    data.divisionNumber=999
+                }
+                if(tmp==start) {      //이전 일정과 사이에 빈틈이 없을때
+                    entries.add(PieEntry((end-start).toFloat(), data.divisionNumber.toString()))
+                    colorsItems.add(Color.parseColor(data.colorCode))
+                    tmp = end
+                } else {
+                    val noScheduleDuration = start - tmp
+                    entries.add(PieEntry(noScheduleDuration.toFloat(), "999"))      // 스케줄 없는 시간
+                    colorsItems.add(Color.parseColor("#F0F0F0"))
+                    entries.add(PieEntry((end-start).toFloat(), data.divisionNumber.toString()))
+                    colorsItems.add(Color.parseColor(data.colorCode))
+                    tmp = end
+                }
+            }
+        }
+        if(arrays.size>0&&arrays[arrays.size-1].endHour!=24) {
+            val h = 23 - arrays[arrays.size-1].endHour
+            val m = 60 - arrays[arrays.size-1].endMin
+            entries.add(PieEntry((h*60+m).toFloat(), "999"))
+            colorsItems.add(Color.parseColor("#F0F0F0"))
+        }
+        // 왼쪽 아래 설명 제거
+        val legend = chart.legend
+        legend.isEnabled = false
+        chart.invalidate()
+
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.apply {
+            colors = colorsItems
+            setDrawValues(false) // 비율 숫자 없애기
+        }
+
+        val pieData = PieData(pieDataSet)
+        val smallXY = if(chart.width > chart.height) chart.height else chart.width
+        if(smallXY/60f > 0) viewModelTime.range = smallXY/60f
+        val range = 12.0f //viewModelTime.range
+
+        chart.apply {
+            data = pieData
+            isRotationEnabled = false                               //드래그로 회전 x
+            isDrawHoleEnabled = false                               //중간 홀 그리기 x
+            setExtraOffsets(range,range,range,range)    //크기 조절
+            setUsePercentValues(false)
+            setEntryLabelColor(Color.BLACK)
+            setDrawEntryLabels(false) //라벨 끄기
+            //rotationAngle = 30f // 회전 각도, 굳이 필요 없을듯
+            description.isEnabled = false   //라벨 끄기 (오른쪽아래 간단한 설명)
+            marker = marker_
+        }
+
+        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e is PieEntry) {
+                    val pieEntry = e as PieEntry
+                    val label = pieEntry.label
+                    Log.d("select",label)
+                    if (label == "999") {
+                        pieDataSet.selectionShift = 0f //하이라이트 크기
+                    } else {
+                        pieDataSet.selectionShift = 30f// 다른 라벨의 경우 선택 시 하이라이트 크기 설정
+                    }
+                }
+            }
+            override fun onNothingSelected() {
+            }
+        })
     }
 
 }

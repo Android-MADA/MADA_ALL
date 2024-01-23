@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.example.myapplication.R
-import com.example.myapplication.databinding.MyStampBinding
+import com.mada.myapplication.R
+import com.mada.myapplication.databinding.MyStampBinding
 import java.util.Calendar
 
 class MyStampFragment : Fragment() {

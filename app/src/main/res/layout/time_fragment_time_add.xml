@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"
@@ -14,7 +15,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home_timetable"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +24,8 @@
             <ImageView
                 android:padding="10dp"
                 android:id="@+id/iv_home_add_time_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/home_baseline_arrow_back_ios_24" />
 
             <TextView
@@ -36,12 +37,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:padding="15dp"
                 android:id="@+id/btn_home_time_add_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
                 android:text="등록"
                 android:textColor="@color/font"
                 android:textSize="16sp"
@@ -56,13 +56,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_home_timetable">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="210dp">
+                <com.mada.myapplication.TimeFunction.util.CustomCircleBarView
+                    android:id="@+id/progressbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="22dp">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="30dp">
 
                 <EditText
                     android:id="@+id/edt_home_category_name"
@@ -86,7 +108,7 @@
                     app:tint="@color/main" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:visibility="gone"
                     android:id="@+id/rv_home_time_color"
                     android:layout_width="match_parent"
@@ -100,21 +122,20 @@
                 android:id="@+id/line1"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="20dp"
                 android:background="#F0F0F0" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp">
 
                 <ImageView
-
                     android:id="@+id/iv_home_schedule_time"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginStart="16dp"
                     android:src="@drawable/home_ic_home_time"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -229,21 +250,19 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="20dp"
                 android:background="#F0F0F0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginEnd="22dp">
+                android:layout_marginHorizontal="16dp">
 
                 <ImageView
                     android:id="@+id/iv_home_schedule_memo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:src="@drawable/home_memo"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -325,6 +344,21 @@
 
             </LinearLayout>
         </ScrollView>
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-4086521113003670/1878645147">
+        </com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</LinearLayout>

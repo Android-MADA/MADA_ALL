@@ -20,9 +20,6 @@
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar_arrow_left"
             android:background="@android:color/transparent"/>
-
-
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -32,12 +29,10 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:text="     일정" />
-
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
         <Button
             android:id="@+id/submitBtn"
             android:layout_width="70dp"
@@ -52,9 +47,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_marginHorizontal="20dp"
@@ -99,7 +92,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -108,7 +101,7 @@
                         android:id="@+id/calendar_color1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#ED3024" />
@@ -117,7 +110,7 @@
                         android:id="@+id/calendar_color2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#F65F55" />
@@ -126,7 +119,7 @@
                         android:id="@+id/calendar_color3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#FD8415" />
@@ -135,7 +128,7 @@
                         android:id="@+id/calendar_color4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#FEBD16" />
@@ -144,7 +137,7 @@
                         android:id="@+id/calendar_color5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#FBA1B1" />
@@ -153,7 +146,7 @@
                         android:id="@+id/calendar_color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#F46D85" />
@@ -161,7 +154,7 @@
                         android:id="@+id/calendar_color7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#D087F2" />
@@ -169,14 +162,14 @@
                         android:id="@+id/calendar_color8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#A516BC" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
@@ -186,7 +179,7 @@
                         android:id="@+id/calendar_color9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="@color/main" />
@@ -195,7 +188,7 @@
                         android:id="@+id/calendar_color10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#269CB1" />
@@ -204,7 +197,7 @@
                         android:id="@+id/calendar_color11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#3C67A7" />
@@ -213,7 +206,7 @@
                         android:id="@+id/calendar_color12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="@color/sub2" />
@@ -222,7 +215,7 @@
                         android:id="@+id/calendar_color13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#C0D979" />
@@ -231,7 +224,7 @@
                         android:id="@+id/calendar_color14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#8FBC10" />
@@ -239,7 +232,7 @@
                         android:id="@+id/calendar_color15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#107E3D" />
@@ -247,7 +240,7 @@
                         android:id="@+id/calendar_color16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_home_color_selector_28"
                         app:tint="#0E4122" />
@@ -1381,20 +1374,24 @@
                     android:textColor="@color/black"
                     android:importantForAutofill="no" />
             </LinearLayout>
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
-                android:id="@+id/adView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-4086521113003670/1878645147">
-            </com.google.android.gms.ads.AdView>
-
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-4086521113003670/1878645147">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>

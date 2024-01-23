@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.AndroidCalendarData
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
@@ -259,14 +262,28 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
             } else {
             }
         }
+        val calendar = Calendar.getInstance()
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
+        if (dayOfWeek == Calendar.SUNDAY) {
+            dayOfWeek = 6 // 일요일은 6로 매핑
+        } else {
+            dayOfWeek -=2
+        }
+        val tmpDayOfWeek =  arguments?.getInt("dayOfWeek")
+        if (tmpDayOfWeek != null) {
+            dayOfWeek = tmpDayOfWeek
+        }
+        MobileAds.initialize(this.requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
         //등록 btn
         btnSubmit.setOnClickListener {
             if(btnSubmit.text.toString()=="삭제"){
                 viewModelTime.delTimeDatas(curId) { result ->
                     when (result) {
                         1 -> {
-                            val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                            val tmpList = viewModelTime.pieChartDataArrayList[dayOfWeek]
                             for(data in tmpList) {
                                 if(data.id==curId) {
                                     tmpList.remove(data)
@@ -288,39 +305,37 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
                 if(end == 0)
                     end =24*60
                 var check = true
-                if (viewModelTime.pieChartDataArrayList[dayOfWeek] != null) {
-                    for (data in viewModelTime.pieChartDataArrayList[dayOfWeek]) {
-                        var tmpStart = data.startHour * 60 + data.startMin
-                        var tmpEnd = data.endHour * 60 + data.endMin
-                        if(tmpEnd==0)
-                            tmpEnd = 24*60
-                        if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
-                            if (data.divisionNumber != recievedPieData?.divisionNumber)
-                                check = false
+                if (viewModelTime.pieChartWeekDatas[dayOfWeek] != null) {
+                    Log.d("week",viewModelTime.pieChartWeekDatas[dayOfWeek].toString())
+                    for (data in viewModelTime.pieChartWeekDatas[dayOfWeek]) {
+                        if(data.divisionNumber!=-1) {
+                            var tmpStart = data.startHour * 60 + data.startMin
+                            var tmpEnd = data.endHour * 60 + data.endMin
+                            if(tmpEnd==0)
+                                tmpEnd = 24*60
+                            if ((start < tmpEnd && start >= tmpStart) || (end > tmpStart && end <= tmpEnd)) {
+                                if (data.divisionNumber != recievedPieData?.divisionNumber)
+                                    check = false
+                            }
                         }
                     }
                 }
                 if(binding.edtHomeCategoryName.text.toString()=="") {
                     viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
                 } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
-                    viewModelTime.setPopupOne(requireContext(),"올바른 시간을 입력하시오", view)
+                    viewModelTime.setPopupOne(requireContext(),"30분 미만의 시간표는 추가하실수 없습니다", view)
                 } else if(!check){            //이미 해당 시간에 일정이 있을 때
                     viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
                 } else {
                     val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,week[dayOfWeek])
+                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,week[dayOfWeek])
                     if(btnSubmit.text.toString()=="등록") {
-                        viewModelTime.addTimeDatas(tmp) { result ->
+                        viewModelTime.addTimeWeekDatas(tmp) { result ->
                             when (result) {
                                 1 -> {
                                     val tmpId = viewModelTime.addId
-                                    if(viewModelTime.hashMapArraySchedule.get(today)==null) {
-                                        viewModelTime.hashMapArraySchedule.put(today,ArrayList<Schedule>())
-                                    }
-                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
-                                        Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,week[dayOfWeek])
-                                    )
+                                    viewModelTime.pieChartDataArrayList[dayOfWeek].add(Schedule(tmpId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
+                                        viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,week[dayOfWeek]))
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
@@ -332,19 +347,19 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
                             }
                         }
                     } else if(btnSubmit.text.toString()=="수정") {
-                        viewModelTime.editTimeData(curId,tmp) { result ->
+                        viewModelTime.editTimeWeekData(curId,tmp) { result ->
                             when (result) {
                                 1 -> {
-                                    val tmpList = viewModelTime.hashMapArraySchedule.get(today)!!
+                                    val tmpList = viewModelTime.pieChartDataArrayList[tmpDayOfWeek!!]
                                     for(data in tmpList) {
                                         if(data.id==curId) {
                                             tmpList.remove(data)
                                             break
                                         }
                                     }
-                                    viewModelTime.hashMapArraySchedule.get(today)!!.add(
+                                    viewModelTime.pieChartDataArrayList[dayOfWeek].add(
                                         Schedule(curId,today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
-                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),"",0,week[dayOfWeek])
+                                            viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,week[dayOfWeek])
                                     )
 
                                     val bundle = Bundle()
@@ -409,14 +424,8 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
         val textWeekString = arrayOf(
             "월요일","화요일","수요일","목요일","금요일","토요일","일요일"
         )
-        val calendar = Calendar.getInstance()
 
-        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        if (dayOfWeek == Calendar.SUNDAY) {
-            dayOfWeek = 6 // 일요일은 6로 매핑
-        } else {
-            dayOfWeek -=2
-        }
+
 
 
         var preTextView = textWeek[dayOfWeek]
@@ -426,6 +435,7 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
 
         for ((index, textView) in textWeek.withIndex()) {
             textView.setOnClickListener {
+                if(btnSubmit.text == "삭제") btnSubmit.text = "수정"
                 preTextView.setTextColor(Color.BLACK)
                 preTextView.setBackgroundResource(android.R.color.transparent)
                 // 클릭 시 기존에 선택된 TextView의 배경을 투명하게 만듭니다.

@@ -549,6 +549,21 @@ class CalendarViewModel : ViewModel(){
         })
     }
 
+    fun delRepeat(id : Int, option : Int, date : String, callback: (Int) -> Unit){
+        service.delRepeatCal(token,id,option,date).enqueue(object : Callback<CalendarData> {
+            override fun onResponse(call: Call<CalendarData>, response: Response<CalendarData>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) callback(1)
+                    else callback(2)
+                } else callback(2)
+            }
+            override fun onFailure(call: Call<CalendarData>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+
     fun getDdayDataArray(callback: (Int) -> Unit) {
         if(ddayArrayList.size == 0) {
             service.getAllDday(token).enqueue(object : Callback<CalendarDatasData> {
@@ -557,6 +572,7 @@ class CalendarViewModel : ViewModel(){
                         val apiResponse = response.body()
                         if (apiResponse != null) {
                             val datas = apiResponse.data.datas
+                            Log.d("data!!!",datas.toString())
                             if(datas != null) {
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,

@@ -128,8 +128,10 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+
             override fun onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
+
                 // Google Play by calling the startConnection() method.
             }
             suspend fun queryPurchaseAsync() {

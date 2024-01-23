@@ -2,6 +2,8 @@ package com.mada.myapplication.StartFuction
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.myapplication.StartFuction.FragOnBoarding_5
+import com.example.myapplication.StartFuction.FragOnBoarding_6
 
 class OnBoardingAdapter(fa: FragmentActivity, private val count: Int) : FragmentStateAdapter(fa) {
 

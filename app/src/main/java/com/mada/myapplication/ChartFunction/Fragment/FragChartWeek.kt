@@ -1,4 +1,4 @@
-package com.example.myapplication.ChartFunction.Fragment
+package com.mada.myapplication.ChartFunction.Fragment
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -20,17 +20,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
-import com.example.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
-import com.example.myapplication.ChartFunction.Data.MyRecordCategoryData
-import com.example.myapplication.ChartFunction.Data.MyRecordData
-import com.example.myapplication.ChartFunction.Data.MyRecordOptionData
-import com.example.myapplication.MyFuction.RetrofitServiceMy
-import com.example.myapplication.R
-import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.ChartWeekBinding
+import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
+import com.mada.myapplication.ChartFunction.Data.MyRecordCategoryData
+import com.mada.myapplication.ChartFunction.Data.MyRecordData
+import com.mada.myapplication.ChartFunction.Data.MyRecordOptionData
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.R
+import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.databinding.ChartWeekBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData

@@ -80,11 +80,10 @@ class DaySmallItemView @JvmOverloads constructor(
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
 
         //날짜 그리기
-        if(isSameDay(date)) {
+        if(ScheduleNum.text.toString()=="${date.year}-${String.format("%02d", date.monthOfYear)}-${String.format("%02d", date.dayOfMonth)}") {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
-            Log.d("dddddddddddddd","${width} ${height}")
             // Draw rounded rectangle
             val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
                 width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())

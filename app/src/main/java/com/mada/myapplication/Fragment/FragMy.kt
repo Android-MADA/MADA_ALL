@@ -1,4 +1,4 @@
-package com.example.myapplication.Fragment
+package com.mada.myapplication.Fragment
 
 import android.app.AlertDialog
 import android.content.Context
@@ -28,17 +28,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.example.myapplication.CalenderFuntion.Model.CalendarViewModel
-import com.example.myapplication.CustomFunction.ButtonInfo
-import com.example.myapplication.CustomFunction.DataRepo
-import com.example.myapplication.HomeFunction.api.RetrofitInstance
-import com.example.myapplication.MainActivity
-import com.example.myapplication.MyFuction.Data.FragMyData
-import com.example.myapplication.MyFuction.RetrofitServiceMy
-import com.example.myapplication.R
-import com.example.myapplication.StartFuction.Splash1Activity
-import com.example.myapplication.StartFuction.Splash2Activity
-import com.example.myapplication.databinding.FragMyBinding
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.DataRepo
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MainActivity
+import com.mada.myapplication.MyFuction.Data.FragMyData
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.R
+import com.mada.myapplication.StartFuction.Splash1Activity
+import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
