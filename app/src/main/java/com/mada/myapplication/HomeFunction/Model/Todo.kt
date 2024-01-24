@@ -9,9 +9,9 @@ data class Todo(
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
     @SerializedName("repeat") var repeat: String,
-    @SerializedName("repeatInfo") var repeatInfo : String?,
-    @SerializedName("startRepeatDate") var startRepeatDate: String?,
-    @SerializedName("endRepeatDate") var endRepeatDate: String?
+    @SerializedName("repeatInfo") var repeatInfo : Int? = null,
+    @SerializedName("startRepeatDate") var startRepeatDate: String? = null,
+    @SerializedName("endRepeatDate") var endRepeatDate: String? = null
 )
 
 data class RepeatTodo(
@@ -52,8 +52,7 @@ data class PostRequestTodo(
     @SerializedName("todoName") var todoName: String,
     @SerializedName("complete") var complete: Boolean,
     @SerializedName("repeat") var repeat: String,
-    @SerializedName("repeatWeek") var repeatWeek: String?,
-    @SerializedName("repeatMonth") var repeatMonth: String?,
+    @SerializedName("repeatInfo") var repeatInfo : Int?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?
 )
@@ -61,7 +60,7 @@ data class PostRequestTodo(
 data class PatchRequestTodo(
     @SerializedName("todoName") var todoName: String,
     @SerializedName("repeat") var repeat: String?,
-    @SerializedName("repeatInfo") var repeatInfo: String?,
+    @SerializedName("repeatInfo") var repeatInfo: Int?,
     @SerializedName("startRepeatDate") var startRepeatDate: String?,
     @SerializedName("endRepeatDate") var endRepeatDate: String?,
     @SerializedName("complete") var complete : Boolean,

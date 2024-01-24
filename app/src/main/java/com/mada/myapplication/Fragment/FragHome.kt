@@ -1,5 +1,6 @@
 package com.mada.myapplication.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -16,6 +17,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.mada.myapplication.HomeFunction.Model.Category
+import com.mada.myapplication.HomeFunction.Model.CategoryList1
+import com.mada.myapplication.HomeFunction.Model.Todo
+import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -28,6 +33,7 @@ import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.clearHomeDatabase
 import com.mada.myapplication.databinding.TodoLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
+import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.getHomeCategory
 import com.mada.myapplication.getHomeTodo
 import com.mada.myapplication.hideBottomNavigation
@@ -38,6 +44,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.concurrent.thread
 
 class FragHome : Fragment() {
 
@@ -150,6 +157,18 @@ class FragHome : Fragment() {
 
         /**
          * 삭제 예정 코드 끝
+         */
+
+        /**
+         * test - server 시작
+         */
+
+        HomeGetCategory(viewModel, api)
+        for(i in viewModel.categoryListHome){
+            getHomeTodo2(api, viewModel, requireContext(), i)
+        }
+        /**
+         * test - server 끝
          */
 
 
@@ -289,7 +308,7 @@ class FragHome : Fragment() {
             //서버에서 데이터 새로 받아오기
             clearHomeDatabase(viewModel)
             getHomeCategory(api, viewModel, this.requireActivity())
-            getHomeTodo(api, viewModel, this.requireActivity())
+            //getHomeTodo(api, viewModel, this.requireActivity())
         })
 
 
@@ -343,7 +362,7 @@ class FragHome : Fragment() {
         super.onResume()
 
         hideBottomNavigation(false, activity)
-        getHomeCategory(api, viewModel, this.requireActivity())
+        //getHomeCategory(api, viewModel, this.requireActivity())
     }
 
     private fun findDayOfWeek(y: Int, m: Int, d: Int, selected: Calendar): String {
@@ -405,4 +424,61 @@ fun checkCategory(viewModel: HomeViewModel) : Boolean {
         Log.d("checkHomeCate", "not blank")
     }
     return isCate
+}
+
+fun HomeGetCategory(viewModel: HomeViewModel, api: HomeApi){
+    var categoryList = mutableListOf<Category>()
+    api.getCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for(i in response.body()!!.data.CategoryList){
+                    viewModel.categoryListHome.add(i)
+                    Log.d("FragHome server category", "${i.id}")
+                }
+                Log.d("FragHome server category", categoryList.toString())
+            } else {
+                Log.d("FragHome server category", "android fail")
+            }
+        }
+
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("FragHome server category", "server fail")
+        }
+
+    })
+}
+
+fun getHomeTodo2(api : HomeApi, viewModel: HomeViewModel, context: Context, category: Category){
+    Log.d("MainActivity", "3. GET homeTodoStart")
+    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+            if(response.isSuccessful){
+                for(i in response.body()!!.data.TodoList){
+                    if(i.category == category){
+                        viewModel.todoListHome.add(i)
+                    }
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    if(i.category == category){
+                        viewModel.todoListHome.add(Todo(id = i.id, date = i.date, category = i.category, todoName = i.todoName, complete = i.complete, repeat = "Y" ))
+                    }
+                }
+                Log.d("homeTodo 연결 확인", viewModel.todoListHome.toString())
+            }
+            else {
+                Log.d("todo안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+            Log.d("todo서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+    Log.d("MainActivity", "3. GET homeTodoFin")
 }

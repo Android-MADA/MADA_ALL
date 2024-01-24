@@ -14,6 +14,7 @@ import com.mada.myapplication.HomeFunction.Model.ScheduleResponse
 import com.mada.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -99,6 +100,12 @@ fun editTodo(
         @Path("date", encoded = true) date: String,
     ): Call<CategoryList1>
 
+    @GET("/api/home/category/date/{date}")
+    fun getHCategory2(
+        @Header("Authorization") token : String?,
+        @Path("date", encoded = true) date: String,
+    ): Call<CategoryList1>
+
 
 
     @POST("/api/home/category")
@@ -144,7 +151,7 @@ fun editTodo(
     ) : Call<Void>
 
 
-    @GET("/api/home/todo/repeat")
+    @GET("/api/home/todo/repeat/all")
     fun getHRepeatTodo(
         @Header("Authorization") token : String?
     ) : Call<RepeatData1>

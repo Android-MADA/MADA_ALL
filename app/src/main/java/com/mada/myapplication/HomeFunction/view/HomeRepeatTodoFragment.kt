@@ -11,10 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
-import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
-import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
-import com.mada.myapplication.HomeFunction.Model.rRepeatTodo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatCateListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
@@ -76,6 +72,30 @@ class HomeRepeatTodoFragment : Fragment(){
             Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
             bottomFlag = false
         }
+
+
+
+
+
+        //서버 연결 확인
+//        api.getHRepeatTodo(viewModel.userToken).enqueue(object : Callback<RepeatData1>{
+//            override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
+//                if(response.isSuccessful){
+//                    //Log.d("repeatTodo", "성공")
+//                    for(i in response.body()!!.data.RepeatTodoList){
+//                        Log.d("repeat Server", i.toString())
+//                    }
+//                }
+//                else{
+//                    Log.d("repeatTodo", "안드 실패")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
+//                Log.d("repeatTodo", "서버 실패")
+//            }
+//
+//        })
     }
 
     override fun onDestroyView() {

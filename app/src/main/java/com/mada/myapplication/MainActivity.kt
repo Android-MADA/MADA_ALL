@@ -117,6 +117,7 @@ fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
                     Log.d("MainActivity cate 추가중", cateData.categoryName.toString())
                     viewModel.createCate(cateData)
                 }
+                getHomeTodo(api, viewModel, context)
             } else {
                 Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
                 Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
@@ -204,8 +205,9 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
         override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.RepeatTodoList){
-                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatInfo = i.repeatInfo?.toInt(), endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
                     viewModel.createRepeatTodo(repeatData, null)
+                    Log.d("GET repeatTodo", "success")
                 }
             }
             else{

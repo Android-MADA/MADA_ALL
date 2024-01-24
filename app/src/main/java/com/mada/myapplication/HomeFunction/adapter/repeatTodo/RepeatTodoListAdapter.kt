@@ -103,8 +103,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                             holder.data!!.category.toString(),
                             holder.data!!.todoName,
                             holder.data!!.repeat,
-                            holder.data!!.repeatWeek,
-                            holder.data!!.repeatMonth,
+                            holder.data!!.repeatInfo.toString(),
                             holder.data!!.startRepeatDate,
                             holder.data!!.endRepeatDate,
                         ))

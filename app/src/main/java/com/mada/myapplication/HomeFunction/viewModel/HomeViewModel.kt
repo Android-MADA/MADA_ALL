@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
+import com.mada.myapplication.HomeFunction.Model.Todo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -42,6 +44,24 @@ class HomeViewModel : ViewModel() {
         get() = _homeDate
 
     var homeDay = "월요일"
+
+    private fun changeDate(year : Int, month : Int, dayOfWeek : Int) : LocalDate {
+        var monthString : String = month.toString()
+        var dayString = dayOfWeek.toString()
+
+        if(month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8 || month == 9){
+            monthString = "0${month}"
+        }
+        if(dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9){
+            dayString = "0${dayOfWeek}"
+        }
+
+        return LocalDate.parse("${year}-${monthString}-${dayString}")
+    }
+
+
+    var repeatStartDate : LocalDate? = changeDate(homeDate.value!!.year, homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
+    var repeatEndDate : LocalDate? = changeDate((homeDate.value!!.year+1), homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
 
     //viewPager date 넘기기 확인 코드 시작
 
@@ -223,7 +243,7 @@ class HomeViewModel : ViewModel() {
 
     //repeatTodo
 
-    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {
+    fun createRepeatTodo(repeatTodoEntity: RepeatEntity, edt : EditText? = null) = viewModelScope.launch(Dispatchers.IO) {
         repository.createRepeatTodo(repeatTodoEntity)
         if(edt != null) {
             edt!!.text.clear()
@@ -268,4 +288,9 @@ class HomeViewModel : ViewModel() {
     fun patchHTodo(todoId : Int, data : PatchRequestTodo) = viewModelScope.launch {
         api.editTodo(userToken, todoId, data)
     }
+
+    // 서버 연결 테스트 코드
+
+    var categoryListHome = mutableListOf<Category>()
+    var todoListHome = mutableListOf<Todo>()
 }

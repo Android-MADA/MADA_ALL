@@ -87,13 +87,6 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
         }
 
         holder.btnAdd.setOnClickListener {
-//            if(holder.layoutAdd.isGone == true){
-//                holder.layoutAdd.isVisible = true
-//            }
-//            else {
-//                holder.edtAdd.text.clear()
-//                holder.layoutAdd.isGone = true
-//            }
             var bundle = Bundle()
 
             bundle.putStringArrayList("keyAdd", arrayListOf(
@@ -120,7 +113,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
                 var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
                 //서버 post
                 //response로 id 값 넣기
-                val addData = PostRequestTodo(date = null, todoName = holder.edtAdd.text.toString(), category = PostRequestTodoCateId(holder.data!!.id), complete = false, repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
+                val addData = PostRequestTodo(date = null, todoName = holder.edtAdd.text.toString(), category = PostRequestTodoCateId(holder.data!!.id), complete = false, repeat = "DAY", repeatInfo = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
                 CoroutineScope(Dispatchers.IO).launch {
                     api.addTodo(viewModel!!.userToken, addData).enqueue(object : Callback<PostResponseTodo>{
                         override fun onResponse(
@@ -130,7 +123,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
                             if(response.isSuccessful){
                                 //반복투두 db에 추가
                                 val Rresponse = response.body()!!.data.Todo
-                                val data = RepeatEntity(0, id = Rresponse.id, date = null, category = holder.data!!.id, todoName = holder.edtAdd.text.toString(),  repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
+                                val data = RepeatEntity(0, id = Rresponse.id, date = null, category = holder.data!!.id, todoName = holder.edtAdd.text.toString(),  repeat = "DAY", repeatInfo = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
                                 viewModel!!.createRepeatTodo(data, holder.edtAdd)
                                 //투두 db 모두 삭제
                                 viewModel!!.deleteAllTodo()

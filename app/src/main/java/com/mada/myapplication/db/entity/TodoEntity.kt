@@ -35,7 +35,7 @@ data class TodoEntity(
     @ColumnInfo(name = "repeat")
     val repeat: String? = null,
     @ColumnInfo(name = "repeatInfo")
-    val repeatInfo : String? = null,
+    val repeatInfo : Int? = null,
     @ColumnInfo(name = "startRepeatDate")
     val startRepeatDate: String? = null,
     @ColumnInfo(name = "endRepeatDate")
