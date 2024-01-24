@@ -136,6 +136,13 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val fragmentManager: FragmentManager = childFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.commit()
+
+        //첫 진입시 탭레이아웃 화면 불러오기
+        childFragmentManager.beginTransaction()
+            .replace(R.id.CustomBottomSheetTable, colorFragment)
+            .commit()
+
+        //탭레이아웃 화면 불러오기
         customtabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val inflater1: LayoutInflater = layoutInflater
@@ -170,6 +177,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 // do nothing
             }
         })
+
+
 
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
