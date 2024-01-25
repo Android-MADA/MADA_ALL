@@ -97,7 +97,6 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                         val bundle = Bundle()
 
                         bundle.putStringArrayList("keyEdit", arrayListOf(
-                            holder.data!!.todoId.toString(),
                             holder.data!!.id.toString(),
                             holder.data!!.date,
                             holder.data!!.category.toString(),

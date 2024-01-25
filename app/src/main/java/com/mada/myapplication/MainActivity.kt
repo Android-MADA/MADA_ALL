@@ -144,8 +144,8 @@ fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
                     viewModel.createTodo(todoData, null)
                 }
                 for(i in response.body()!!.data.RepeatTodoList){
-                    val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete)
-                    viewModel.createTodo(repeatData, null)
+                    //val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete)
+                    //viewModel.createTodo(repeatData, null)
                 }
                 //닉네임 저장하기
                 viewModel._dUserName.value = response.body()!!.data.nickname

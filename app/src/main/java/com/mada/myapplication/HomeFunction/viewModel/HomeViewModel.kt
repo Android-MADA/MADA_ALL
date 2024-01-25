@@ -45,7 +45,7 @@ class HomeViewModel : ViewModel() {
 
     var homeDay = "월요일"
 
-    private fun changeDate(year : Int, month : Int, dayOfWeek : Int) : LocalDate {
+    fun changeDate(year : Int, month : Int, dayOfWeek : Int) : LocalDate {
         var monthString : String = month.toString()
         var dayString = dayOfWeek.toString()
 
@@ -62,6 +62,11 @@ class HomeViewModel : ViewModel() {
 
     var repeatStartDate : LocalDate? = changeDate(homeDate.value!!.year, homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
     var repeatEndDate : LocalDate? = changeDate((homeDate.value!!.year+1), homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
+
+    fun resetRepeatDate(){
+        repeatStartDate = changeDate(homeDate.value!!.year, homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
+        repeatEndDate = changeDate((homeDate.value!!.year+1), homeDate.value!!.monthValue, homeDate.value!!.dayOfMonth)
+    }
 
     //viewPager date 넘기기 확인 코드 시작
 

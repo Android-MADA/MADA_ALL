@@ -73,29 +73,6 @@ class HomeRepeatTodoFragment : Fragment(){
             bottomFlag = false
         }
 
-
-
-
-
-        //서버 연결 확인
-//        api.getHRepeatTodo(viewModel.userToken).enqueue(object : Callback<RepeatData1>{
-//            override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
-//                if(response.isSuccessful){
-//                    //Log.d("repeatTodo", "성공")
-//                    for(i in response.body()!!.data.RepeatTodoList){
-//                        Log.d("repeat Server", i.toString())
-//                    }
-//                }
-//                else{
-//                    Log.d("repeatTodo", "안드 실패")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<RepeatData1>, t: Throwable) {
-//                Log.d("repeatTodo", "서버 실패")
-//            }
-//
-//        })
     }
 
     override fun onDestroyView() {
