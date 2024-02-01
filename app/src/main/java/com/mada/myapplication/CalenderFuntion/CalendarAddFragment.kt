@@ -571,6 +571,9 @@ class CalendarAddFragment : Fragment() {
                             }
                         }
                     } else {
+                        if(curCycle!="N") {
+
+                        }
                         CalendarViewModel.editCalendar(
                             CalendarDataEdit(curId,binding.textTitle.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
                             curColor,curCycle,curRepeatText,CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()) , "N",binding.textMemo.text.toString()),curId) { result ->

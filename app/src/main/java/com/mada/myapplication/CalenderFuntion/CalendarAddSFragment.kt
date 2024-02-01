@@ -240,13 +240,13 @@ class CalendarAddSFragment : Fragment() {
     }
     fun processInput(input: String): String {
         return when (input) {
-            "Day" -> "매일"
-            "Week" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
-            "Month" -> {
+            "D" -> "매일"
+            "W" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
+            "M" -> {
                 if(calData.repeatDate==32) "매월 " + "마지막 날"
                 else "매월 " + calData.repeatDate + "일"
             }
-            "Year" -> { //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
+            "Y" -> { //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
                 //val  tmp = calData.repeatDate.split("-")
                 "매년 "//${tmp[0].toInt()}월 ${tmp[1].toInt()}일"
             }

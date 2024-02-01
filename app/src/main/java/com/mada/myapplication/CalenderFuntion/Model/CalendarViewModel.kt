@@ -380,7 +380,8 @@ class CalendarViewModel : ViewModel(){
 
         val hashMapDataMonth = HashMap<DateTime, ArrayList<AndroidCalendarData>>()
 
-        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>/*
+        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>
+        /*
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
