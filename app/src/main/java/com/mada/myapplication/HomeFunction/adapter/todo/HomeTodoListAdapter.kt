@@ -1,11 +1,16 @@
 package com.mada.myapplication.HomeFunction.adapter.todo
 
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
+import com.mada.myapplication.HomeFunction.Model.data
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
@@ -46,6 +52,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
     var viewModel : HomeViewModel? = null
     var category : CateEntity? = null
+    var context : Context? = null
     private var mFragmentManager = fragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,9 +65,6 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
         holder.bind(getItem(position))
-
-
-
 
         var cbColor = R.drawable.home_checkbox1
 
@@ -85,8 +89,8 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
 
         if(category!!.isInActive == true){
-            holder.checkbox.isInvisible = true
-            holder.todoMenu.isInvisible = true
+            holder.checkbox.isEnabled = false
+            //holder.todoMenu.isInvisible = true
             holder.ivIcon.isVisible = true
             if(holder.data!!.complete == true){
                 holder.ivIcon.setImageResource(findRes(category!!.color))
@@ -94,16 +98,8 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
         }
         else {
             holder.checkbox.isVisible = true
-            if(holder.data!!.repeat != "N"){
-                holder.ivIcon.isGone = true
-                holder.todoMenu.isGone = true
-                holder.repeatIcon.isVisible = true
-            }
-            else {
-                holder.ivIcon.isGone = true
-                holder.todoMenu.isVisible = true
-                holder.repeatIcon.isGone = true
-            }
+            holder.ivIcon.isGone = true
+            holder.todoMenu.isVisible = true
         }
 
 
@@ -151,74 +147,144 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
         holder.todoMenu.setOnClickListener {
 
-            val todoMenuBottomSheet = viewModel?.let { it1 -> TodoDateBottomSheetDialog(it1) }
-            if (todoMenuBottomSheet != null) {
-                todoMenuBottomSheet.menuFlag = "todoMenu"
-                todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
-                todoMenuBottomSheet.apply {
-                    setCallback(object : TodoDateBottomSheetDialog.OnSendFromBottomSheetDialog{
-                        override fun sendValue(value: String) {
-                            Log.d("todoMenu", value)
-                            if(value == "edit"){
-                                holder.editLayout.isVisible = true
-                                holder.layoutcb.isGone = true
-                                holder.edtTodo.setText(holder.data!!.todoName)
+            // 반복 투두 경우 삭제 다이얼로그
+            if(holder.data!!.repeat == "N"){
+                val todoMenuBottomSheet = viewModel?.let { it1 -> TodoDateBottomSheetDialog(it1) }
+                if (todoMenuBottomSheet != null) {
+                    todoMenuBottomSheet.menuFlag = "todoMenu"
+                    todoMenuBottomSheet.show(mFragmentManager, todoMenuBottomSheet.tag)
+                    todoMenuBottomSheet.apply {
+                        setCallback(object : TodoDateBottomSheetDialog.OnSendFromBottomSheetDialog{
+                            override fun sendValue(value: String) {
+                                Log.d("todoMenu", value)
+                                if(value == "edit"){
+                                    holder.editLayout.isVisible = true
+                                    holder.layoutcb.isGone = true
+                                    holder.edtTodo.setText(holder.data!!.todoName)
+                                }
+                                else if(value == "delete"){
+                                    val data = holder.data
+                                    api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
+                                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                            if(response.isSuccessful){
+                                                Log.d("todo server", "성공")
+                                                viewModel!!.deleteTodo(data!!)
+                                            }
+                                            else {
+                                                Log.d("todo안드 잘못", "서버 연결 실패")
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                                            Log.d("서버 문제", "서버 연결 실패")
+                                        }
+                                    })
+                                }
+                                else if(value == "date"){
+                                    Log.d("바꿀 날짜", viewModel.selectedChangedDate)
+                                    //val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.todoName, holder.data!!.category, holder.data!!.todoName, holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
+                                    //viewModel!!.updateTodo(data)
+                                    val updateData = PatchRequestTodo(todoName = holder.data!!.todoName, repeat = "N",  repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, date = viewModel.selectedChangedDate)
+                                    Log.d("todo server", updateData.toString())
+                                    api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+                                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                            if(response.isSuccessful){
+                                                Log.d("todo server", "성공")
+                                                viewModel!!.deleteTodo(holder.data!!)
+                                            }
+                                            else {
+                                                Log.d("todo안드 잘못", "서버 연결 실패")
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                                            Log.d("서버 문제", "서버 연결 실패")
+                                        }
+                                    })
+
+                                }
+
                             }
-                            else if(value == "delete"){
-                                val data = holder.data
-                                api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
-                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                        if(response.isSuccessful){
-                                            Log.d("todo server", "성공")
-                                            viewModel!!.deleteTodo(data!!)
-                                        }
-                                        else {
-                                            Log.d("todo안드 잘못", "서버 연결 실패")
-                                        }
-                                    }
 
-                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                                        Log.d("서버 문제", "서버 연결 실패")
-                                    }
-                                })
-                            }
-                            else if(value == "date"){
-                                Log.d("바꿀 날짜", viewModel.selectedChangedDate)
-                                //val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.todoName, holder.data!!.category, holder.data!!.todoName, holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
-                                //viewModel!!.updateTodo(data)
-                                val updateData = PatchRequestTodo(todoName = holder.data!!.todoName, repeat = "N",  repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, date = viewModel.selectedChangedDate)
-                                Log.d("todo server", updateData.toString())
-                                api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
-                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                        if(response.isSuccessful){
-                                            Log.d("todo server", "성공")
-                                            viewModel!!.deleteTodo(holder.data!!)
-                                        }
-                                        else {
-                                            Log.d("todo안드 잘못", "서버 연결 실패")
-                                        }
-                                    }
+                        })
+                    }
 
-                                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                                        Log.d("서버 문제", "서버 연결 실패")
-                                    }
-                                })
+                }
+            }
+            else{
+                val mDeleteDialog = Dialog(context!!)
+                mDeleteDialog.setContentView(R.layout.repeat_delete_dialog)
 
-                            }
+                val dialogOne = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_one)
+                val dialogAfter = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_after)
+                val dialogAll = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_all)
+                val layoutOne = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_one)
+                val layoutAfter = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_after)
+                val layoutAll = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_all)
 
-                        }
+                var selectedFlag = "one"
 
-                    })
+                dialogOne.isChecked = true
+                dialogAfter.isChecked = false
+                dialogAll.isChecked = false
+
+                dialogOne.setOnClickListener {
+                    dialogOne.isChecked = true
+                    dialogAll.isChecked = false
+                    dialogAfter.isChecked = false
+                    selectedFlag = "one"
                 }
 
+                layoutOne.setOnClickListener {
+                    dialogOne.isChecked = true
+                    dialogAll.isChecked = false
+                    dialogAfter.isChecked = false
+                    selectedFlag = "one"
+                }
+
+                dialogAfter.setOnClickListener {
+                    dialogAfter.isChecked = true
+                    dialogAll.isChecked = false
+                    dialogOne.isChecked = false
+                    selectedFlag = "after"
+                }
+
+                layoutAfter.setOnClickListener {
+                    dialogAfter.isChecked = true
+                    dialogAll.isChecked = false
+                    dialogOne.isChecked = false
+                    selectedFlag = "after"
+                }
+
+                dialogAll.setOnClickListener {
+                    dialogAll.isChecked = true
+                    dialogOne.isChecked = false
+                    dialogAfter.isChecked = false
+                    selectedFlag = "all"
+                }
+
+                layoutAll.setOnClickListener {
+                    dialogAll.isChecked = true
+                    dialogOne.isChecked = false
+                    dialogAfter.isChecked = false
+                    selectedFlag = "all"
+                }
+
+                mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
+                    mDeleteDialog.dismiss()
+                    Toast.makeText(context, "취소", Toast.LENGTH_SHORT).show()
+                }
+
+                mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
+                    mDeleteDialog.dismiss()
+                    Toast.makeText(context, selectedFlag, Toast.LENGTH_SHORT).show()
+                }
+                mDeleteDialog.show()
             }
-
-
 
         }
 
-
-
+        //체크박스 클릭 리스너
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate, repeat = holder.data!!.repeat, repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
                 val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = checkUpdateData.repeat, repeatInfo = checkUpdateData.repeatInfo,startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = isChecked, date = holder.data!!.date)
@@ -256,7 +322,6 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
         val layoutcb = binding.layoutViewpagerTodo
         val ivIcon = binding.ivMyTodo
         val todoMenu = binding.tvHomeTodoEdit
-        val repeatIcon = binding.ivHomeRepeat
 
     }
 

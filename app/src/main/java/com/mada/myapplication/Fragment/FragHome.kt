@@ -155,6 +155,10 @@ class FragHome : Fragment() {
         viewModel.userToken = Splash2Activity.prefs.getString("token", "")
         Log.d("token", viewModel.userToken)
 
+        binding.todoMentTv.setOnClickListener {
+            viewModel.setPopupDelete(requireContext(), 1, 1)
+        }
+
         /**
          * 삭제 예정 코드 끝
          */
@@ -345,15 +349,6 @@ class FragHome : Fragment() {
             }
 
         })
-
-
-
-
-        //시작요일 변경 -> bottomsheetdialog에서 처리할 부분
-//        viewModel.startDay.observe(viewLifecycleOwner, Observer{
-//            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
-//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//        })
 
 
     }

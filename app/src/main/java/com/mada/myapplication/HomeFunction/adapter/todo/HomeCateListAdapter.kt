@@ -51,6 +51,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    var context : Context? = null
     private var todoFragmentManager = fragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -107,6 +108,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                 val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
                 mTodoAdapter.viewModel = viewModel
                 mTodoAdapter.category = getItem(position)
+                mTodoAdapter.context = context
                 viewModel!!.readTodo(cateId, mTodoAdapter)
 
 

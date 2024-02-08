@@ -1,12 +1,28 @@
 package com.mada.myapplication.HomeFunction.viewModel
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.Todo
@@ -14,6 +30,7 @@ import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdap
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.R
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
@@ -298,4 +315,65 @@ class HomeViewModel : ViewModel() {
 
     var categoryListHome = mutableListOf<Category>()
     var todoListHome = mutableListOf<Todo>()
+
+
+    //////
+    /**
+     * 다이얼로그 - repeat delete
+     */
+
+    @SuppressLint("MissingInflatedId")
+    fun setPopupDelete(theContext: Context, repeatId : Int, todoId : Int) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.repeat_delete_dialog, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+        var deleteFlag = "one"
+
+        /**
+         * 레이아웃 설정
+         */
+
+        mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_one).isChecked = true
+
+        mDialogView.findViewById<RadioGroup>(R.id.radiogroup_repeat_delete).setOnCheckedChangeListener { radioGroup, checkedId ->
+            deleteFlag = when(checkedId){
+                R.id.radio_repeat_delete_one -> {"one"}
+                R.id.radio_repeat_delete_after -> {"after"}
+                else -> {"all"}
+            }
+        }
+
+        mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
+            mBuilder.dismiss()
+        }
+        mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
+            if(deleteFlag == "one"){
+                //반복 투두 하나만 삭제
+                mBuilder.dismiss()
+            }
+            else if(deleteFlag == "after"){
+                //이 날짜 이후의 반복투두 삭제
+                mBuilder.dismiss()
+            }
+            else{
+                //모든 반복투두 삭제
+                mBuilder.dismiss()
+            }
+        }
+    }
 }
