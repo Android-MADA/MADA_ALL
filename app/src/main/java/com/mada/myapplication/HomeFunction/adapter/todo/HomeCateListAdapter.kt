@@ -67,38 +67,6 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
             if(holder.data!!.isInActive == true){
                 holder.btnAdd.isGone = true
-//                runBlocking {
-//                    viewModel!!.readTodo(cateId, null)
-//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
-//                        holder.todoRv.isGone = true
-//                        view!!.isGone = true
-//
-//                    }
-//                    else {
-//                        val mTodoAdapter = HomeTodoListAdapter()
-//                        mTodoAdapter.viewModel = viewModel
-//                        mTodoAdapter.category = getItem(position)
-//                        viewModel!!.readTodo(cateId, mTodoAdapter)
-//
-//                        withContext(Dispatchers.Main){
-//                            holder.todoRv.adapter = mTodoAdapter
-//                            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-//
-//                        }
-//                    }
-//                }
-                //종료카테고리 처리 -> 보완 필요
-//                runBlocking {
-//                    viewModel!!.readTodo(cateId, null)
-//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
-//                        Log.d("inactive", cateId.toString())
-//                        view!!.isGone = true
-//                    }
-//                    else{
-//                        Log.d("inactive but have todo", cateId.toString())
-//                    }
-//                }
-
             }
             else {
                 Log.d("homecateRV", "추가중..")
@@ -114,8 +82,6 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
                 holder.todoRv.adapter = mTodoAdapter
                 holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-
-
             }
 
 

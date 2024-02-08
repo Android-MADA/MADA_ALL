@@ -14,6 +14,7 @@
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
+        android:textColor="@color/black"
         />
 
     <RadioGroup
@@ -28,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_15_stroke"
+            android:backgroundTint="@color/grey2"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical">
@@ -44,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이 일정만 삭제하기"
+                android:textColor="@color/black"
                 android:textSize="14sp"/>
         </LinearLayout>
 
@@ -52,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_15_stroke"
+            android:backgroundTint="@color/grey2"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical">
@@ -68,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="앞으로의 일정까지 삭제하기"
+                android:textColor="@color/black"
                 android:textSize="14sp"/>
         </LinearLayout>
 
@@ -76,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_15_stroke"
+            android:backgroundTint="@color/grey2"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical">
@@ -92,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="모든 일정 삭제하기"
+                android:textColor="@color/black"
                 android:textSize="14sp"/>
         </LinearLayout>
 
@@ -111,9 +118,9 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:text="취소"
-            android:background="@drawable/background_15_stroke"
-            android:backgroundTint="#2658AC"
-            android:textColor="@color/black"
+            android:background="@drawable/background_10_strokex"
+            android:backgroundTint="@color/grey3"
+            android:textColor="@color/white"
             android:gravity="center"
             android:layout_marginStart="20dp"
             />
@@ -132,9 +139,9 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:text="삭제하기"
-            android:background="@drawable/background_15_stroke"
-            android:backgroundTint="#F44336"
-            android:textColor="@color/black"
+            android:background="@drawable/background_10_strokex"
+            android:backgroundTint="@color/sub4"
+            android:textColor="@color/white"
             android:gravity="center"
             android:layout_marginEnd="20dp"
             />

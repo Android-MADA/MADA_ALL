@@ -272,12 +272,12 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
                 mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
                     mDeleteDialog.dismiss()
-                    Toast.makeText(context, "취소", Toast.LENGTH_SHORT).show()
                 }
 
                 mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
+                    //서버 연결 - 선택된 삭제 동작에 따라
+                    //서버 연결- 투두 새로 받아오기
                     mDeleteDialog.dismiss()
-                    Toast.makeText(context, selectedFlag, Toast.LENGTH_SHORT).show()
                 }
                 mDeleteDialog.show()
             }
