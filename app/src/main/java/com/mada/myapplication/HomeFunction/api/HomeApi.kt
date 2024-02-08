@@ -156,4 +156,25 @@ fun editTodo(
         @Header("Authorization") token : String?
     ) : Call<RepeatData1>
 
+    //반복투두 삭제 - one
+    @PATCH("/api/home/todo/repeat/delete/{repeatTodoId}")
+    fun deleteRepeatTodoOne(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
+
+    //반복투두 삭제 - after
+    @PATCH("/api/home/todo/repeat/delete-all-future/{repeatTodoId}")
+    fun deleteRepeatTodoAfter(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
+
+    //반복투두 삭제 - all
+    @PATCH("/api/home/todo/repeat/delete-all/{repeatTodoId}")
+    fun deleteRepeatTodoAll(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
+
 }
