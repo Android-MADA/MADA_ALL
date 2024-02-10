@@ -245,6 +245,30 @@ class TimeViewModel : ViewModel() {
             })
         } else callback(1)
     }
+    fun loadWeek(date : String, callback: (Int) -> Unit) {
+        val call = service.loadWeekly(token,date)
+        var arrays = ArrayList<Schedule>()
+        call.enqueue(object : Callback<ScheduleListData> {
+            override fun onResponse(call2: Call<ScheduleListData>, response: Response<ScheduleListData>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        val datas = apiResponse.datas2.datas
+                        Log.d("hey",apiResponse.toString())
+                        for (data in datas) {
+                            if(!data.isDeleted)
+                                arrays.add(data)
+                        }
+                        hashMapArraySchedule.put(date,arrays)
+                        callback(1)
+                    } else callback(2)
+                } else callback(2)
+            }
+            override fun onFailure(call: Call<ScheduleListData>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
     fun getTimeDatas(date : String) :  ArrayList<PieChartData>{
         var arrays = ArrayList<PieChartData>()
         if(hashMapArraySchedule.get(date) != null) {

@@ -270,7 +270,6 @@
 
     </LinearLayout>
 
-
     <ImageButton
         android:id="@+id/fab_home_time"
         android:layout_width="57dp"
@@ -282,4 +281,5 @@
         android:src="@drawable/calendar_plus_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

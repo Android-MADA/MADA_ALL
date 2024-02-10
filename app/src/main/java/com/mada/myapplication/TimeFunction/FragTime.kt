@@ -37,6 +37,7 @@ class FragTime : Fragment() {
     lateinit var today : String
     lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
+    var loadWeek = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,12 @@ class FragTime : Fragment() {
                 when (result) {
                     1 -> {
                         val tmpList = viewModelTime.getTimeDatas(newValue)
+                        if(tmpList.size==0) {
+                            loadWeek= true
+                            binding.fabHomeTime.setImageResource(R.drawable.time_clock_img)
+                        }
                         pirChartOn(tmpList)
+
                     }
                     2 -> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -166,17 +172,32 @@ class FragTime : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.timeChangeBtn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
         }
 
         binding.fabHomeTime.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("today",today)
-            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
-            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
+            if(loadWeek) {
+                viewModelTime.loadWeek(today) { result ->
+                    when (result) {
+                        1 -> {
+                            val tmpList = viewModelTime.getTimeDatas(today)
+                            binding.fabHomeTime.setImageResource(R.drawable.calendar_plus_btn)
+                            loadWeek = false
+                            pirChartOn(tmpList)
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                val bundle = Bundle()
+                bundle.putString("today",today)
+                bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
+                Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
+            }
         }
     }
     override fun onDestroyView() {

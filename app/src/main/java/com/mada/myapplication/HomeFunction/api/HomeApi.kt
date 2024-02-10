@@ -122,7 +122,10 @@ fun editTodo(
     @PATCH("/api/home/time/comment/update/{date}")
     fun editComment(@Header("Authorization") token : String?, @Path("date") date : String, @Body data : CommentAdd
     ): Call<CommentData>
-
+    @POST("/api/home/time/daily/loadWeekly/{date}")
+    fun loadWeekly(
+        @Header("Authorization") token : String?, @Path("date") date: String
+    ): Call<ScheduleListData>
 
 
     //카테고리 조회 -> 확인 완

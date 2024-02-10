@@ -29,11 +29,10 @@ class TimeTableFragment : Fragment() {
     lateinit var binding : TimeTableFragmentBinding
     private val viewModel : HomeViewModel by activityViewModels()
     private val viewModelTime: TimeViewModel by activityViewModels()
+    var loadWeek = false
 
     lateinit var today : String
     var pieChartDataArray : ArrayList<TimeViewModel.PieChartData> = ArrayList()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -83,6 +82,10 @@ class TimeTableFragment : Fragment() {
                 when (result) {
                     1 -> {
                         val tmpList = viewModelTime.getTimeDatas(newValue)
+                        if(tmpList.size==0) {
+                            loadWeek= true
+                            binding.fabHomeTime.setImageResource(R.drawable.time_clock_img)
+                        }
                         timeTableOn(tmpList,today)
                     }
                     2 -> {
@@ -153,11 +156,27 @@ class TimeTableFragment : Fragment() {
         }
 
         binding.fabHomeTime.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("today",today)
-            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTimeTable)
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeAdd,bundle)
+            if(loadWeek) {
+                viewModelTime.loadWeek(today) { result ->
+                    when (result) {
+                        1 -> {
+                            val tmpList = viewModelTime.getTimeDatas(today)
+                            binding.fabHomeTime.setImageResource(R.drawable.calendar_plus_btn)
+                            loadWeek = false
+                            timeTableOn(tmpList,today)
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                val bundle = Bundle()
+                bundle.putString("today",today)
+                bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTimeTable)
+                Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeAdd,bundle)
+            }
         }
     }
     override fun onDestroyView() {
