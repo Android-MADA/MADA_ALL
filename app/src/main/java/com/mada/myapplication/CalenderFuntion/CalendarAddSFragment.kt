@@ -79,7 +79,7 @@ class CalendarAddSFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
         }
         binding.calendarDeleteBtn.setOnClickListener {
-            if(calData.repeat=="N") {
+            if(true) { // calData.repeat=="N"
                 val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
                 val mBuilder = AlertDialog.Builder(requireContext())
                     .setView(mDialogView)

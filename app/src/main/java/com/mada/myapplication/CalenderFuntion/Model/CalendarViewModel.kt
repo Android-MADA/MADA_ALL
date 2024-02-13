@@ -316,7 +316,7 @@ class CalendarViewModel : ViewModel(){
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
-                                    if(data.repeat=="N") {
+                                    if(data.repeat=="N"||data.repeat==null) {
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
@@ -515,6 +515,7 @@ class CalendarViewModel : ViewModel(){
                 Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
+                    Log.d("viewmodel",responseBody.toString())
                     if(responseBody!=null) {
                         addId = responseBody.data.calendars.id    //responseBody.data.id
                         callback(1)

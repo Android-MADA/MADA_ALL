@@ -27,6 +27,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
+import com.mada.myapplication.MainActivity
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -68,6 +69,14 @@ class CalendarAddFragment : Fragment() {
     ): View? {
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
+
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        }
 
         val schedules = arrayOf<TextView>(
             binding.preScheldule2,
@@ -461,9 +470,7 @@ class CalendarAddFragment : Fragment() {
             else if(newVal ==3 ||newVal ==4 ||newVal ==6 ||newVal ==9 ||newVal ==11) binding.numberPickerDay.maxValue=30
         }
 
-        MobileAds.initialize(this.requireContext()) {}
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+
         return binding.root
     }
 

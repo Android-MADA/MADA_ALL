@@ -29,6 +29,7 @@ import com.android.billingclient.api.queryPurchaseHistory
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance.client
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFuction.Splash2Activity
@@ -86,6 +87,8 @@ class MyPremiumFragment : Fragment() {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
             // success
             binding.myPremiumBtn.text = "구독 중"
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.setPremium()
         } else {
             // fail
         }

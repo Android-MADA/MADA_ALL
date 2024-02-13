@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var billingClient : BillingClient
     private lateinit var sharedPreferences: SharedPreferences
+    private var premium = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,19 +145,16 @@ class MainActivity : AppCompatActivity() {
                 billingClient.queryPurchasesAsync(params) { purchasesResult, purchasesList ->
                     if (purchasesResult.responseCode == BillingClient.BillingResponseCode.OK) {
                         // Process the list of purchase
-                        val editor = sharedPreferences.edit()
                         if(purchasesList.isEmpty()) {
                             // 구독 안한 상태
-                            editor.putBoolean("premium", false)
+                            premium = false
                         }
                         for (purchase in purchasesList) {
                             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                                 // 구독중
-                                editor.putBoolean("premium", true)
+                                premium = true
                             }
-
                         }
-                        editor.apply()
                     }
                 }
             }
@@ -178,9 +176,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
+    fun getPremium() : Boolean {
+        return premium
+    }
+    fun setPremium() {
+        premium = true
+    }
 }
+
 
 
 

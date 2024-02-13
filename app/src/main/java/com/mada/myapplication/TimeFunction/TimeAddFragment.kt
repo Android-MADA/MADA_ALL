@@ -36,6 +36,7 @@ import com.mada.myapplication.HomeFunction.Model.Schedule
 import com.mada.myapplication.HomeFunction.Model.ScheduleAdd
 import com.mada.myapplication.TimeFunction.adapter.HomeTimeColorAdapter
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.R
 import com.mada.myapplication.TimeFunction.adapter.HomeScheduleAndTodoAdapter
 import com.mada.myapplication.TimeFunction.util.YourMarkerView
@@ -136,9 +137,13 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         } else {
             pirChartOn2(ArrayList<TimeViewModel.PieChartData>())
         }
-        MobileAds.initialize(this.requireContext()) {}
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        }
         if(recievedPieData != null) {
             btnSubmit.text = "삭제"
             //btnDelete.isVisible = true
