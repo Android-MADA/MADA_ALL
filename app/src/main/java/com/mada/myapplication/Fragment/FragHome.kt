@@ -155,10 +155,6 @@ class FragHome : Fragment() {
         viewModel.userToken = Splash2Activity.prefs.getString("token", "")
         Log.d("token", viewModel.userToken)
 
-        binding.todoMentTv.setOnClickListener {
-            viewModel.setPopupDelete(requireContext(), 1, 1)
-        }
-
         /**
          * 삭제 예정 코드 끝
          */
@@ -232,6 +228,7 @@ class FragHome : Fragment() {
             val cateList = it as List<CateEntity>
             val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
+            mAdapter.context = context
             mAdapter.submitList(cateList)
             binding.todoActiveCategoryRv.adapter = mAdapter
             binding.todoActiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
@@ -247,6 +244,7 @@ class FragHome : Fragment() {
             val cateList = it as List<CateEntity>
             val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
+            mAdapter.context = context
             mAdapter.submitList(cateList)
             binding.todoInactiveCategoryRv.adapter = mAdapter
             binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
@@ -452,13 +450,13 @@ fun getHomeTodo2(api : HomeApi, viewModel: HomeViewModel, context: Context, cate
         override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){
-                    if(i.category == category){
+                    if(i.category.id == category.id){
                         viewModel.todoListHome.add(i)
                     }
                 }
                 for(i in response.body()!!.data.RepeatTodoList){
-                    if(i.category == category){
-                        viewModel.todoListHome.add(Todo(id = i.id, date = i.date, category = i.category, todoName = i.todoName, complete = i.complete, repeat = "Y" ))
+                    if(i.categoryId == category.id){
+                        viewModel.todoListHome.add(Todo(id = i.id, date = i.date, category = category, todoName = "repeatTodo Android test", complete = i.complete, repeat = "Y" ))
                     }
                 }
                 Log.d("homeTodo 연결 확인", viewModel.todoListHome.toString())

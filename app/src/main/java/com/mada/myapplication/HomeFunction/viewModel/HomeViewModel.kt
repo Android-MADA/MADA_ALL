@@ -14,9 +14,11 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +27,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
+import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
+import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
 import com.mada.myapplication.HomeFunction.Model.Todo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
@@ -39,6 +43,9 @@ import kotlinx.coroutines.Dispatchers
 import com.mada.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -303,6 +310,117 @@ class HomeViewModel : ViewModel() {
         //todoEntityList = repository.readAllRepeatTodo().asLiveData()
     }
 
+    fun deleteRepeatTodoOne(repeatTodoId : Int, callback: (Int) -> Unit){
+        api.deleteRepeatTodoOne(userToken, repeatTodoId = repeatTodoId).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("viewmodel", "Successful response: ${response}")
+                    callback(0)
+                }else{
+                    Log.e("viewmodel", "Unsuccessful response: ${response}")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("viewmodel", "Failed to make the request", t)
+                callback(1)
+            }
+
+        })
+    }
+
+    fun deleteRepeatTodoAfter(repeatTodoId: Int, callback: (Int) -> Unit){
+        api.deleteRepeatTodoAfter(userToken, repeatTodoId = repeatTodoId).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("viewmodel", "Successful response: ${response}")
+                    callback(0)
+                }else{
+                    Log.e("viewmodel", "Unsuccessful response: ${response}")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("viewmodel", "Failed to make the request", t)
+                callback(1)
+            }
+
+        })
+    }
+
+    fun deleteRepeatTodoAll(repeatTodoId: Int, callback: (Int) -> Unit){
+        api.deleteRepeatTodoAll(userToken, repeatTodoId = repeatTodoId).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("viewmodel", "Successful response: ${response}")
+                    callback(0)
+                }else{
+                    Log.e("viewmodel", "Unsuccessful response: ${response}")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("viewmodel", "Failed to make the request", t)
+                callback(1)
+            }
+
+        })
+    }
+
+    fun addCategoryAPI(data : PostRequestCategory, cateName : String, cateColor : String, cateIconId : Int, callback: (Int) -> Unit){
+        api.postHCategory(userToken, data).enqueue(object : Callback<PatchResponseCategory>{
+            override fun onResponse(
+                call: Call<PatchResponseCategory>,
+                response: Response<PatchResponseCategory>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("viewmodel", "Successful response: ${response}")
+                    createCate(CateEntity(id = response.body()!!.data.Category.id, categoryName = cateName, color = cateColor, isInActive = false, iconId = cateIconId))
+
+                    callback(0)
+                }else{
+                    Log.e("viewmodel", "Unsuccessful response: ${response}")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<PatchResponseCategory>, t: Throwable) {
+                Log.e("viewmodel", "Failed to make the request", t)
+                callback(1)
+            }
+
+        })
+    }
+
+    fun editCategoryAPI(category : PostRequestCategory, cateDB : CateEntity, categoryId: Int, callback: (Int) -> Unit){
+        api.editHCategory(userToken, categoryId = categoryId, data = category).enqueue(object : Callback<PatchResponseCategory>{
+            override fun onResponse(
+                call: Call<PatchResponseCategory>,
+                response: Response<PatchResponseCategory>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("viewmodel", "Successful response: ${response}")
+                    updateCate(cateDB)
+                    readActiveCate(false)
+                    readQuitCate(true)
+                    callback(0)
+                }else{
+                    Log.e("viewmodel", "Unsuccessful response: ${response}")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<PatchResponseCategory>, t: Throwable) {
+                Log.e("viewmodel", "Failed to make the request", t)
+                callback(1)
+            }
+
+        })
+    }
+
     /////////////////////////////////////////////////////////////////////
     // server 연결
 
@@ -323,11 +441,12 @@ class HomeViewModel : ViewModel() {
      */
 
     @SuppressLint("MissingInflatedId")
-    fun setPopupDelete(theContext: Context, repeatId : Int, todoId : Int) {
+    fun setPopupDelete(theContext: Context, todo : TodoEntity) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.repeat_delete_dialog, null)
         val mBuilder = AlertDialog.Builder(theContext)
             .setView(mDialogView)
             .create()
+        val repeatId : Int = todo.repeatId!!
 
         mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -347,33 +466,115 @@ class HomeViewModel : ViewModel() {
         /**
          * 레이아웃 설정
          */
+        val dialogOne = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_one)
+        val dialogAfter = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_after)
+        val dialogAll = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_all)
+        val layoutOne = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_one)
+        val layoutAfter = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_after)
+        val layoutAll = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_all)
 
-        mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_one).isChecked = true
+        var selectedFlag = "one"
 
-        mDialogView.findViewById<RadioGroup>(R.id.radiogroup_repeat_delete).setOnCheckedChangeListener { radioGroup, checkedId ->
-            deleteFlag = when(checkedId){
-                R.id.radio_repeat_delete_one -> {"one"}
-                R.id.radio_repeat_delete_after -> {"after"}
-                else -> {"all"}
-            }
+        dialogOne.isChecked = true
+        dialogAfter.isChecked = false
+        dialogAll.isChecked = false
+
+        dialogOne.setOnClickListener {
+            dialogOne.isChecked = true
+            dialogAll.isChecked = false
+            dialogAfter.isChecked = false
+            selectedFlag = "one"
         }
+
+        layoutOne.setOnClickListener {
+            dialogOne.isChecked = true
+            dialogAll.isChecked = false
+            dialogAfter.isChecked = false
+            selectedFlag = "one"
+        }
+
+        dialogAfter.setOnClickListener {
+            dialogAfter.isChecked = true
+            dialogAll.isChecked = false
+            dialogOne.isChecked = false
+            selectedFlag = "after"
+        }
+
+        layoutAfter.setOnClickListener {
+            dialogAfter.isChecked = true
+            dialogAll.isChecked = false
+            dialogOne.isChecked = false
+            selectedFlag = "after"
+        }
+
+        dialogAll.setOnClickListener {
+            dialogAll.isChecked = true
+            dialogOne.isChecked = false
+            dialogAfter.isChecked = false
+            selectedFlag = "all"
+        }
+
+        layoutAll.setOnClickListener {
+            dialogAll.isChecked = true
+            dialogOne.isChecked = false
+            dialogAfter.isChecked = false
+            selectedFlag = "all"
+        }
+
 
         mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
             mBuilder.dismiss()
+            Toast.makeText(theContext, "취소", Toast.LENGTH_SHORT).show()
         }
+
         mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
-            if(deleteFlag == "one"){
-                //반복 투두 하나만 삭제
-                mBuilder.dismiss()
-            }
-            else if(deleteFlag == "after"){
-                //이 날짜 이후의 반복투두 삭제
-                mBuilder.dismiss()
-            }
-            else{
-                //모든 반복투두 삭제
-                mBuilder.dismiss()
+            //Toast.makeText(theContext, selectedFlag, Toast.LENGTH_SHORT).show()
+            when(selectedFlag){
+                "one" -> {
+                    deleteRepeatTodoOne(repeatId){
+                        result ->
+                        when(result){
+                            0 -> {
+                                deleteTodo(todo)
+                                mBuilder.dismiss()
+                                Toast.makeText(theContext, "one 삭제 성공", Toast.LENGTH_SHORT).show()
+                            }
+                            1 -> {Toast.makeText(theContext, "one 삭제 실패", Toast.LENGTH_SHORT).show()}
+                        }
+                    }
+                }
+                "after" ->{
+                    deleteRepeatTodoAfter(repeatId){
+                        result ->
+                        when(result){
+                            0 ->{
+                                deleteTodo(todo)
+                                mBuilder.dismiss()
+                                Toast.makeText(theContext, "after 삭제 성공", Toast.LENGTH_SHORT).show()}
+                            1 -> {Toast.makeText(theContext, "after 삭제 실패", Toast.LENGTH_SHORT).show()}
+                        }
+                    }
+                }
+                "all" ->{
+                    deleteRepeatTodoAll(repeatId){
+                        result ->
+                        when(result){
+                            0 -> {
+                                deleteTodo(todo)
+                                mBuilder.dismiss()
+                                Toast.makeText(theContext, "all 삭제 성공", Toast.LENGTH_SHORT).show()
+                            }
+                            1 -> {
+                                Toast.makeText(theContext, "all 삭제 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
         }
+
+
+
+
     }
 }

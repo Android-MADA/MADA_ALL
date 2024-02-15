@@ -69,18 +69,22 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
         var cbColor = R.drawable.home_checkbox1
 
         when(category!!.color){
-            "#21C362" -> {cbColor = R.drawable.home_checkbox1}
-            "#0E9746" -> {cbColor = R.drawable.home_checkbox2}
-            "#7FC7D4" -> {cbColor = R.drawable.home_checkbox3}
-            "#2AA1B7" -> {cbColor = R.drawable.home_checkbox4}
-            "#89A9D9" -> {cbColor = R.drawable.home_checkbox5}
-            "#486DA3" -> {cbColor = R.drawable.home_checkbox6}
-            "#FDA4B4" -> {cbColor = R.drawable.home_checkbox7}
-            "#F0768C" -> {cbColor = R.drawable.home_checkbox8}
-            "#F8D141" -> {cbColor = R.drawable.home_checkbox9}
-            "#F68F30" -> {cbColor = R.drawable.home_checkbox10}
-            "#F33E3E" -> {cbColor = R.drawable.home_checkbox11}
-            else -> {cbColor = R.drawable.home_checkbox12}
+            "#ED3024" -> {cbColor = R.drawable.home_checkbox1}
+            "#F65F55" -> {cbColor = R.drawable.home_checkbox2}
+            "#FD8415" -> {cbColor = R.drawable.home_checkbox3}
+            "#FEBD16" -> {cbColor = R.drawable.home_checkbox4}
+            "#FBA1B1" -> {cbColor = R.drawable.home_checkbox5}
+            "#F46D85" -> {cbColor = R.drawable.home_checkbox6}
+            "#D087F2" -> {cbColor = R.drawable.home_checkbox7}
+            "#A516BC" -> {cbColor = R.drawable.home_checkbox8}
+            "#89A9D9" -> {cbColor = R.drawable.home_checkbox9}
+            "#269CB1" -> {cbColor = R.drawable.home_checkbox10}
+            "#3C67A7" -> {cbColor = R.drawable.home_checkbox11}
+            "#405059" -> {cbColor = R.drawable.home_checkbox12}
+            "#C0D979" -> {cbColor = R.drawable.home_checkbox13}
+            "#8FBC10" -> {cbColor = R.drawable.home_checkbox14}
+            "#107E3D" -> {cbColor = R.drawable.home_checkbox15}
+            else -> {cbColor = R.drawable.home_checkbox16}
 
         }
 
@@ -90,7 +94,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
         if(category!!.isInActive == true){
             holder.checkbox.isEnabled = false
-            //holder.todoMenu.isInvisible = true
+            holder.todoMenu.isInvisible = true
             holder.ivIcon.isVisible = true
             if(holder.data!!.complete == true){
                 holder.ivIcon.setImageResource(findRes(category!!.color))
@@ -212,74 +216,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                 }
             }
             else{
-                val mDeleteDialog = Dialog(context!!)
-                mDeleteDialog.setContentView(R.layout.repeat_delete_dialog)
-
-                val dialogOne = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_one)
-                val dialogAfter = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_after)
-                val dialogAll = mDeleteDialog.findViewById<RadioButton>(R.id.radio_repeat_delete_all)
-                val layoutOne = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_one)
-                val layoutAfter = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_after)
-                val layoutAll = mDeleteDialog.findViewById<LinearLayout>(R.id.layout_delete_all)
-
-                var selectedFlag = "one"
-
-                dialogOne.isChecked = true
-                dialogAfter.isChecked = false
-                dialogAll.isChecked = false
-
-                dialogOne.setOnClickListener {
-                    dialogOne.isChecked = true
-                    dialogAll.isChecked = false
-                    dialogAfter.isChecked = false
-                    selectedFlag = "one"
-                }
-
-                layoutOne.setOnClickListener {
-                    dialogOne.isChecked = true
-                    dialogAll.isChecked = false
-                    dialogAfter.isChecked = false
-                    selectedFlag = "one"
-                }
-
-                dialogAfter.setOnClickListener {
-                    dialogAfter.isChecked = true
-                    dialogAll.isChecked = false
-                    dialogOne.isChecked = false
-                    selectedFlag = "after"
-                }
-
-                layoutAfter.setOnClickListener {
-                    dialogAfter.isChecked = true
-                    dialogAll.isChecked = false
-                    dialogOne.isChecked = false
-                    selectedFlag = "after"
-                }
-
-                dialogAll.setOnClickListener {
-                    dialogAll.isChecked = true
-                    dialogOne.isChecked = false
-                    dialogAfter.isChecked = false
-                    selectedFlag = "all"
-                }
-
-                layoutAll.setOnClickListener {
-                    dialogAll.isChecked = true
-                    dialogOne.isChecked = false
-                    dialogAfter.isChecked = false
-                    selectedFlag = "all"
-                }
-
-                mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
-                    mDeleteDialog.dismiss()
-                }
-
-                mDeleteDialog.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
-                    //서버 연결 - 선택된 삭제 동작에 따라
-                    //서버 연결- 투두 새로 받아오기
-                    mDeleteDialog.dismiss()
-                }
-                mDeleteDialog.show()
+                viewModel!!.setPopupDelete(context!!, holder.data!!)
             }
 
         }
@@ -327,18 +264,22 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
 
     fun findRes(color : String) : Int {
         var color : Int = when(color){
-            "#21C362" -> {R.drawable.ch_checked_color1}
-            "#0E9746" -> {R.drawable.ch_checked_color2}
-            "#7FC7D4" -> {R.drawable.ch_checked_color3}
-            "#2AA1B7" -> {R.drawable.ch_checked_color4}
+            "#ED3024" -> {R.drawable.ch_checked_color11}
+            "#F65F55" -> {R.drawable.cb_checked_color13}
+            "#FD8415" -> {R.drawable.ch_checked_color10}
+            "#FEBD16" -> {R.drawable.cb_checked_febd}
+            "#FBA1B1" -> {R.drawable.ch_checked_color7}
+            "#F46D85" -> {R.drawable.cb_checked_f46d}
+            "#D087F2" -> {R.drawable.cb_checked_d08f}
+            "#A516BC" -> {R.drawable.cb_checked_a516}
             "#89A9D9" -> {R.drawable.ch_checked_color5}
-            "#486DA3" -> {R.drawable.ch_checked_color6}
-            "#FDA4B4" -> {R.drawable.ch_checked_color7}
-            "#F0768C" -> {R.drawable.ch_checked_color8}
-            "#F8D141" -> {R.drawable.ch_checked_color9}
-            "#F68F30" -> {R.drawable.ch_checked_color10}
-            "#F33E3E" -> {R.drawable.ch_checked_color11}
-            else -> {R.drawable.ch_checked_color12}
+            "#269CB1" -> {R.drawable.cb_checked_269c}
+            "#3C67A7" -> {R.drawable.cb_checked_3c67}
+            "#405059" -> {R.drawable.ch_checked_color12}
+            "#C0D979" -> {R.drawable.cb_checked_c0d9}
+            "#8FBC10" -> {R.drawable.cb_checked_8fbc}
+            "#107E3D" -> {R.drawable.cb_checked_107e}
+            else -> {R.drawable.cb_checked_0e41}
         }
         return color
 

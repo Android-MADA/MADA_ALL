@@ -30,7 +30,7 @@ data class todoData(
 data class todoData2(
     @SerializedName("nickname") val nickname : String,
     @SerializedName("TodoList") val TodoList : ArrayList<Todo>,
-    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<RepeatTodo>
+    @SerializedName("RepeatTodoList") val RepeatTodoList : ArrayList<GetRepeatTodo>
 )
 
 data class TodoList(
@@ -65,6 +65,14 @@ data class PatchRequestTodo(
     @SerializedName("endRepeatDate") var endRepeatDate: String?,
     @SerializedName("complete") var complete : Boolean,
     @SerializedName("date") var date: String?
+)
+data class GetRepeatTodo(
+    @SerializedName("id") val id: Int,
+    @SerializedName("todoId") val todoId : Int,
+    @SerializedName("repeatTodoName") val repeatTodoName : String,
+    @SerializedName("categoryId") val categoryId : Int,
+    @SerializedName("date") var date: String,
+    @SerializedName("complete") var complete : Boolean
 )
 
 

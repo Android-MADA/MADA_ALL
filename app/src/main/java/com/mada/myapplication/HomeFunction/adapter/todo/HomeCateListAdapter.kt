@@ -71,18 +71,18 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
             else {
                 Log.d("homecateRV", "추가중..")
                 holder.btnAdd.isVisible = true
-                holder.todoRv.isVisible = true
-
-                val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
-                mTodoAdapter.viewModel = viewModel
-                mTodoAdapter.category = getItem(position)
-                mTodoAdapter.context = context
-                viewModel!!.readTodo(cateId, mTodoAdapter)
-
-
-                holder.todoRv.adapter = mTodoAdapter
-                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
             }
+        holder.todoRv.isVisible = true
+
+        val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
+        mTodoAdapter.viewModel = viewModel
+        mTodoAdapter.category = getItem(position)
+        mTodoAdapter.context = context
+        viewModel!!.readTodo(cateId, mTodoAdapter)
+
+
+        holder.todoRv.adapter = mTodoAdapter
+        holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
 
 
 

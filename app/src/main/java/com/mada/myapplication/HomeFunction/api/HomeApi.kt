@@ -69,7 +69,8 @@ fun editTodo(
     //시간표 조회
     @GET("/api/home/time/date/{date}")
     fun getTimetable(
-        @Header("Authorization") token: String?, @Path("date") date: String
+        @Header("Authorization") token: String?,
+        @Path("date") date: String
     ): Call<ScheduleListData>
 
     //시간표 추가
