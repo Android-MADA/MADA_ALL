@@ -1,5 +1,6 @@
 package com.mada.myapplication.StartFuction
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,6 +21,22 @@ class OnBoardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = OnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        // 앱 최초에만 온 보딩 화면 보이게 설정
+        val pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE)
+        val first = pref.getBoolean("isFirst", false)
+        if (!first) {
+            val editor = pref.edit()
+            editor.putBoolean("isFirst", true)
+            editor.commit()
+            // 앱 최초 실행시 하고 싶은 작업
+        } else {
+            val intent = Intent(this, Splash2Activity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
 
         // [마다 시작하기] 버튼 클릭 시
         binding.onStartBtn.setOnClickListener {
