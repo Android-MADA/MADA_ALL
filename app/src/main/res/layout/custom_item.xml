@@ -8,27 +8,25 @@
     android:orientation="vertical">
 
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/CustomScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
     <TableLayout
         android:id="@+id/custom_itemtable"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        >
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/btn_item_basic"
-                android:layout_width="match_parent"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:src="@drawable/custom_null"
@@ -36,7 +34,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_glass_normal"
-                android:layout_width="match_parent"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/g_normal_s"
                 android:layout_margin ="10dp"
@@ -47,7 +45,7 @@
 
             <ImageButton
                 android:id="@+id/btn_item_hat_ber"
-                android:layout_width="match_parent"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/hat_ber_s"
                 android:layout_margin ="10dp"
@@ -56,15 +54,11 @@
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-        </TableRow>
-
-        <TableRow>
-
             <ImageButton
                 android:id="@+id/btn_item_hat_grad"
                 android:src="@drawable/hat_grad_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -73,7 +67,7 @@
                 android:id="@+id/btn_item_glass_8bit"
                 android:src="@drawable/g_8bit_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -82,20 +76,16 @@
                 android:id="@+id/btn_item_glass_woig"
                 android:src="@drawable/g_woig_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
-
-        </TableRow>
-
-        <TableRow>
 
             <ImageButton
                 android:id="@+id/btn_item_hat_ipod"
                 android:src="@drawable/hat_ipod_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -104,7 +94,7 @@
                 android:id="@+id/btn_item_glass_sunR"
                 android:src="@drawable/g_sunr_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -113,20 +103,24 @@
                 android:id="@+id/btn_item_glass_sunB"
                 android:src="@drawable/g_sunb_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
+
         </TableRow>
 
-        <TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/btn_item_hat_flower"
                 android:src="@drawable/hat_flower_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -135,7 +129,7 @@
                 android:id="@+id/btn_item_hat_v"
                 android:src="@drawable/hat_v_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -144,21 +138,17 @@
                 android:id="@+id/btn_item_hat_dinof"
                 android:src="@drawable/hat_dinof_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>
 
-        </TableRow>
-
-        <TableRow>
-
             <ImageButton
                 android:id="@+id/btn_item_hat_sheep"
                 android:src="@drawable/hat_sheep_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -167,7 +157,7 @@
                 android:id="@+id/btn_item_bag_e"
                 android:src="@drawable/bag_e_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -176,21 +166,16 @@
                 android:id="@+id/btn_item_bag_luck"
                 android:src="@drawable/bag_luck_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btn_item_hat_heart"
                 android:src="@drawable/hat_heart_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -199,7 +184,7 @@
                 android:id="@+id/btn_item_hat_bee"
                 android:src="@drawable/hat_bee_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
@@ -208,15 +193,16 @@
                 android:id="@+id/btn_item_hat_heads"
                 android:src="@drawable/heads_s"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
+
     </TableLayout>
 
-    </ScrollView>
+    </HorizontalScrollView>
 </LinearLayout>
 

@@ -12,9 +12,7 @@ data class itemList(
 )
 data class itemcheck(
     val id: Int,
-    val name: String,
     val itemType: String,
-    val itemUnlockCondition: String,
-    val filePath: String,
-    val have: Boolean
+    val have: Boolean,
+    val itemCategory: String
 )

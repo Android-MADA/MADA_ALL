@@ -11,7 +11,7 @@
         android:orientation="vertical">
         <FrameLayout
             android:id="@+id/frameLayout2"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:layout_marginBottom="10dp">
@@ -27,13 +27,13 @@
 
             <Button
                 android:id="@+id/btn_custom_save"
-                android:layout_width="110dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="#00FF0000"
                 android:textColor="#000000"
                 android:layout_gravity="right|top"
-                android:text="저장하기"></Button>
+                android:text="@string/underlined_btn"></Button>
 
         </FrameLayout>
 
@@ -41,30 +41,30 @@
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_weight="13"
+            android:layout_weight="15"
             android:layout_height="0dp">
 
 
             <ImageView
                 android:id="@+id/img_custom_background"
-                android:layout_width="700dp"
-                android:layout_height="700dp"
+                android:layout_width="550dp"
+                android:layout_height="550dp"
                 android:layout_gravity="top|center"
                 android:src="@drawable/custom_empty">
             </ImageView>
 
             <ImageView
                 android:id="@+id/custom_ramdi"
-                android:layout_width="500dp"
-                android:layout_height="500dp"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_gravity="top|center"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/c_ramdi"></ImageView>
 
             <ImageView
                 android:id="@+id/img_custom_cloth"
-                android:layout_width="500dp"
-                android:layout_height="500dp"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/custom_empty">
@@ -72,14 +72,42 @@
 
             <ImageView
                 android:id="@+id/img_custom_item"
-                android:layout_width="500dp"
-                android:layout_height="500dp"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/custom_empty">
             </ImageView>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/custom_emptytable">
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="80dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/custom_emptytable">
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="140dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/custom_emptytable">
+            </ImageView>
+
         </FrameLayout>
+
 
 
     <LinearLayout
@@ -141,6 +169,10 @@
             android:background="#FFFFFF"
             android:paddingTop="5dp">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/CustomBottomSheetViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </FrameLayout>
     </LinearLayout>

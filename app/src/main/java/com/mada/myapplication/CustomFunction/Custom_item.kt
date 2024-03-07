@@ -50,7 +50,7 @@ class custom_item : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CustomItemBinding.inflate(inflater, container, false)
-        getCustomItemCheck("item")
+        getCustomItemCheck()
 
         /*val defaultButton = binding.btnItemBasic
         onImageButtonClick(defaultButton)
@@ -221,8 +221,8 @@ class custom_item : Fragment() {
         binding.btnItemGlassSunB.setImageResource(R.drawable.heads_s)
     }
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -235,7 +235,7 @@ class custom_item : Fragment() {
                         itemList.itemList.forEachIndexed { index, item ->
                             Log.d(
                                 "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
                         }
                     }

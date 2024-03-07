@@ -47,7 +47,7 @@ class custom_background : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = CustomBackgroundBinding.inflate(inflater, container, false)
-        getCustomItemCheck("background")
+        getCustomItemCheck()
 
 
         binding.btnBackBasic.setOnClickListener{
@@ -158,8 +158,8 @@ class custom_background : Fragment() {
 
     }
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -172,7 +172,7 @@ class custom_background : Fragment() {
                         itemList.itemList.forEachIndexed { index, item ->
                             Log.d(
                                 "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
                         }
                     }

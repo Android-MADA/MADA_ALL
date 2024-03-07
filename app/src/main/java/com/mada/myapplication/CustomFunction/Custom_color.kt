@@ -57,7 +57,7 @@ class custom_color : Fragment() {
     ): View? {
         binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
-        getCustomItemCheck("color")
+        getCustomItemCheck()
 
 
         binding.btnColorBasic.setOnClickListener{
@@ -166,8 +166,8 @@ class custom_color : Fragment() {
         binding.btnColorYellow.setImageResource(R.drawable.color_yellow)
     }
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -181,7 +181,7 @@ class custom_color : Fragment() {
                     datas?.forEachIndexed { index, item ->
                         Log.d(
                             "getCustomItemCheckCloth",
-                            "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                            "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
                         }
                 } else {

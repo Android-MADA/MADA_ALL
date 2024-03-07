@@ -68,7 +68,7 @@ class custom_cloth() : Fragment() {
     ): View? {
         binding = CustomClothBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
-        getCustomItemCheck("set")
+        getCustomItemCheck()
 
 
 
@@ -203,8 +203,8 @@ class custom_cloth() : Fragment() {
         binding.btnClothSnowman.setImageResource(R.drawable.set_snowman_s)
     }
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -217,7 +217,7 @@ class custom_cloth() : Fragment() {
                         itemList.itemList.forEachIndexed { index, item ->
                             Log.d(
                                 "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
                         }
                     }

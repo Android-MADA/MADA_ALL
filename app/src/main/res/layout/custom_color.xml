@@ -50,10 +50,6 @@
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-        </TableRow>
-
-        <TableRow>
-
             <ImageButton
                 android:id="@+id/btn_color_Rblue"
                 android:src="@drawable/color_rblue"
@@ -62,6 +58,13 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
+
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btn_color_bluepurple"
@@ -80,11 +83,6 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btn_color_yellow"
