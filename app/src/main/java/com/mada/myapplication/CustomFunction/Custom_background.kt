@@ -50,9 +50,7 @@ class custom_background : Fragment() {
         getCustomItemCheck()
 
 
-        binding.btnBackBasic.setOnClickListener{
-            onImageButtonClick(binding.btnBackBasic)
-            onBackgroundButtonClick(it as ImageButton)}
+
         binding.btnBackBridS.setOnClickListener{
             onImageButtonClick(binding.btnBackBridS)
             onBackgroundButtonClick(it as ImageButton)}
@@ -95,7 +93,6 @@ class custom_background : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_back_basic -> R.drawable.custom_nullchoice
             R.id.btn_back_brid_s -> R.drawable.back_bird_choice
             R.id.btn_back_n_s -> R.drawable.back_n_choice
             R.id.btn_back_win_s -> R.drawable.back_win_choice
@@ -112,7 +109,6 @@ class custom_background : Fragment() {
 
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_back_basic -> R.drawable.custom_null
             R.id.btn_back_brid_s -> R.drawable.back_bird_s_1
             R.id.btn_back_n_s -> R.drawable.back_n_s_1
             R.id.btn_back_win_s -> R.drawable.back_win_s_1
@@ -129,7 +125,6 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 700, R.drawable.custom_empty)
             R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, 1, R.drawable.back_brid)
             R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, 3, R.drawable.back_n)
             R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, 8, R.drawable.back_win)
@@ -145,7 +140,6 @@ class custom_background : Fragment() {
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
     fun resetButtonBackground() {
-        binding.btnBackBasic.setImageResource(R.drawable.custom_null)
         binding.btnBackBridS.setImageResource(R.drawable.back_bird_s_1)
         binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
         binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)

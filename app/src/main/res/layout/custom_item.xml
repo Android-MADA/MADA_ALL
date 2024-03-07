@@ -23,16 +23,6 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/btn_item_basic"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_margin ="10dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/custom_null"
-                android:background="#FFFFFF"></ImageButton>
-
-            <ImageButton
                 android:id="@+id/btn_item_glass_normal"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
@@ -108,14 +98,6 @@
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-
-        </TableRow>
-
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
             <ImageButton
                 android:id="@+id/btn_item_hat_flower"
                 android:src="@drawable/hat_flower_s"
@@ -124,6 +106,16 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
+
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
 
             <ImageButton
                 android:id="@+id/btn_item_hat_v"
@@ -196,6 +188,16 @@
                 android:layout_width="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_item_basic"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_margin ="10dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/custom_emptytable"
                 android:background="#FFFFFF"></ImageButton>
 
         </TableRow>

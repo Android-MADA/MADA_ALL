@@ -24,7 +24,7 @@
 
                 <ImageButton
                     android:id="@+id/btn_cloth_basic"
-                    android:src="@drawable/custom_null"
+                    android:src="@drawable/custom_emptytable"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"

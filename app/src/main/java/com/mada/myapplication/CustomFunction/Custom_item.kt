@@ -57,9 +57,6 @@ class custom_item : Fragment() {
         onItemButtonClick(defaultButton)*/
 
 
-        binding.btnItemBasic.setOnClickListener{
-            onImageButtonClick(binding.btnItemBasic)
-            onItemButtonClick(it as ImageButton)}
         binding.btnItemGlassNormal.setOnClickListener{
             onImageButtonClick(binding.btnItemGlassNormal)
             onItemButtonClick(it as ImageButton)}
@@ -127,7 +124,6 @@ class custom_item : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_item_basic -> R.drawable.custom_nullchoice
             R.id.btn_item_glass_normal -> R.drawable.g_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice

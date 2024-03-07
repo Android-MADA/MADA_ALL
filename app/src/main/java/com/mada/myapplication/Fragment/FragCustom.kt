@@ -157,17 +157,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-        TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
-            tab.text = tabTitles[position]
-        }.attach()
 
-        val fragmentManager: FragmentManager = childFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.commit()
+
+
+
 
 
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+            10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
             17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
             12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
@@ -216,7 +213,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
 
         val backgroundbuttonInfo = when (DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID) {
-            700 -> ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
             1 -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
             3 -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
             8 -> ButtonInfo(R.id.btn_back_win_s, 8, R.drawable.back_win)
@@ -278,6 +274,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             return (this * context.resources.displayMetrics.density).toInt()
         }
 
+        TabLayoutMediator(customtabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
+
+        val fragmentManager: FragmentManager = childFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.commit()
+
 
 
 
@@ -288,7 +292,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             selectedClothButtonInfo = clothbtninfo
             val itembtninfo = ButtonInfo(R.id.btn_item_basic, 800, R.drawable.custom_empty)
             selectedItemButtonInfo = itembtninfo
-            val backgroundbtninfo = ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
+            val backgroundbtninfo = ButtonInfo(0, 700, R.drawable.custom_empty)
             selectedBackgroundButtonInfo = backgroundbtninfo
             binding.customRamdi.setImageResource(R.drawable.c_ramdi)
             binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
@@ -384,7 +388,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
             var colorbuttonInfo = when (serverpatchList[0]) {
-                10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
+                10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
                 17 -> ButtonInfo(R.id.btn_color_Rblue, 17, R.drawable.c_ramdyrb)
                 12 -> ButtonInfo(R.id.btn_color_bluepurple, 12, R.drawable.c_ramdybp)
@@ -433,7 +437,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
 
             var backgroundbuttonInfo = when (serverpatchList[3]) {
-                700 -> ButtonInfo(R.id.btn_back_basic, 700, R.drawable.custom_empty)
+                700 -> ButtonInfo(0, 700, R.drawable.custom_empty)
                 1 -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
                 3 -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
                 8 -> ButtonInfo(R.id.btn_back_win_s, 8, R.drawable.back_win)

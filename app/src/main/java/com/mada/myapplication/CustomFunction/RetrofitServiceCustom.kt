@@ -24,12 +24,13 @@ interface RetrofitServiceCustom {
     //아이템 조회
     @GET("/api/custom/item")
     fun customItemCheck(@Header("Authorization") token : String?
-    ) : Call<customItemCheckDATA>
+    ) : Call<customItemCheckDATA> //완료
 
 
 
 
     //아이템 변경
+    // 완료
     @PATCH("/api/custom/change")
     fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Long>): Call<customItemChangeDATA>
 
