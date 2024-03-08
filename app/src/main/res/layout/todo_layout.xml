@@ -244,14 +244,7 @@
                             android:layout_weight="7"
                             android:background="@drawable/todo_progress_done_layout_background">
 
-                            <ImageView
-                                android:id="@+id/progress_character_iv"
-                                android:layout_width="27.21dp"
-                                android:layout_height="27dp"
-                                android:paddingBottom="5dp"
-                                android:src="@drawable/progress_ramdi"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+
                             <TextView
                                 android:id="@+id/progress_tv"
                                 android:layout_width="wrap_content"
