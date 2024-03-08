@@ -16,6 +16,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
@@ -53,6 +56,7 @@ class FragHome : Fragment() {
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     private val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private lateinit var mAdView : AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,6 +152,8 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
         /**
          * 삭제 예정 코드 시작
          */
@@ -158,6 +164,15 @@ class FragHome : Fragment() {
         /**
          * 삭제 예정 코드 끝
          */
+
+        /**
+         * 구글 광고
+         */
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adViewTodo
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         /**
          * test - server 시작

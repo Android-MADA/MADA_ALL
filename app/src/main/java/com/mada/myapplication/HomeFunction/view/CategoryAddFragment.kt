@@ -19,6 +19,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
@@ -58,6 +61,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     private lateinit var backDialog: HomeBackCustomDialog
     private lateinit var deleteDialog: HomeDeleteCustomDialog
     private lateinit var argsArray: java.util.ArrayList<String>
+    private lateinit var mAdView : AdView
 
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     override fun onAttach(context: Context) {
@@ -129,6 +133,15 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /**
+         * 구글 광고
+         */
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adViewCategory
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         //기존 카테고리 조회 시
         if(arguments != null){

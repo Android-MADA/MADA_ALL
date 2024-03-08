@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:ads="http://schemas.android.com/tools"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -188,6 +188,21 @@
                 android:background="#F0F0F0"/>
 
         </LinearLayout>
+        <!-- 광고 부분-->
+        <!-- adUnitID: Android 배너 광고 테스트 전용 광고 단위 ID-->
+        <com.google.android.gms.ads.AdView
+            android:backgroundTint="@color/white"
+            android:id="@+id/adView_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-4086521113003670/1878645147"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

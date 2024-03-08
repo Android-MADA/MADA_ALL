@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -370,12 +371,23 @@
                     </LinearLayout>
 
                 </LinearLayout>
+                <!-- 광고 부분-->
+                <!-- adUnitID: Android 배너 광고 테스트 전용 광고 단위 ID-->
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-4086521113003670/1878645147"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="80dp"/>
 
 
-                <!-- 광고 부분-->
+
             </LinearLayout>
 
 

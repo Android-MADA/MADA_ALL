@@ -20,6 +20,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavAction
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CalenderFuntion.Small.CalendarSliderSmallAdapter
@@ -55,6 +58,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
     private val calendarViewModel : CalendarViewModel by activityViewModels()
     private lateinit var backDialog: HomeBackCustomDialog
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+    private lateinit var mAdView : AdView
     private var modeFlag = "add"
     private var todoId = 0
 
@@ -422,7 +426,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
 
         /**
-         * 서버 연결
+         * 4. 서버 연결
          */
 
         /**
@@ -460,6 +464,15 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             }
 
         }
+
+        /**
+         * 5. google ad
+         */
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adViewRepeat
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
     }
 
