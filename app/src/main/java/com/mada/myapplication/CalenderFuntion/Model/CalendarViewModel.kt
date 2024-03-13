@@ -1,5 +1,6 @@
 package com.mada.myapplication.CalenderFuntion.Model
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
@@ -205,7 +206,8 @@ class CalendarViewModel : ViewModel(){
 
         }
     }
-    fun setPopupOne(theContext: Context,title : String, theView : View) {
+    @SuppressLint("MissingInflatedId")
+    fun setPopupOne(theContext: Context, title : String, theView : View, desc : String? = null) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_one, null)
         val mBuilder = AlertDialog.Builder(theContext)
             .setView(mDialogView)
@@ -230,6 +232,13 @@ class CalendarViewModel : ViewModel(){
         mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
             mBuilder.dismiss()
         })
+        if(desc.isNullOrEmpty()){
+            mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.GONE
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.popone_desc).text = desc
+        }
     }
     //달력 관련 함수들
     fun convertToDateKoreanFormat123(dateString: String): String {

@@ -224,11 +224,20 @@ class HomeViewModel : ViewModel() {
     //TODO
 
     fun createTodo(todoEntity: TodoEntity, edt : EditText?) = viewModelScope.launch(Dispatchers.IO) {
-        repository.createTodo(todoEntity)
-        if(edt != null){
-            edt!!.text.clear()
+        var a = false
+        for(i in homeCateEntityList!!.value!!){
+            if(todoEntity.category == i.id ){
+                a = true
+            }
         }
-        Log.d("todo 추가중", todoEntity.toString())
+        if(a){
+            repository.createTodo(todoEntity)
+            if(edt != null){
+                edt!!.text.clear()
+            }
+            Log.d("todo 추가중", todoEntity.toString())
+        }
+
     }
 
     var inActiveTodoList : List<TodoEntity>? = null

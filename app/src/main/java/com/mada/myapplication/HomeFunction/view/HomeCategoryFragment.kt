@@ -22,6 +22,7 @@ import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.databinding.CategoryLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.getAllCategory
+import com.mada.myapplication.getDescribe
 import com.mada.myapplication.hideBottomNavigation
 
 class HomeCategoryFragment : Fragment() {
@@ -152,6 +153,9 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("onResume", "running")
+        getAllCategory(api, viewModel, this.requireActivity())
+        getDescribe(viewModel, this.requireActivity())
     }
     override fun onDestroyView() {
         super.onDestroyView()

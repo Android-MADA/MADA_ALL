@@ -178,7 +178,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             2 -> {
                                 // 복원 동작
-                                calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
+                                if(viewModel.isSubscribe){
+                                    calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
+                                }
+                                else{
+                                    calendarViewModel.setPopupOne(requireContext(), "더 이상 카테고리를 추가할 수 없습니다.", view, "프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요.")
+                                }
+
                                 //restoreCategory()
                             }
                             1 -> {

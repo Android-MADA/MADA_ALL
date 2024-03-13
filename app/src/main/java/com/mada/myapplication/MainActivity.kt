@@ -24,6 +24,8 @@ import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mada.myapplication.MyFuction.Data.FragMyData
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -224,6 +226,24 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
 
     })
 
+}
+
+fun getDescribe(viewModel : HomeViewModel, context : Context){
+    RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java).selectfragMy(viewModel.userToken).enqueue(object : Callback<FragMyData>{
+        override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+            if(response.isSuccessful){
+                viewModel.isSubscribe = response.body()!!.data.subscribe
+            }
+            else{
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
 }
 
 
