@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.data
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -224,24 +225,39 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
         //체크박스 클릭 리스너
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 val checkUpdateData = TodoEntity(todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate, repeat = holder.data!!.repeat, repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
-                val updateData = PatchRequestTodo(todoName = checkUpdateData.todoName, repeat = checkUpdateData.repeat, repeatInfo = checkUpdateData.repeatInfo,startRepeatDate = checkUpdateData.startRepeatDate, endRepeatDate = checkUpdateData.endRepeatDate, complete = isChecked, date = holder.data!!.date)
-            Log.d("todo server", updateData.toString())
             //서버 연결
-                api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if(response.isSuccessful){
-                            Log.d("todo server", "성공")
-                            viewModel!!.updateTodo(checkUpdateData)
-                        }
-                        else {
-                            Log.d("todo안드 잘못", "서버 연결 실패")
-                        }
+//                api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
+//                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                        if(response.isSuccessful){
+//                            Log.d("todo server", "성공")
+//                            viewModel!!.updateTodo(checkUpdateData)
+//                        }
+//                        else {
+//                            Log.d("todo안드 잘못", "서버 연결 실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<Void>, t: Throwable) {
+//                        Log.d("서버 문제", "서버 연결 실패")
+//                    }
+//                })
+            Log.d("checkbox patch", checkUpdateData.toString())
+            api.changeCheckox(viewModel!!.userToken, holder.data!!.id!!, PatchCheckboxTodo(isChecked)).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("todo server", "성공")
+                        viewModel!!.updateTodo(checkUpdateData)
                     }
+                    else{
+                        Log.d("todo안드 잘못", "서버 연결 실패")
+                    }
+                }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("서버 문제", "서버 연결 실패")
-                    }
-                })
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("서버 문제", "서버 연결 실패")
+                }
+
+            })
 
         }
     }

@@ -2,6 +2,7 @@ package com.mada.myapplication.HomeFunction.api
 
 
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
+import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
@@ -46,6 +47,13 @@ fun editTodo(
     @Path("todoId", encoded = true) todoId: Int,
     @Body data : PatchRequestTodo
 ): Call<Void>
+
+    @PATCH("/api/home/todo/update/{todoId}")
+    fun changeCheckox(
+        @Header("Authorization") token: String?,
+        @Path("todoId", encoded = true) todoId: Int,
+        @Body data : PatchCheckboxTodo
+    ): Call<Void>
 
 
     @PATCH("/api/home/todo/delete/{todoId}")

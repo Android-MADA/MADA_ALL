@@ -171,10 +171,10 @@ class FragHome : Fragment() {
          * test - server 시작
          */
 
-        HomeGetCategory(viewModel, api)
-        for(i in viewModel.categoryListHome){
-            getHomeTodo2(api, viewModel, requireContext(), i)
-        }
+//        HomeGetCategory(viewModel, api)
+//        for(i in viewModel.categoryListHome){
+//            getHomeTodo2(api, viewModel, requireContext(), i)
+//        }
         /**
          * test - server 끝
          */

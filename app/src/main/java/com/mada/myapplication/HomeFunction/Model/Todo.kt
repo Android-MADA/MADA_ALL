@@ -66,6 +66,10 @@ data class PatchRequestTodo(
     @SerializedName("complete") var complete : Boolean,
     @SerializedName("date") var date: String?
 )
+
+data class PatchCheckboxTodo(
+    @SerializedName("complete") var complete: Boolean
+)
 data class GetRepeatTodo(
     @SerializedName("id") val id: Int,
     @SerializedName("todoId") val todoId : Int,
