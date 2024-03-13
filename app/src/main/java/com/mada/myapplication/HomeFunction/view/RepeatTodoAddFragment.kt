@@ -321,6 +321,19 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             binding.calendar2End.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt(), false)
         }
 
+        binding.preBtnStart.setOnClickListener {
+            binding.calendar2Start.setCurrentItem(binding.calendar2Start.currentItem-1, true)
+        }
+        binding.nextBtnStart.setOnClickListener {
+            binding.calendar2Start.setCurrentItem(binding.calendar2Start.currentItem+1, true)
+        }
+        binding.preBtnEnd.setOnClickListener {
+            binding.calendar2End.setCurrentItem(binding.calendar2End.currentItem-1, true)
+        }
+        binding.nextBtnEnd.setOnClickListener {
+            binding.calendar2End.setCurrentItem(binding.calendar2End.currentItem+1, true)
+        }
+
 
         /**
          * 3-3 반복 종류 선택 클릭 리스너
