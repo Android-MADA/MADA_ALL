@@ -165,14 +165,7 @@ class FragHome : Fragment() {
          * 삭제 예정 코드 끝
          */
 
-        /**
-         * 구글 광고
-         */
-        //구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adViewTodo
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+
 
         /**
          * test - server 시작
@@ -363,6 +356,15 @@ class FragHome : Fragment() {
 
         })
 
+        /**
+         * 구글 광고
+         */
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adViewTodo
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
 
     }
 
@@ -409,13 +411,13 @@ class FragHome : Fragment() {
     private fun homeMent(day: String): String {
         Log.d("homeMent", "running")
         var homeMent = when (day) {
-            "월요일" -> "월요병 날려버리고 화이팅!"
-            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요!"
-            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
-            "목요일" -> "오늘도 열심히 달려 봐요"
-            "금요일" -> "주말을 위해 조금만 더 화이팅!"
-            "토요일" -> "주말을 알차게!"
-            else -> "일주일의 마지막도 파이팅!"
+            "월요일" -> "월요병 날려버리고 화이팅!\n"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요!\n"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!\n"
+            "목요일" -> "오늘도 열심히 달려 봐요\n"
+            "금요일" -> "주말을 위해 조금만 더 화이팅!\n"
+            "토요일" -> "주말을 알차게!\n"
+            else -> "일주일의 마지막도 파이팅!\n"
         }
         return homeMent
     }
