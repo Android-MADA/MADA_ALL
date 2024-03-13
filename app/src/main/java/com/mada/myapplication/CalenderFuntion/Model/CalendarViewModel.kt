@@ -125,6 +125,52 @@ class CalendarViewModel : ViewModel(){
         val formattedDate = currentDate.format(dateFormatter)
         return formattedDate
     }
+    fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        //팝업 타이틀 설정, 버튼 작용 시스템
+        if(flag == "delete"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
+
+        }
+        else if(flag == "quit"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
+
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+        }
+
+        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
+            mBuilder.dismiss()
+        }
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
+                callback(0)
+                mBuilder.dismiss()
+        }
+
+    }
     fun setPopupTwo(theContext: Context,title : String, theView : View, moveFragment : Int, flag : String = "exit", categoryId : Int = 0) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
         val mBuilder = AlertDialog.Builder(theContext)

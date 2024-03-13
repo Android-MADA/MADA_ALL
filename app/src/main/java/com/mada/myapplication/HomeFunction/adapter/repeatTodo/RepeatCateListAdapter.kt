@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
@@ -59,6 +60,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    var calendarViewModel : CalendarViewModel? = null
     private var repeatFragmentManager = fragmentManager
     private var mContext = context
 
@@ -78,6 +80,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
             //todoadapter 연결하기
             val mTodoAdapter = RepeatTodoListAdapter(view, repeatFragmentManager, mContext)
             mTodoAdapter.viewModel = viewModel
+            mTodoAdapter.calendarViewModel = calendarViewModel
             // 반복투두 읽어오기
             viewModel!!.readRepeatTodo(cateId, mTodoAdapter)
             withContext(Dispatchers.Main){

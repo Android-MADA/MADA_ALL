@@ -41,6 +41,7 @@ import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.getHomeTodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -448,6 +449,53 @@ class HomeViewModel : ViewModel() {
     /**
      * 다이얼로그 - repeat delete
      */
+    private fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        //팝업 타이틀 설정, 버튼 작용 시스템
+        if(flag == "delete"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
+
+        }
+        else if(flag == "quit"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
+
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+        }
+
+        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
+            callback(1)
+            mBuilder.dismiss()
+        }
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
+            callback(0)
+            mBuilder.dismiss()
+        }
+
+    }
 
     @SuppressLint("MissingInflatedId")
     fun setPopupDelete(theContext: Context, todo : TodoEntity) {
@@ -533,53 +581,63 @@ class HomeViewModel : ViewModel() {
 
         mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
             mBuilder.dismiss()
-            Toast.makeText(theContext, "취소", Toast.LENGTH_SHORT).show()
         }
 
         mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
-            //Toast.makeText(theContext, selectedFlag, Toast.LENGTH_SHORT).show()
-            when(selectedFlag){
-                "one" -> {
-                    deleteRepeatTodoOne(repeatId){
-                        result ->
-                        when(result){
-                            0 -> {
-                                deleteTodo(todo)
-                                mBuilder.dismiss()
-                                Toast.makeText(theContext, "one 삭제 성공", Toast.LENGTH_SHORT).show()
+            setPopupTwo2(theContext, "정말 삭제하시겠습니까?",flag = "deleteRepeat"){
+                    result ->
+                when(result){
+                    0 -> {
+                        //삭제
+                        when(selectedFlag){
+                            "one" -> {
+                                deleteRepeatTodoOne(repeatId){
+                                        result ->
+                                    when(result){
+                                        0 -> {
+                                            deleteTodo(todo)
+                                            mBuilder.dismiss()
+                                            Toast.makeText(theContext, "one 삭제 성공", Toast.LENGTH_SHORT).show()
+                                        }
+                                        1 -> {Toast.makeText(theContext, "one 삭제 실패", Toast.LENGTH_SHORT).show()}
+                                    }
+                                }
                             }
-                            1 -> {Toast.makeText(theContext, "one 삭제 실패", Toast.LENGTH_SHORT).show()}
+                            "after" ->{
+                                deleteRepeatTodoAfter(repeatId){
+                                        result ->
+                                    when(result){
+                                        0 ->{
+                                            deleteTodo(todo)
+                                            mBuilder.dismiss()
+                                            Toast.makeText(theContext, "after 삭제 성공", Toast.LENGTH_SHORT).show()}
+                                        1 -> {Toast.makeText(theContext, "after 삭제 실패", Toast.LENGTH_SHORT).show()}
+                                    }
+                                }
+                            }
+                            "all" ->{
+                                deleteRepeatTodoAll(repeatId){
+                                        result ->
+                                    when(result){
+                                        0 -> {
+                                            deleteTodo(todo)
+                                            mBuilder.dismiss()
+                                            Toast.makeText(theContext, "all 삭제 성공", Toast.LENGTH_SHORT).show()
+                                        }
+                                        1 -> {
+                                            Toast.makeText(theContext, "all 삭제 실패", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                "after" ->{
-                    deleteRepeatTodoAfter(repeatId){
-                        result ->
-                        when(result){
-                            0 ->{
-                                deleteTodo(todo)
-                                mBuilder.dismiss()
-                                Toast.makeText(theContext, "after 삭제 성공", Toast.LENGTH_SHORT).show()}
-                            1 -> {Toast.makeText(theContext, "after 삭제 실패", Toast.LENGTH_SHORT).show()}
-                        }
-                    }
-                }
-                "all" ->{
-                    deleteRepeatTodoAll(repeatId){
-                        result ->
-                        when(result){
-                            0 -> {
-                                deleteTodo(todo)
-                                mBuilder.dismiss()
-                                Toast.makeText(theContext, "all 삭제 성공", Toast.LENGTH_SHORT).show()
-                            }
-                            1 -> {
-                                Toast.makeText(theContext, "all 삭제 실패", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    else -> {
+                        Log.d("repeatTodo delete", "fail")
                     }
                 }
             }
+
         }
 
 
