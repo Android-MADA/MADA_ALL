@@ -178,7 +178,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             2 -> {
                                 // 복원 동작
-                                if(viewModel.isSubscribe){
+                                if(viewModel.isSubscribe || viewModel.cateEntityList.value!!.size < 5){
                                     calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
                                 }
                                 else{

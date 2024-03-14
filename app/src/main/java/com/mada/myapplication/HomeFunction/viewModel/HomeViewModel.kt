@@ -26,6 +26,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
+import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
@@ -646,5 +647,27 @@ class HomeViewModel : ViewModel() {
 
 
 
+    }
+
+    fun changeRepeatCb(todoEntity: TodoEntity, isChecked : Boolean, callback: (Int) -> Unit){
+        api.changeRepeatCheckox(userToken, todoEntity.repeatId!!, PatchCheckboxTodo(isChecked)).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("repeat patch", "success")
+                    updateTodo(todoEntity)
+                    callback(0)
+                }
+                else{
+                    Log.d("android fail", "fail")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("server fail", "fail")
+                callback(1)
+            }
+
+        })
     }
 }

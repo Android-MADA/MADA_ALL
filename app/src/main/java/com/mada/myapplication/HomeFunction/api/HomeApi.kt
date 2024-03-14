@@ -55,6 +55,13 @@ fun editTodo(
         @Body data : PatchCheckboxTodo
     ): Call<Void>
 
+    @PATCH("/api/home/todo/repeat/update/{repeatTodoId}")
+    fun changeRepeatCheckox(
+        @Header("Authorization") token: String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId: Int,
+        @Body data : PatchCheckboxTodo
+    ): Call<Void>
+
 
     @PATCH("/api/home/todo/delete/{todoId}")
     fun deleteTodo(
