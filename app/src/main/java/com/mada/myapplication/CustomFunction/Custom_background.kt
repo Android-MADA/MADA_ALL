@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TableRow
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
@@ -140,6 +141,7 @@ class custom_background : Fragment() {
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
     fun resetButtonBackground() {
+        Log.d("BackgroundFrag", "resetButtonBackground()")
         binding.btnBackBridS.setImageResource(R.drawable.back_bird_s_1)
         binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
         binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)
@@ -168,6 +170,14 @@ class custom_background : Fragment() {
                                 "getCustomItemCheckCloth",
                                 "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
+
+                            if (item.itemType=="background" && !item.have) {
+                                Log.d(
+                                    "BackgroundHideButton",
+                                    "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
+                                )
+                                hideButton(item.id)
+                            }
                         }
                     }
                 } else {
@@ -179,6 +189,42 @@ class custom_background : Fragment() {
                 Log.d("error", t.message.toString())
             }
         })
+    }
+
+    private fun hideButton(itemCategory: Int) {
+        val buttonToHide = when (itemCategory) {
+            1 -> binding.btnBackBridS
+            2 -> binding.btnBackCinS
+            3 -> binding.btnBackNS
+            4 -> binding.btnBackNormalS
+            5 -> binding.btnBackStoreS
+            6 -> binding.btnBackSumS
+            7 -> binding.btnBackUniS
+            8 -> binding.btnBackWinS
+            9 -> binding.btnBackZzimS
+            48 -> return //basic
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        val parent = buttonToHide.parent as? TableRow
+        parent?.let {
+            // 숨겨진 버튼 제거
+            parent.removeView(buttonToHide)
+
+            // 남은 버튼의 개수 확인
+            val remainingButtonsCount = it.childCount
+
+            // 남은 버튼의 개수가 0이 아니라면 가중치 조정
+            if (remainingButtonsCount > 0) {
+                val weight = 1.0f / remainingButtonsCount
+                for (i in 0 until remainingButtonsCount) {
+                    val child = it.getChildAt(i)
+                    val layoutParams = child.layoutParams as TableRow.LayoutParams
+                    layoutParams.weight = weight
+                    child.layoutParams = layoutParams
+                }
+            }
+        }
     }
 
 

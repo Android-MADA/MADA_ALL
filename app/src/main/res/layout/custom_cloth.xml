@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TableLayout
             android:id="@+id/custom_clothtable"
             android:layout_width="wrap_content"
@@ -23,22 +22,15 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/btn_cloth_basic"
-                    android:src="@drawable/custom_emptytable"
+                    android:id="@+id/btn_cloth_dev"
+                    android:src="@drawable/set_dev_s"
+                    android:layout_height="match_parent"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:background="#FFFFFF"></ImageButton>
 
-                <ImageButton
-                    android:id="@+id/btn_cloth_dev"
-                    android:src="@drawable/set_dev_s"
-                    android:layout_margin ="10dp"
-                    android:layout_width="80dp"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_movie"
@@ -48,6 +40,7 @@
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:background="#FFFFFF"
+                    android:layout_height="match_parent"
                     ></ImageButton>
 
                 <ImageButton
@@ -57,6 +50,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -66,6 +60,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
 
@@ -77,12 +72,24 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
+                    android:id="@+id/btn_cloth_snowman"
+                    android:src="@drawable/set_snowman_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    ></ImageButton>
+
+                <ImageButton
                     android:id="@+id/btn_cloth_astronauts"
                     android:src="@drawable/set_astronauts_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -92,6 +99,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -101,6 +109,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -110,17 +119,10 @@
                     android:layout_width="80dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
-                <ImageButton
-                    android:id="@+id/btn_cloth_snowman"
-                    android:src="@drawable/set_snowman_s"
-                    android:layout_margin ="10dp"
-                    android:layout_width="80dp"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    ></ImageButton>
+
 
             </TableRow>
 

@@ -7,7 +7,6 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-
     <HorizontalScrollView
         android:id="@+id/CustomScrollView"
         android:layout_width="match_parent"
@@ -190,15 +189,6 @@
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_item_basic"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_margin ="10dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/custom_emptytable"
-                android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
 
