@@ -205,25 +205,33 @@ class DayDataItemView @JvmOverloads constructor(
                     if(data.duration) {
                         //Log.d("dsadsa",date.dayOfWeek().get().toString())
                         val tmpToday= date.toString("yyyy-MM-dd")
+                        paint3.color = Color.WHITE
+                        paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
                         if((data.startDate==tmpToday&& date.dayOfWeek().get()==6) ||(data.endDate==tmpToday&& date.dayOfWeek().get()==7)
                             || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&& date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)
                             || (data.startDate2==tmpToday&& date.dayOfWeek().get()==6) ||(data.startDate2==tmpToday&&rightRound)) {
                             canvas.drawRoundRect(roundedRect, 15f, 15f, paint2)
+                            canvas.drawText(
+                                data.title,
+                                30f,
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
                         } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7 || data.startDate2==tmpToday) {
                             canvas.drawRoundRect(roundedRectLeft, 15f, 15f, paint2)
+                            canvas.drawText(
+                                data.title,
+                                30f,
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
                         } else if(data.endDate==tmpToday || date.dayOfWeek().get()==6 || rightRound) {
                             canvas.drawRoundRect(roundedRectRight, 15f, 15f, paint2)
                         } else {
                             canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
                         }
-                        paint3.color = Color.WHITE
-                        paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
-                        canvas.drawText(
-                            data.title,
-                            20f-width*CalendarViewModel.RemainingTwoDates(data.startDate,date.toString("yyyy-MM-dd")),
-                            y+32f + 50f*data.floor,
-                            paint3
-                        )
+
+
                     } else {
                         canvas.drawRoundRect(roundedRectNoDuration, 10f, 10f, paint2)
                         val maxTextWidth = width - 30f // 20f로부터 시작하므로

@@ -16,8 +16,8 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 33
-        versionCode 9
-        versionName "test_version:0.24.0115.0"
+        versionCode 10
+        versionName "test_version:0.24.0304.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -140,4 +140,7 @@ dependencies {
     implementation("com.android.billingclient:billing-ktx:$billing_version")
     implementation ("com.android.billingclient:billing:$billing_version")
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    //gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }

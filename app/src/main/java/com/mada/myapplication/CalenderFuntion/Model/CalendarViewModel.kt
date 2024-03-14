@@ -578,7 +578,7 @@ class CalendarViewModel : ViewModel(){
                             if(datas != null) {
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
-                                        data.color,data.repeat,data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
+                                        data.color,"No",data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
                                     ddayArrayList.add(tmp)
                                 }
                             }
