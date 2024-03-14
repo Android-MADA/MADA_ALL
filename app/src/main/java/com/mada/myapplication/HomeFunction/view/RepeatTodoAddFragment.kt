@@ -163,6 +163,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
             //set add btn
             binding.btnHomeRepeatAddSave.isVisible = true
+            binding.btnHomeRepeatEditSave.visibility = View.GONE
 
             //set startDay
             binding.tvHomeRepeatStartday.text = "${viewModel.repeatStartDate!!.year}년 ${viewModel.repeatStartDate!!.monthValue}월 ${viewModel.repeatStartDate!!.dayOfMonth}일"
@@ -207,6 +208,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
             //set add btn
             binding.btnHomeRepeatAddSave.isGone = true
+            binding.btnHomeRepeatEditSave.visibility = View.VISIBLE
 
             //set repeatTodo title
             binding.edtHomeCategoryName.setText(_argsArrayEdit!![3])
@@ -254,43 +256,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
          * 3-1 페이지 이동
          */
         binding.ivHomeRepeatAddBack.setOnClickListener {
-            if(modeFlag == "add"){
                 customBackDialog()
-            }
-            else {
-                if(binding.edtHomeCategoryName.text.isBlank()){
-                    calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
-                }
-                else if(viewModel.repeatEndDate!!.isBefore(viewModel.repeatStartDate) || viewModel.repeatEndDate!!.isEqual(viewModel.repeatStartDate)){
-                    calendarViewModel.setPopupOne(requireContext(), "가능한 날짜를 선택해주세요.", view)
-                }
-                else{
-                    val patchDate = PatchRequestTodo(todoName = binding.edtHomeCategoryName.text.toString(), date = null, complete = false, repeat = selectedType, repeatInfo = inputRepeatInfo, startRepeatDate = viewModel.repeatStartDate.toString(), endRepeatDate = viewModel.repeatEndDate.toString())
-                    Log.d("repeat Edit send", patchDate.toString())
-                    api.editTodo(viewModel.userToken, todoId, patchDate).enqueue(object :Callback<Void>{
-                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                            if(response.isSuccessful){
-                                Log.d("repeat Edit send", "sucess")
-                                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
-                            }
-                            else{
-                                Log.d("repeat Edit", "Android fail")
-                                Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
-                            }
-                        }
-
-                        override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Log.d("repeat Edit", "server fail")
-                            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
-                        }
-
-                    })
-                }
-            }
-
         }
 
         /**
@@ -477,6 +443,40 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                 })
             }
 
+        }
+
+        binding.btnHomeRepeatEditSave.setOnClickListener{
+            if(binding.edtHomeCategoryName.text.isBlank()){
+                calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
+            }
+            else if(viewModel.repeatEndDate!!.isBefore(viewModel.repeatStartDate) || viewModel.repeatEndDate!!.isEqual(viewModel.repeatStartDate)){
+                calendarViewModel.setPopupOne(requireContext(), "가능한 날짜를 선택해주세요.", view)
+            }
+            else{
+                val patchDate = PatchRequestTodo(todoName = binding.edtHomeCategoryName.text.toString(), date = null, complete = false, repeat = selectedType, repeatInfo = inputRepeatInfo, startRepeatDate = viewModel.repeatStartDate.toString(), endRepeatDate = viewModel.repeatEndDate.toString())
+                Log.d("repeat Edit send", patchDate.toString())
+                api.editTodo(viewModel.userToken, todoId, patchDate).enqueue(object :Callback<Void>{
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful){
+                            Log.d("repeat Edit send", "sucess")
+                            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+
+                        }
+                        else{
+                            Log.d("repeat Edit", "Android fail")
+                            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("repeat Edit", "server fail")
+                        Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+
+                    }
+
+                })
+            }
         }
 
         /**
