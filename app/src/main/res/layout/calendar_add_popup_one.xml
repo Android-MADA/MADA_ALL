@@ -34,50 +34,20 @@
         android:layout_height="21dp"
         />
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/yesBtnText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/yesbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/calendar_button_size"
-                android:scaleType="fitCenter"
-                app:tint="@color/sub4"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/yesBtnText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="확인"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/yesbutton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/yesbutton" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <TextView
-            android:layout_weight="2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="" />
-    </LinearLayout>
+        android:background="@drawable/background_10_strokex"
+        android:backgroundTint="@color/sub4"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:paddingVertical="13dp"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
