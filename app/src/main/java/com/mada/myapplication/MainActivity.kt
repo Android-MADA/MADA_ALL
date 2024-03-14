@@ -209,8 +209,8 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
             if(response.isSuccessful){
                 for(i in response.body()!!.data.RepeatTodoList){
                     var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatInfo = i.repeatInfo?.toInt(), endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    Log.d("GET repeatTodo", repeatData.toString())
                     viewModel.createRepeatTodo(repeatData, null)
-                    Log.d("GET repeatTodo", "success")
                 }
             }
             else{

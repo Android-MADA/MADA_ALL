@@ -62,6 +62,9 @@ class HomeViewModel : ViewModel() {
     var isSubscribe = false
 
 
+    var selectedRepeatTodo : RepeatEntity? = null
+
+
     //날짜
     //2023-08-13
     private val _homeDate = MutableLiveData<LocalDate>(LocalDate.now())

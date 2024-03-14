@@ -120,6 +120,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                             holder.data!!.startRepeatDate,
                             holder.data!!.endRepeatDate,
                         ))
+                        viewModel!!.selectedRepeatTodo = holder.data!!
 
                         Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
                     }

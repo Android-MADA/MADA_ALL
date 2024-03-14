@@ -198,7 +198,8 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
             todoId = _argsArrayEdit[0].toInt()
             modeFlag = "edit"
             selectedType = _argsArrayEdit[4]
-            inputRepeatInfo = _argsArrayEdit[5].toInt()
+            //inputRepeatInfo = _argsArrayEdit[5].toInt()
+            inputRepeatInfo = viewModel.selectedRepeatTodo!!.repeatInfo
             viewModel.repeatStartDate = LocalDate.parse(_argsArrayEdit[6])
             viewModel.repeatEndDate = LocalDate.parse(_argsArrayEdit[7])
             startDay.text = viewModel.repeatStartDate.toString()
