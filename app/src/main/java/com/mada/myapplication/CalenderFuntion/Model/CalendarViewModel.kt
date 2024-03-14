@@ -275,7 +275,7 @@ class CalendarViewModel : ViewModel(){
 
         //팝업 타이틀 설정, 버튼 작용 시스템
         mDialogView.findViewById<TextView>(R.id.textTitle).text = title
-        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+        mDialogView.findViewById<TextView>(R.id.yesBtnText).setOnClickListener( {
             mBuilder.dismiss()
         })
         if(desc.isNullOrEmpty()){

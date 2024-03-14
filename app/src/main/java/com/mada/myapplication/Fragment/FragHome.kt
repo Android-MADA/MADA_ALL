@@ -298,6 +298,12 @@ class FragHome : Fragment() {
                     (completeNum.toFloat() / todoNum.toFloat() * 100.0).toInt()
                 }
                 binding.progressTv.text = "${percent.toString()}%"
+                if(todoNum == completeNum){
+                    binding.todoProgressMent2Tv.text = "오늘의 투두를 모두 완료했네요!"
+                }
+                else{
+                    binding.todoProgressMent2Tv.text = "투두 달성을 위해 노력해 봐요!"
+                }
             }
         })
 
