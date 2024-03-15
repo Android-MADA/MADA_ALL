@@ -8,9 +8,6 @@ data class customItemChangeDATA(
     val data : wearingItems
 )
 
-data class wearingItems (
-    val wearingItems: ArrayList<wearingItemsList>
-)
 
 
 
