@@ -28,7 +28,7 @@
                 android:src="@drawable/g_normal_s"
                 android:layout_margin ="10dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -39,7 +39,7 @@
                 android:src="@drawable/hat_ber_s"
                 android:layout_margin ="10dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -48,25 +48,17 @@
                 android:src="@drawable/hat_grad_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_item_glass_8bit"
-                android:src="@drawable/g_8bit_s"
-                android:layout_margin ="10dp"
-                android:layout_width="80dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_item_glass_woig"
                 android:src="@drawable/g_woig_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -75,7 +67,7 @@
                 android:src="@drawable/hat_ipod_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -84,7 +76,7 @@
                 android:src="@drawable/g_sunr_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -93,7 +85,7 @@
                 android:src="@drawable/g_sunb_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -102,7 +94,7 @@
                 android:src="@drawable/hat_flower_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -114,6 +106,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <ImageButton
+                android:id="@+id/btn_item_glass_8bit"
+                android:src="@drawable/g_8bit_s"
+                android:layout_margin ="10dp"
+                android:layout_width="80dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:background="#FFFFFF"></ImageButton>
+
 
 
             <ImageButton
@@ -121,7 +122,7 @@
                 android:src="@drawable/hat_v_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -130,7 +131,7 @@
                 android:src="@drawable/hat_dinof_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>
@@ -140,7 +141,7 @@
                 android:src="@drawable/hat_sheep_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -149,7 +150,7 @@
                 android:src="@drawable/bag_e_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -158,7 +159,7 @@
                 android:src="@drawable/bag_luck_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -167,7 +168,7 @@
                 android:src="@drawable/hat_heart_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -176,7 +177,7 @@
                 android:src="@drawable/hat_bee_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -185,7 +186,7 @@
                 android:src="@drawable/heads_s"
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 

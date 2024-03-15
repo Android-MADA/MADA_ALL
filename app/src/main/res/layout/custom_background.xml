@@ -32,7 +32,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -42,7 +42,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -52,7 +52,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -62,7 +62,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -72,7 +72,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -90,7 +90,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -100,7 +100,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -110,7 +110,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"></ImageButton>
 
@@ -120,7 +120,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>
@@ -131,7 +131,7 @@
                 android:layout_margin ="10dp"
                 android:layout_width="80dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 ></ImageButton>

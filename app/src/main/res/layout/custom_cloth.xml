@@ -27,28 +27,19 @@
                     android:layout_height="match_parent"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:background="#FFFFFF"></ImageButton>
 
 
-                <ImageButton
-                    android:id="@+id/btn_cloth_movie"
-                    android:src="@drawable/set_movie_s"
-                    android:layout_margin ="10dp"
-                    android:layout_width="80dp"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    android:layout_height="match_parent"
-                    ></ImageButton>
+
 
                 <ImageButton
                     android:id="@+id/btn_cloth_caffK"
                     android:src="@drawable/set_caffk_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
@@ -58,10 +49,21 @@
                     android:src="@drawable/set_v_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
+
+                <ImageButton
+                    android:id="@+id/btn_cloth_snowman"
+                    android:src="@drawable/set_snowman_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    ></ImageButton>
 
 
 
@@ -72,22 +74,24 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/btn_cloth_snowman"
-                    android:src="@drawable/set_snowman_s"
+                    android:id="@+id/btn_cloth_movie"
+                    android:src="@drawable/set_movie_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
-                    android:layout_height="match_parent"
                     android:background="#FFFFFF"
+                    android:layout_height="match_parent"
                     ></ImageButton>
+
+
 
                 <ImageButton
                     android:id="@+id/btn_cloth_astronauts"
                     android:src="@drawable/set_astronauts_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
@@ -97,7 +101,7 @@
                     android:src="@drawable/set_zzim_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
@@ -107,7 +111,7 @@
                     android:src="@drawable/set_hanbokf_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
@@ -117,7 +121,7 @@
                     android:src="@drawable/set_hanbokm_s"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
