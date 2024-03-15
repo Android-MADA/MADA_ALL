@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#E1E9F5"
     app:navGraph="@navigation/home_nav_graph"
-    tools:context=".MyFuction.Fragment.MyPremiumFragment">
+    tools:context=".MyFunction.Fragment.MyPremiumFragment">
 
     <LinearLayout
         android:id="@+id/toolbar_my"

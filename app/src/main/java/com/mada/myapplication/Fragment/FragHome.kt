@@ -21,8 +21,8 @@ import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
-import com.mada.myapplication.MyFuction.Data.FragMyData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.clearHomeDatabase
