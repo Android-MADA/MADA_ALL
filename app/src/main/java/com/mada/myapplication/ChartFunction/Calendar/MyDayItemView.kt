@@ -26,8 +26,8 @@ class MyDayItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
-    private val date: DateTime = DateTime(),
-    private val fm: Fragment
+    val date: DateTime = DateTime(),
+    val fm: Fragment
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 

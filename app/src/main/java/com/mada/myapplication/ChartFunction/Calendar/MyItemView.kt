@@ -17,13 +17,14 @@ import androidx.core.content.withStyledAttributes
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.mada.myapplication.R
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 class MyItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
-    private val date: DateTime = DateTime()
+    val date: DateTime = DateTime()
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
@@ -41,6 +42,8 @@ class MyItemView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
+            Log.d("click","${date}")
+            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
         }
     }
 

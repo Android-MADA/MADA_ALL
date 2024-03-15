@@ -19,7 +19,7 @@ class MyMonthSliderlAdapter(
 
                 monthWeekText.text = DateTime(millis).year.toString() + "년 "+ DateTime(millis).monthOfYear.toString()+ "월 "
 
-                (fm as? FragChartMonth)?.monthChange(DateTime(millis).monthOfYear,DateTime(millis).toString("yyyy-MM-dd"))
+                (fm as? FragChartMonth)?.monthChange(DateTime(millis).toString("yyyy-MM-dd"))
 
             }
         })
@@ -29,9 +29,9 @@ class MyMonthSliderlAdapter(
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
-    override fun createFragment(position: Int): MyWeekFragment {
+    override fun createFragment(position: Int): MyMonthFragment {
         val millis = getItemId(position)
-        return MyWeekFragment.newInstance(millis)
+        return MyMonthFragment.newInstance(millis)
     }
 
     override fun getItemId(position: Int): Long

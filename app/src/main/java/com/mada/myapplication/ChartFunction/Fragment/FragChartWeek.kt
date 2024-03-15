@@ -297,7 +297,7 @@ class FragChartWeek : Fragment() {
 
     // 통계 좌측 파이차트 뷰 설정
     private fun initCategoryPieChart(month : Int, iweek : Int, sdate : String) {
-        binding.myChart.setUsePercentValues(true)
+        binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
         api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
@@ -336,7 +336,7 @@ class FragChartWeek : Fragment() {
 
                     // 데이터셋 세팅
                     val pieData = PieData(pieDataSet)
-                    binding.myChart.apply {
+                    binding.PieChart.apply {
                         data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화

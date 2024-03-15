@@ -13,20 +13,29 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.Data.ChartMonthData
+import com.mada.myapplication.ChartFunction.Data.DayPieData
+import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
@@ -73,7 +82,6 @@ class FragChartMonth : Fragment() {
         binding.preBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem-1, true)
         }
-
         binding.nextBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
@@ -90,7 +98,7 @@ class FragChartMonth : Fragment() {
         })
 
     }
-    fun monthChange(month : Int, date: String) {
+    fun monthChange(date: String) {
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)
@@ -108,38 +116,35 @@ class FragChartMonth : Fragment() {
                 response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("chartGetMonthMonth", "Response Code: $responseCode")
+                Log.d("chartGetMonth", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("chartGetMonthMonth 성공", response.body().toString())
+                    Log.d("setPieChartView 성공", response.body()?.categoryStatistics.toString())
 
                     val categoryStatistics = response.body()?.categoryStatistics
                     val size = response.body()?.categoryStatistics?.size
-                    val addTodoCnt = 9
-                    val averageCompleteTodoCnt = 9.9
-                    val compareCompleteTodoText = "{1.2}개 상승"
-
-                    val colorText1 = "총 ${addTodoCnt}개"
-
-                    val formattedText1 = "이번 주 ${colorText1} 추가했어요"
-                    var formattedText2 = ""
-
-                    if (categoryStatistics.isNullOrEmpty()) {
-                        formattedText2 = "추가한 카테고리가 없어요"
-                    } else{
-                        val c1 = categoryStatistics[0].categoryName
-                        formattedText2 =
-                            "이번 주에는 ${c1} 카테고리에서" +
-                                    "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
-                                    "\n지난 주에 비해 ${compareCompleteTodoText}했네요."
+                    val mostCategory = response.body()?.mostCategory
+                    val nowCategoryCount = response.body()?.nowCategoryCount
+                    val beforeCategoryCount = response.body()?.beforeCategoryCount
+                    val beforeCategoryCountText = when {
+                        beforeCategoryCount == null -> "NULL"
+                        beforeCategoryCount > 0 -> "${beforeCategoryCount}개 많이"
+                        beforeCategoryCount < 0 -> "${Math.abs(beforeCategoryCount)}개 적게"
+                        else -> "똑같이"
                     }
 
-                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
-                    binding.recordTitle2.text = createSpannableString(formattedText1, colorText1)
+                    val formattedText1 = "${mostCategory}"
+                    val formattedText2 = when {
+                        categoryStatistics.isNullOrEmpty() -> "추가한 카테고리가 없어요"
+                        else -> "이번 달은 ${mostCategory} 카테고리에서 ${nowCategoryCount}개 완료했어요." +
+                                "\n지난 달에 비해 ${beforeCategoryCountText} 해내셨네요!"
+                    }
+
+                    binding.recordTitle2.text = createSpannableString(formattedText1, formattedText1)
                     binding.recordContext2.text = formattedText2
 
                 } else {
-                    Log.d("chartGetMonthMonth 실패", response.body().toString())
+                    Log.d("setPieChartView 실패", response.body()?.categoryStatistics.toString())
                 }
             }
 
@@ -160,31 +165,33 @@ class FragChartMonth : Fragment() {
                 response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("chartGetMonth", "Response Code: $responseCode")
+                Log.d("setBarChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("chartGetMonth 성공", response.body().toString())
+                    Log.d("setBarChartView 성공", response.body().toString())
 
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val completeTodoPercent = 99
-                    val compareTodoCnt = 9.9
+                    val nowTotalCount = response.body()?.nowTotalCount
+                    val nowCountCompleted = response.body()?.nowCountCompleted
+                    var diffCountB = response.body()?.diffCount
+                    val diffCountBText = when {
+                        diffCountB == null -> "NULL"
+                        diffCountB > 0 -> "지난 달보다 ${diffCountB}개 더"
+                        diffCountB < 0 -> "지난 달보다 ${Math.abs(diffCountB)}개 덜"
+                        else -> "지난 달만큼"
+                    }
 
-                    val colorText0 = "3월"
-                    val colorText1 = "총 ${completeTodoCnt}개"
+                    val colorText0 = "총 ${nowCountCompleted}개"
 
-                    val formattedText0 = "${colorText0} 통계예요."
-                    val formattedText1 = "이번 달 ${colorText1} 완료했어요"
-                    val formattedText2 = "이번 달에는 ${totalTodoCnt}개의 투두 중에서" +
-                            "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
-                            "\n지난 달에 비해 ${compareTodoCnt}개 상승했네요."
+                    val formattedText0 = "이번 달은 ${colorText0} 완료했어요"
+                    val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
+                            "\n${nowCountCompleted}개의 투두를 완료했어요." +
+                            "\n${diffCountBText} 열심히 한 달을 보내셨네요!"
 
-                    binding.recordTitle0.text = createSpannableString(formattedText0,colorText0)
-                    binding.recordTitle1.text = createSpannableString(formattedText1,colorText1)
-                    binding.recordContext1.text = formattedText2
+                    binding.recordTitle1.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordContext1.text = formattedText1
 
                 } else {
-                    Log.d("chartGetMonth 실패", response.body().toString())
+                    Log.d("setBarChartView 실패", response.body().toString())
                 }
             }
             override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
@@ -203,34 +210,41 @@ class FragChartMonth : Fragment() {
                 response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("chartGetMonthMonth", "Response Code: $responseCode")
+                Log.d("setLineChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("chartGetMonthMonth 성공", response.body().toString())
+                    Log.d("setLineChartView 성공", response.body().toString())
 
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val compareTodoCnt = 9.9
-                    val compareTodoPercent = 99
-
-                    val colorText1 = "${compareTodoPercent}%"
-
-                    val formattedText1 = "투두 달성도가 ${colorText1} 상승했어요"
-                    var formattedText2 = ""
-
-                    if (totalTodoCnt==0) {
-                        formattedText2 = "추가한 투두가 없어요"
-                    } else{
-                        formattedText2 =
-                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 지난 달에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
+                    val nowAchievementRate = response.body()?.nowAchievementRate
+                    val nowCountCompleted = response.body()?.nowCountCompletedA
+                    var diffCountC = response.body()?.diffCount
+                    val diffCountCText = when {
+                        diffCountC == null -> "NULL"
+                        diffCountC > 0 -> "상승"
+                        diffCountC < 0 -> "하강"
+                        else -> "유지"
+                    }
+                    val diffCountCText2 = when {
+                        diffCountC == null -> "NULL"
+                        diffCountC > 0 -> "${diffCountC}개 많이"
+                        diffCountC < 0 -> "${Math.abs(diffCountC)}개 적게"
+                        else -> "똑같이"
                     }
 
-                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
-                    binding.recordTitle3.text = createSpannableString(formattedText1, colorText1)
-                    binding.recordContext3.text = formattedText2
+                    val colorText0 = "${nowAchievementRate?.let { Math.abs(it) }}%"
+
+                    val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
+                    val formattedText1 = when {
+                        nowCountCompleted == null -> "완료한 투두가 없어요"
+                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개의 투두를 완료했어요." +
+                                "\n지난 달에 비해 ${diffCountCText2} 해냈네요!"
+                    }
+
+                    binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordContext3.text = formattedText1
 
                 } else {
-                    Log.d("chartGetMonthMonth 실패", response.body().toString())
+                    Log.d("setLineChartView 실패", response.body().toString())
                 }
             }
 
@@ -241,65 +255,87 @@ class FragChartMonth : Fragment() {
 
     }
 
-    // 통계 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(sdate : String) {
+    // 원형그래프 우측 카테고리 리사이클러뷰 설정
+    private fun initCategoryRecycler(sdate: String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<ChartMonthData>,
-                response: Response<ChartMonthData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("chartGetMonthWeek", "Response Code: $responseCode")
+                Log.d("initCategoryRecycler", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("chartGetMonthWeek 성공", response.body().toString())
+                    Log.d("initCategoryRecycler 성공", response.body().toString())
 
-                    datas.apply{
-                        val categoryStatistics = response.body()?.categoryStatistics
-                        categoryStatistics?.forEach { category ->
-                            val categoryName = category.categoryName
-                            val percentNum = category.rate
-                            val colorCode = category.color
+                    val chartMonthData = response.body()
+                    val categoryStatistics = chartMonthData?.categoryStatistics
+                    val CategoryDatas = ArrayList<MonthPieData>()
 
+                    categoryStatistics?.let { stats ->
+                        // 데이터가 4개 이상인 경우
+                        if (stats.size >= 4) {
+                            for (i in 0 until 4) {
+                                val monthPieData = stats[i]
+                                CategoryDatas.add(monthPieData)
+                            }
+                        } else {
+                            // 데이터가 4개 미만인 경우
+                            val totalRate = stats.sumByDouble { it.rate.toDouble() }
+                            var remainingRate = 100.0
+
+                            // 기존 데이터 추가
+                            stats.forEach { monthPieData ->
+                                CategoryDatas.add(monthPieData)
+                                remainingRate -= monthPieData.rate.toDouble()
+                            }
+
+                            // 나머지 비율을 "기타" 카테고리로 추가
+                            val otherCategory = MonthPieData(
+                                categoryName = "기타",
+                                rate = remainingRate.toFloat(),
+                                color = "#000000"
+                            )
+                            CategoryDatas.add(otherCategory)
                         }
-
-                        //adapter.datas = datas
-                        adapter.notifyDataSetChanged()
-
                     }
-                    binding.myCategoryRecycler.adapter= adapter
-                    binding.myCategoryRecycler.layoutManager= manager
 
+                    // 어댑터에 데이터 설정
+                    adapter.datas = CategoryDatas
+
+                    // 리사이클러뷰에 어댑터 및 레이아웃 매니저 설정
+                    binding.myCategoryRecycler.adapter = adapter
+                    binding.myCategoryRecycler.layoutManager = manager
                 } else {
-                    Log.d("chartGetMonthWeek 실패", response.body().toString())
+                    Log.d("initCategoryRecycler 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
-                Log.d("서버 오류", "chartGetMonthWeek 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initCategoryRecycler 실패")
             }
         })
 
     }
 
-    // 통계 좌측 파이차트 뷰 설정
+    // 원형그래프 데이터셋 설정
     private fun initCategoryPieChart(sdate: String) {
-        binding.myChart.setUsePercentValues(true)
+        binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<ChartMonthData>,
-                response: Response<ChartMonthData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("chartGetMonthWeek", "Response Code: $responseCode")
+                Log.d("initCategoryPieChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("chartGetMonthWeek 성공", response.body().toString())
+                    Log.d("initCategoryPieChart 성공", response.body().toString())
 
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
@@ -326,7 +362,7 @@ class FragChartMonth : Fragment() {
 
                     // 데이터셋 세팅
                     val pieData = PieData(pieDataSet)
-                    binding.myChart.apply {
+                    binding.PieChart.apply {
                         //com.mada.myapplication.HomeFunction.Model.data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화
@@ -337,15 +373,128 @@ class FragChartMonth : Fragment() {
                         animate()
                     }
                 } else {
-                    Log.d("chartGetMonth 실패", response.body().toString())
+                    Log.d("initCategoryPieChart 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
-                Log.d("서버 오류", "chartGetMonth 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initCategoryPieChart 실패")
             }
         })
 
+
+    }
+
+    // 막대그래프 데이터셋 설정
+    private fun initBarChart(date: String) {
+
+        // 서버 데이터 연결
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
+            override fun onResponse(
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
+            ) {
+                val responseCode = response.code()
+                Log.d("initBarChart", "Response Code: $responseCode")
+
+                if (response.isSuccessful) {
+                    Log.d("initBarChart 성공", response.body().toString())
+                } else {
+                    Log.d("initBarChart 실패", response.body().toString())
+
+                    // 서버 연결 전 UI 확인용으로 임시 작성
+
+                    val entries = ArrayList<BarEntry>()
+                    entries.add(BarEntry(1.0f,55.0f))
+                    entries.add(BarEntry(2.0f,65.0f))
+                    entries.add(BarEntry(3.0f,90.0f))
+                    entries.add(BarEntry(4.0f,80.0f))
+
+                    binding.BarChart.run {
+                        description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
+                        setMaxVisibleValueCount(4) // 최대 보이는 그래프 개수를 4개로 지정
+                        setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+                        setDrawBarShadow(false) //그래프의 그림자
+                        setDrawGridBackground(false)//격자구조 넣을건지
+
+                        axisLeft.run { //왼쪽 축. 즉 Y방향 축
+                            axisMaximum = 101f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                            axisMinimum = 0f // 최소값 0
+                            granularity = 25f // 25 단위마다 선을 그리려고 설정.
+                            setDrawLabels(true) // 값 적는거 허용 (0, 25, 50, 75, 100)
+                            setDrawGridLines(true) //격자 라인 활용
+                            setDrawAxisLine(false) // 축 그리기 설정
+                            gridColor = ContextCompat.getColor(context, R.color.grey3) // 축 아닌 격자 색깔 설정
+                            textColor = ContextCompat.getColor(context, R.color.grey3) // 라벨 텍스트 컬러 설정
+                            textSize = 12f //라벨 텍스트 크기
+                        }
+                        xAxis.run {
+                            position = XAxis.XAxisPosition.BOTTOM // X축을 아래에다가 둔다.
+                            granularity = 1f // 1 단위만큼 간격 두기
+                            setDrawAxisLine(true) // 축 그림
+                            setDrawGridLines(false) // 격자 그림
+                            setDrawLabels(false) // 라벨 그림
+                        }
+                        axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌
+                        setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
+                        animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
+                        legend.isEnabled = false //차트 범례 설정
+                    }
+                    var set = BarDataSet(entries,"DataSet") // 데이터셋 초기화
+                    if(entries.equals(entries[3])) {
+                        set.color = ContextCompat.getColor(requireContext(), R.color.main) // 마지막 바 그래프 색 설정
+                    }
+                    else{
+                        set.color = ContextCompat.getColor(requireContext(), R.color.grey2) // 나머지 바 그래프 색 설정
+                    }
+
+                    val dataSet :ArrayList<IBarDataSet> = ArrayList()
+                    dataSet.add(set)
+                    val data = BarData(dataSet)
+                    data.barWidth = 0.25f //막대 너비 설정
+                    binding.BarChart.run {
+                        this.data = data //차트의 데이터를 data로 설정해줌.
+                        setFitBars(true)
+                        invalidate()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initBarChart 실패")
+            }
+        })
+
+
+    }
+
+    // 꺾은선그래프 데이터셋 설정
+    private fun initLineChart(date: String){
+        // 서버 데이터 연결
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
+            override fun onResponse(
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
+            ) {
+                val responseCode = response.code()
+                Log.d("initLineChart", "Response Code: $responseCode")
+
+                if (response.isSuccessful) {
+                    Log.d("initLineChart 성공", response.body().toString())
+
+                } else {
+                    Log.d("initLineChart 실패", response.body().toString())
+
+                    // 서버 연결 전 UI 확인용으로 임시 데이터 작성
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initLineChart 실패")
+            }
+        })
 
     }
 

@@ -14,10 +14,10 @@ import com.mada.myapplication.R
 class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {
 
     var datas = mutableListOf<DayPieData>()
-    //        set(value) {
-//            field = value
-//            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
-//        }
+            set(value) {
+            field = value
+            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.my_record_list,parent,false)
         return ViewHolder(view)

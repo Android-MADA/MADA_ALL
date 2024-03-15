@@ -125,22 +125,23 @@ class FragChartDay : Fragment() {
                 response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("setPieChartView", "Response Code: $responseCode")
+                Log.d("chartGetDay", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("setPieChartView 성공", response.body().toString())
+                    Log.d("setPieChartView 성공", response.body()?.categoryStatistics.toString())
 
                     val categoryStatistics = response.body()?.categoryStatistics
                     val size = response.body()?.categoryStatistics?.size
                     val mostCategory = response.body()?.mostCategory
                     val nowCategoryCount = response.body()?.nowCategoryCount
-                    val beforeCategoryCount = response.body()?.beforeCategoryCount
+                    var beforeCategoryCount = response.body()?.beforeCategoryCount
                     val beforeCategoryCountText = when {
                         beforeCategoryCount == null -> "NULL"
                         beforeCategoryCount > 0 -> "${beforeCategoryCount}개 많이"
                         beforeCategoryCount < 0 -> "${beforeCategoryCount}개 적게"
                         else -> "똑같이"
                     }
+                    beforeCategoryCount = beforeCategoryCount?.let { Math.abs(it) }
 
                     val formattedText1 = "${mostCategory}"
                     val formattedText2 = when {
@@ -153,7 +154,7 @@ class FragChartDay : Fragment() {
                     binding.recordContext2.text = formattedText2
 
                 } else {
-                    Log.d("setPieChartView 실패", response.body().toString())
+                    Log.d("setPieChartView 실패", response.body()?.categoryStatistics.toString())
                 }
             }
 
@@ -181,18 +182,19 @@ class FragChartDay : Fragment() {
 
                     val nowTotalCount = response.body()?.nowTotalCount
                     val nowCountCompleted = response.body()?.nowCountCompleted
-                    val diffCountB = response.body()?.diffCount
+                    var diffCountB = response.body()?.diffCount
                     val diffCountBText = when {
                         diffCountB == null -> "NULL"
                         diffCountB > 0 -> "어제보다 ${diffCountB}개 더"
                         diffCountB < 0 -> "어제보다 ${diffCountB}개 덜"
                         else -> "어제만큼"
                     }
+                    diffCountB = diffCountB?.let { Math.abs(it) }
 
                     val colorText0 = "총 ${nowCountCompleted}개"
 
-                    val formattedText0 = "오늘 ${colorText0} 완료했어요"
-                    val formattedText1 = "오늘은 ${nowTotalCount}개의 투두 중에서" +
+                    val formattedText0 = "오늘은 ${colorText0} 완료했어요"
+                    val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
                             "\n${nowCountCompleted}개의 투두를 완료했어요." +
                             "\n${diffCountBText} 열심히 하루를 보내셨네요!"
 
@@ -226,13 +228,20 @@ class FragChartDay : Fragment() {
 
                     val nowAchievementRate = response.body()?.nowAchievementRate
                     val nowCountCompleted = response.body()?.nowCountCompletedA
-                    val diffCountC = response.body()?.diffCount
+                    var diffCountC = response.body()?.diffCount
                     val diffCountCText = when {
                         diffCountC == null -> "NULL"
                         diffCountC > 0 -> "상승"
                         diffCountC < 0 -> "하강"
                         else -> "유지"
                     }
+                    val diffCountCText2 = when {
+                        diffCountC == null -> "NULL"
+                        diffCountC > 0 -> "${diffCountC}개 많이"
+                        diffCountC < 0 -> "${diffCountC}개 적게"
+                        else -> "똑같이"
+                    }
+                    diffCountC = diffCountC?.let { Math.abs(it) }
 
                     val colorText0 = "${nowAchievementRate}%"
 
@@ -240,7 +249,7 @@ class FragChartDay : Fragment() {
                     val formattedText1 = when {
                         nowCountCompleted == null -> "완료한 투두가 없어요"
                         else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개 이상의 투두를 완료했어요!+" +
-                                "\n어제보다 약 ${diffCountC}개의 할일을 더 많이 해냈네요!"
+                                "\n어제에 비해 ${diffCountCText2} 해냈네요!"
                     }
 
                     binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
