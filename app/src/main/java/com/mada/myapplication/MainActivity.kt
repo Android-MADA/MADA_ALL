@@ -37,6 +37,8 @@ import com.mada.myapplication.db.entity.TodoEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import kotlinx.coroutines.launch
+import com.mada.myapplication.MyFuction.Data.FragMyData
+import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -231,6 +233,7 @@ fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
                     Log.d("MainActivity cate 추가중", cateData.categoryName.toString())
                     viewModel.createCate(cateData)
                 }
+                getHomeTodo(api, viewModel, context)
             } else {
                 Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
                 Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
@@ -252,9 +255,14 @@ fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
         override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){
-                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
                     Log.d("MainActivity todo server", todoData.toString())
                     viewModel.createTodo(todoData, null)
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.categoryId, todoName = i.repeatTodoName, complete = i.complete, repeat = "Y")
+                    Log.d("MainActivity repeat server", repeatData.toString())
+                    viewModel.createTodo(repeatData, null)
                 }
                 //닉네임 저장하기
                 viewModel._dUserName.value = response.body()!!.data.nickname
@@ -314,7 +322,8 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
         override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.RepeatTodoList){
-                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatInfo = i.repeatInfo?.toInt(), endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    Log.d("GET repeatTodo", repeatData.toString())
                     viewModel.createRepeatTodo(repeatData, null)
                 }
             }
@@ -331,6 +340,24 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
 
     })
 
+}
+
+fun getDescribe(viewModel : HomeViewModel, context : Context){
+    RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java).selectfragMy(viewModel.userToken).enqueue(object : Callback<FragMyData>{
+        override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+            if(response.isSuccessful){
+                viewModel.isSubscribe = response.body()!!.data.subscribe
+            }
+            else{
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
 }
 
 

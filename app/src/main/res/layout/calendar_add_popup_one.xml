@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/calendar_dday_popup_size"
     android:backgroundTint="@color/white"
@@ -16,47 +16,33 @@
         android:textSize="16sp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="저장하지 않고 나가시겠습니가?" />
+        android:text="더 이상 카테고리를 추가할 수 없습니다." />
 
     <TextView
+        android:id="@+id/popone_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:gravity="center"
+        android:textSize="12sp"
+        android:text="프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요."
+        android:textColor="@color/grey1"
+        android:layout_marginTop="10dp"
+        />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/yesBtnText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp">
-
-            <ImageButton
-                android:id="@+id/yesbutton"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/calendar_schedule_background_bar"
-                android:scaleType="fitCenter"
-                app:tint="@color/sub4" />
-
-            <TextView
-                android:id="@+id/yesBtnText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="확인"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/yesbutton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/yesbutton" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+        android:background="@drawable/background_10_strokex"
+        android:backgroundTint="@color/sub4"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:paddingVertical="13dp"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="25dp"/>
 
 
 </LinearLayout>

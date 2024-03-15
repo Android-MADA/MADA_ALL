@@ -51,6 +51,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    var context : Context? = null
     private var todoFragmentManager = fragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -66,55 +67,22 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
             if(holder.data!!.isInActive == true){
                 holder.btnAdd.isGone = true
-//                runBlocking {
-//                    viewModel!!.readTodo(cateId, null)
-//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() != true){
-//                        holder.todoRv.isGone = true
-//                        view!!.isGone = true
-//
-//                    }
-//                    else {
-//                        val mTodoAdapter = HomeTodoListAdapter()
-//                        mTodoAdapter.viewModel = viewModel
-//                        mTodoAdapter.category = getItem(position)
-//                        viewModel!!.readTodo(cateId, mTodoAdapter)
-//
-//                        withContext(Dispatchers.Main){
-//                            holder.todoRv.adapter = mTodoAdapter
-//                            holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-//
-//                        }
-//                    }
-//                }
-                //종료카테고리 처리 -> 보완 필요
-//                runBlocking {
-//                    viewModel!!.readTodo(cateId, null)
-//                    if(viewModel!!.inActiveTodoList!!.isNullOrEmpty() == true){
-//                        Log.d("inactive", cateId.toString())
-//                        view!!.isGone = true
-//                    }
-//                    else{
-//                        Log.d("inactive but have todo", cateId.toString())
-//                    }
-//                }
-
             }
             else {
                 Log.d("homecateRV", "추가중..")
                 holder.btnAdd.isVisible = true
-                holder.todoRv.isVisible = true
-
-                val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
-                mTodoAdapter.viewModel = viewModel
-                mTodoAdapter.category = getItem(position)
-                viewModel!!.readTodo(cateId, mTodoAdapter)
-
-
-                holder.todoRv.adapter = mTodoAdapter
-                holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
-
-
             }
+        holder.todoRv.isVisible = true
+
+        val mTodoAdapter = HomeTodoListAdapter(todoFragmentManager)
+        mTodoAdapter.viewModel = viewModel
+        mTodoAdapter.category = getItem(position)
+        mTodoAdapter.context = context
+        viewModel!!.readTodo(cateId, mTodoAdapter)
+
+
+        holder.todoRv.adapter = mTodoAdapter
+        holder.todoRv.layoutManager = LinearLayoutManager(holder.todoRv.context, LinearLayoutManager.VERTICAL, false)
 
 
 
@@ -145,7 +113,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                 handled = true
 
                 val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
-                val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatWeek = null, repeatMonth = null, startRepeatDate = null, endRepeatDate = null)
+                val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate = null, endRepeatDate = null)
                 //서버 보내기ㅎㅎㅎㅎ
                 CoroutineScope(Dispatchers.IO).launch {
                     api.addTodo(viewModel!!.userToken, todoData).enqueue(object : Callback<PostResponseTodo>{
@@ -156,7 +124,7 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                             if(response.isSuccessful){
                                 //db에 저장
                                 val Tresponse = response.body()!!.data.Todo
-                                val data = TodoEntity(0, Tresponse.id, viewModel!!.homeDate.value.toString(), Tresponse.category.id, holder.edtAdd.text.toString(), false, "N", null, null, null, null, false, viewModel!!.startMonday, viewModel!!.completeBottom, viewModel!!.newTodoTop)
+                                val data = TodoEntity(0, id = Tresponse.id, date = viewModel!!.homeDate.value.toString(), category = Tresponse.category.id, todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
                                 viewModel!!.createTodo(data, holder.edtAdd)
 
                             } else{

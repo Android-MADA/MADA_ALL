@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/calendar_dday_popup_size"
     android:backgroundTint="@color/white"
@@ -16,6 +16,17 @@
         android:textSize="16sp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
+        android:text="저장하지 않고 나가시겠습니가?"
+        />
+
+    <TextView
+        android:id="@+id/textDescribe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/grey1"
         android:text="저장하지 않고 나가시겠습니가?" />
 
     <TextView

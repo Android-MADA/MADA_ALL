@@ -1,5 +1,6 @@
 package com.mada.myapplication.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -15,7 +16,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.mada.myapplication.HomeFunction.Model.Category
+import com.mada.myapplication.HomeFunction.Model.CategoryList1
+import com.mada.myapplication.HomeFunction.Model.Todo
+import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -28,6 +36,7 @@ import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.clearHomeDatabase
 import com.mada.myapplication.databinding.TodoLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
+import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.getHomeCategory
 import com.mada.myapplication.getHomeTodo
 import com.mada.myapplication.hideBottomNavigation
@@ -38,6 +47,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.concurrent.thread
 
 class FragHome : Fragment() {
 
@@ -46,6 +56,7 @@ class FragHome : Fragment() {
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     private val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private lateinit var mAdView : AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +152,8 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
         /**
          * 삭제 예정 코드 시작
          */
@@ -150,6 +163,20 @@ class FragHome : Fragment() {
 
         /**
          * 삭제 예정 코드 끝
+         */
+
+
+
+        /**
+         * test - server 시작
+         */
+
+//        HomeGetCategory(viewModel, api)
+//        for(i in viewModel.categoryListHome){
+//            getHomeTodo2(api, viewModel, requireContext(), i)
+//        }
+        /**
+         * test - server 끝
          */
 
 
@@ -209,6 +236,7 @@ class FragHome : Fragment() {
             val cateList = it as List<CateEntity>
             val mAdapter = HomeCateListAdapter(binding.todoActiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
+            mAdapter.context = context
             mAdapter.submitList(cateList)
             binding.todoActiveCategoryRv.adapter = mAdapter
             binding.todoActiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
@@ -224,6 +252,7 @@ class FragHome : Fragment() {
             val cateList = it as List<CateEntity>
             val mAdapter = HomeCateListAdapter(binding.todoInactiveCategoryRv, requireFragmentManager())
             mAdapter.viewModel = viewModel
+            mAdapter.context = context
             mAdapter.submitList(cateList)
             binding.todoInactiveCategoryRv.adapter = mAdapter
             binding.todoInactiveCategoryRv.layoutManager = LinearLayoutManager(this.requireActivity())
@@ -269,6 +298,12 @@ class FragHome : Fragment() {
                     (completeNum.toFloat() / todoNum.toFloat() * 100.0).toInt()
                 }
                 binding.progressTv.text = "${percent.toString()}%"
+                if(todoNum == completeNum){
+                    binding.todoProgressMent2Tv.text = "오늘의 투두를 모두 완료했네요!"
+                }
+                else{
+                    binding.todoProgressMent2Tv.text = "투두 달성을 위해 노력해 봐요!"
+                }
             }
         })
 
@@ -289,7 +324,7 @@ class FragHome : Fragment() {
             //서버에서 데이터 새로 받아오기
             clearHomeDatabase(viewModel)
             getHomeCategory(api, viewModel, this.requireActivity())
-            getHomeTodo(api, viewModel, this.requireActivity())
+            //getHomeTodo(api, viewModel, this.requireActivity())
         })
 
 
@@ -327,14 +362,14 @@ class FragHome : Fragment() {
 
         })
 
-
-
-
-        //시작요일 변경 -> bottomsheetdialog에서 처리할 부분
-//        viewModel.startDay.observe(viewLifecycleOwner, Observer{
-//            Log.d("startday", "데이터 변경 감지 ${viewModel.startDay.value}")
-//            binding.calendarviewHome.firstDayOfWeek = viewModel.startDay.value!!
-//        })
+        /**
+         * 구글 광고
+         */
+        //구글 플레이스토어 광고
+        MobileAds.initialize(this.requireContext()) {}
+        mAdView = binding.adViewTodo
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
 
     }
@@ -343,7 +378,7 @@ class FragHome : Fragment() {
         super.onResume()
 
         hideBottomNavigation(false, activity)
-        getHomeCategory(api, viewModel, this.requireActivity())
+        //getHomeCategory(api, viewModel, this.requireActivity())
     }
 
     private fun findDayOfWeek(y: Int, m: Int, d: Int, selected: Calendar): String {
@@ -382,13 +417,13 @@ class FragHome : Fragment() {
     private fun homeMent(day: String): String {
         Log.d("homeMent", "running")
         var homeMent = when (day) {
-            "월요일" -> "월요병 날려버리고 화이팅!"
-            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요! 화이팅!"
-            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!"
-            "목요일" -> "오늘도 열심히 달려 봐요"
-            "금요일" -> "주말을 위해 조금만 더 화이팅!"
-            "토요일" -> "주말을 알차게!"
-            else -> "일주일의 마지막도 파이팅!"
+            "월요일" -> "월요병 날려버리고 화이팅!\n"
+            "화요일" -> "화끈한 에너지로 화요일을 불태워보세요!\n"
+            "수요일" -> "수투레스받을 땐 심호흡 한 번 해보세요!!\n"
+            "목요일" -> "오늘도 열심히 달려 봐요\n"
+            "금요일" -> "주말을 위해 조금만 더 화이팅!\n"
+            "토요일" -> "주말을 알차게!\n"
+            else -> "일주일의 마지막도 파이팅!\n"
         }
         return homeMent
     }
@@ -405,4 +440,61 @@ fun checkCategory(viewModel: HomeViewModel) : Boolean {
         Log.d("checkHomeCate", "not blank")
     }
     return isCate
+}
+
+fun HomeGetCategory(viewModel: HomeViewModel, api: HomeApi){
+    var categoryList = mutableListOf<Category>()
+    api.getCategory(viewModel.userToken).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for(i in response.body()!!.data.CategoryList){
+                    viewModel.categoryListHome.add(i)
+                    Log.d("FragHome server category", "${i.id}")
+                }
+                Log.d("FragHome server category", categoryList.toString())
+            } else {
+                Log.d("FragHome server category", "android fail")
+            }
+        }
+
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("FragHome server category", "server fail")
+        }
+
+    })
+}
+
+fun getHomeTodo2(api : HomeApi, viewModel: HomeViewModel, context: Context, category: Category){
+    Log.d("MainActivity", "3. GET homeTodoStart")
+    api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+            if(response.isSuccessful){
+                for(i in response.body()!!.data.TodoList){
+                    if(i.category.id == category.id){
+                        viewModel.todoListHome.add(i)
+                    }
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    if(i.categoryId == category.id){
+                        viewModel.todoListHome.add(Todo(id = i.id, date = i.date, category = category, todoName = "repeatTodo Android test", complete = i.complete, repeat = "Y" ))
+                    }
+                }
+                Log.d("homeTodo 연결 확인", viewModel.todoListHome.toString())
+            }
+            else {
+                Log.d("todo안드 잘못", "서버 연결 실패")
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+            Log.d("todo서버 연결 오류", "서버 연결 실패")
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
+    Log.d("MainActivity", "3. GET homeTodoFin")
 }

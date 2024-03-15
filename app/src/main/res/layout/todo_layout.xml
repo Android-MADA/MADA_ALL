@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,31 +77,40 @@
             app:layout_constraintTop_toBottomOf="@id/todo_top_layout"
             android:layout_marginTop="20dp"
             >
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginHorizontal="60dp"
                     android:id="@+id/todo_ment_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="77dp"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:text="오늘도 열심히 해보자!"
+                    android:text="수투레스받을 땐 심호흡 한 번 해보세요!!\n"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/todo_date_background"
-                    android:paddingVertical="10dp"
+                    android:background="@drawable/todo_ment"
                     android:paddingHorizontal="30dp"
+                    android:gravity="center"
                     />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    app:layout_constraintTop_toTopOf="@id/todo_ment_tv"
+                    android:layout_marginTop="52dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="30dp"
                     android:id="@+id/todo_character_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="30dp">
+                    >
 
                     <ImageView
                         android:id="@+id/character_shadow_iv"
@@ -151,11 +161,14 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    app:layout_constraintTop_toBottomOf="@id/todo_character_layout"
+                    android:id="@+id/layout_todo_progressbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/todo_complete_background"
                     android:layout_marginHorizontal="16dp"
                     android:paddingVertical="20dp"
+                    android:layout_marginTop="30dp"
                     >
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/todo_progress_ment1_tv"
@@ -243,14 +256,7 @@
                             android:layout_weight="7"
                             android:background="@drawable/todo_progress_done_layout_background">
 
-                            <ImageView
-                                android:id="@+id/progress_character_iv"
-                                android:layout_width="27.21dp"
-                                android:layout_height="27dp"
-                                android:paddingBottom="5dp"
-                                android:src="@drawable/progress_ramdi"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+
                             <TextView
                                 android:id="@+id/progress_tv"
                                 android:layout_width="wrap_content"
@@ -272,6 +278,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
+                    app:layout_constraintTop_toBottomOf="@id/layout_todo_progressbar"
                     android:id="@+id/todo_todo_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -325,7 +332,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginTop="20dp"
                         />
                     <LinearLayout
                         android:id="@+id/cate_empty_layout"
@@ -371,13 +377,26 @@
                     </LinearLayout>
 
                 </LinearLayout>
+                <!-- 광고 부분-->
+                <!-- adUnitID: Android 배너 광고 테스트 전용 광고 단위 ID-->
+                <com.google.android.gms.ads.AdView
+                    app:layout_constraintTop_toBottomOf="@id/todo_todo_layout"
+                    android:id="@+id/adView_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-4086521113003670/1878645147"/>
                 <View
+                    app:layout_constraintTop_toBottomOf="@id/adView_todo"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"/>
 
 
-                <!--                광고 부분-->
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

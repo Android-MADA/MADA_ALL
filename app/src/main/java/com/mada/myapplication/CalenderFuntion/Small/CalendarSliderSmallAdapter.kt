@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import org.joda.time.DateTime
 
 class CalendarSliderSmallAdapter(
@@ -16,13 +17,15 @@ class CalendarSliderSmallAdapter(
     private val ScheduleNum: TextView,
     private val cal: LinearLayout,
     private val textDday :TextView,
-    private var repeatFlag : Boolean = false
+    private var repeatFlag : String? = null,
+    private var viewModel : HomeViewModel? = null
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
                 yearmonthText.text = DateTime(millis).year.toString() + "년 " + DateTime(millis).monthOfYear.toString() + "월"
+
 
             }
         })
@@ -34,7 +37,7 @@ class CalendarSliderSmallAdapter(
 
     override fun createFragment(position: Int): CalendarSmallFragment {
         val millis = getItemId(position)
-        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal,textDday, repeatFlag)
+        return CalendarSmallFragment.newInstance(millis,Scheldule,ScheduleNum,cal,textDday, repeatFlag, viewModel)
     }
 
     override fun getItemId(position: Int): Long
