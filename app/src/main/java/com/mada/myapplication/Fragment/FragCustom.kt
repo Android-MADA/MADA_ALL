@@ -36,6 +36,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.children
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -66,7 +67,7 @@ interface OnColorImageChangeListener {
 }
 
 interface OnClothImageChangeListener {
-    fun onClothButtonSelected(clothbuttonInfo: ButtonInfo)
+    fun onClothButtonSelected(buttonInfo: ButtonInfo)
 }
 
 interface OnItemImageChangeListener {
@@ -77,9 +78,6 @@ interface OnBackgroundImageChangeListener {
     fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
-interface OnItemSelectionListener {
-    fun onItemSelected(itemCategories: List<String>)
-}
 
 data class IdAndItemType(
     val id: Int,
@@ -88,9 +86,63 @@ data class IdAndItemType(
 
 
 
+//카테고리매핑
+val serverIdToCategoryMap = mapOf(
+    R.id.btn_item_bag_e to "goods",
+    R.id.btn_item_bag_luck to "goods",
+    R.id.btn_item_glass_8bit to "glasses",
+    R.id.btn_item_glass_normal to "glasses",
+    R.id.btn_item_glass_sunB to "glasses",
+    R.id.btn_item_glass_sunR to "glasses",
+    R.id.btn_item_glass_woig to "glasses",
+    R.id.btn_item_hat_bee to "hat,earring",
+    R.id.btn_item_hat_ber to "hat,earring",
+    R.id.btn_item_hat_dinof  to "hat",
+    R.id.btn_item_hat_flower to "hat,earring",
+    R.id.btn_item_hat_grad to "hat,earring",
+    R.id.btn_item_hat_heart to "hat,earring",
+    R.id.btn_item_hat_ipod to "hat,earring",
+    R.id.btn_item_hat_sheep to "hat,earring",
+    R.id.btn_item_hat_v to "hat",
+    R.id.btn_item_hat_heads to "earring",
+    R.id.btn_cloth_astronauts to "hat,earring,glasses,clothes",
+    R.id.btn_cloth_caffK to "hat,clothes",
+    R.id.btn_cloth_dev to "hat,earring,clothes,goods",
+    R.id.btn_cloth_hanbokF to "hat,clothes",
+    R.id.btn_cloth_hanbokM to "hat,clothes",
+    R.id.btn_cloth_movie to "hat,earring,clothes,goods",
+    R.id.btn_cloth_snowman to "hat,earring,glasses,clothes",
+    R.id.btn_cloth_v to "hat,clothes",
+    R.id.btn_cloth_zzim to "hat,earring,clothes,goods"
+)
+
+
+val categoryList = mutableListOf<String>()
+val itemsCategory = ArrayList<String>(100) //카테고리 중복 확인 변수
+
+//카테고리 처리
+fun onCategorySelected(serverID:Int) {
+    // 여러 카테고리 정보를 받아 처리하는 로직을 구현
+    // 예를 들어 각 카테고리 정보를 반복하여 토스트 메시지를 표시하는 등의 로직을 추가할 수 있습니다.
+    val itemCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
+    if (itemCategories != null) {
+        for (category in itemCategories) {
+            if (itemsCategory.contains(category)) {
+                //Toast.makeText(requireContext(), "이미 선택된 카테고리입니다.", Toast.LENGTH_SHORT).show()
+                return
+            }
+            itemsCategory.add(category)
+        }
+        //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
+        Log.d("itemsCategory", "선택된 카테고리: $itemsCategory")
+    }
+}
+
+
+
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
-    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnItemSelectionListener {
+    OnItemImageChangeListener, OnBackgroundImageChangeListener {
     lateinit var binding: FragCustomBinding
     private var selectedColorButtonInfo: ButtonInfo? = null
     private var selectedClothButtonInfo: ButtonInfo? = null
@@ -100,9 +152,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private val viewModel: CustomViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var savedData: selectedButtonInfo
-    val categoryList = mutableListOf<String>()
-    val itemsCategory = ArrayList<String>(100)
-    val basiccategoryList = ArrayList<List<String>>(100)
 
 
 
@@ -130,57 +179,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         var selectedItemButtonInfo: ButtonInfo?,
         var selectedBackgroundButtonInfo: ButtonInfo?
     )
-
-    override fun onItemSelected(itemCategories: List<String>) {
-        // 여러 카테고리 정보를 받아 처리하는 로직을 구현
-        // 예를 들어 각 카테고리 정보를 반복하여 토스트 메시지를 표시하는 등의 로직을 추가할 수 있습니다.
-
-        //val itemCategories = item.category.split(",")
-
-        for (category in itemCategories) {
-            if (itemsCategory.contains(category)) {
-                //throw
-            }
-            itemsCategory.add(category)
-        }
-        //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
-        Toast.makeText(requireContext(), "선택된 카테고리: $itemsCategory", Toast.LENGTH_SHORT).show()
-    }
-
-    fun getCustomItemCheck() {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
-
-        call.enqueue(object : Callback<customItemCheckDATA> {
-            override fun onResponse(
-                call: Call<customItemCheckDATA>,
-                response: Response<customItemCheckDATA>
-            ) {
-                if (response.isSuccessful) {
-                    val checkInfo = response.body()
-                    checkInfo?.data?.let { itemList ->
-                        itemList.itemList.forEachIndexed { index, item ->
-                            if (!item.have) {
-                                while (basiccategoryList.size <= item.id) {
-                                    basiccategoryList.add(ArrayList())
-                                }
-                                basiccategoryList[item.id] = item.itemCategory
-                                Log.d("basiccategoryList",  "itemID: ${item.id} itemCatagory: ${item.itemCategory}")
-
-                            }
-
-                        }
-                    }
-                } else {
-                   }
-            }
-
-            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
-                Log.d("error", t.message.toString())
-            }
-        })
-    }
-
-
 
 
 
@@ -311,10 +309,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             backgroundbuttonInfo?.selectedImageResource ?: 0
         )
 
-        //카테고리 불러오기
-        getCustomItemCheck()
-
-
 
 
 
@@ -359,6 +353,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
         binding.btnCustomReset.setOnClickListener {
+            itemsCategory.clear()
             if (::binding.isInitialized) {
                 val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 selectedColorButtonInfo = colorbtninfo
@@ -679,6 +674,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         unsavedChanges = true
     }
 
+
+
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
@@ -688,11 +685,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         custom_save = false
-        binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
-        selectedItemButtonInfo = itembuttonInfo
+        binding.imgCustomCloth.setImageResource(itembuttonInfo.selectedImageResource)
+        selectedClothButtonInfo = itembuttonInfo
         unsavedChanges = true
-
-
     }
 
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {

@@ -42,6 +42,25 @@
                 android:layout_width="40dp"
                 android:background="#FFFFFF"></ImageButton>
 
+
+            <ImageButton
+                android:id="@+id/btn_color_pink"
+                android:src="@drawable/color_pink"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:background="#FFFFFF"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_color_pink3"
+                android:src="@drawable/color_pink3"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:background="#FFFFFF"></ImageButton>
+
             <ImageButton
                 android:id="@+id/btn_color_mint"
                 android:src="@drawable/color_mint"
@@ -51,14 +70,7 @@
                 android:layout_width="40dp"
                 android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_color_green"
-                android:src="@drawable/color_green"
-                android:layout_margin ="10dp"
-                android:scaleType="fitStart"
-                android:adjustViewBounds="true"
-                android:layout_width="40dp"
-                android:background="#FFFFFF"></ImageButton>
+
 
 
             <ImageButton
@@ -70,23 +82,9 @@
                 android:layout_width="40dp"
                 android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_color_pink2"
-                android:src="@drawable/color_pink2"
-                android:layout_margin ="10dp"
-                android:scaleType="fitStart"
-                android:adjustViewBounds="true"
-                android:layout_width="40dp"
-                android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_color_Rblue"
-                android:src="@drawable/color_rblue"
-                android:layout_margin ="10dp"
-                android:scaleType="fitStart"
-                android:adjustViewBounds="true"
-                android:layout_width="40dp"
-                android:background="#FFFFFF"></ImageButton>
+
+
 
 
 
@@ -98,17 +96,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-
-
-
             <ImageButton
-                android:id="@+id/btn_color_pink3"
-                android:src="@drawable/color_pink3"
+                android:id="@+id/btn_color_pink2"
+                android:src="@drawable/color_pink2"
                 android:layout_margin ="10dp"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:layout_width="40dp"
                 android:background="#FFFFFF"></ImageButton>
+
+
+
 
             <ImageButton
                 android:id="@+id/btn_color_bluepurple"
@@ -123,7 +121,6 @@
                 android:id="@+id/btn_color_orange"
                 android:src="@drawable/color_orange"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:layout_width="40dp"
@@ -148,13 +145,24 @@
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_color_pink"
-                android:src="@drawable/color_pink"
+                android:id="@+id/btn_color_green"
+                android:src="@drawable/color_green"
                 android:layout_margin ="10dp"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
                 android:layout_width="40dp"
                 android:background="#FFFFFF"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_color_Rblue"
+                android:src="@drawable/color_rblue"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:background="#FFFFFF"></ImageButton>
+
+
 
 
 
