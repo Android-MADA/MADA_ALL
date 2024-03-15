@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavAction
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -453,29 +454,19 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                 calendarViewModel.setPopupOne(requireContext(), "가능한 날짜를 선택해주세요.", view)
             }
             else{
-                val patchDate = PatchRequestTodo(todoName = binding.edtHomeCategoryName.text.toString(), date = null, complete = false, repeat = selectedType, repeatInfo = inputRepeatInfo, startRepeatDate = viewModel.repeatStartDate.toString(), endRepeatDate = viewModel.repeatEndDate.toString())
-                Log.d("repeat Edit send", patchDate.toString())
-                api.editTodo(viewModel.userToken, todoId, patchDate).enqueue(object :Callback<Void>{
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if(response.isSuccessful){
-                            Log.d("repeat Edit send", "sucess")
-                            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
+                viewModel.editRepeatTodo(todoName = binding.edtHomeCategoryName.text.toString(), repeat = selectedType, repeatInfo = inputRepeatInfo, endDate = viewModel.repeatEndDate.toString(), startDate = viewModel.repeatStartDate.toString()){
+                    result ->
+                    when(result){
+                        0 -> {
+                            findNavController().popBackStack()
+                            Log.d("repeat Edit", "success")
                         }
-                        else{
-                            Log.d("repeat Edit", "Android fail")
-                            Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
+                        1 -> {
+                            findNavController().popBackStack()
+                            Log.d("repeat Edit", "fail")
                         }
                     }
-
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("repeat Edit", "server fail")
-                        Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
-
-                    }
-
-                })
+                }
             }
         }
 

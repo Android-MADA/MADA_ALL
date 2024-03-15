@@ -67,6 +67,14 @@ data class PatchRequestTodo(
     @SerializedName("date") var date: String?
 )
 
+data class PatchRequestRepeatTodo(
+    @SerializedName("todoName") var todoName: String,
+    @SerializedName("repeat") var repeat: String?,
+    @SerializedName("repeatInfo") var repeatInfo: Int?,
+    @SerializedName("startRepeatDate") var startRepeatDate: String?,
+    @SerializedName("endRepeatDate") var endRepeatDate: String?
+)
+
 data class PatchCheckboxTodo(
     @SerializedName("complete") var complete: Boolean
 )

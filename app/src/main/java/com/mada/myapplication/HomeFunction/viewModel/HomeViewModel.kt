@@ -27,6 +27,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
+import com.mada.myapplication.HomeFunction.Model.PatchRequestRepeatTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
@@ -669,5 +670,29 @@ class HomeViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun editRepeatTodo(todoName : String, repeat : String, repeatInfo : Int?, endDate : String, startDate : String, callback: (Int) -> Unit){
+        var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
+        Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
+        callback(1)
+//        api.editRepeatTodo(userToken, selectedRepeatTodo!!.id!!, data).enqueue(object : Callback<Void>{
+//            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                if(response.isSuccessful){
+//                    Log.d("repeat Edit", "success")
+//                    callback(0)
+//                }
+//                else{
+//                    Log.d("repeat Edit", "android fail")
+//                    callback(1)
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<Void>, t: Throwable) {
+//                Log.d("repeat Edit", "fail")
+//                callback(1)
+//            }
+//
+//        })
     }
 }

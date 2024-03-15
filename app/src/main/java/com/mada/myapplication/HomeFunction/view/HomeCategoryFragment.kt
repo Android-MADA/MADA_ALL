@@ -155,6 +155,8 @@ class HomeCategoryFragment : Fragment() {
         super.onResume()
         Log.d("onResume", "running")
         getAllCategory(api, viewModel, this.requireActivity())
+        viewModel.readActiveCate(false)
+        viewModel.readQuitCate(true)
         getDescribe(viewModel, this.requireActivity())
     }
     override fun onDestroyView() {

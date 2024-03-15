@@ -3,6 +3,7 @@ package com.mada.myapplication.HomeFunction.api
 
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
+import com.mada.myapplication.HomeFunction.Model.PatchRequestRepeatTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
@@ -15,7 +16,6 @@ import com.mada.myapplication.HomeFunction.Model.ScheduleResponse
 import com.mada.myapplication.HomeFunction.Model.ScheduleTodoCalList
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -47,6 +47,15 @@ fun editTodo(
     @Path("todoId", encoded = true) todoId: Int,
     @Body data : PatchRequestTodo
 ): Call<Void>
+
+    @PATCH("/api/home/todo/update/{todoId}")
+    fun editRepeatTodo(
+        @Header("Authorization") token: String?,
+        @Path("todoId", encoded = true) todoId: Int,
+        @Body data : PatchRequestRepeatTodo
+    ): Call<Void>
+
+
 
     @PATCH("/api/home/todo/update/{todoId}")
     fun changeCheckox(
