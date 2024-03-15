@@ -429,6 +429,20 @@
 
             </LinearLayout>
         </ScrollView>
-
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-4086521113003670/1878645147">
+        </com.google.android.gms.ads.AdView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

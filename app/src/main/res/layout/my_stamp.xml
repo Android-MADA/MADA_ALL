@@ -23,14 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/my_stamp_title_txt" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="32dp"
         android:elevation="20dp"
@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="27dp"
             android:layout_marginEnd="27dp"
-            android:rotation="20"/>
+            android:rotation="20" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect2"
@@ -124,12 +124,15 @@
             android:id="@+id/stamp1"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/stamp2">
 
             <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
@@ -146,12 +149,15 @@
             android:id="@+id/stamp2"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/stamp1"
             app:layout_constraintEnd_toStartOf="@id/stamp3">
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
@@ -167,13 +173,15 @@
             android:id="@+id/stamp3"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/stamp2"
             app:layout_constraintEnd_toStartOf="@id/stamp4">
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
@@ -189,6 +197,8 @@
             android:id="@+id/stamp4"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/stamp3"
@@ -196,7 +206,7 @@
             android:layout_marginEnd="27dp">
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4"
@@ -212,13 +222,15 @@
             android:id="@+id/stamp5"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp4"
             app:layout_constraintStart_toEndOf="@id/stamp6"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
@@ -234,13 +246,15 @@
             android:id="@+id/stamp6"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp3"
             app:layout_constraintStart_toEndOf="@id/stamp7"
             app:layout_constraintEnd_toStartOf="@id/stamp5">
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6"
@@ -256,13 +270,15 @@
             android:id="@+id/stamp7"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp2"
             app:layout_constraintStart_toEndOf="@id/stamp8"
             app:layout_constraintEnd_toStartOf="@id/stamp6">
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="7"
@@ -278,6 +294,8 @@
             android:id="@+id/stamp8"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp1"
             app:layout_constraintStart_toStartOf="parent"
@@ -285,7 +303,7 @@
             android:layout_marginStart="27dp">
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8"
@@ -301,13 +319,15 @@
             android:id="@+id/stamp9"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/stamp10">
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9"
@@ -323,13 +343,15 @@
             android:id="@+id/stamp10"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp7"
             app:layout_constraintStart_toEndOf="@id/stamp9"
             app:layout_constraintEnd_toStartOf="@id/stamp11">
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
@@ -345,13 +367,15 @@
             android:id="@+id/stamp11"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp6"
             app:layout_constraintStart_toEndOf="@id/stamp10"
             app:layout_constraintEnd_toStartOf="@id/stamp12">
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="11"
@@ -367,6 +391,8 @@
             android:id="@+id/stamp12"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp5"
             app:layout_constraintStart_toEndOf="@id/stamp11"
@@ -374,7 +400,7 @@
             android:layout_marginEnd="27dp">
 
             <TextView
-                android:id="@+id/textView25"
+                android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12"
@@ -390,13 +416,15 @@
             android:id="@+id/stamp13"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp12"
             app:layout_constraintStart_toEndOf="@id/stamp14"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="13"
@@ -412,13 +440,15 @@
             android:id="@+id/stamp14"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp11"
             app:layout_constraintStart_toEndOf="@id/stamp15"
             app:layout_constraintEnd_toStartOf="@id/stamp13">
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="14"
@@ -434,13 +464,15 @@
             android:id="@+id/stamp15"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp10"
             app:layout_constraintStart_toEndOf="@id/stamp16"
             app:layout_constraintEnd_toStartOf="@id/stamp14">
 
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15"
@@ -456,6 +488,8 @@
             android:id="@+id/stamp16"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp9"
             app:layout_constraintStart_toStartOf="parent"
@@ -463,7 +497,7 @@
             android:layout_marginStart="27dp">
 
             <TextView
-                android:id="@+id/textView30"
+                android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="16"
@@ -479,13 +513,15 @@
             android:id="@+id/stamp17"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/stamp18">
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="17"
@@ -501,13 +537,15 @@
             android:id="@+id/stamp18"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp15"
             app:layout_constraintStart_toEndOf="@id/stamp17"
             app:layout_constraintEnd_toStartOf="@id/stamp19">
 
             <TextView
-                android:id="@+id/textView32"
+                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="18"
@@ -523,13 +561,15 @@
             android:id="@+id/stamp19"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp14"
             app:layout_constraintStart_toEndOf="@id/stamp18"
             app:layout_constraintEnd_toStartOf="@id/stamp20">
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="19"
@@ -545,6 +585,8 @@
             android:id="@+id/stamp20"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@id/stamp13"
             app:layout_constraintStart_toEndOf="@id/stamp19"
@@ -552,7 +594,7 @@
             android:layout_marginEnd="27dp">
 
             <TextView
-                android:id="@+id/textView34"
+                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20"
@@ -568,13 +610,15 @@
             android:id="@+id/stamp21"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/stamp22"
             app:layout_constraintTop_toBottomOf="@+id/stamp20" >
 
             <TextView
-                android:id="@+id/textView35"
+                android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21"
@@ -590,13 +634,16 @@
             android:id="@+id/stamp22"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toStartOf="@id/stamp5"
             app:layout_constraintStart_toEndOf="@+id/stamp23"
-            app:layout_constraintTop_toBottomOf="@+id/stamp19" >
+            app:layout_constraintTop_toBottomOf="@+id/stamp19"
+            android:clickable="true">
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="22"
@@ -612,13 +659,15 @@
             android:id="@+id/stamp23"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintTop_toBottomOf="@+id/stamp18"
             app:layout_constraintStart_toEndOf="@id/stamp8"
             app:layout_constraintEnd_toStartOf="@id/stamp6">
 
             <TextView
-                android:id="@+id/textView37"
+                android:id="@+id/textView23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23"
@@ -634,6 +683,8 @@
             android:id="@+id/stamp24"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:layout_marginStart="27dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toStartOf="@+id/stamp23"
@@ -641,7 +692,7 @@
             app:layout_constraintTop_toBottomOf="@+id/stamp17" >
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="24"
@@ -657,13 +708,15 @@
             android:id="@+id/stamp25"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toStartOf="@id/stamp26"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stamp24" >
 
             <TextView
-                android:id="@+id/textView39"
+                android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="25"
@@ -679,13 +732,15 @@
             android:id="@+id/stamp26"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toStartOf="@id/stamp27"
             app:layout_constraintStart_toEndOf="@+id/stamp25"
             app:layout_constraintTop_toBottomOf="@+id/stamp23" >
 
             <TextView
-                android:id="@+id/textView40"
+                android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="26"
@@ -701,13 +756,15 @@
             android:id="@+id/stamp27"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toStartOf="@+id/stamp28"
             app:layout_constraintStart_toEndOf="@+id/stamp26"
             app:layout_constraintTop_toBottomOf="@+id/stamp22" >
 
             <TextView
-                android:id="@+id/textView41"
+                android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="27"
@@ -723,6 +780,8 @@
             android:id="@+id/stamp28"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
             android:layout_marginEnd="27dp"
             android:background="@drawable/my_stampitem_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -730,7 +789,7 @@
             app:layout_constraintTop_toBottomOf="@+id/stamp21" >
 
             <TextView
-                android:id="@+id/textView42"
+                android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="28"
@@ -746,13 +805,17 @@
             android:id="@+id/stamp29"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/stamp22"
-            app:layout_constraintTop_toBottomOf="@+id/stamp28" >
+            app:layout_constraintTop_toBottomOf="@+id/stamp28">
 
             <TextView
-                android:id="@+id/textView43"
+                android:id="@+id/textView29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="29"
@@ -768,13 +831,17 @@
             android:id="@+id/stamp30"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stamp29"
             app:layout_constraintStart_toEndOf="@+id/stamp23"
-            app:layout_constraintTop_toBottomOf="@+id/stamp27" >
+            app:layout_constraintTop_toBottomOf="@+id/stamp27">
 
             <TextView
-                android:id="@+id/textView44"
+                android:id="@+id/textView30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30"
@@ -790,13 +857,17 @@
             android:id="@+id/stamp31"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stamp30"
             app:layout_constraintStart_toEndOf="@id/stamp8"
-            app:layout_constraintTop_toBottomOf="@+id/stamp26" >
+            app:layout_constraintTop_toBottomOf="@+id/stamp26">
 
             <TextView
-                android:id="@+id/textView45"
+                android:id="@+id/textView31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31"

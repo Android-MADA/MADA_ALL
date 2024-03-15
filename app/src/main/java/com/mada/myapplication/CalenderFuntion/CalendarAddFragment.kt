@@ -27,6 +27,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
+import com.mada.myapplication.MainActivity
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -68,6 +69,14 @@ class CalendarAddFragment : Fragment() {
     ): View? {
         binding = CalendarAddBinding.inflate(layoutInflater)
         hideBootomNavigation(true)
+
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        }
 
         val schedules = arrayOf<TextView>(
             binding.preScheldule2,
@@ -166,7 +175,6 @@ class CalendarAddFragment : Fragment() {
             val calendarAdapter = CalendarSliderSmallAdapter(this,binding.textYearMonth,binding.calendar2,binding.preScheldule,preScheduleNum ,binding.cal,binding.textDdayBlank)
             binding.calendar2.adapter = calendarAdapter
             val comparisonResult =  ChronoUnit.MONTHS.between(todayMonth,LocalDate.parse(preScheduleNum.text.toString()))
-            Log.d("compare","${comparisonResult}")
             binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt(), false)
         }
         binding.nextScheldule.setOnClickListener {
@@ -381,10 +389,6 @@ class CalendarAddFragment : Fragment() {
         chip2.setOnClickListener {
             binding.cyclebtn.text = "매일"
             curCycle = "D"
-            binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
-            binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(false,binding.cal)
-            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip2,chip1,chip3,chip4,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
@@ -392,11 +396,11 @@ class CalendarAddFragment : Fragment() {
         }
         chip3.setOnClickListener {
             binding.cyclebtn.text = "매주"
-            curCycle = "W"
+            curCycle = "W"/*
             binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
             binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
             toggleLayout(false,binding.cal)
-            toggleLayout(false,binding.calAll)
+            toggleLayout(false,binding.calAll)*/
             binding.repeatWeek.visibility = View.VISIBLE
             binding.repeatMonth.visibility = View.GONE
             binding.repeatYear.visibility = View.GONE
@@ -405,10 +409,6 @@ class CalendarAddFragment : Fragment() {
         chip4.setOnClickListener {
             binding.cyclebtn.text = "매월"
             curCycle = "M"
-            binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
-            binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(false,binding.cal)
-            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip4,chip1,chip3,chip2,chip5)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.VISIBLE
@@ -417,10 +417,6 @@ class CalendarAddFragment : Fragment() {
         chip5.setOnClickListener {
             binding.cyclebtn.text = "매년"
             curCycle = "Y"
-            binding.nextScheldule.setBackgroundColor(Color.TRANSPARENT)
-            binding.preScheldule.setBackgroundColor(Color.TRANSPARENT)
-            toggleLayout(false,binding.cal)
-            toggleLayout(false,binding.calAll)
             updateUIForWeekRepeat(chip5,chip1,chip3,chip4,chip2)
             binding.repeatWeek.visibility = View.GONE
             binding.repeatMonth.visibility = View.GONE
@@ -474,9 +470,7 @@ class CalendarAddFragment : Fragment() {
             else if(newVal ==3 ||newVal ==4 ||newVal ==6 ||newVal ==9 ||newVal ==11) binding.numberPickerDay.maxValue=30
         }
 
-        MobileAds.initialize(this.requireContext()) {}
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+
         return binding.root
     }
 
@@ -584,13 +578,21 @@ class CalendarAddFragment : Fragment() {
                             }
                         }
                     } else {
+                        if(curCycle!="N") {
+
+                        }
                         CalendarViewModel.editCalendar(
                             CalendarDataEdit(curId,binding.textTitle.text.toString(),preScheduleNum.text.toString(),nextScheduleNum.text.toString(),
-                            curColor,curCycle,curRepeatText,CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()) ,
-                            "N",binding.textMemo.text.toString()),curId) { result ->
+                            curColor,curCycle,curRepeatText,CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()) , "N",binding.textMemo.text.toString()),curId) { result ->
                             when (result) {
                                 1 -> {
                                     Toast.makeText(context, "수정 성공", Toast.LENGTH_SHORT).show()
+                                    for(data in CalendarViewModel.ddayArrayList) {
+                                        if(data.id==curId) {
+                                            CalendarViewModel.ddayArrayList.remove(data)
+                                            break
+                                        }
+                                    }
                                     if(curCycle=="N"&&initCycle=="N") {
                                         delCal(curId)
                                         addCal(curId)
@@ -714,7 +716,6 @@ class CalendarAddFragment : Fragment() {
 
     }
     private fun delDday(Year : Int, Month : Int, tmpId :Int) {
-
         if(CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!=null){
             for(data in CalendarViewModel.hashMapArrayCal.get("${Year}-${Month}")!!) {
                 if(data.id == tmpId) {

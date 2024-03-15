@@ -7,7 +7,7 @@
     android:minHeight="500dp"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Fragment.FragTime">
+    tools:context=".TimeFunction.FragTime">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/timetablelayout"

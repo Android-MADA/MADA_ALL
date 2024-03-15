@@ -6,12 +6,14 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isGone
@@ -63,8 +65,8 @@ class CalendarAddSFragment : Fragment() {
             binding.textDday.text = "D-${CalendarViewModel.daysRemainingToDate(calData.endDate)}"
             binding.textDday.setTextColor(Color.parseColor(calData.color))
         }
-        if(calData.repeat!="No") {
-            binding.calAndClock.visibility = View.GONE
+        if(calData.repeat!="N") {
+            //binding.calAndClock.visibility = View.GONE
         }
         binding.cycle.text = processInput(calData.repeat)
         if(calData.memo =="") binding.memoLayout.visibility = View.GONE
@@ -77,46 +79,141 @@ class CalendarAddSFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_calendarAddS_to_fragCalendar)
         }
         binding.calendarDeleteBtn.setOnClickListener {
-            val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(mDialogView)
-                .create()
-            mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-            mBuilder.show()
+            if(true) { // calData.repeat=="N"
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
 
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                val displayMetrics = DisplayMetrics()
+                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-            val deviceWidth = displayMetrics.widthPixels
+                val deviceWidth = displayMetrics.widthPixels
 
-            val desiredRatio = 0.8f
-            val desiredWidth = (deviceWidth * desiredRatio).toInt()
-            mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+                val desiredRatio = 0.8f
+                val desiredWidth = (deviceWidth * desiredRatio).toInt()
+                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
-            val display = requireActivity().windowManager.defaultDisplay
-            mDialogView.findViewById<TextView>(R.id.textTitle).setText("일정을 삭제하시겠습니까?")
-            mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
-                mBuilder.dismiss()
-            })
-            mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
-                CalendarViewModel.deleteCalendar(calData.id) { result ->
-                    when (result) {
-                        1 -> {
-                            Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
-                            if(calData.repeat=="N") delCal(calData.id)
-                            // 반복일 경우 제거 추가해야함 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                            findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
-                        }
-                        2 -> {
-                            Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
+                val display = requireActivity().windowManager.defaultDisplay
+                mDialogView.findViewById<TextView>(R.id.textTitle).setText("일정을 삭제하시겠습니까?")
+                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    CalendarViewModel.deleteCalendar(calData.id) { result ->
+                        when (result) {
+                            1 -> {
+                                Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
+
+                                if(calData.repeat!=="N") {
+                                    delCal(calData.id)
+                                } else {
+                                    CalendarViewModel.hashMapArrayCal.clear()
+                                }
+                                findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
+                            }
+                            2 -> {
+                                Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
-                }
 
 
-                mBuilder.dismiss()
-            })
+                    mBuilder.dismiss()
+                })
+            } else {
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_repeat_popup, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                val displayMetrics = DisplayMetrics()
+                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+                val deviceWidth = displayMetrics.widthPixels
+
+                val desiredRatio = 0.8f
+                val desiredWidth = (deviceWidth * desiredRatio).toInt()
+                mBuilder?.window?.setLayout(desiredWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                val display = requireActivity().windowManager.defaultDisplay
+
+                var btn1Click = false
+                var btn2Click = false
+                var btn3Click = false
+                var whatBtn = 0
+                mDialogView.findViewById<ImageView>(R.id.btn_del_this).setOnClickListener( {
+                    if(btn1Click) {
+                        btn1Click = false
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_this).setColorFilter(Color.parseColor("#F5F5F5"))
+                    } else {
+                        btn1Click = true
+                        btn2Click = false
+                        btn3Click = false
+                        whatBtn = 2
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_this).setColorFilter(Color.parseColor("#486DA3"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_fromto).setColorFilter(Color.parseColor("#F5F5F5"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_all).setColorFilter(Color.parseColor("#F5F5F5"))
+                    }
+                })
+                mDialogView.findViewById<ImageView>(R.id.btn_del_fromto).setOnClickListener( {
+                    if(btn2Click) {
+                        btn2Click = false
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_fromto).setColorFilter(Color.parseColor("#F5F5F5"))
+                    } else {
+                        btn1Click = false
+                        btn2Click = true
+                        btn3Click = false
+                        whatBtn = 1
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_this).setColorFilter(Color.parseColor("#F5F5F5"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_fromto).setColorFilter(Color.parseColor("#486DA3"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_all).setColorFilter(Color.parseColor("#F5F5F5"))
+                    }
+                })
+                mDialogView.findViewById<ImageView>(R.id.btn_del_all).setOnClickListener( {
+                    if(btn3Click) {
+                        btn3Click = false
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_all).setColorFilter(Color.parseColor("#F5F5F5"))
+                    } else {
+                        btn1Click = false
+                        btn2Click = false
+                        btn3Click = true
+                        whatBtn = 0
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_this).setColorFilter(Color.parseColor("#F5F5F5"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_fromto).setColorFilter(Color.parseColor("#F5F5F5"))
+                        mDialogView.findViewById<ImageView>(R.id.btn_del_all).setColorFilter(Color.parseColor("#486DA3"))
+                    }
+                })
+
+                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    if(btn1Click||btn2Click||btn3Click) {
+                        CalendarViewModel.delRepeat(calData.id,whatBtn,calData.startDate) { result ->
+                            when (result) {
+                                1 -> {
+                                    Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
+                                    CalendarViewModel.hashMapArrayCal.clear()
+                                    findNavController().navigate(R.id.action_calendarAddS_to_fragCalendar)
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                        mBuilder.dismiss()
+                    }
+
+                })
+            }
+
         }
         binding.calendarS.setOnClickListener {
             val bundle = Bundle()
@@ -143,13 +240,13 @@ class CalendarAddSFragment : Fragment() {
     }
     fun processInput(input: String): String {
         return when (input) {
-            "Day" -> "매일"
-            "Week" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
-            "Month" -> {
+            "D" -> "매일"
+            "W" -> "매주 " + weekdays[calData.repeatDate.toInt()]+"요일"
+            "M" -> {
                 if(calData.repeatDate==32) "매월 " + "마지막 날"
                 else "매월 " + calData.repeatDate + "일"
             }
-            "Year" -> { //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
+            "Y" -> { //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
                 //val  tmp = calData.repeatDate.split("-")
                 "매년 "//${tmp[0].toInt()}월 ${tmp[1].toInt()}일"
             }

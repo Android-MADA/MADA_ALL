@@ -148,7 +148,7 @@
     <!--    Time  부분   -->
     <fragment
         android:id="@+id/fragTime"
-        android:name="com.mada.myapplication.Fragment.FragTime"
+        android:name="com.mada.myapplication.TimeFunction.FragTime"
         android:label="FragTime" >
         <action
             android:id="@+id/action_fragTime_to_fragTimeTable"
@@ -170,6 +170,9 @@
         <action
             android:id="@+id/action_fragTimeTable_to_fragTimeAdd"
             app:destination="@id/fragTimeAdd" />
+        <action
+            android:id="@+id/action_fragTimeTable_to_fragTimeTable"
+            app:destination="@id/fragTimeTable" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeTableWeek"
@@ -181,6 +184,9 @@
         <action
             android:id="@+id/action_fragTimeTableWeek_to_fragTimeWeekAdd"
             app:destination="@id/fragTimeWeekAdd" />
+        <action
+            android:id="@+id/action_fragTimeTableWeek_to_fragTimeTableWeek"
+            app:destination="@id/fragTimeTableWeek" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeAdd"

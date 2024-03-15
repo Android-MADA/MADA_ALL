@@ -1,8 +1,10 @@
 package com.mada.myapplication.StartFuction
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -56,6 +58,10 @@ class MyWebviewActivity : AppCompatActivity() {
                     getResponseLogin(url) { result ->
                         when (result) {
                             1 -> {
+                                val pref = getSharedPreferences("login", Activity.MODE_PRIVATE)
+                                val editor = pref.edit()
+                                editor.putBoolean("login", true)
+                                editor.commit()
                                 startActivity(intent)
                                 finish()
                             }
@@ -112,6 +118,10 @@ class MyWebviewActivity : AppCompatActivity() {
                         Splash2Activity.prefs.setString("token",value.toString().substring(1, value.toString().length - 1))
                     }
                 }
+                val pref = getSharedPreferences("login", Activity.MODE_PRIVATE)
+                val editor = pref.edit()
+                editor.putBoolean("login", true)
+                editor.commit()
                 val intent = Intent(this@MyWebviewActivity, MySignup1Activity::class.java)
                 startActivity(intent)
                 finish()

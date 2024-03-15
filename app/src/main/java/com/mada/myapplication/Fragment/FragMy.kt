@@ -9,6 +9,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
@@ -28,10 +29,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
+import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.DataRepo
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFuction.Data.FragMyData
 import com.mada.myapplication.MyFuction.RetrofitServiceMy
 import com.mada.myapplication.R
+import com.mada.myapplication.StartFuction.Splash1Activity
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.FragMyBinding
 import com.google.android.gms.ads.AdRequest
@@ -95,13 +100,11 @@ class FragMy : Fragment() {
             }
         })
 
-
         //구글 플레이스토어 광고
         MobileAds.initialize(this.requireContext()) {}
         mAdView = binding.adView
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
-
 
 
         return binding.root
@@ -121,7 +124,7 @@ class FragMy : Fragment() {
             navController.navigate(R.id.action_fragMy_to_myStampFragment)
         }
 
-//        // 캐릭터 커스텀 불러오는 함수 호출
+        // 캐릭터 커스텀 불러오는 함수 호출
 //        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
 //            10 -> ButtonInfo(R.id.btn_back_basic, 10, R.drawable.c_ramdi)
 //            11 -> ButtonInfo(R.id.btn_color_blue, 11, R.drawable.c_ramdyb)
@@ -134,7 +137,7 @@ class FragMy : Fragment() {
 //            18 -> ButtonInfo(R.id.btn_color_yellow, 18, R.drawable.c_ramdyy)
 //            else -> throw IllegalArgumentException("Unknown button ID")
 //        }
-//
+
 //        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
 //            900 -> ButtonInfo(R.id.btn_cloth_basic, 900, R.drawable.custom_empty)
 //            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
@@ -175,7 +178,7 @@ class FragMy : Fragment() {
 //        binding.myRamdi.setImageResource(
 //            colorbuttonInfo.selectedImageResource ?: 0
 //        )
-//
+
 //        binding.imgMyCloth.setImageResource(
 //            clothbuttonInfo.selectedImageResource ?: 0
 //        )
