@@ -27,7 +27,7 @@
                 android:layout_marginStart="16dp"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="10dp"
-                android:background="@drawable/todo_date_background"
+                android:background="@drawable/background_10_strokex"
                 >
                 <ImageView
                     android:layout_width="24dp"
@@ -165,7 +165,7 @@
                     android:id="@+id/layout_todo_progressbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/todo_complete_background"
+                    android:background="@drawable/background_20"
                     android:layout_marginHorizontal="16dp"
                     android:paddingVertical="20dp"
                     android:layout_marginTop="30dp"
@@ -282,7 +282,7 @@
                     android:id="@+id/todo_todo_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/todo_complete_background"
+                    android:background="@drawable/background_20"
                     android:layout_marginHorizontal="16dp"
                     android:paddingVertical="20dp"
                     android:layout_marginTop="10dp"

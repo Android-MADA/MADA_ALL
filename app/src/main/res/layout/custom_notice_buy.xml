@@ -29,7 +29,7 @@
             android:id="@+id/btn_lock_yes"
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:background="@drawable/home_dialog_btn_background"
+            android:background="@drawable/background_10_strokex"
             android:backgroundTint="#A6A6A6"
             android:textSize="14sp"
             android:textColor="@color/white"
