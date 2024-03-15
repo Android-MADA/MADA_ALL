@@ -72,6 +72,7 @@
                 android:layout_marginStart="16dp"
                 android:singleLine="true"
                 android:imeOptions="actionGo"
+                android:maxLength="18"
                 />
         </LinearLayout>
 

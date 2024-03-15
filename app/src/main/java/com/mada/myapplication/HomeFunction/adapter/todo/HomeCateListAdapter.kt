@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -114,33 +115,35 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
 
                 val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
                 val todoData = PostRequestTodo(date = viewModel!!.homeDate.value.toString(), category = PostRequestTodoCateId(getItem(position).id!!), todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate = null, endRepeatDate = null)
-                //서버 보내기ㅎㅎㅎㅎ
-                CoroutineScope(Dispatchers.IO).launch {
-                    api.addTodo(viewModel!!.userToken, todoData).enqueue(object : Callback<PostResponseTodo>{
-                        override fun onResponse(
-                            call: Call<PostResponseTodo>,
-                            response: Response<PostResponseTodo>
-                        ) {
-                            if(response.isSuccessful){
-                                //db에 저장
-                                val Tresponse = response.body()!!.data.Todo
-                                val data = TodoEntity(0, id = Tresponse.id, date = viewModel!!.homeDate.value.toString(), category = Tresponse.category.id, todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
-                                viewModel!!.createTodo(data, holder.edtAdd)
+                //서버 보내기
+                if(!holder.edtAdd.text.isBlank()){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        api.addTodo(viewModel!!.userToken, todoData).enqueue(object : Callback<PostResponseTodo>{
+                            override fun onResponse(
+                                call: Call<PostResponseTodo>,
+                                response: Response<PostResponseTodo>
+                            ) {
+                                if(response.isSuccessful){
+                                    //db에 저장
+                                    val Tresponse = response.body()!!.data.Todo
+                                    val data = TodoEntity(0, id = Tresponse.id, date = viewModel!!.homeDate.value.toString(), category = Tresponse.category.id, todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
+                                    viewModel!!.createTodo(data, holder.edtAdd)
 
-                            } else{
-                                Log.d("todoAdd", "안드잘못")
+                                } else{
+                                    Log.d("todoAdd", "안드잘못")
 
+                                }
                             }
-                        }
+                            override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
+                                Log.d("todoAdd", "서버 연결 실패")
+                            }
 
-                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
-                            Log.d("todoAdd", "서버 연결 실패")
-                        }
-
-                    })
+                        })
+                    }
                 }
 
                 holder.layoutAdd.isGone = true
+                holder.edtAdd.text.clear()
                 true
             }
 
