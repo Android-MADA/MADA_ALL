@@ -14,7 +14,7 @@ import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
 import com.mada.myapplication.Fragment.OnItemImageChangeListener
-import com.mada.myapplication.Fragment.OnItemSelectionListener
+import com.mada.myapplication.Fragment.onCategorySelected
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
@@ -30,7 +30,6 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     private var imageChangeListener: OnItemImageChangeListener? = null
     //private var resetButtonClickListener: OnResetButtonClickListener? = null
-    private var ItemSelectionListener: OnItemSelectionListener? = null
 
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
@@ -68,56 +67,90 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
 
         binding.btnItemGlassNormal.setOnClickListener{
+            onCategorySelected(R.id.btn_item_glass_normal)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassNormal)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatBer.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_ber)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatBer)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatGrad.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_grad)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatGrad)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemGlass8bit.setOnClickListener{
+            onCategorySelected(R.id.btn_item_glass_8bit)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlass8bit)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemGlassWoig.setOnClickListener{
+            onCategorySelected(R.id.btn_item_glass_woig)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassWoig)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatIpod.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_ipod)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatIpod)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemGlassSunR.setOnClickListener{
+            onCategorySelected(R.id.btn_item_glass_sunR)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassSunR)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemGlassSunB.setOnClickListener{
+            onCategorySelected(R.id.btn_item_glass_sunB)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassSunB)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatFlower.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_flower)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatFlower)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatV.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_v)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatV)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatDinof.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_dinof)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatDinof)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatSheep.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_sheep)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatSheep)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemBagE.setOnClickListener{
+            onCategorySelected(R.id.btn_item_bag_e)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemBagE)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemBagLuck.setOnClickListener{
+            onCategorySelected(R.id.btn_item_bag_luck)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemBagLuck)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatHeart.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_heart)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatHeart)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatBee.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_bee)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatBee)
-            onItemButtonClick(it as ImageButton)}
+            }
         binding.btnItemHatHeads.setOnClickListener{
+            onCategorySelected(R.id.btn_item_hat_heads)
+            onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatHeads)
-            onItemButtonClick(it as ImageButton)}
+            }
 
 
         return binding.root
@@ -200,6 +233,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
             R.id.btn_item_hat_heads -> ButtonInfo(clickedButton.id, 38, R.drawable.heads)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
+        //onCategorySelected(buttonInfo)
 
         imageChangeListener?.onItemButtonSelected(buttonInfo)
     }

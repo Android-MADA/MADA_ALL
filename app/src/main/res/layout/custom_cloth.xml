@@ -22,19 +22,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/btn_cloth_dev"
-                    android:src="@drawable/set_dev_s"
-                    android:layout_height="match_parent"
-                    android:layout_margin ="10dp"
-                    android:layout_width="80dp"
-                    android:scaleType="fitStart"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"></ImageButton>
-
-
-
-
-                <ImageButton
                     android:id="@+id/btn_cloth_caffK"
                     android:src="@drawable/set_caffk_s"
                     android:layout_margin ="10dp"
@@ -45,14 +32,26 @@
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
-                    android:id="@+id/btn_cloth_v"
-                    android:src="@drawable/set_v_s"
+                    android:id="@+id/btn_cloth_dev"
+                    android:src="@drawable/set_dev_s"
+                    android:layout_height="match_parent"
                     android:layout_margin ="10dp"
                     android:layout_width="80dp"
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
-                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
+
+                <ImageButton
+                    android:id="@+id/btn_cloth_movie"
+                    android:src="@drawable/set_movie_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:background="#FFFFFF"
+                    android:layout_height="match_parent"
+                    ></ImageButton>
+
 
                 <ImageButton
                     android:id="@+id/btn_cloth_snowman"
@@ -65,6 +64,16 @@
                     android:background="#FFFFFF"
                     ></ImageButton>
 
+                <ImageButton
+                    android:id="@+id/btn_cloth_v"
+                    android:src="@drawable/set_v_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"></ImageButton>
+
 
 
             </TableRow>
@@ -73,16 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/btn_cloth_movie"
-                    android:src="@drawable/set_movie_s"
-                    android:layout_margin ="10dp"
-                    android:layout_width="80dp"
-                    android:scaleType="fitStart"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    android:layout_height="match_parent"
-                    ></ImageButton>
+
 
 
 

@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
+import com.mada.myapplication.Fragment.onCategorySelected
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
@@ -74,40 +76,49 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
 
         binding.btnClothDev.setOnClickListener {
-            onImageButtonClick(binding.btnClothDev)
+            onCategorySelected(R.id.btn_cloth_dev)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothDev)
         }
         binding.btnClothMovie.setOnClickListener {
-            onImageButtonClick(binding.btnClothMovie)
+            onCategorySelected(R.id.btn_cloth_movie)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothMovie)
         }
         binding.btnClothCaffK.setOnClickListener {
-            onImageButtonClick(binding.btnClothCaffK)
+            onCategorySelected(R.id.btn_cloth_caffK)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothCaffK)
         }
         binding.btnClothV.setOnClickListener {
-            onImageButtonClick(binding.btnClothV)
+            onCategorySelected(R.id.btn_cloth_v)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothV)
         }
         binding.btnClothAstronauts.setOnClickListener {
-            onImageButtonClick(binding.btnClothAstronauts)
+            onCategorySelected(R.id.btn_cloth_astronauts)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothAstronauts)
         }
         binding.btnClothZzim.setOnClickListener {
-            onImageButtonClick(binding.btnClothZzim)
+            onCategorySelected(R.id.btn_cloth_zzim)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothZzim)
         }
         binding.btnClothHanbokF.setOnClickListener {
-            onImageButtonClick(binding.btnClothHanbokF)
+            onCategorySelected(R.id.btn_cloth_hanbokF)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothHanbokF)
         }
         binding.btnClothHanbokM.setOnClickListener {
-            onImageButtonClick(binding.btnClothHanbokM)
+            onCategorySelected(R.id.btn_cloth_hanbokM)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothHanbokM)
         }
         binding.btnClothSnowman.setOnClickListener {
-            onImageButtonClick(binding.btnClothSnowman)
+            onCategorySelected(R.id.btn_cloth_snowman)
             onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothSnowman)
         }
 
 
@@ -162,12 +173,6 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
     }
 
     fun onClothButtonClick(clickedButton: ImageButton) {
-        val buttonId = clickedButton.id
-        if (buttonLockMap.containsKey(buttonId) && buttonLockMap[buttonId] == false) {
-            // 버튼이 잠겨 있으면 동작하지 않음
-            Log.d("onclothbtnclick", "buttonlockmap")
-            return
-        }
         val buttonInfo = when (clickedButton.id) {
             R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, 41, R.drawable.set_dev)
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, 44, R.drawable.set_movie)
@@ -182,18 +187,6 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
         }
 
         imageChangeListener?.onClothButtonSelected(buttonInfo)
-    }
-
-    fun resetButtonCloth() {
-        binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
-        binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
-        binding.btnClothCaffK.setImageResource(R.drawable.set_caffk_s)
-        binding.btnClothV.setImageResource(R.drawable.set_v_s)
-        binding.btnClothAstronauts.setImageResource(R.drawable.set_astronauts_s)
-        binding.btnClothZzim.setImageResource(R.drawable.set_zzim_s)
-        binding.btnClothHanbokF.setImageResource(R.drawable.set_hanbokf_s)
-        binding.btnClothHanbokM.setImageResource(R.drawable.set_hanbokm_s)
-        binding.btnClothSnowman.setImageResource(R.drawable.set_snowman_s)
     }
 
     fun getCustomItemCheck() {
@@ -222,7 +215,6 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
                             }
                         }
                     }
-                    //initButtonLockStates(response.body())
 
                 } else {
                     Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
