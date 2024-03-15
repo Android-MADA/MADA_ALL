@@ -13,24 +13,24 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat.animate
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mada.myapplication.HomeFunction.api.RetrofitInstance
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
-import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
-import com.mada.myapplication.MyFunction.RetrofitServiceMy
-import com.mada.myapplication.StartFunction.Splash2Activity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.mada.myapplication.ChartFunction.Data.ChartMonthData
+import com.mada.myapplication.ChartFunction.RetrofitServiceChart
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.ChartMonthBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -38,8 +38,8 @@ import retrofit2.Response
 class FragChartMonth : Fragment() {
     private lateinit var binding: ChartMonthBinding
     lateinit var navController: NavController
-    val datas = mutableListOf<MyRecordCategoryData>()
-    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    val datas = mutableListOf<ChartMonthData>()
+    val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
 
 
@@ -90,31 +90,31 @@ class FragChartMonth : Fragment() {
         })
 
     }
-    fun monthChange(month : Int, date : String) {
-        setBarChartView(MyRecordOptionData("month", date), month)
-        setPieChartView(MyRecordOptionData("month", date), month)
-        setLineChartView(MyRecordOptionData("month", date), month)
-        initCategoryRecycler(MyRecordOptionData("month", date))
-        initCategoryPieChart(MyRecordOptionData("month", date))
+    fun monthChange(date : String) {
+        setBarChartView()
+        setPieChartView()
+        setLineChartView()
+        initCategoryRecycler(date)
+        initCategoryPieChart(date)
     }
 
     // 원형그래프 뷰 설정
-    private fun setPieChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setPieChartView() {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("chartGetMonthMonth", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("chartGetMonthMonth 성공", response.body().toString())
 
-                    val categoryStatistics = response.body()?.data?.categoryStatistics
-                    val size = response.body()?.data?.categoryStatistics?.size
+                    val categoryStatistics = response.body()?.categoryStatistics
+                    val size = response.body()?.categoryStatistics?.size
                     val addTodoCnt = 9
                     val averageCompleteTodoCnt = 9.9
                     val compareCompleteTodoText = "{1.2}개 상승"
@@ -139,42 +139,41 @@ class FragChartMonth : Fragment() {
                     binding.recordContext2.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("chartGetMonthMonth 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetMonthMonth 실패")
             }
         })
 
     }
 
     // 막대그래프 뷰 설정
-    private fun setBarChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setBarChartView() {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth, ${wdata.date}", "Response Code: $responseCode")
+                Log.d("chartGetMonth", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("chartGetMonth 성공", response.body().toString())
 
-                    val nickName = response.body()?.data?.nickName
                     val totalTodoCnt = 999
                     val completeTodoCnt = 9
-                    val completeTodoPercent = response.body()?.data?.completeTodoPercent
+                    val completeTodoPercent = 99
                     val compareTodoCnt = 9.9
 
-                    val colorText0 = "${month}월"
+                    val colorText0 = "3월"
                     val colorText1 = "총 ${completeTodoCnt}개"
 
-                    val formattedText0 = "${nickName}님의 ${colorText0} 통계예요."
+                    val formattedText0 = "${colorText0} 통계예요."
                     val formattedText1 = "이번 달 ${colorText1} 완료했어요"
                     val formattedText2 = "이번 달에는 ${totalTodoCnt}개의 투두 중에서" +
                             "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
@@ -185,29 +184,29 @@ class FragChartMonth : Fragment() {
                     binding.recordContext1.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("chartGetMonth 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetMonth 실패")
             }
         })
     }
 
     // 꺾은선그래프 뷰 설정
-    private fun setLineChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setLineChartView() {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("chartGetMonthMonth", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("chartGetMonthMonth 성공", response.body().toString())
 
                     val totalTodoCnt = 999
                     val completeTodoCnt = 9
@@ -231,45 +230,44 @@ class FragChartMonth : Fragment() {
                     binding.recordContext3.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("chartGetMonthMonth 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetMonthMonth 실패")
             }
         })
 
     }
 
     // 통계 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(wdata: MyRecordOptionData) {
+    private fun initCategoryRecycler(date : String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek", "Response Code: $responseCode")
+                Log.d("chartGetMonthWeek", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordWeek 성공", response.body().toString())
+                    Log.d("chartGetMonthWeek 성공", response.body().toString())
 
                     datas.apply{
-                        val categoryStatistics = response.body()?.data?.categoryStatistics
+                        val categoryStatistics = response.body()?.categoryStatistics
                         categoryStatistics?.forEach { category ->
                             val categoryName = category.categoryName
                             val percentNum = category.rate
                             val colorCode = category.color
 
-                            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
                         }
 
-                        adapter.datas = datas
+                        //adapter.datas = datas
                         adapter.notifyDataSetChanged()
 
                     }
@@ -277,36 +275,36 @@ class FragChartMonth : Fragment() {
                     binding.myCategoryRecycler.layoutManager= manager
 
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("chartGetMonthWeek 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetMonthWeek 실패")
             }
         })
 
     }
 
     // 통계 좌측 파이차트 뷰 설정
-    private fun initCategoryPieChart(wdata: MyRecordOptionData) {
+    private fun initCategoryPieChart(date: String) {
         binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek", "Response Code: $responseCode")
+                Log.d("chartGetMonthWeek", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordWeek 성공", response.body().toString())
+                    Log.d("chartGetMonthWeek 성공", response.body().toString())
 
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
-                    val categoryStatistics = response.body()?.data?.categoryStatistics
+                    val categoryStatistics = response.body()?.categoryStatistics
                     categoryStatistics?.forEach { category ->
                         val categoryName = category.categoryName
                         val percentNum = category.rate
@@ -329,7 +327,7 @@ class FragChartMonth : Fragment() {
                     // 데이터셋 세팅
                     val pieData = PieData(pieDataSet)
                     binding.myChart.apply {
-                        com.mada.myapplication.HomeFunction.Model.data = pieData
+                        //com.mada.myapplication.HomeFunction.Model.data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화
                         legend.isEnabled = false // 범례 비활성화
@@ -339,12 +337,12 @@ class FragChartMonth : Fragment() {
                         animate()
                     }
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("chartGetMonth 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetMonth 실패")
             }
         })
 

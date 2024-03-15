@@ -37,7 +37,6 @@ import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartDayData
-import com.mada.myapplication.ChartFunction.Data.DayPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
@@ -278,14 +277,14 @@ class FragChartDay : Fragment() {
 
                     datas.apply{
                         val categoryStatistics = response.body()?.categoryStatistics
-                        val CategoryDatas = ArrayList<DayPieData>()
+                        val CategoryDatas = ArrayList<PieData>()
 
                         categoryStatistics?.forEach { dayPieData ->
 //                            val categoryName = dayPieData.categoryName
 //                            val rate = dayPieData.rate
 //                            val colorCode = dayPieData.color
 
-                            CategoryDatas.add(dayPieData)
+                            //CategoryDatas.add(dayPieData)
                         }
                     }
 
