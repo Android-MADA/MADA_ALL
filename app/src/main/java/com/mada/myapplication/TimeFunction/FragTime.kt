@@ -1,4 +1,4 @@
-package com.mada.myapplication.Fragment
+package com.mada.myapplication.TimeFunction
 
 import android.graphics.Color
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mada.myapplication.R
-import com.mada.myapplication.TimeFunction.TimeViewModel
 import com.mada.myapplication.TimeFunction.calendar.TimeBottomSheetDialog
 import com.mada.myapplication.TimeFunction.util.CustomCircleBarView
 import com.mada.myapplication.TimeFunction.util.YourMarkerView
@@ -22,6 +21,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.mada.myapplication.HomeFunction.Model.CommentAdd
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -37,6 +37,7 @@ class FragTime : Fragment() {
     lateinit var today : String
     lateinit var pieChartDataArray : ArrayList<TimeViewModel.PieChartData>
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
+    var loadWeek = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,7 @@ class FragTime : Fragment() {
         var formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         if(viewModelTime.todayString!="")  formattedDate = viewModelTime.todayString
 
+        var commentIs = false
 
         val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ko","KR"))
         val outputDateFormat = SimpleDateFormat("M월 d일 E요일", Locale("ko", "KR"))
@@ -77,9 +79,30 @@ class FragTime : Fragment() {
                 when (result) {
                     1 -> {
                         val tmpList = viewModelTime.getTimeDatas(newValue)
+                        if(tmpList.size==0) {
+                            loadWeek= true
+                            binding.fabHomeTime.setImageResource(R.drawable.time_clock_img)
+                        }
                         pirChartOn(tmpList)
+
                     }
                     2 -> {
+                        Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            viewModelTime.getComment(newValue) { result, content ->
+                when (result) {
+                    1 -> {
+                        binding.textTimeTodayHanmadi.setText(content)
+                        commentIs = true
+                    }
+                    2 -> {
+                        binding.textTimeTodayHanmadi.setText("")
+                        commentIs = false
+
+                    }
+                    3-> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -113,11 +136,34 @@ class FragTime : Fragment() {
                 }
             }
         }
+
         binding.textTimeTodayHanmadi.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
                 val enteredText = binding.textTimeTodayHanmadi.text.toString()
                 Log.d("test",enteredText)
+                if(commentIs) {
+                    viewModelTime.editComment(today,CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+
             }
         }
         return binding.root
@@ -126,17 +172,32 @@ class FragTime : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.timeChangeBtn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
         }
 
         binding.fabHomeTime.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("today",today)
-            bundle.putSerializable("pieChartDataArray", pieChartDataArray)
-            bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
-            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
+            if(loadWeek) {
+                viewModelTime.loadWeek(today) { result ->
+                    when (result) {
+                        1 -> {
+                            val tmpList = viewModelTime.getTimeDatas(today)
+                            binding.fabHomeTime.setImageResource(R.drawable.calendar_plus_btn)
+                            loadWeek = false
+                            pirChartOn(tmpList)
+                        }
+                        2 -> {
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                val bundle = Bundle()
+                bundle.putString("today",today)
+                bundle.putSerializable("pieChartDataArray", pieChartDataArray)
+                bundle.putInt("frag",R.id.action_fragTimeAdd_to_fragTime)
+                Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
+            }
         }
     }
     override fun onDestroyView() {

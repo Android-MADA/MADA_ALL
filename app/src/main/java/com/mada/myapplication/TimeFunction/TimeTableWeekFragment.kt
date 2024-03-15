@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.mada.myapplication.HomeFunction.Model.CommentAdd
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.TimeFunction.adapter.TimeTableWeekAdpater
@@ -30,7 +32,7 @@ class TimeTableWeekFragment : Fragment() {
     private val viewModelTime: TimeViewModel by activityViewModels()
 
     lateinit var today : String
-
+    var recyclerViewList = ArrayList<RecyclerView>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,13 @@ class TimeTableWeekFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = TimeTableWeekFragmentBinding.inflate(layoutInflater)
+        recyclerViewList.add(binding.monRv)
+        recyclerViewList.add(binding.tusRv)
+        recyclerViewList.add(binding.wedRv)
+        recyclerViewList.add(binding.thuRv)
+        recyclerViewList.add(binding.friRv)
+        recyclerViewList.add(binding.satRv)
+        recyclerViewList.add(binding.sunRv)
         today = viewModel.homeDate.value.toString()
         val currentDate: LocalDate = LocalDate.now()
         var formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -73,26 +82,75 @@ class TimeTableWeekFragment : Fragment() {
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
+        var commentIs = false
         //파이차트
-        viewModelTime.getScheduleDatas(today) { result ->
+        viewModelTime.getScheduleWeeks() { result ->
             when (result) {
                 1 -> {
-                    val tmpList = viewModelTime.getTimeDatas(today)
+                    for (i in 0..6) {
+                        val tmpList = viewModelTime.getTimeWeekDatas(i)
+                        timeTableOn(tmpList, i)
+                    }
 
-                    timeTableOn(tmpList,0)
                 }
                 2 -> {
                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+        viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
+            viewModelTime.getComment(newValue) { result, content ->
+                when (result) {
+                    1 -> {
+                        binding.textTimeTodayHanmadi.setText(content)
+                        commentIs = true
+                    }
+                    2 -> {
+                        binding.textTimeTodayHanmadi.setText("")
+                        commentIs = false
+
+                    }
+                    3-> {
+                        Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
             Log.d("observe","dsadas")
             binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(newValue))
             today = newValue
         })
+        binding.textTimeTodayHanmadi.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
+                val enteredText = binding.textTimeTodayHanmadi.text.toString()
+                Log.d("test",enteredText)
+                if(commentIs) {
+                    viewModelTime.editComment(today, CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                        when (result) {
+                            1 -> {
+                            }
+                            2 -> {
+                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
 
+            }
+        }
         return binding.root
     }
 
@@ -124,40 +182,39 @@ class TimeTableWeekFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun timeTableOn(arrays : ArrayList<TimeViewModel.PieChartData>, i : Int) {
-        viewModelTime.pieChartDataArrayList[i].clear()
+    private fun timeTableOn(arrays : List<TimeViewModel.PieChartData>, i : Int) {
+        viewModelTime.pieChartWeekDatas[i].clear()
         if(arrays.size==0) {     //그날 정보가 없다
-            viewModelTime.pieChartDataArrayList[i].add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",0,0))
+            viewModelTime.pieChartWeekDatas[i].add(TimeViewModel.PieChartData("","",0,0,0,0,"#FFFFFF",-1,0))
         } else {
             var tmp = 0     //시작 시간
-
+            var tmp2 = 0
             for(data in arrays) {
-                val start = data.startHour.toString().toInt() * 60 + data.startMin.toString().toInt()
-                val end = data.endHour.toString().toInt() * 60 + data.endMin.toString().toInt()
-                if(tmp==start) {      //이전 일정과 사이에 빈틈이 없을때
-                    data.startHour = start
-                    data.endHour = end
-                    viewModelTime.pieChartDataArrayList[i].add(data)
-                    tmp = end
+                val start = data.startHour * 60 + data.startMin
+                val end = data.endHour * 60 + data.endMin
+                if((tmp*60 + tmp2)==start) {      //이전 일정과 사이에 빈틈이 없을때
+                    viewModelTime.pieChartWeekDatas[i].add(data)
+                    tmp = data.endHour
+                    tmp2 = data.endMin
                 } else {            //이전 일정 사이에 빈틈이 있을 때
-                    viewModelTime.pieChartDataArrayList[i].add(TimeViewModel.PieChartData("","",tmp,0,start,0,"#FFFFFF",0,0))
-                    data.startHour = start
-                    data.endHour = end
-                    viewModelTime.pieChartDataArrayList[i].add(data)
-                    tmp = end
+                    viewModelTime.pieChartWeekDatas[i].add(TimeViewModel.PieChartData("","",tmp,tmp2,data.startHour,data.startMin,"#FFFFFF",-1,0))
+                    viewModelTime.pieChartWeekDatas[i].add(data)
+                    tmp = data.endHour
+                    tmp2 = data.endMin
                 }
             }
         }
+        Log.d("weekdata", viewModelTime.pieChartWeekDatas[i].toString())
+        val recyclerView = recyclerViewList.get(i)
 
-        val recyclerView = binding.monRv
-
-// Create and set the layout manager
-        val layoutManager = LinearLayoutManager(context)
+// Create and set the layout manager for horizontal orientation
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
 // Create and set the adapter
-        val adapter = TimeTableWeekAdpater(viewModelTime.pieChartDataArrayList[i],i,viewModelTime)
+        val adapter = TimeTableWeekAdpater(viewModelTime.pieChartWeekDatas[i], i, viewModelTime)
         recyclerView.adapter = adapter
+
     }
 
 }

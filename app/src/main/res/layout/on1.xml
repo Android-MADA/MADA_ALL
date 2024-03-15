@@ -23,22 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="카테고리별로 오늘의 투두리스트를 작성하고\n시간표를 통해 효율적으로 시간 관리를 해 보세요!"
+        android:text="카테고리별로 오늘의 할 일을 분류해\n투두 리스트를 작성해 보세요."
         android:textSize="14sp"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/on_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-    <ImageView
-        android:id="@+id/on_image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/on_content"
-        app:srcCompat="@drawable/on1" />
 
 
 

@@ -1,5 +1,6 @@
 package com.mada.myapplication.StartFuction
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -14,12 +15,28 @@ class OnBoardingActivity : AppCompatActivity() {
     private lateinit var binding: OnboardingBinding
     private lateinit var mPager: ViewPager2
     private lateinit var mIndicator: CircleIndicator3
-    private var numPage = 4
+    private var numPage = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = OnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        // 앱 최초에만 온 보딩 화면 보이게 설정
+        val pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE)
+        val first = pref.getBoolean("isFirst", false)
+        if (!first) {
+            val editor = pref.edit()
+            editor.putBoolean("isFirst", true)
+            editor.commit()
+            // 앱 최초 실행시 하고 싶은 작업
+        } else {
+            val intent = Intent(this, Splash2Activity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
 
         // [마다 시작하기] 버튼 클릭 시
         binding.onStartBtn.setOnClickListener {
@@ -31,7 +48,7 @@ class OnBoardingActivity : AppCompatActivity() {
         // ViewPager2, Adapter, Indicator 초기화
         mPager = binding.onViewpager2
         mPager.setCurrentItem(0) // 시작 지점
-        mPager.offscreenPageLimit = 4 // 최대 이미지 수
+        mPager.offscreenPageLimit = 6 // 최대 이미지 수
         mPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 스크롤 방향
         mPager.adapter = OnBoardingAdapter(this, numPage) // 자체 어댑터 연결
         mIndicator = binding.onIndicator
@@ -40,7 +57,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
         // [건너뛰기] 버튼 클릭 시
         binding.onSkipBtn.setOnClickListener {
-            mPager.setCurrentItem(3)
+            mPager.setCurrentItem(5)
             mIndicator.setViewPager(mPager)
         }
 
@@ -55,15 +72,16 @@ class OnBoardingActivity : AppCompatActivity() {
                     mPager.setCurrentItem(position)
                 }
                 // on4 마지막 페이지 특이설정
-                if (position == 3) {
+                if (position == 5) {
                     binding.onStartBtn.visibility = View.VISIBLE
                     binding.onSkipBtn.visibility = View.INVISIBLE
                     binding.onIndicator.visibility = View.INVISIBLE
-                    binding.onFramelayout.setBackgroundColor(Color.parseColor("#28374C"))
-                    binding.onLinearlayout.setBackgroundColor(Color.parseColor("#28374C"))
+                    binding.header.setBackgroundColor(Color.parseColor("#26354A"))
+                    binding.onFramelayout.setBackgroundColor(Color.parseColor("#26354A"))
+                    binding.onLinearlayout.setBackgroundColor(Color.parseColor("#26354A"))
                 }
                 // on1,2,3 다시 돌아오면 기본값으로 복구
-                if (position == 0 || position == 1 || position == 2){
+                if (position == 0 || position == 1 || position == 2 || position == 3 || position == 4){
                     binding.onStartBtn.visibility = View.INVISIBLE
                     binding.onSkipBtn.visibility = View.VISIBLE
                     binding.onIndicator.visibility = View.VISIBLE

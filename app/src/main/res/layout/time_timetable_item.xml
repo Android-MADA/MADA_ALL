@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="등교하기"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
@@ -33,6 +34,7 @@
         android:id="@+id/timetable_memo_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:text="데이터분석기초 수업, 한울관 101호"
         android:textColor="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

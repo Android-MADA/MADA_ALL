@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,11 +43,13 @@ class TimeTableAdpater(private val data: ArrayList<TimeViewModel.PieChartData>, 
         // Populate the views with data from the item
         val start = item.startHour* 60 + item.startMin
         val end = item.endHour * 60 + item.endMin
+        Log.d("start - end", (end-start).toString())
         holder.title.text = "${item.title}"
         holder.memo.text = "${item.memo}"
         holder.image.setColorFilter(Color.parseColor(item.colorCode))
         val layoutParams = holder.image.layoutParams
         layoutParams.height = dpToPx(holder.image.context, end-start)
+        holder.itemView.layoutParams.height = dpToPx(holder.image.context, end-start)
         holder.image.layoutParams = layoutParams
         if(item.id!=0) {
             holder.image.setOnClickListener {
@@ -98,7 +101,7 @@ class TimeTableAdpater(private val data: ArrayList<TimeViewModel.PieChartData>, 
                                         break
                                     }
                                 }
-                                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragTime_to_fragTime)
+                                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragTimeTable_to_fragTimeTable)
                             }
                             2 -> {
                                 Toast.makeText(holder.itemView.context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()

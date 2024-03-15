@@ -13,6 +13,8 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -30,9 +32,14 @@ import com.mada.myapplication.R
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.ChartWeekBinding
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
@@ -360,6 +367,7 @@ class FragChartWeek : Fragment() {
 
 
     }
+
 
     // 텍스트에 색상을 적용하는 함수
     private fun createSpannableString(text: String, targetText: String): SpannableStringBuilder {

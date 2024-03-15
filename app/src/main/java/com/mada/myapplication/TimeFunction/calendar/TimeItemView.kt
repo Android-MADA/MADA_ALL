@@ -36,6 +36,8 @@ class TimeItemView @JvmOverloads constructor(
     private val bounds = Rect()
 
     private var paint: Paint = Paint()
+
+    private var selectDay =""
     init {
 
         /* Attributes */
@@ -51,22 +53,29 @@ class TimeItemView @JvmOverloads constructor(
                 }
             }
         }
+        val homeViewModel: HomeViewModel? = if (viewModel is HomeViewModel) {
+            viewModel as HomeViewModel
+        } else {
+            null
+        }
+
+        val timeViewModel: TimeViewModel? = if (viewModel is TimeViewModel) {
+            viewModel as TimeViewModel
+
+        } else {
+            null
+        }
+        if (timeViewModel != null) {
+            selectDay = timeViewModel.myLiveToday.value.toString()
+        } else if (homeViewModel != null) {
+            selectDay = homeViewModel.myLiveToday.value.toString()
+        }
         setOnClickListener {
             //Log.d("click",date.toString("yyyy-MM-dd"))
-            val homeViewModel: HomeViewModel? = if (viewModel is HomeViewModel) {
-                viewModel as HomeViewModel
-            } else {
-                null
-            }
 
-            val timeViewModel: TimeViewModel? = if (viewModel is TimeViewModel) {
-                viewModel as TimeViewModel
-
-            } else {
-                null
-            }
             if (timeViewModel != null) {
                 timeViewModel.updateData(date.toString("yyyy-MM-dd"))
+                dialog.dismiss()
             }
             if (homeViewModel != null) {
                 if(homeViewModel.isTodoMenu){
@@ -89,18 +98,18 @@ class TimeItemView @JvmOverloads constructor(
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
 
         val textWidth = paint.measureText(dateString)
-        val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
+        val textHeight = bounds.height().toFloat()
 
         val x =(width - textWidth)/2.toFloat()
         val y =( height-textHeight)/2.toFloat()- paint.fontMetrics.top
         //날짜 그리기
-        if(getToday()=="${date.year}-${date.monthOfYear}-${date.dayOfMonth}") {
+        if(selectDay=="${date.year}-${String.format("%02d", date.monthOfYear)}-${String.format("%02d", date.dayOfMonth)}") {
             val paint2 = Paint()
             paint2.isAntiAlias = true
             paint2.color = Color.parseColor("#486DA3")
             // Draw rounded rectangle
-            val roundedRect = RectF(width/2-textWidth*3/2,   height/2+textWidth*3/2, width/2+textWidth*3/2, height/2-textWidth*3/2)
-            val cornerRadius = textWidth // 반지름 값 설정
+            val roundedRect = RectF(width/2-textHeight*1.2f,   y-textHeight/2 +textHeight*1.2f, width/2+textHeight*1.2f, y-textHeight/2 -textHeight*1.2f)
+            val cornerRadius = textHeight // 반지름 값 설정
             canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
             paint.color =Color.parseColor("#FFFFFF")
             canvas.drawText(dateString,x,y,paint)

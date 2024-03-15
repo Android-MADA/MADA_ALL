@@ -2,6 +2,8 @@ package com.mada.myapplication.HomeFunction.api
 
 
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
+import com.mada.myapplication.HomeFunction.Model.CommentAdd
+import com.mada.myapplication.HomeFunction.Model.CommentData
 import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestRepeatTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
@@ -14,6 +16,8 @@ import com.mada.myapplication.HomeFunction.Model.ScheduleAdd
 import com.mada.myapplication.HomeFunction.Model.ScheduleListData
 import com.mada.myapplication.HomeFunction.Model.ScheduleResponse
 import com.mada.myapplication.HomeFunction.Model.ScheduleTodoCalList
+import com.mada.myapplication.HomeFunction.Model.ScheduleWeekListData
+import com.mada.myapplication.HomeFunction.Model.ScheduleWeekResponse
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import retrofit2.Call
 import retrofit2.http.Body
@@ -91,7 +95,7 @@ fun editTodo(
     ): Call<ScheduleTodoCalList>
 
     //시간표 조회
-    @GET("/api/home/time/date/{date}")
+    @GET("/api/home/time/daily/date/{date}")
     fun getTimetable(
         @Header("Authorization") token: String?,
         @Path("date") date: String
@@ -103,14 +107,51 @@ fun editTodo(
     ): Call<ScheduleResponse>
 
     //시간표 수정
-    @PATCH("/api/home/time/scheduleId/{scheduleId}")
+    @PATCH("/api/home/time/daily/update/{scheduleId}")
     fun editTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int, @Body data : ScheduleAdd
     ): Call<ScheduleResponse>
 
     //시간표 삭제
-    @DELETE("/api/home/time/scheduleId/{scheduleId}")
+    @PATCH("/api/home/time/daily/delete/{scheduleId}")
     fun deleteTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int
     ): Call<ScheduleResponse>
+
+    //주간 시간표 조회
+    @GET("/api/home/time/weekly")
+    fun getWeekTimetable(
+        @Header("Authorization") token: String?
+    ): Call<ScheduleWeekListData>
+    //주간 시간표 추가
+    @POST("/api/home/time/weekly/create")
+    fun addWeekTime(@Header("Authorization") token : String?, @Body data: ScheduleAdd
+    ): Call<ScheduleWeekResponse>
+
+    //주간 시간표 수정
+    @PATCH("/api/home/time/daily/update/{scheduleId}")
+    fun editWeekTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int, @Body data : ScheduleAdd
+    ): Call<ScheduleWeekResponse>
+
+    //주간 시간표 삭제
+    @PATCH("/api/home/time/daily/delete/{scheduleId}")
+    fun deleteWeekTime(@Header("Authorization") token : String?, @Path("scheduleId") scheduleId : Int
+    ): Call<ScheduleWeekResponse>
+
+    //시간표 comment 조회
+    @GET("/api/home/time/comment/date/{date}")
+    fun getComment(
+        @Header("Authorization") token: String?, @Path("date") date: String
+    ): Call<CommentData>
+    //시간표 comment 추가
+    @POST("/api/home/time/comment")
+    fun addComment(@Header("Authorization") token : String?, @Body data: CommentAdd
+    ): Call<CommentData>
+    @PATCH("/api/home/time/comment/update/{date}")
+    fun editComment(@Header("Authorization") token : String?, @Path("date") date : String, @Body data : CommentAdd
+    ): Call<CommentData>
+    @POST("/api/home/time/daily/loadWeekly/{date}")
+    fun loadWeekly(
+        @Header("Authorization") token : String?, @Path("date") date: String
+    ): Call<ScheduleListData>
 
 
     //카테고리 조회 -> 확인 완

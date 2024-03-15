@@ -424,7 +424,7 @@ class CalendarViewModel : ViewModel(){
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
-                                    if(data.repeat=="N") {
+                                    if(data.repeat=="N"||data.repeat==null) {
                                         if(data.d_day=="N") {
                                             val tmp = AndroidCalendarData("${(data.start_date)}","${(data.start_date)}","${(data.end_date)}",
                                                 "${data.start_time}","${data.end_time}","${data.color}","${data.repeat}","${data.d_day}","${data.name}",
@@ -488,7 +488,8 @@ class CalendarViewModel : ViewModel(){
 
         val hashMapDataMonth = HashMap<DateTime, ArrayList<AndroidCalendarData>>()
 
-        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>/*
+        val hashMapArrayCalTmp = hashMapArrayCal.get("${Year}-${Month}")!!.clone() as ArrayList<AndroidCalendarData>
+        /*
         for(data in repeatArrayList) {
 
             if(data.repeat=="Day") {
@@ -622,6 +623,7 @@ class CalendarViewModel : ViewModel(){
                 Log.d("ddddddddddddddddd","${response.body()} ${response}")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
+                    Log.d("viewmodel",responseBody.toString())
                     if(responseBody!=null) {
                         addId = responseBody.data.calendars.id    //responseBody.data.id
                         callback(1)
@@ -657,6 +659,21 @@ class CalendarViewModel : ViewModel(){
         })
     }
 
+    fun delRepeat(id : Int, option : Int, date : String, callback: (Int) -> Unit){
+        service.delRepeatCal(token,id,option,date).enqueue(object : Callback<CalendarData> {
+            override fun onResponse(call: Call<CalendarData>, response: Response<CalendarData>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) callback(1)
+                    else callback(2)
+                } else callback(2)
+            }
+            override fun onFailure(call: Call<CalendarData>, t: Throwable) {
+                callback(2)
+            }
+        })
+    }
+
     fun getDdayDataArray(callback: (Int) -> Unit) {
         if(ddayArrayList.size == 0) {
             service.getAllDday(token).enqueue(object : Callback<CalendarDatasData> {
@@ -665,10 +682,11 @@ class CalendarViewModel : ViewModel(){
                         val apiResponse = response.body()
                         if (apiResponse != null) {
                             val datas = apiResponse.data.datas
+                            Log.d("data!!!",datas.toString())
                             if(datas != null) {
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
-                                        data.color,data.repeat,data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
+                                        data.color,"No",data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
                                     ddayArrayList.add(tmp)
                                 }
                             }

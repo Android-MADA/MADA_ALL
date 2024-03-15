@@ -6,7 +6,9 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +35,7 @@ class TimeTableWeekAdpater(private val data: ArrayList<TimeViewModel.PieChartDat
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.time_timetable_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.time_timetable_week_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -45,9 +47,13 @@ class TimeTableWeekAdpater(private val data: ArrayList<TimeViewModel.PieChartDat
         holder.title.text = "${item.title}"
         holder.memo.text = "${item.memo}"
         holder.image.setColorFilter(Color.parseColor(item.colorCode))
+        Log.d("width", (end-start).toString())
         val layoutParams = holder.image.layoutParams
+        val width = dpToPx(holder.image.context, end-start-15)
         layoutParams.width = dpToPx(holder.image.context, end-start)
         holder.image.layoutParams = layoutParams
+        holder.title.layoutParams.width = width
+        holder.memo.layoutParams.width = width
         if(item.id!=0) {
             holder.image.setOnClickListener {
                 val mDialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.time_timetable_popup_item, null)
@@ -80,23 +86,23 @@ class TimeTableWeekAdpater(private val data: ArrayList<TimeViewModel.PieChartDat
                 mDialogView.findViewById<TextView>(R.id.time_edit_btn).setOnClickListener( {
                     val bundle = Bundle()
                     bundle.putSerializable("pieChartData", item)
-                    bundle.putInt("frag",R.id.action_fragTimeWeekAdd_to_fragTimeTableWeek)
+                    bundle.putInt("dayOfWeek",week)
                     Navigation.findNavController(holder.itemView).navigate(R.id.action_fragTimeTableWeek_to_fragTimeWeekAdd,bundle)
                     mBuilder.dismiss()
                 })
                 mDialogView.findViewById<TextView>(R.id.time_remove_btn).setOnClickListener( {
                     val id = item.id
-                    viewModel.delTimeDatas(id) { result ->
+                    viewModel.delTimeWeekDatas(id) { result ->
                         when (result) {
                             1 -> {
-                                val tmpList = viewModel.hashMapArraySchedule.get(week.toString())!!      // 요일별로 바꿔야함@@@@@@@@@@@@@@@@@@@@
+                                val tmpList = viewModel.pieChartDataArrayList[week]      // 요일별로 바꿔야함@@@@@@@@@@@@@@@@@@@@
                                 for(data in tmpList) {
                                     if(data.id==id) {
                                         tmpList.remove(data)
                                         break
                                     }
                                 }
-                                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragTime_to_fragTime)
+                                Navigation.findNavController(holder.itemView).navigate(R.id.action_fragTimeTableWeek_to_fragTimeTableWeek)
                             }
                             2 -> {
                                 Toast.makeText(holder.itemView.context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()

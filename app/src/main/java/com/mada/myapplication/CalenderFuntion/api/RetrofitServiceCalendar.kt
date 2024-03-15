@@ -44,6 +44,10 @@ interface RetrofitServiceCalendar {
     fun editCal(@Header("Authorization") token: String?, @Path("id") id : Int, @Body data: CalendarDataEdit
     ) : Call<CalendarData>
 
+    @DELETE("/api/calendar/edit/{id}/{option}/{date}")
+    fun delRepeatCal(@Header("Authorization") token: String?, @Path("id") id : Int,  @Path("option") option : Int, @Path("date") date : String
+    ) : Call<CalendarData>
+
     //데이터 삭제
     @DELETE("/api/calendar/edit/{id}")
     fun deleteCal(@Header("Authorization") token: String?, @Path("id") id : Int

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +10,8 @@
 
     <ImageView
         android:id="@+id/splash2_logo"
-        android:layout_width="27dp"
-        android:layout_height="28dp"
+        android:layout_width="32dp"
+        android:layout_height="0dp"
         android:layout_marginStart="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/splach2_appname"
         app:layout_constraintStart_toEndOf="@+id/splach2_appname"
@@ -23,28 +22,28 @@
         android:id="@+id/splach2_appname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="132dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/black"
-        android:textSize="32sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/splach2_ex"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/splach2_ex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:text="@string/app_explanation"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/splach2_character"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splash2_logo" />
 
     <ImageView
         android:id="@+id/splach2_character"
@@ -56,16 +55,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/my_mada_character" />
 
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="SNS 계정으로 빠른 시작하기"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splach2_character" />
+
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splach2_character">
+        app:layout_constraintTop_toBottomOf="@+id/textView32">
 
         <ImageButton
             android:id="@+id/kakaoBtn"
@@ -74,6 +85,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:paddingHorizontal="10dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/my_ic_kakao" />
 
         <ImageButton
@@ -92,20 +104,21 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:paddingHorizontal="10dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/my_ic_google" />
     </LinearLayout>
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/naverBtn2"-->
-<!--        android:layout_width="324dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:background="@android:color/transparent"-->
-<!--        android:scaleType="fitCenter"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/splach2_character"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/splach2_character"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/splach2_character"-->
-<!--        app:srcCompat="@drawable/naver_login_btn" />-->
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/naverBtn2"-->
+    <!--        android:layout_width="324dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:layout_marginTop="50dp"-->
+    <!--        android:background="@android:color/transparent"-->
+    <!--        android:scaleType="fitCenter"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/splach2_character"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/splach2_character"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/splach2_character"-->
+    <!--        app:srcCompat="@drawable/naver_login_btn" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
