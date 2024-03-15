@@ -7,148 +7,130 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/CustomScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TableLayout
             android:id="@+id/custom_clothtable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-            <TableRow>
-
-                <ImageButton
-                    android:id="@+id/btn_cloth_basic"
-                    android:src="@drawable/custom_null"
-                    android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"></ImageButton>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageButton
                     android:id="@+id/btn_cloth_dev"
                     android:src="@drawable/set_dev_s"
+                    android:layout_height="match_parent"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:background="#FFFFFF"></ImageButton>
 
-                <ImageButton
-                    android:id="@+id/btn_cloth_movie"
-                    android:src="@drawable/set_movie_s"
-                    android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    ></ImageButton>
 
-            </TableRow>
 
-            <TableRow>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_caffK"
                     android:src="@drawable/set_caffk_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_v"
                     android:src="@drawable/set_v_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
+
+                <ImageButton
+                    android:id="@+id/btn_cloth_snowman"
+                    android:src="@drawable/set_snowman_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    ></ImageButton>
+
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btn_cloth_movie"
+                    android:src="@drawable/set_movie_s"
+                    android:layout_margin ="10dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:background="#FFFFFF"
+                    android:layout_height="match_parent"
+                    ></ImageButton>
+
+
 
                 <ImageButton
                     android:id="@+id/btn_cloth_astronauts"
                     android:src="@drawable/set_astronauts_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
-
-            </TableRow>
-
-            <TableRow>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_zzim"
                     android:src="@drawable/set_zzim_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_hanbokF"
                     android:src="@drawable/set_hanbokf_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/btn_cloth_hanbokM"
                     android:src="@drawable/set_hanbokm_s"
                     android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
-            </TableRow>
-
-            <TableRow
-                android:layout_marginBottom="25dp">
-
-                <ImageButton
-                    android:id="@+id/btn_cloth_snowman"
-                    android:src="@drawable/set_snowman_s"
-                    android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    ></ImageButton>
-
-                <ImageButton
-                    android:src="@drawable/set_snowman_s"
-                    android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    android:visibility="invisible"
-                    ></ImageButton>
-
-                <ImageButton
-                    android:src="@drawable/set_snowman_s"
-                    android:layout_margin ="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:background="#FFFFFF"
-                    android:visibility="invisible"
-                    ></ImageButton>
 
 
             </TableRow>
+
 
         </TableLayout>
-    </ScrollView>
+    </HorizontalScrollView>
 </LinearLayout>

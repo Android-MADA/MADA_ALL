@@ -7,14 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TableRow
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.FragCustomBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,16 +24,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class custom_cloth() : Fragment() {
-    lateinit var binding: CustomClothBinding
+class custom_cloth(val binding: CustomClothBinding) : Fragment() {
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
     private val buttonLockMap = mutableMapOf<Int, Boolean>()
 
     private var imageChangeListener: OnClothImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    //private var resetButtonClickListener: OnResetButtonClickListener? = null
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
@@ -62,20 +62,17 @@ class custom_cloth() : Fragment() {
     }
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomClothBinding.inflate(inflater, container, false)
+        //binding = CustomClothBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
-        getCustomItemCheck("set")
+        getCustomItemCheck()
 
 
-
-        binding.btnClothBasic.setOnClickListener {
-            onImageButtonClick(binding.btnClothBasic)
-            onClothButtonClick(it as ImageButton)
-        }
         binding.btnClothDev.setOnClickListener {
             onImageButtonClick(binding.btnClothDev)
             onClothButtonClick(it as ImageButton)
@@ -131,7 +128,6 @@ class custom_cloth() : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
             R.id.btn_cloth_dev -> R.drawable.set_dev_choice
             R.id.btn_cloth_movie -> R.drawable.set_movie_choice
             R.id.btn_cloth_caffK -> R.drawable.set_caffk_choice
@@ -150,7 +146,6 @@ class custom_cloth() : Fragment() {
 
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_cloth_basic -> R.drawable.custom_null
             R.id.btn_cloth_dev -> R.drawable.set_dev_s
             R.id.btn_cloth_movie -> R.drawable.set_movie_s
             R.id.btn_cloth_caffK -> R.drawable.set_caffk_s
@@ -174,7 +169,6 @@ class custom_cloth() : Fragment() {
             return
         }
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_cloth_basic -> ButtonInfo(clickedButton.id, 900, R.drawable.custom_empty)
             R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, 41, R.drawable.set_dev)
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, 44, R.drawable.set_movie)
             R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, 40, R.drawable.set_caffk)
@@ -191,7 +185,6 @@ class custom_cloth() : Fragment() {
     }
 
     fun resetButtonCloth() {
-        binding.btnClothBasic.setImageResource(R.drawable.custom_null)
         binding.btnClothDev.setImageResource(R.drawable.set_dev_s)
         binding.btnClothMovie.setImageResource(R.drawable.set_movie_s)
         binding.btnClothCaffK.setImageResource(R.drawable.set_caffk_s)
@@ -203,8 +196,8 @@ class custom_cloth() : Fragment() {
         binding.btnClothSnowman.setImageResource(R.drawable.set_snowman_s)
     }
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -217,8 +210,16 @@ class custom_cloth() : Fragment() {
                         itemList.itemList.forEachIndexed { index, item ->
                             Log.d(
                                 "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
+
+                            if (item.itemType=="set" && !item.have) {
+                                Log.d(
+                                    "ClothHideButton",
+                                    "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
+                                )
+                                hideButton(item.id)
+                            }
                         }
                     }
                     //initButtonLockStates(response.body())
@@ -234,68 +235,46 @@ class custom_cloth() : Fragment() {
         })
     }
 
-    private fun initButtonLockStates(checkInfo: customItemCheckDATA?) {
-        val itemList = checkInfo?.data?.itemList ?: emptyList()
 
-        val btnIdList  = ArrayList<Int>()
-        itemList.forEach { item ->
-            val isLocked = !item.have
-            buttonLockMap[item.id] = isLocked
-            btnIdList.add(item.id)
-            Log.d("initbtnlock", "Button ID: ${item.id}, Is Locked: $isLocked")
+
+
+    private fun hideButton(itemCategory: Int) {
+        val buttonToHide = when (itemCategory) {
+            39 -> binding.btnClothAstronauts
+            40 -> binding.btnClothCaffK
+            41 -> binding.btnClothDev
+            42 -> binding.btnClothHanbokF
+            43 -> binding.btnClothHanbokM
+            44 -> binding.btnClothMovie
+            45 -> binding.btnClothSnowman
+            46 -> binding.btnClothV
+            47 -> binding.btnClothZzim
+            49 -> return //basic
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        for(data in buttonLockMap) {
-            Log.d("btb", data.toString())
-        }
-        Log.d("initbtnlock","button lock init success")
-        applyButtonLockStates(btnIdList)
-    }
+        val parent = buttonToHide.parent as? TableRow
+        parent?.let {
+            // 숨겨진 버튼 제거
+            parent.removeView(buttonToHide)
 
-    private fun applyButtonLockStates(btnIdList : ArrayList<Int>) {
-        val buttons = arrayOf(
-            binding.btnClothAstronauts,
-            binding.btnClothCaffK,
-            binding.btnClothDev,
-            binding.btnClothHanbokF,
-            binding.btnClothHanbokM,
-            binding.btnClothMovie,
-            binding.btnClothSnowman,
-            binding.btnClothV,
-            binding.btnClothZzim,
-            //binding.btnClothBasic
-        )
+            // 남은 버튼의 개수 확인
+            val remainingButtonsCount = it.childCount
 
-
-        for (i in 0 until btnIdList.size) {
-            val buttonId = btnIdList[i]
-            val isLocked = buttonLockMap[buttonId] ?: false
-
-            //val serverId = buttonLockMap.keys.firstOrNull { buttonLockMap[buttonId] == isLocked } ?: -1
-            val drawableId = serverIdToDrawableMap[buttonId] ?: throw IllegalArgumentException("Unknown server ID")
-
-            Log.d("applyButtonLockStates", "Button ID: $buttonId, Server ID: $buttonId, Drawable ID: $drawableId, Is Locked: $isLocked")
-
-            buttons[i].isEnabled = !isLocked
-            buttons[i].setImageResource(if (isLocked) getLockedDrawable(drawableId) else drawableId)
+            // 남은 버튼의 개수가 0이 아니라면 가중치 조정
+            if (remainingButtonsCount > 0) {
+                val weight = 1.0f / remainingButtonsCount
+                for (i in 0 until remainingButtonsCount) {
+                    val child = it.getChildAt(i)
+                    val layoutParams = child.layoutParams as TableRow.LayoutParams
+                    layoutParams.weight = weight
+                    child.layoutParams = layoutParams
+                }
+            }
         }
     }
 
-    private fun getLockedDrawable(drawableId: Int): Int {
-        val lockedDrawableMap = mapOf(
-            R.id.btn_cloth_dev to R.drawable.set_dev,
-            R.id.btn_cloth_movie to R.drawable.set_v_lock,
-            R.id.btn_cloth_caffK to R.drawable.set_v_lock,
-            R.drawable.set_v to R.drawable.set_v_lock,
-            R.drawable.set_astronauts to R.drawable.set_astronauts_lock,
-            R.drawable.set_zzim to R.drawable.set_zzim_lock,
-            R.drawable.set_hanbokf to R.drawable.set_hanbokf_lock,
-            R.drawable.set_hanbokm to R.drawable.set_hanbokm_lock,
-            R.drawable.set_snowman to R.drawable.set_snowman_lock
-        )
 
-        return lockedDrawableMap[drawableId] ?: throw IllegalArgumentException("Unknown drawable ID")
-    }
 
 }
 
