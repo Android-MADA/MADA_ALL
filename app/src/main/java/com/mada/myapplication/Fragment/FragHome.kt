@@ -24,7 +24,7 @@ import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheet
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.clearHomeDatabase
 import com.mada.myapplication.databinding.TodoLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity

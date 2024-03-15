@@ -13,7 +13,7 @@ import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnBackgroundImageChangeListener
 import com.mada.myapplication.Fragment.OnResetButtonClickListener
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomBackgroundBinding
 import retrofit2.Call
 import retrofit2.Callback

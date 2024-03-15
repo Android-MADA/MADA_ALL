@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MyWithdraw1Binding
 import retrofit2.Call
 import retrofit2.Callback

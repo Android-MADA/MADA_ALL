@@ -16,7 +16,7 @@ import com.mada.myapplication.MyFunction.Data.MySetPageData
 import com.mada.myapplication.MyFunction.Data.MySetPageData2
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MySetBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

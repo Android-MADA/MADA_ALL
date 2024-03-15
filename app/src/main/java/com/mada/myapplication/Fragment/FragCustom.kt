@@ -22,8 +22,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.R
-import com.example.myapplication.databinding.FragCustomBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -33,11 +31,13 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.CustomViewModel
 import com.mada.myapplication.CustomFunction.DataRepo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
+import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.custom_background
 import com.mada.myapplication.custom_cloth
 import com.mada.myapplication.custom_color
 import com.mada.myapplication.custom_item
+import com.mada.myapplication.databinding.FragCustomBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

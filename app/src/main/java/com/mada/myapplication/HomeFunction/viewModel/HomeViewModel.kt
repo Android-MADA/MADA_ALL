@@ -12,12 +12,12 @@ import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdap
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import com.mada.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate

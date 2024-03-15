@@ -14,7 +14,7 @@ import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
 import com.mada.myapplication.Fragment.OnItemImageChangeListener
 import com.mada.myapplication.Fragment.OnResetButtonClickListener
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback

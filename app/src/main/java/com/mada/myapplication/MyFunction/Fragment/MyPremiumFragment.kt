@@ -25,7 +25,7 @@ import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MyPremiumBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -7,14 +7,12 @@ import com.mada.myapplication.MyFunction.Data.MyChangeNicknameData
 import com.mada.myapplication.MyFunction.Data.MyGetNoticesData
 import com.mada.myapplication.MyFunction.Data.MyGetProfileData
 import com.mada.myapplication.MyFunction.Data.MyPremiumData
-import com.mada.myapplication.ChartFunction.Data.MyRecordData
-import com.mada.myapplication.ChartFunction.Data.MyRecordOptionData
 import com.mada.myapplication.MyFunction.Data.MySetPageData
 import com.mada.myapplication.MyFunction.Data.MySetPageData2
-import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -84,9 +82,9 @@ interface RetrofitServiceMy {
     fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
 
-    // 주, 월별 투두, 카테고리 통계 조회
-    @POST("/user/statistics")
-    fun myGetRecord(@Header("Authorization") token: String?, @Body data: MyRecordOptionData
-    ): Call<MyRecordData>
+//    // 주, 월별 투두, 카테고리 통계 조회
+//    @POST("/user/statistics")
+//    fun myGetRecord(@Header("Authorization") token: String?, @Body data: MyRecordOptionData
+//    ): Call<MyRecordData>
 
 }

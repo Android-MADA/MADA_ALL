@@ -29,7 +29,7 @@ import com.mada.myapplication.HomeFunction.Model.ScheduleWeekResponse
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

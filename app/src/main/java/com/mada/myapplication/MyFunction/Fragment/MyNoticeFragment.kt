@@ -12,7 +12,7 @@ import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MyFunction.Data.MyGetNoticesData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MyNoticeBinding
 import retrofit2.Call
 import retrofit2.Response
