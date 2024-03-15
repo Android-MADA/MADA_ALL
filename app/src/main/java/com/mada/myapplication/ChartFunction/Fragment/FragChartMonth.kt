@@ -67,7 +67,7 @@ class FragChartMonth : Fragment() {
 
 
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"Month")
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
@@ -90,19 +90,19 @@ class FragChartMonth : Fragment() {
         })
 
     }
-    fun monthChange(date : String) {
-        setBarChartView()
-        setPieChartView()
-        setLineChartView()
+    fun monthChange(month : Int, date: String) {
+        setBarChartView(date)
+        setPieChartView(date)
+        setLineChartView(date)
         initCategoryRecycler(date)
         initCategoryPieChart(date)
     }
 
     // 원형그래프 뷰 설정
-    private fun setPieChartView() {
+    private fun setPieChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>
@@ -151,10 +151,10 @@ class FragChartMonth : Fragment() {
     }
 
     // 막대그래프 뷰 설정
-    private fun setBarChartView() {
+    private fun setBarChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>
@@ -194,10 +194,10 @@ class FragChartMonth : Fragment() {
     }
 
     // 꺾은선그래프 뷰 설정
-    private fun setLineChartView() {
+    private fun setLineChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>
@@ -242,12 +242,12 @@ class FragChartMonth : Fragment() {
     }
 
     // 통계 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(date : String) {
+    private fun initCategoryRecycler(sdate : String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>
@@ -286,11 +286,11 @@ class FragChartMonth : Fragment() {
     }
 
     // 통계 좌측 파이차트 뷰 설정
-    private fun initCategoryPieChart(date: String) {
+    private fun initCategoryPieChart(sdate: String) {
         binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.chartGetMonth(token, date = "2024-03-15").enqueue(object : retrofit2.Callback<ChartMonthData> {
+        api.chartGetMonth(token, date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>

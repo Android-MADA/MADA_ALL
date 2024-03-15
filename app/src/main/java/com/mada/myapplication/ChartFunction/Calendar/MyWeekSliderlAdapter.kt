@@ -26,7 +26,7 @@ class MyWeekSliderlAdapter(
                     5 -> "다섯째"
                     else -> "Invalid week"
                 }
-                monthWeekText.text = DateTime(millis).year.toString() + "년 "+DateTime(millis).monthOfYear.toString() + "월 " + weekOfMonthText +" 주"
+                monthWeekText.text = DateTime(millis).year.toString() + "년 "+ DateTime(millis).monthOfYear.toString() + "월 " + weekOfMonthText + "주"
 
                 (fm as? FragChartWeek)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
 

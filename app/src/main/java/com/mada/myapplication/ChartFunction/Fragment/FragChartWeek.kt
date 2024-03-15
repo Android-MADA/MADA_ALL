@@ -65,6 +65,7 @@ class FragChartWeek : Fragment() {
         }
 
 
+        //달력 부분
         val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2)
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
@@ -99,10 +100,10 @@ class FragChartWeek : Fragment() {
 
 
     // 막대그래프 뷰 설정
-    private fun setBarChartView(month : Int, iweek : Int, date : String) {
+    private fun setBarChartView(month : Int, iweek : Int, sdate : String) {
 
         // 서버 데이터 연결
-        api.chartGetWeek(token, date).enqueue(object : retrofit2.Callback<ChartWeekData> {
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
                 call: Call<ChartWeekData>,
                 response: Response<ChartWeekData>
@@ -149,10 +150,10 @@ class FragChartWeek : Fragment() {
     }
 
     // 원형그래프 뷰 설정
-    private fun setPieChartView(month : Int, iweek : Int, date : String) {
+    private fun setPieChartView(month : Int, iweek : Int, sdate : String) {
 
         // 서버 데이터 연결
-        api.chartGetWeek(token, date).enqueue(object : retrofit2.Callback<ChartWeekData> {
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
                 call: Call<ChartWeekData>,
                 response: Response<ChartWeekData>
@@ -201,10 +202,10 @@ class FragChartWeek : Fragment() {
     }
 
     // 꺾은선그래프 뷰 설정
-    private fun setLineChartView(month : Int, iweek : Int, date : String) {
+    private fun setLineChartView(month : Int, iweek : Int, sdate : String) {
 
         // 서버 데이터 연결
-        api.chartGetWeek(token, date).enqueue(object : retrofit2.Callback<ChartWeekData> {
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
                 call: Call<ChartWeekData>,
                 response: Response<ChartWeekData>
@@ -249,12 +250,12 @@ class FragChartWeek : Fragment() {
     }
 
     // 통계 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(month : Int, iweek : Int, date : String) {
+    private fun initCategoryRecycler(month : Int, iweek : Int, sdate : String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.chartGetWeek(token, date).enqueue(object : retrofit2.Callback<ChartWeekData> {
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
                 call: Call<ChartWeekData>,
                 response: Response<ChartWeekData>
@@ -295,11 +296,11 @@ class FragChartWeek : Fragment() {
     }
 
     // 통계 좌측 파이차트 뷰 설정
-    private fun initCategoryPieChart(month : Int, iweek : Int, date : String) {
+    private fun initCategoryPieChart(month : Int, iweek : Int, sdate : String) {
         binding.myChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.chartGetWeek(token, date).enqueue(object : retrofit2.Callback<ChartWeekData> {
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
                 call: Call<ChartWeekData>,
                 response: Response<ChartWeekData>

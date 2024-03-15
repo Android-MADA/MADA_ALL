@@ -8,17 +8,19 @@ import com.mada.myapplication.ChartFunction.Fragment.FragChartMonth
 import org.joda.time.DateTime
 
 class MyMonthSliderlAdapter(
-    private val fm: Fragment,
+    fm: Fragment,
     private val monthWeekText: TextView,
-    private val viewPager: ViewPager2,
-    private val dayOrMonth : String
+    private val viewPager: ViewPager2
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 val millis = getItemId(position)
-                monthWeekText.text = DateTime(millis).year.toString() + "년 " + DateTime(millis).monthOfYear.toString() + "월"
-                (fm as? FragChartMonth)?.monthChange(DateTime(millis).toString("yyyy-MM-dd"))
+
+                monthWeekText.text = DateTime(millis).year.toString() + "년 "+ DateTime(millis).monthOfYear.toString()+ "월 "
+
+                (fm as? FragChartMonth)?.monthChange(DateTime(millis).monthOfYear,DateTime(millis).toString("yyyy-MM-dd"))
+
             }
         })
     }
@@ -27,9 +29,9 @@ class MyMonthSliderlAdapter(
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
-    override fun createFragment(position: Int): MyMonthFragment {
+    override fun createFragment(position: Int): MyWeekFragment {
         val millis = getItemId(position)
-        return MyMonthFragment.newInstance(millis, dayOrMonth, fm)
+        return MyWeekFragment.newInstance(millis)
     }
 
     override fun getItemId(position: Int): Long

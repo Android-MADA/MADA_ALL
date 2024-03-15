@@ -80,7 +80,7 @@ class FragChartDay : Fragment() {
         }
 
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"DAY")
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
@@ -116,10 +116,10 @@ class FragChartDay : Fragment() {
 
 
     // 원형그래프 뷰 설정
-    private fun setPieChartView(date: String) {
+    private fun setPieChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -165,10 +165,10 @@ class FragChartDay : Fragment() {
     }
 
     // 막대그래프 뷰 설정
-    private fun setBarChartView(date: String) {
+    private fun setBarChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -210,10 +210,10 @@ class FragChartDay : Fragment() {
     }
 
     // 꺾은선그래프 뷰 설정
-    private fun setLineChartView(date: String) {
+    private fun setLineChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -259,12 +259,12 @@ class FragChartDay : Fragment() {
     }
 
     // 원형그래프 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(date: String) {
+    private fun initCategoryRecycler(sdate: String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -303,11 +303,11 @@ class FragChartDay : Fragment() {
     }
 
     // 원형그래프 데이터셋 설정
-    private fun initCategoryPieChart(date: String) {
+    private fun initCategoryPieChart(sdate: String) {
         binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -370,7 +370,7 @@ class FragChartDay : Fragment() {
     private fun initBarChart(date: String) {
 
         // 서버 데이터 연결
-        api.chartGetDay(token, date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -452,7 +452,7 @@ class FragChartDay : Fragment() {
     // 꺾은선그래프 데이터셋 설정
     private fun initLineChart(date: String){
         // 서버 데이터 연결
-        api.chartGetDay(token,date).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
