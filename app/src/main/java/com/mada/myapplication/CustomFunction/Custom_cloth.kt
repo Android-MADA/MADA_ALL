@@ -13,9 +13,9 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.FragCustomBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,14 +24,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class custom_cloth() : Fragment() {
-    lateinit var binding: CustomClothBinding
+class custom_cloth(val binding: CustomClothBinding) : Fragment() {
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
     private val buttonLockMap = mutableMapOf<Int, Boolean>()
 
     private var imageChangeListener: OnClothImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    //private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -63,11 +62,13 @@ class custom_cloth() : Fragment() {
     }
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomClothBinding.inflate(inflater, container, false)
+        //binding = CustomClothBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
         getCustomItemCheck()
 

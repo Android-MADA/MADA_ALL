@@ -9,14 +9,10 @@ data class customItemChangeDATA(
 )
 
 data class wearingItems (
-    val wearingItems: ArrayList<WearingItemsList>
+    val wearingItems: ArrayList<wearingItemsList>
 )
 
 
-data class WearingItemsList (
-    val id: Int,
-    val category: String
-)
 
 
 

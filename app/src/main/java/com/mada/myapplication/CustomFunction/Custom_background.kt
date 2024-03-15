@@ -13,21 +13,21 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnBackgroundImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomBackgroundBinding
+import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class custom_background : Fragment() {
-    lateinit var binding: CustomBackgroundBinding
+class custom_background(val binding: CustomBackgroundBinding) : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnBackgroundImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    //private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -43,11 +43,12 @@ class custom_background : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomBackgroundBinding.inflate(inflater, container, false)
+        //binding = CustomBackgroundBinding.inflate(inflater, container, false)
         getCustomItemCheck()
 
 
@@ -140,7 +141,8 @@ class custom_background : Fragment() {
 
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
-    fun resetButtonBackground() {
+
+    /*fun resetButtonBackground() {
         Log.d("BackgroundFrag", "resetButtonBackground()")
         binding.btnBackBridS.setImageResource(R.drawable.back_bird_s_1)
         binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
@@ -152,7 +154,7 @@ class custom_background : Fragment() {
         binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
         binding.btnBackSumS.setImageResource(R.drawable.back_sr_s_1)
 
-    }
+    }*/
 
     fun getCustomItemCheck() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token)

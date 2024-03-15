@@ -14,5 +14,5 @@ data class itemcheck(
     val id: Int,
     val itemType: String,
     val have: Boolean,
-    val itemCategory: String
+    val itemCategory: List<String>
 )

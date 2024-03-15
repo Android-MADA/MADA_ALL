@@ -13,7 +13,6 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnColorImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
 import com.mada.myapplication.StartFuction.Splash2Activity
 import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.FragCustomBinding
@@ -24,15 +23,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class custom_color : Fragment() {
-
-    lateinit var binding: CustomColorBinding
+class custom_color(val binding: CustomColorBinding) : Fragment() {
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
 
 
     private var imageChangeListener: OnColorImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -51,12 +47,13 @@ class custom_color : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomColorBinding.inflate(inflater, container, false)
         fragbinding = FragCustomBinding.inflate(inflater)
         getCustomItemCheck()
 
@@ -176,7 +173,7 @@ class custom_color : Fragment() {
 
     }
 
-    fun resetButtonColor() {
+    /*fun resetButtonColor() {
         Log.d("CustomColorFragment", "resetButtonImage() called")
         binding.btnColorBasic.setImageResource(R.drawable.color_basic)
         binding.btnColorMint.setImageResource(R.drawable.color_blue)
@@ -191,7 +188,8 @@ class custom_color : Fragment() {
         binding.btnColorPink2.setImageResource(R.drawable.color_pink2)
         binding.btnColorPink3.setImageResource(R.drawable.color_pink3)
         binding.btnColorOrange2.setImageResource(R.drawable.color_orange2)
-    }
+    }*/
+
 
     fun getCustomItemCheck() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token)

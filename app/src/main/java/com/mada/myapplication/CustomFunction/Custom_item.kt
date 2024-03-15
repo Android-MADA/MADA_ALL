@@ -14,8 +14,10 @@ import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
 import com.mada.myapplication.Fragment.OnItemImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
+import com.mada.myapplication.Fragment.OnItemSelectionListener
 import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,12 +25,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class custom_item : Fragment() {
-    lateinit var binding: CustomItemBinding
+class custom_item(val binding: CustomItemBinding) : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnItemImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    //private var resetButtonClickListener: OnResetButtonClickListener? = null
+    private var ItemSelectionListener: OnItemSelectionListener? = null
+
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
@@ -44,13 +47,19 @@ class custom_item : Fragment() {
         } else {
             throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
         }
+        /*if (context is OnItemSelectionListener) {
+            ItemSelectionListener = context
+        } else {
+            throw RuntimeException("$context must implement OnItemSelectionListener")
+        }*/
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomItemBinding.inflate(inflater, container, false)
+        //binding = CustomItemBinding.inflate(inflater, container, false)
         getCustomItemCheck()
 
         /*val defaultButton = binding.btnItemBasic
@@ -299,6 +308,8 @@ class custom_item : Fragment() {
             }
         }
     }
+
+
 
 
 

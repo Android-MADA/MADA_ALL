@@ -51,6 +51,11 @@ import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.CustomBottomSheetViewPager
 import com.mada.myapplication.CustomFunction.ButtonInfoEntity
 import com.mada.myapplication.CustomFunction.customItemChangeDATA
+import com.mada.myapplication.CustomFunction.customItemCheckDATA
+import com.mada.myapplication.databinding.CustomBackgroundBinding
+import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
+import com.mada.myapplication.databinding.CustomItemBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,8 +77,8 @@ interface OnBackgroundImageChangeListener {
     fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
-interface OnResetButtonClickListener {
-    fun onResetButtonClicked()
+interface OnItemSelectionListener {
+    fun onItemSelected(itemCategories: List<String>)
 }
 
 data class IdAndItemType(
@@ -85,7 +90,7 @@ data class IdAndItemType(
 
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
-    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnResetButtonClickListener {
+    OnItemImageChangeListener, OnBackgroundImageChangeListener, OnItemSelectionListener {
     lateinit var binding: FragCustomBinding
     private var selectedColorButtonInfo: ButtonInfo? = null
     private var selectedClothButtonInfo: ButtonInfo? = null
@@ -95,13 +100,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private val viewModel: CustomViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var savedData: selectedButtonInfo
+    val categoryList = mutableListOf<String>()
+    val itemsCategory = ArrayList<String>(100)
+    val basiccategoryList = ArrayList<List<String>>(100)
 
 
-
-    private var colorFragment: custom_color? = null
-    private var clothFragment: custom_cloth? = null
-    private var itemFragment: custom_item? = null
-    private var backgroundFragment: custom_background? = null
 
     private var adapter: CustomBottomSheetViewPager? = null
 
@@ -128,6 +131,55 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         var selectedBackgroundButtonInfo: ButtonInfo?
     )
 
+    override fun onItemSelected(itemCategories: List<String>) {
+        // 여러 카테고리 정보를 받아 처리하는 로직을 구현
+        // 예를 들어 각 카테고리 정보를 반복하여 토스트 메시지를 표시하는 등의 로직을 추가할 수 있습니다.
+
+        //val itemCategories = item.category.split(",")
+
+        for (category in itemCategories) {
+            if (itemsCategory.contains(category)) {
+                //throw
+            }
+            itemsCategory.add(category)
+        }
+        //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
+        Toast.makeText(requireContext(), "선택된 카테고리: $itemsCategory", Toast.LENGTH_SHORT).show()
+    }
+
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
+
+        call.enqueue(object : Callback<customItemCheckDATA> {
+            override fun onResponse(
+                call: Call<customItemCheckDATA>,
+                response: Response<customItemCheckDATA>
+            ) {
+                if (response.isSuccessful) {
+                    val checkInfo = response.body()
+                    checkInfo?.data?.let { itemList ->
+                        itemList.itemList.forEachIndexed { index, item ->
+                            if (!item.have) {
+                                while (basiccategoryList.size <= item.id) {
+                                    basiccategoryList.add(ArrayList())
+                                }
+                                basiccategoryList[item.id] = item.itemCategory
+                                Log.d("basiccategoryList",  "itemID: ${item.id} itemCatagory: ${item.itemCategory}")
+
+                            }
+
+                        }
+                    }
+                } else {
+                   }
+            }
+
+            override fun onFailure(call: Call<customItemCheckDATA>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
 
 
 
@@ -142,14 +194,27 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding = FragCustomBinding.inflate(inflater, container, false)
         var view = binding.root
         var customtabLayout = binding.CustomPagetabLayout
-        val colorFragment = custom_color()
-        val clothFragment = custom_cloth()
-        val itemFragment = custom_item()
-        val backgroundFragment = custom_background()
+
         //binding.CustomBottomSheetViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+
+
+        //바텀시트 바인딩
+        val colorBinding = CustomColorBinding.inflate(inflater, container, false)
+        val clothBinding = CustomClothBinding.inflate(inflater, container, false)
+        val itemBinding = CustomItemBinding.inflate(inflater, container, false)
+        val backgroundBinding = CustomBackgroundBinding.inflate(inflater, container, false)
+
+        val colorFragment = custom_color(colorBinding)
+        val clothFragment = custom_cloth(clothBinding)
+        val itemFragment = custom_item(itemBinding)
+        val backgroundFragment = custom_background(backgroundBinding)
+
         binding.CustomBottomSheetViewPager.adapter = CustomBottomSheetViewPager(clothFragment,colorFragment,itemFragment,backgroundFragment,this)
         viewPager = binding.CustomBottomSheetViewPager
         viewPager.setUserInputEnabled(false);
+
+
 
 
 
@@ -242,6 +307,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             backgroundbuttonInfo?.selectedImageResource ?: 0
         )
 
+        //카테고리 불러오기
+        getCustomItemCheck()
+
 
 
 
@@ -286,25 +354,82 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         fragmentTransaction.commit()
 
 
-
-
         binding.btnCustomReset.setOnClickListener {
-            val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
-            selectedColorButtonInfo = colorbtninfo
-            val clothbtninfo = ButtonInfo(0, 49, R.drawable.custom_empty)
-            selectedClothButtonInfo = clothbtninfo
-            val itembtninfo = ButtonInfo(0, 50, R.drawable.custom_empty)
-            selectedItemButtonInfo = itembtninfo
-            val backgroundbtninfo = ButtonInfo(0, 48, R.drawable.custom_empty)
-            selectedBackgroundButtonInfo = backgroundbtninfo
-            binding.customRamdi.setImageResource(R.drawable.c_ramdi)
-            binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
-            binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
-            onResetButtonClicked()
-            getcustomReset()
+            if (::binding.isInitialized) {
+                val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
+                selectedColorButtonInfo = colorbtninfo
+                val clothbtninfo = ButtonInfo(0, 49, R.drawable.custom_empty)
+                selectedClothButtonInfo = clothbtninfo
+                val itembtninfo = ButtonInfo(0, 50, R.drawable.custom_empty)
+                selectedItemButtonInfo = itembtninfo
+                val backgroundbtninfo = ButtonInfo(0, 48, R.drawable.custom_empty)
+                selectedBackgroundButtonInfo = backgroundbtninfo
+                binding.customRamdi.setImageResource(R.drawable.c_ramdi)
+                binding.imgCustomCloth.setImageResource(R.drawable.custom_empty)
+                binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
+                binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
 
+                if (colorBinding != null && clothBinding != null && backgroundBinding != null && itemBinding != null) {
+                    //item 초기화
+
+                    itemBinding.btnItemGlassNormal?.setImageResource(R.drawable.gh_normal_s)
+                    itemBinding.btnItemHatBer?.setImageResource(R.drawable.hat_ber_s)
+                    itemBinding.btnItemHatGrad?.setImageResource(R.drawable.hat_grad_s)
+                    itemBinding.btnItemGlass8bit?.setImageResource(R.drawable.g_8bit_s)
+                    itemBinding.btnItemGlassWoig?.setImageResource(R.drawable.g_woig_s)
+                    itemBinding.btnItemHatIpod?.setImageResource(R.drawable.hat_ipod_s)
+                    itemBinding.btnItemGlassSunR?.setImageResource(R.drawable.g_sunr_s)
+                    itemBinding.btnItemGlassSunB?.setImageResource(R.drawable.g_sunb_s)
+                    itemBinding.btnItemHatFlower?.setImageResource(R.drawable.hat_flower_s)
+                    itemBinding.btnItemHatV?.setImageResource(R.drawable.hat_v_s)
+                    itemBinding.btnItemHatDinof?.setImageResource(R.drawable.hat_dinof_s)
+                    itemBinding.btnItemHatSheep?.setImageResource(R.drawable.hat_sheep_s)
+                    itemBinding.btnItemBagE?.setImageResource(R.drawable.bag_e_s)
+                    itemBinding.btnItemBagLuck?.setImageResource(R.drawable.bag_luck_s)
+                    itemBinding.btnItemHatHeart?.setImageResource(R.drawable.hat_heart_s)
+                    itemBinding.btnItemHatBee?.setImageResource(R.drawable.hat_bee_s)
+                    itemBinding.btnItemHatHeads?.setImageResource(R.drawable.heads_s)
+                    //cloth 초기화
+                    clothBinding.btnClothDev?.setImageResource(R.drawable.set_dev_s)
+                    clothBinding.btnClothMovie?.setImageResource(R.drawable.set_movie_s)
+                    clothBinding.btnClothCaffK?.setImageResource(R.drawable.set_caffk_s)
+                    clothBinding.btnClothV?.setImageResource(R.drawable.set_v_s)
+                    clothBinding.btnClothAstronauts?.setImageResource(R.drawable.set_astronauts_s)
+                    clothBinding.btnClothZzim?.setImageResource(R.drawable.set_zzim_s)
+                    clothBinding.btnClothHanbokF?.setImageResource(R.drawable.set_hanbokf_s)
+                    clothBinding.btnClothHanbokM?.setImageResource(R.drawable.set_hanbokm_s)
+                    clothBinding.btnClothSnowman?.setImageResource(R.drawable.set_snowman_s)
+                    //background 초기화
+                    backgroundBinding.btnBackBridS?.setImageResource(R.drawable.back_bird_s_1)
+                    backgroundBinding.btnBackNS?.setImageResource(R.drawable.back_n_s_1)
+                    backgroundBinding.btnBackWinS?.setImageResource(R.drawable.back_win_s_1)
+                    backgroundBinding.btnBackNormalS?.setImageResource(R.drawable.back_normal_s_1)
+                    backgroundBinding.btnBackStoreS?.setImageResource(R.drawable.back_store_s_1)
+                    backgroundBinding.btnBackZzimS?.setImageResource(R.drawable.back_zzim_s_1)
+                    backgroundBinding.btnBackUniS?.setImageResource(R.drawable.back_sp_s_1)
+                    backgroundBinding.btnBackCinS?.setImageResource(R.drawable.back_cin_s_1)
+                    backgroundBinding.btnBackSumS?.setImageResource(R.drawable.back_sr_s_1)
+
+                    Log.d("FragCustom", "onResetButtonClicked()")
+
+                    //초기화 api 호출
+                    getcustomReset()
+                } else {
+                    // 자식 프래그먼트의 바인딩 중 하나라도 초기화되지 않았으면 초기화를 건너뜁니다.
+                    Toast.makeText(this.requireActivity(), "초기화 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    Log.d("FragCustom", "Some fragment bindings are not initialized. Reset skipped.")
+                }
+            } else {
+                // binding 변수가 초기화되지 않은 경우에 대한 처리
+                Toast.makeText(this.requireActivity(), "초기화 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Log.d("FragCustom", "Binding is not initialized. Reset skipped.")
+            }
         }
+
+
+
+
+
 
 
 
@@ -558,6 +683,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
         unsavedChanges = true
+
+
     }
 
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
@@ -565,15 +692,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
         selectedBackgroundButtonInfo = backgroundbuttonInfo
         unsavedChanges = true
+
     }
 
-    override fun onResetButtonClicked() {
+    /*override fun onResetButtonClicked() {
         Log.d("FragCustom", "onResetButtonClicked()")
         colorFragment?.resetButtonColor()
         clothFragment?.resetButtonCloth()
         itemFragment?.resetButtonItem()
         backgroundFragment?.resetButtonBackground()
-    }
+    }*/
 
 
     fun getSelectedButtonInfo(): selectedButtonInfo {
@@ -718,6 +846,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
             false
         })
+
+
+
 
     }
 
