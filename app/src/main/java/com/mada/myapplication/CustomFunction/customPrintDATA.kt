@@ -4,10 +4,10 @@ import androidx.annotation.Keep
 
 @Keep
 data class customPrintDATA(
-    val data: WearingItems
+    val data: WearingItems1
 )
 
-data class WearingItems(
+data class WearingItems1(
     val wearingItems: ArrayList<print>
 )
 
