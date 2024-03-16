@@ -199,7 +199,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     ads:adSize="BANNER"
-                    ads:adUnitId="ca-app-pub-4086521113003670/1878645147"/>
+                    ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
 
 
 
@@ -268,6 +268,22 @@
                             android:drawablePadding="10dp"
                             android:padding="15dp"
                             android:text="Premium 구독"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:id="@+id/my_kakao"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_kakao"
+                            android:drawablePadding="10dp"
+                            android:padding="15dp"
+                            android:text="카카오톡 문의하기"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 

@@ -11,27 +11,14 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.HomeFunction.api.RetrofitInstance
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
-import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
-import com.mada.myapplication.ChartFunction.Data.MyRecordCategoryData
-import com.mada.myapplication.ChartFunction.Data.MyRecordData
-import com.mada.myapplication.ChartFunction.Data.MyRecordOptionData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
-import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
-import com.mada.myapplication.databinding.ChartDayBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -46,6 +33,15 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
+import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.mada.myapplication.ChartFunction.Data.ChartDayData
+import com.mada.myapplication.ChartFunction.RetrofitServiceChart
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.R
+import com.mada.myapplication.StartFunction.Splash2Activity
+import com.mada.myapplication.databinding.ChartDayBinding
 import retrofit2.Call
 import retrofit2.Response
 
@@ -54,8 +50,8 @@ class FragChartDay : Fragment() {
     private lateinit var binding: ChartDayBinding
     private lateinit var navController: NavController
     private var mInterstitialAd: InterstitialAd? = null
-    val datas = mutableListOf<MyRecordCategoryData>()
-    val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    val datas = mutableListOf<ChartDayData>()
+    val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
@@ -84,13 +80,12 @@ class FragChartDay : Fragment() {
         }
 
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2,"DAY")
+        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem-1, true)
         }
-
         binding.nextBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem+1, true)
         }
@@ -109,225 +104,233 @@ class FragChartDay : Fragment() {
     }
 
     //날짜 클릭시 실행되는 함수
-    fun dayChange(month : Int, date : String) {
-        setBarChartView(MyRecordOptionData("month", date), month)
-        setPieChartView(MyRecordOptionData("month", date), month)
-        setLineChartView(MyRecordOptionData("month", date), month)
-        initCategoryRecycler(MyRecordOptionData("month", date))
-        initCategoryPieChart(MyRecordOptionData("month", date))
-        initBarChart(MyRecordOptionData("month", date))
-        initLineChart(MyRecordOptionData("month", date))
+    fun dayChange(date: String) {
+        setBarChartView(date)
+        setPieChartView(date)
+        setLineChartView(date)
+        initCategoryRecycler(date)
+        initCategoryPieChart(date)
+        initBarChart(date)
+        initLineChart(date)
     }
 
 
     // 원형그래프 뷰 설정
-    private fun setPieChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setPieChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("chartGetDay", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("setPieChartView 성공", response.body()?.categoryStatistics.toString())
 
-                    val categoryStatistics = response.body()?.data?.categoryStatistics
-                    val size = response.body()?.data?.categoryStatistics?.size
-                    val addTodoCnt = 9
-                    val averageCompleteTodoCnt = 9.9
-                    val compareCompleteTodoText = "{1.2}개 상승"
+                    val categoryStatistics = response.body()?.categoryStatistics
+                    val size = response.body()?.categoryStatistics?.size
+                    val mostCategory = response.body()?.mostCategory
+                    val nowCategoryCount = response.body()?.nowCategoryCount
+                    var beforeCategoryCount = response.body()?.beforeCategoryCount
+                    val beforeCategoryCountText = when {
+                        beforeCategoryCount == null -> "NULL"
+                        beforeCategoryCount > 0 -> "${beforeCategoryCount}개 많이"
+                        beforeCategoryCount < 0 -> "${beforeCategoryCount}개 적게"
+                        else -> "똑같이"
+                    }
+                    beforeCategoryCount = beforeCategoryCount?.let { Math.abs(it) }
 
-                    val colerText1 = "총 ${addTodoCnt}개"
-
-                    val formattedText1 = "오늘 ${colerText1} 추가했어요"
-                    var formattedText2 = ""
-
-                    if (categoryStatistics.isNullOrEmpty()) {
-                        formattedText2 = "추가한 카테고리가 없어요"
-                    } else{
-                        val c1 = categoryStatistics[0].categoryName
-                        formattedText2 =
-                            "오늘은 ${c1} 카테고리에서" +
-                                    "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
-                                    "\n어제에 비해 ${compareCompleteTodoText}했네요."
+                    val formattedText1 = "${mostCategory}"
+                    val formattedText2 = when {
+                        categoryStatistics.isNullOrEmpty() -> "추가한 카테고리가 없어요"
+                        else -> "오늘은 ${mostCategory} 카테고리에서 ${nowCategoryCount}개 완료했어요." +
+                                "\n어제에 비해 ${beforeCategoryCountText} 해내셨네요!"
                     }
 
-                    binding.recordTitle2.text = createSpannableString(formattedText1, colerText1)
+                    binding.recordTitle2.text = createSpannableString(formattedText1, formattedText1)
                     binding.recordContext2.text = formattedText2
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("setPieChartView 실패", response.body()?.categoryStatistics.toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "setPieChartView 실패")
             }
         })
 
     }
 
-
     // 막대그래프 뷰 설정
-    private fun setBarChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setBarChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("setBarChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("setBarChartView 성공", response.body().toString())
 
-                    val nickName = response.body()?.data?.nickName
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val completeTodoPercent = response.body()?.data?.completeTodoPercent
-                    val compareTodoCnt = 9.9
+                    val nowTotalCount = response.body()?.nowTotalCount
+                    val nowCountCompleted = response.body()?.nowCountCompleted
+                    var diffCountB = response.body()?.diffCount
+                    val diffCountBText = when {
+                        diffCountB == null -> "NULL"
+                        diffCountB > 0 -> "어제보다 ${diffCountB}개 더"
+                        diffCountB < 0 -> "어제보다 ${diffCountB}개 덜"
+                        else -> "어제만큼"
+                    }
+                    diffCountB = diffCountB?.let { Math.abs(it) }
 
-                    val colorText0 = "오늘"
-                    val colorText1 = "총 ${completeTodoCnt}개"
+                    val colorText0 = "총 ${nowCountCompleted}개"
 
-                    val formattedText0 = "${nickName}님의 ${colorText0} 통계예요."
-                    val formattedText1 = "오늘 ${colorText1} 완료했어요"
-                    val formattedText2 = "오늘은 ${totalTodoCnt}개의 투두 중에서" +
-                            "\n평균 ${completeTodoPercent}%인 ${completeTodoCnt}개의 투두를 완료했어요." +
-                            "\n어제에 비해 ${compareTodoCnt}개 상승했네요."
+                    val formattedText0 = "오늘은 ${colorText0} 완료했어요"
+                    val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
+                            "\n${nowCountCompleted}개의 투두를 완료했어요." +
+                            "\n${diffCountBText} 열심히 하루를 보내셨네요!"
 
-                    binding.recordTitle0.text = createSpannableString(formattedText0, colorText0)
-                    binding.recordTitle1.text = createSpannableString(formattedText1, colorText1)
-                    binding.recordContext1.text = formattedText2
+                    binding.recordTitle2.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordContext2.text = formattedText1
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("setBarChartView 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "setBarChartView 실패")
             }
         })
     }
 
     // 꺾은선그래프 뷰 설정
-    private fun setLineChartView(wdata: MyRecordOptionData, month : Int) {
+    private fun setLineChartView(sdate: String) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordMonth", "Response Code: $responseCode")
+                Log.d("setLineChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordMonth 성공", response.body().toString())
+                    Log.d("setLineChartView 성공", response.body().toString())
 
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val compareTodoCnt = 9.9
-                    val compareTodoPercent = 99
+                    val nowAchievementRate = response.body()?.nowAchievementRate
+                    val nowCountCompleted = response.body()?.nowCountCompletedA
+                    var diffCountC = response.body()?.diffCount
+                    val diffCountCText = when {
+                        diffCountC == null -> "NULL"
+                        diffCountC > 0 -> "상승"
+                        diffCountC < 0 -> "하강"
+                        else -> "유지"
+                    }
+                    val diffCountCText2 = when {
+                        diffCountC == null -> "NULL"
+                        diffCountC > 0 -> "${diffCountC}개 많이"
+                        diffCountC < 0 -> "${diffCountC}개 적게"
+                        else -> "똑같이"
+                    }
+                    diffCountC = diffCountC?.let { Math.abs(it) }
 
-                    val colorText1 = "${compareTodoPercent}%"
+                    val colorText0 = "${nowAchievementRate}%"
 
-                    val formattedText1 = "투두 달성도가 ${colorText1} 상승했어요"
-                    var formattedText2 = ""
-
-                    if (totalTodoCnt==0) {
-                        formattedText2 = "추가한 투두가 없어요"
-                    } else{
-                        formattedText2 =
-                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 어제에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
+                    val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
+                    val formattedText1 = when {
+                        nowCountCompleted == null -> "완료한 투두가 없어요"
+                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개 이상의 투두를 완료했어요!+" +
+                                "\n어제에 비해 ${diffCountCText2} 해냈네요!"
                     }
 
-                    binding.recordTitle3.text = createSpannableString(formattedText1, colorText1)
-                    binding.recordContext3.text = formattedText2
+                    binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordContext3.text = formattedText1
 
                 } else {
-                    Log.d("myGetRecordMonth 실패", response.body().toString())
+                    Log.d("setLineChartView 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordMonth 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "setLineChartView 실패")
             }
         })
 
     }
 
     // 원형그래프 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(wdata: MyRecordOptionData) {
+    private fun initCategoryRecycler(sdate: String) {
         val adapter = MyRecordCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordWeek", "Response Code: $responseCode")
+                Log.d("initCategoryRecycler", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordWeek 성공", response.body().toString())
+                    Log.d("initCategoryRecycler 성공", response.body().toString())
 
                     datas.apply{
-                        val categoryStatistics = response.body()?.data?.categoryStatistics
-                        categoryStatistics?.forEach { category ->
-                            val categoryName = category.categoryName
-                            val percentNum = category.rate
-                            val colorCode = category.color
+                        val categoryStatistics = response.body()?.categoryStatistics
+                        val CategoryDatas = ArrayList<PieData>()
 
-                            add(MyRecordCategoryData(percent = "${percentNum}%", colorCode = colorCode, category = categoryName))
+                        categoryStatistics?.forEach { dayPieData ->
+//                            val categoryName = dayPieData.categoryName
+//                            val rate = dayPieData.rate
+//                            val colorCode = dayPieData.color
+
+                            //CategoryDatas.add(dayPieData)
                         }
-
-                        adapter.datas = datas
-                        adapter.notifyDataSetChanged()
-
                     }
+
                     binding.myCategoryRecycler.adapter= adapter
                     binding.myCategoryRecycler.layoutManager= manager
 
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("initCategoryRecycler 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initCategoryRecycler 실패")
             }
         })
 
     }
 
     // 원형그래프 데이터셋 설정
-    private fun initCategoryPieChart(wdata: MyRecordOptionData) {
+    private fun initCategoryPieChart(sdate: String) {
         binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordDay", "Response Code: $responseCode")
+                Log.d("initCategoryPieChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordDay 성공", response.body().toString())
+                    Log.d("initCategoryPieChart 성공", response.body().toString())
 
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
-                    val categoryStatistics = response.body()?.data?.categoryStatistics
+                    val categoryStatistics = response.body()?.categoryStatistics
                     categoryStatistics?.forEach { category ->
                         val categoryName = category.categoryName
                         val percentNum = category.rate
@@ -350,7 +353,7 @@ class FragChartDay : Fragment() {
                     // 데이터셋 세팅
                     val pieData = PieData(pieDataSet)
                     binding.PieChart.apply {
-                        data = pieData
+                        //com.mada.myapplication.HomeFunction.Model.data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화
                         legend.isEnabled = false // 범례 비활성화
@@ -360,12 +363,12 @@ class FragChartDay : Fragment() {
                         animate()
                     }
                 } else {
-                    Log.d("myGetRecordDay 실패", response.body().toString())
+                    Log.d("initCategoryPieChart 실패", response.body().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordDay 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initCategoryPieChart 실패")
             }
         })
 
@@ -373,23 +376,24 @@ class FragChartDay : Fragment() {
     }
 
     // 막대그래프 데이터셋 설정
-    private fun initBarChart(wdata: MyRecordOptionData) {
+    private fun initBarChart(date: String) {
 
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordDay", "Response Code: $responseCode")
+                Log.d("initBarChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordDay 성공", response.body().toString())
+                    Log.d("initBarChart 성공", response.body().toString())
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("initBarChart 실패", response.body().toString())
 
                     // 서버 연결 전 UI 확인용으로 임시 작성
+
                     val entries = ArrayList<BarEntry>()
                     entries.add(BarEntry(1.0f,55.0f))
                     entries.add(BarEntry(2.0f,65.0f))
@@ -410,8 +414,8 @@ class FragChartDay : Fragment() {
                             setDrawLabels(true) // 값 적는거 허용 (0, 25, 50, 75, 100)
                             setDrawGridLines(true) //격자 라인 활용
                             setDrawAxisLine(false) // 축 그리기 설정
-                            gridColor = ContextCompat.getColor(context,R.color.grey3) // 축 아닌 격자 색깔 설정
-                            textColor = ContextCompat.getColor(context,R.color.grey3) // 라벨 텍스트 컬러 설정
+                            gridColor = ContextCompat.getColor(context, R.color.grey3) // 축 아닌 격자 색깔 설정
+                            textColor = ContextCompat.getColor(context, R.color.grey3) // 라벨 텍스트 컬러 설정
                             textSize = 12f //라벨 텍스트 크기
                         }
                         xAxis.run {
@@ -431,7 +435,7 @@ class FragChartDay : Fragment() {
                         set.color = ContextCompat.getColor(requireContext(), R.color.main) // 마지막 바 그래프 색 설정
                     }
                     else{
-                        set.color = ContextCompat.getColor(requireContext(),R.color.grey2) // 나머지 바 그래프 색 설정
+                        set.color = ContextCompat.getColor(requireContext(), R.color.grey2) // 나머지 바 그래프 색 설정
                     }
 
                     val dataSet :ArrayList<IBarDataSet> = ArrayList()
@@ -446,8 +450,8 @@ class FragChartDay : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initBarChart 실패")
             }
         })
 
@@ -455,21 +459,21 @@ class FragChartDay : Fragment() {
     }
 
     // 꺾은선그래프 데이터셋 설정
-    private fun initLineChart(wdata: MyRecordOptionData){
+    private fun initLineChart(date: String){
         // 서버 데이터 연결
-        api.myGetRecord(token, wdata).enqueue(object : retrofit2.Callback<MyRecordData> {
+        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
             override fun onResponse(
-                call: Call<MyRecordData>,
-                response: Response<MyRecordData>
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
             ) {
                 val responseCode = response.code()
-                Log.d("myGetRecordDay", "Response Code: $responseCode")
+                Log.d("initLineChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("myGetRecordDay 성공", response.body().toString())
+                    Log.d("initLineChart 성공", response.body().toString())
 
                 } else {
-                    Log.d("myGetRecordWeek 실패", response.body().toString())
+                    Log.d("initLineChart 실패", response.body().toString())
 
                     // 서버 연결 전 UI 확인용으로 임시 데이터 작성
 
@@ -477,8 +481,8 @@ class FragChartDay : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<MyRecordData>, t: Throwable) {
-                Log.d("서버 오류", "myGetRecordWeek 실패")
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "initLineChart 실패")
             }
         })
 

@@ -259,6 +259,16 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="01\n이달의 MVP 카테고리는 바로"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -268,7 +278,7 @@
                     android:padding="20dp">
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/my_chart"
+                        android:id="@+id/PieChart"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
                         android:layout_weight="3" />
@@ -289,7 +299,7 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="카테고리명"
-                    android:textColor="@color/black"
+                    android:textColor="#F0768C"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -303,6 +313,23 @@
                     android:text="이번 달에는 [----] 카테고리에서\n 평균 n개로 가장 많은 투두를 완료했어요.\n지난 달에 비해 n개 상승했네요."
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#E5E5E5"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="24dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="02\n이달의 TO-DO는 얼마나 진심이었냐면요"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/BarChart"
@@ -334,14 +361,29 @@
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#E5E5E5"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="24dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="03\n지금 나, 잘 하고 있는 걸까? MADA가 알려드릴게요!"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/LineChart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginHorizontal="16dp" />
 
                 <TextView

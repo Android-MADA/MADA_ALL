@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.mada.myapplication.ChartFunction.Data.MyRecordCategoryData
+import com.mada.myapplication.ChartFunction.Data.DayPieData
 import com.mada.myapplication.R
 
 class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {
 
-    var datas = mutableListOf<MyRecordCategoryData>()
-    //        set(value) {
-//            field = value
-//            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
-//        }
+    var datas = mutableListOf<DayPieData>()
+            set(value) {
+            field = value
+            notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.my_record_list,parent,false)
         return ViewHolder(view)
@@ -35,10 +35,10 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
         private val txtCategory: TextView = itemView.findViewById(R.id.record_category_name)
         private val viewColor: CardView = itemView.findViewById(R.id.record_category_color)
 
-        fun bind(item: MyRecordCategoryData) {
-            txtPercent.text = item.percent
-            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.colorCode.replace("#","")))
-            txtCategory.text = item.category
+        fun bind(item: DayPieData) {
+            txtPercent.text = item.rate.toString()
+            viewColor.setCardBackgroundColor(Color.parseColor("#"+item.color.replace("#","")))
+            txtCategory.text = item.categoryName
         }
     }
 

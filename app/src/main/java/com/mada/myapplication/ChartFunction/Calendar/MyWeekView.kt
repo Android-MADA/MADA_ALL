@@ -7,6 +7,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import com.mada.myapplication.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
@@ -64,9 +65,24 @@ class MyWeekView @JvmOverloads constructor(
         list.forEach {
             addView(
                 MyItemView(
-                context = context,
-                date = it
+                    context = context,
+                    date = it
+                )
             )
+        }
+
+    }
+    fun initCalendar2(
+        list: List<DateTime>,
+        fm: Fragment
+    ) {
+        list.forEach {
+            addView(
+                MyDayItemView(
+                    context = context,
+                    date = it,
+                    fm = fm
+                )
             )
         }
 

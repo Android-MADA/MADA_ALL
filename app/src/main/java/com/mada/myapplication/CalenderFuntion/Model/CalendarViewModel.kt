@@ -18,7 +18,7 @@ import androidx.navigation.Navigation
 import com.mada.myapplication.BuildConfig
 import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import org.joda.time.DateTime
 import org.joda.time.Days
 import retrofit2.Call
