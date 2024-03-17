@@ -67,87 +67,87 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
 
         binding.btnItemGlassNormal.setOnClickListener{
-            onCategorySelected(R.id.btn_item_glass_normal)
+            //onCategorySelected(R.id.btn_item_glass_normal)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassNormal)
             }
         binding.btnItemHatBer.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_ber)
+            //onCategorySelected(R.id.btn_item_hat_ber)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatBer)
             }
         binding.btnItemHatGrad.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_grad)
+            //onCategorySelected(R.id.btn_item_hat_grad)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatGrad)
             }
         binding.btnItemGlass8bit.setOnClickListener{
-            onCategorySelected(R.id.btn_item_glass_8bit)
+            //onCategorySelected(R.id.btn_item_glass_8bit)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlass8bit)
             }
         binding.btnItemGlassWoig.setOnClickListener{
-            onCategorySelected(R.id.btn_item_glass_woig)
+            //onCategorySelected(R.id.btn_item_glass_woig)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassWoig)
             }
         binding.btnItemHatIpod.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_ipod)
+            //onCategorySelected(R.id.btn_item_hat_ipod)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatIpod)
             }
         binding.btnItemGlassSunR.setOnClickListener{
-            onCategorySelected(R.id.btn_item_glass_sunR)
+            //onCategorySelected(R.id.btn_item_glass_sunR)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassSunR)
             }
         binding.btnItemGlassSunB.setOnClickListener{
-            onCategorySelected(R.id.btn_item_glass_sunB)
+            //onCategorySelected(R.id.btn_item_glass_sunB)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassSunB)
             }
         binding.btnItemHatFlower.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_flower)
+            //onCategorySelected(R.id.btn_item_hat_flower)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatFlower)
             }
         binding.btnItemHatV.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_v)
+            //onCategorySelected(R.id.btn_item_hat_v)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatV)
             }
         binding.btnItemHatDinof.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_dinof)
+            //onCategorySelected(R.id.btn_item_hat_dinof)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatDinof)
             }
         binding.btnItemHatSheep.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_sheep)
+            //onCategorySelected(R.id.btn_item_hat_sheep)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatSheep)
             }
         binding.btnItemBagE.setOnClickListener{
-            onCategorySelected(R.id.btn_item_bag_e)
+            //onCategorySelected(R.id.btn_item_bag_e)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemBagE)
             }
         binding.btnItemBagLuck.setOnClickListener{
-            onCategorySelected(R.id.btn_item_bag_luck)
+            //onCategorySelected(R.id.btn_item_bag_luck)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemBagLuck)
             }
         binding.btnItemHatHeart.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_heart)
+            //onCategorySelected(R.id.btn_item_hat_heart)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatHeart)
             }
         binding.btnItemHatBee.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_bee)
+            //onCategorySelected(R.id.btn_item_hat_bee)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatBee)
             }
         binding.btnItemHatHeads.setOnClickListener{
-            onCategorySelected(R.id.btn_item_hat_heads)
+            //onCategorySelected(R.id.btn_item_hat_heads)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemHatHeads)
             }
@@ -238,7 +238,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         imageChangeListener?.onItemButtonSelected(buttonInfo)
     }
 
-    fun resetButtonItem() {
+    /*fun resetButtonItem() {
         binding.btnItemGlassNormal.setImageResource(R.drawable.gh_normal_s)
         binding.btnItemHatBer.setImageResource(R.drawable.hat_ber_s)
         binding.btnItemHatGrad.setImageResource(R.drawable.hat_grad_s)
@@ -256,7 +256,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         binding.btnItemHatHeart.setImageResource(R.drawable.hat_heart_s)
         binding.btnItemHatBee.setImageResource(R.drawable.hat_bee_s)
         binding.btnItemHatHeads.setImageResource(R.drawable.heads_s)
-    }
+    }*/
 
     fun getCustomItemCheck() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token)
@@ -274,14 +274,13 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
                                 "getCustomItemCheckCloth",
                                 "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
-                            if (item.itemType=="item" && !item.have) {
+                            if (item.itemType == "item" && item.have) { // Check if item.have is true
                                 Log.d(
-                                    "ItemHideButton",
-                                    "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
+                                    "ItemShowButton",
+                                    "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
                                 )
-                                hideButton(item.id)
+                                showButton(item.id)
                             }
-
                         }
                     }
                 } else {
@@ -295,9 +294,8 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         })
     }
 
-
-    private fun hideButton(itemCategory: Int) {
-        val buttonToHide = when (itemCategory) {
+    private fun showButton(itemCategory: Int) {
+        val buttonToShow = when (itemCategory) {
             19 -> binding.btnItemBagE
             20 -> binding.btnItemBagLuck
             21 -> binding.btnItemGlass8bit
@@ -323,30 +321,30 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val parent = buttonToHide.parent as? TableRow
+        val parent = buttonToShow.parent as? TableRow
         parent?.let {
-            // 숨겨진 버튼 제거
-            parent.removeView(buttonToHide)
+            // 버튼을 보이도록 설정
+            buttonToShow.visibility = View.VISIBLE
 
             // 남은 버튼의 개수 확인
             val remainingButtonsCount = it.childCount
 
             // 남은 버튼의 개수가 0이 아니라면 가중치 조정
             if (remainingButtonsCount > 0) {
-                val weight = 1.0f / remainingButtonsCount
+                val weight = 1.0f / (remainingButtonsCount + 1) // 새 버튼을 고려하여 +1
                 for (i in 0 until remainingButtonsCount) {
                     val child = it.getChildAt(i)
                     val layoutParams = child.layoutParams as TableRow.LayoutParams
                     layoutParams.weight = weight
                     child.layoutParams = layoutParams
                 }
+                // 새 버튼에도 가중치 설정
+                val layoutParams = buttonToShow.layoutParams as TableRow.LayoutParams
+                layoutParams.weight = weight
+                buttonToShow.layoutParams = layoutParams
             }
         }
     }
-
-
-
-
 
 
 

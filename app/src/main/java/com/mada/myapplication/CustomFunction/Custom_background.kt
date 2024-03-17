@@ -173,12 +173,12 @@ class custom_background(val binding: CustomBackgroundBinding) : Fragment() {
                                 "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
 
-                            if (item.itemType=="background" && !item.have) {
+                            if (item.itemType == "background" && item.have) {
                                 Log.d(
-                                    "BackgroundHideButton",
-                                    "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
+                                    "BackgroundShowButton",
+                                    "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
                                 )
-                                hideButton(item.id)
+                                showButton(item.id)
                             }
                         }
                     }
@@ -193,8 +193,8 @@ class custom_background(val binding: CustomBackgroundBinding) : Fragment() {
         })
     }
 
-    private fun hideButton(itemCategory: Int) {
-        val buttonToHide = when (itemCategory) {
+    private fun showButton(itemCategory: Int) {
+        val buttonToShow = when (itemCategory) {
             1 -> binding.btnBackBridS
             2 -> binding.btnBackCinS
             3 -> binding.btnBackNS
@@ -208,27 +208,30 @@ class custom_background(val binding: CustomBackgroundBinding) : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val parent = buttonToHide.parent as? TableRow
+        val parent = buttonToShow.parent as? TableRow
         parent?.let {
-            // 숨겨진 버튼 제거
-            parent.removeView(buttonToHide)
+            // 버튼을 보이도록 설정
+            buttonToShow.visibility = View.VISIBLE
 
             // 남은 버튼의 개수 확인
             val remainingButtonsCount = it.childCount
 
             // 남은 버튼의 개수가 0이 아니라면 가중치 조정
             if (remainingButtonsCount > 0) {
-                val weight = 1.0f / remainingButtonsCount
+                val weight = 1.0f / (remainingButtonsCount + 1) // 새 버튼을 고려하여 +1
                 for (i in 0 until remainingButtonsCount) {
                     val child = it.getChildAt(i)
                     val layoutParams = child.layoutParams as TableRow.LayoutParams
                     layoutParams.weight = weight
                     child.layoutParams = layoutParams
                 }
+                // 새 버튼에도 가중치 설정
+                val layoutParams = buttonToShow.layoutParams as TableRow.LayoutParams
+                layoutParams.weight = weight
+                buttonToShow.layoutParams = layoutParams
             }
         }
     }
-
 
 
 

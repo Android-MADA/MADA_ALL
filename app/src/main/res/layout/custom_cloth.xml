@@ -29,6 +29,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -39,6 +40,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -50,6 +52,7 @@
                     android:adjustViewBounds="true"
                     android:background="#FFFFFF"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     ></ImageButton>
 
 
@@ -61,6 +64,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"
                     ></ImageButton>
 
@@ -71,6 +75,7 @@
                     android:layout_width="80dp"
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"></ImageButton>
 
@@ -94,6 +99,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -104,6 +110,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -114,6 +121,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
                 <ImageButton
@@ -124,6 +132,7 @@
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#FFFFFF"></ImageButton>
 
 
