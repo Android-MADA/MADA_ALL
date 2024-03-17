@@ -34,7 +34,6 @@ import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.Data.ChartMonthData
-import com.mada.myapplication.ChartFunction.Data.DayPieData
 import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
@@ -281,7 +280,7 @@ class FragChartMonth : Fragment() {
                         if (stats.size >= 4) {
                             for (i in 0 until 4) {
                                 val monthPieData = stats[i]
-                                CategoryDatas.add(monthPieData)
+                                //CategoryDatas.add(monthPieData)
                             }
                         } else {
                             // 데이터가 4개 미만인 경우
@@ -290,7 +289,7 @@ class FragChartMonth : Fragment() {
 
                             // 기존 데이터 추가
                             stats.forEach { monthPieData ->
-                                CategoryDatas.add(monthPieData)
+                                //CategoryDatas.add(monthPieData)
                                 remainingRate -= monthPieData.rate.toDouble()
                             }
 
@@ -305,7 +304,7 @@ class FragChartMonth : Fragment() {
                     }
 
                     // 어댑터에 데이터 설정
-                    adapter.datas = CategoryDatas
+                    //adapter.datas = CategoryDatas
 
                     // 리사이클러뷰에 어댑터 및 레이아웃 매니저 설정
                     binding.myCategoryRecycler.adapter = adapter
