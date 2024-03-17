@@ -76,47 +76,47 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
 
         binding.btnClothDev.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_dev)
+            //onCategorySelected(R.id.btn_cloth_dev)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothDev)
         }
         binding.btnClothMovie.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_movie)
+            //onCategorySelected(R.id.btn_cloth_movie)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothMovie)
         }
         binding.btnClothCaffK.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_caffK)
+            //onCategorySelected(R.id.btn_cloth_caffK)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothCaffK)
         }
         binding.btnClothV.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_v)
+            //onCategorySelected(R.id.btn_cloth_v)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothV)
         }
         binding.btnClothAstronauts.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_astronauts)
+            //onCategorySelected(R.id.btn_cloth_astronauts)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothAstronauts)
         }
         binding.btnClothZzim.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_zzim)
+            //onCategorySelected(R.id.btn_cloth_zzim)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothZzim)
         }
         binding.btnClothHanbokF.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_hanbokF)
+            //onCategorySelected(R.id.btn_cloth_hanbokF)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothHanbokF)
         }
         binding.btnClothHanbokM.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_hanbokM)
+            //onCategorySelected(R.id.btn_cloth_hanbokM)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothHanbokM)
         }
         binding.btnClothSnowman.setOnClickListener {
-            onCategorySelected(R.id.btn_cloth_snowman)
+            //onCategorySelected(R.id.btn_cloth_snowman)
             onClothButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnClothSnowman)
         }
@@ -199,23 +199,21 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val checkInfo = response.body()
-                    checkInfo?.data?.let { itemList ->
-                        itemList.itemList.forEachIndexed { index, item ->
-                            Log.d(
-                                "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
-                            )
+                    val datas = checkInfo?.data?.itemList
+                    datas?.forEachIndexed { index, item ->
+                        Log.d(
+                            "getCustomItemCheckCloth",
+                            "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
+                        )
 
-                            if (item.itemType=="set" && !item.have) {
-                                Log.d(
-                                    "ClothHideButton",
-                                    "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
-                                )
-                                hideButton(item.id)
-                            }
+                        if (item.itemType == "set" && item.have) {
+                            Log.d(
+                                "ClothShowButton",
+                                "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
+                            )
+                            showButton(item.id)
                         }
                     }
-
                 } else {
                     Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
@@ -227,11 +225,8 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
         })
     }
 
-
-
-
-    private fun hideButton(itemCategory: Int) {
-        val buttonToHide = when (itemCategory) {
+    private fun showButton(itemCategory: Int) {
+        val buttonToShow = when (itemCategory) {
             39 -> binding.btnClothAstronauts
             40 -> binding.btnClothCaffK
             41 -> binding.btnClothDev
@@ -245,23 +240,27 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val parent = buttonToHide.parent as? TableRow
+        val parent = buttonToShow.parent as? TableRow
         parent?.let {
-            // 숨겨진 버튼 제거
-            parent.removeView(buttonToHide)
+            // 버튼을 보이도록 설정
+            buttonToShow.visibility = View.VISIBLE
 
             // 남은 버튼의 개수 확인
             val remainingButtonsCount = it.childCount
 
             // 남은 버튼의 개수가 0이 아니라면 가중치 조정
             if (remainingButtonsCount > 0) {
-                val weight = 1.0f / remainingButtonsCount
+                val weight = 1.0f / (remainingButtonsCount + 1) // 새 버튼을 고려하여 +1
                 for (i in 0 until remainingButtonsCount) {
                     val child = it.getChildAt(i)
                     val layoutParams = child.layoutParams as TableRow.LayoutParams
                     layoutParams.weight = weight
                     child.layoutParams = layoutParams
                 }
+                // 새 버튼에도 가중치 설정
+                val layoutParams = buttonToShow.layoutParams as TableRow.LayoutParams
+                layoutParams.weight = weight
+                buttonToShow.layoutParams = layoutParams
             }
         }
     }
