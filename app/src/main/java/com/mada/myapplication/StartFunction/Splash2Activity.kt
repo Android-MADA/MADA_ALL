@@ -1,8 +1,9 @@
 package com.mada.myapplication.StartFunction
 
+import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.PreferenceUtil
 import com.mada.myapplication.databinding.Splash2Binding
@@ -20,7 +21,8 @@ class Splash2Activity : AppCompatActivity() {
         binding = Splash2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         prefs = PreferenceUtil(this)
-
+        val pref = getSharedPreferences("login", Activity.MODE_PRIVATE)
+        val login = pref.getBoolean("login", false)
         binding.kakaoBtn.setOnClickListener{
             //val intent = Intent(this, MainActivity::class.java)
             //startActivity(intent)
@@ -37,6 +39,6 @@ class Splash2Activity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
+        if(login) binding.naverBtn.callOnClick()
     }
 }

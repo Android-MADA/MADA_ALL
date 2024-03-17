@@ -80,6 +80,7 @@
 
         <ImageButton
             android:id="@+id/kakaoBtn"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -98,6 +99,7 @@
 
         <ImageButton
             android:id="@+id/googleBtn"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -13,7 +13,7 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnBackgroundImageChangeListener
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomBackgroundBinding
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding

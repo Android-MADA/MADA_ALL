@@ -45,7 +45,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.mada.myapplication.CustomFunction.DataRepo
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.BuildConfig
 import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
