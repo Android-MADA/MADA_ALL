@@ -1,5 +1,6 @@
 package com.mada.myapplication.ChartFunction.Fragment
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -122,6 +123,8 @@ class FragChartMonth : Fragment() {
         setLineChartView(date)
         initCategoryRecycler(date)
         initCategoryPieChart(date)
+        initBarChart(date)
+        initLineChart(date)
     }
 
     // 원형그래프 뷰 설정
@@ -407,6 +410,7 @@ class FragChartMonth : Fragment() {
 
         // 서버 데이터 연결
         api.chartGetMonth(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartMonthData> {
+            @SuppressLint("ResourceType")
             override fun onResponse(
                 call: Call<ChartMonthData>,
                 response: Response<ChartMonthData>
@@ -415,17 +419,15 @@ class FragChartMonth : Fragment() {
                 Log.d("initBarChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("initBarChart 성공", response.body().toString())
-                } else {
-                    Log.d("initBarChart 실패", response.body().toString())
-
-                    // 서버 연결 전 UI 확인용으로 임시 작성
+                    Log.d("initBarChart 성공", response.body()?.todoStatistics.toString())
 
                     val entries = ArrayList<BarEntry>()
-                    entries.add(BarEntry(1.0f,55.0f))
-                    entries.add(BarEntry(2.0f,65.0f))
-                    entries.add(BarEntry(3.0f,90.0f))
-                    entries.add(BarEntry(4.0f,80.0f))
+                    val todoStatistics = response.body()?.todoStatistics ?: ArrayList()
+                    val endIndex = minOf(todoStatistics.size, 4) // 최대 4개의 데이터만 사용
+                    for (index in 0 until endIndex) {
+                        val data = todoStatistics[index]
+                        entries.add(BarEntry((index + 1).toFloat(), data.countCompleted))
+                    }
 
                     binding.BarChart.run {
                         description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
@@ -433,12 +435,13 @@ class FragChartMonth : Fragment() {
                         setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
                         setDrawBarShadow(false) //그래프의 그림자
                         setDrawGridBackground(false)//격자구조 넣을건지
+                        val maxValue = entries.maxByOrNull { it.y }?.y ?: 0f // entries에서 y값이 가장 큰 값 찾기
 
                         axisLeft.run { //왼쪽 축. 즉 Y방향 축
-                            axisMaximum = 101f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                            axisMaximum = maxValue // 최대값 설정
                             axisMinimum = 0f // 최소값 0
-                            granularity = 25f // 25 단위마다 선을 그리려고 설정.
-                            setDrawLabels(true) // 값 적는거 허용 (0, 25, 50, 75, 100)
+                            granularity = (maxValue - 0f) / 5 // 최대값-최소값을 기준으로 5개의 선을 사이에 그림
+                            setDrawLabels(false) // 선 옆에 값 적는거 없음
                             setDrawGridLines(true) //격자 라인 활용
                             setDrawAxisLine(false) // 축 그리기 설정
                             gridColor = ContextCompat.getColor(context, R.color.grey3) // 축 아닌 격자 색깔 설정
@@ -457,23 +460,37 @@ class FragChartMonth : Fragment() {
                         animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
                         legend.isEnabled = false //차트 범례 설정
                     }
-                    var set = BarDataSet(entries,"DataSet") // 데이터셋 초기화
-                    if(entries.equals(entries[3])) {
-                        set.color = ContextCompat.getColor(requireContext(), R.color.main) // 마지막 바 그래프 색 설정
+
+                    // 막대그래프의 막대 색상을 설정
+                    val gradientDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_bar_gradient)
+                    val colors = ArrayList<Int>()
+                    for (i in 0 until 4) {
+                        if (i == entries.size - 1) {
+                            // 4번째 막대의 색상을 설정
+                            colors.add(ContextCompat.getColor(requireContext(), R.color.main))
+                        }
+                        else {
+                            // 나머지 막대의 색상을 설정
+                            colors.add(ContextCompat.getColor(requireContext(), R.color.grey2))
+                        }
                     }
-                    else{
-                        set.color = ContextCompat.getColor(requireContext(), R.color.grey2) // 나머지 바 그래프 색 설정
-                    }
+                    val set = BarDataSet(entries, "DataSet")
+                    set.colors = colors
 
                     val dataSet :ArrayList<IBarDataSet> = ArrayList()
                     dataSet.add(set)
-                    val data = BarData(dataSet)
+
+                    val data = BarData(set)
                     data.barWidth = 0.25f //막대 너비 설정
+
                     binding.BarChart.run {
                         this.data = data //차트의 데이터를 data로 설정해줌.
                         setFitBars(true)
                         invalidate()
                     }
+
+                } else {
+                    Log.d("initBarChart 실패", response.body().toString())
                 }
             }
 
@@ -481,7 +498,6 @@ class FragChartMonth : Fragment() {
                 Log.d("서버 오류", "initBarChart 실패")
             }
         })
-
 
     }
 
@@ -501,10 +517,6 @@ class FragChartMonth : Fragment() {
 
                 } else {
                     Log.d("initLineChart 실패", response.body().toString())
-
-                    // 서버 연결 전 UI 확인용으로 임시 데이터 작성
-
-
                 }
             }
 

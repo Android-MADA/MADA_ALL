@@ -24,7 +24,7 @@ data class DayPieData(
 
 data class DayBarData(
     @SerializedName("date") val date: String,
-    @SerializedName("countCompleted") val countCompleted: String
+    @SerializedName("countCompleted") val countCompleted: Float
 )
 
 data class DayLineData(

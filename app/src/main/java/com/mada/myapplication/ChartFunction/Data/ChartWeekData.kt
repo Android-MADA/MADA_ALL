@@ -24,7 +24,7 @@ data class WeekPieData(
 
 data class WeekBarData(
     @SerializedName("date") val date: String,
-    @SerializedName("countCompleted") val countCompleted: String
+    @SerializedName("countCompleted") val countCompleted: Float
 )
 
 data class WeekLineData(
