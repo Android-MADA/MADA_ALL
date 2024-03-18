@@ -349,19 +349,19 @@ class FragChartDay : Fragment() {
 
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
-
                     val categoryStatistics = response.body()?.categoryStatistics
+
                     categoryStatistics?.forEach { category ->
                         val categoryName = category.categoryName
                         val percentNum = category.rate
                         val colorCode = Color.parseColor(category.color)
 
-                        // 파이차트 수치, 이름
+                        // PieEntry에 데이터 추가
                         entries.add(PieEntry(percentNum, categoryName))
                         colorsItems.add(colorCode)
                     }
 
-                    // 데이터셋 초기화
+                    // PieDataSet 초기화
                     val pieDataSet = PieDataSet(entries, "")
                     pieDataSet.apply {
                         colors = colorsItems
@@ -370,10 +370,12 @@ class FragChartDay : Fragment() {
                         setDrawValues(false) // 차트 내 수치 값 표시 비활성화
                     }
 
-                    // 데이터셋 세팅
+                    // PieData 초기화
                     val pieData = PieData(pieDataSet)
+
+                    // PieChart 설정
                     binding.PieChart.apply {
-                        //com.mada.myapplication.HomeFunction.Model.data = pieData
+                        data = pieData
                         isRotationEnabled = false
                         description.isEnabled = false // 차트 내 항목 값 표시 비활성화
                         legend.isEnabled = false // 범례 비활성화
@@ -430,7 +432,7 @@ class FragChartDay : Fragment() {
                             axisMaximum = maxValue // 최대값 설정
                             axisMinimum = 0f // 최소값 0
                             granularity = (maxValue - 0f) / 5 // 최대값-최소값을 기준으로 5개의 선을 사이에 그림
-                            setDrawLabels(false) // 선 옆에 값 적는거 없음
+                            setDrawLabels(true) // 선 옆에 값 적는거
                             setDrawGridLines(true) //격자 라인 활용
                             setDrawAxisLine(false) // 축 그리기 설정
                             gridColor = ContextCompat.getColor(context, R.color.grey3) // 축 아닌 격자 색깔 설정
@@ -549,7 +551,7 @@ class FragChartDay : Fragment() {
     }
 
     // 전면 광고
-    private fun setupInterstitialAd() {
+    fun setupInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(requireContext(),
