@@ -82,9 +82,4 @@ interface RetrofitServiceMy {
     fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
 
-//    // 주, 월별 투두, 카테고리 통계 조회
-//    @POST("/user/statistics")
-//    fun myGetRecord(@Header("Authorization") token: String?, @Body data: MyRecordOptionData
-//    ): Call<MyRecordData>
-
 }

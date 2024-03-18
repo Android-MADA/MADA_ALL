@@ -293,18 +293,18 @@
     </fragment>
     <activity
         android:id="@+id/splash2Activity"
-        android:name="com.mada.myapplication.StartFuction.Splash2Activity"
+        android:name="com.mada.myapplication.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
-    <fragment
-        android:id="@+id/categoryInActiveFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.CategoryInActiveFragment"
-        android:label="CategoryInActiveFragment" >
-        <action
-            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"
-            app:destination="@id/homeCategoryFragment"
-            app:popUpTo="@id/fragHome" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/categoryInActiveFragment"-->
+<!--        android:name="com.mada.myapplication.HomeFunction.view.CategoryInActiveFragment"-->
+<!--        android:label="CategoryInActiveFragment" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"-->
+<!--            app:destination="@id/homeCategoryFragment"-->
+<!--            app:popUpTo="@id/fragHome" />-->
+<!--    </fragment>-->
 
     <!--  Chart  부분   -->
     <fragment

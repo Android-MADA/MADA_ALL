@@ -115,11 +115,11 @@ class FragMy : Fragment() {
         navController = view.findNavController()
 
         // 프리미엄 시 마이 화면 설정 (마스터 합치면 활성화)
-//        if(mainActivity.getPremium()){
-//            binding.userType.text = "프리미엄 유저"
-//            binding.userType.setTextColor(getResources().getColor(R.color.point_main))
-//            binding.adView.removeAllViews()
-//        }
+        if(mainActivity.getPremium()){
+            binding.userType.text = "프리미엄 유저"
+            binding.userType.setTextColor(getResources().getColor(R.color.point_main))
+            binding.adView.removeAllViews()
+        }
 
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_fragHome)
