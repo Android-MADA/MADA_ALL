@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -34,15 +35,18 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Adaptor.ChartDayCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.ChartDayBinding
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class FragChartDay : Fragment() {
@@ -52,6 +56,7 @@ class FragChartDay : Fragment() {
     private var mInterstitialAd: InterstitialAd? = null
     val datas = mutableListOf<ChartDayData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
+    val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
@@ -78,6 +83,21 @@ class FragChartDay : Fragment() {
         binding.btnMONTH.setOnClickListener {
             navController.navigate(R.id.action_fragChartDay_to_fragChartMonth)
         }
+
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    binding.recordTitle0.text = "${nick}님의 일별 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         //달력 부분
         val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
@@ -269,7 +289,7 @@ class FragChartDay : Fragment() {
 
     // 원형그래프 우측 카테고리 리사이클러뷰 설정
     private fun initCategoryRecycler(sdate: String) {
-        val adapter = MyRecordCategoryAdapter(requireContext())
+        val adapter = ChartDayCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결

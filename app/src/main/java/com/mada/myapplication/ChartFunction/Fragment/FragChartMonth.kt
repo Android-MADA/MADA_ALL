@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -30,17 +31,19 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Adaptor.ChartMonthCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
-import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.Data.ChartMonthData
 import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.ChartMonthBinding
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class FragChartMonth : Fragment() {
@@ -48,6 +51,7 @@ class FragChartMonth : Fragment() {
     lateinit var navController: NavController
     val datas = mutableListOf<ChartMonthData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
+    val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
 
 
@@ -72,6 +76,21 @@ class FragChartMonth : Fragment() {
         binding.btnTODAY.setOnClickListener {
             navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
         }
+
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    binding.recordTitle0.text = "${nick}님의 월별 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
         //달력 부분
@@ -256,14 +275,14 @@ class FragChartMonth : Fragment() {
 
     // 원형그래프 우측 카테고리 리사이클러뷰 설정
     private fun initCategoryRecycler(sdate: String) {
-        val adapter = MyRecordCategoryAdapter(requireContext())
+        val adapter = ChartMonthCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetMonth(token,date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<ChartDayData>,
-                response: Response<ChartDayData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
                 Log.d("initCategoryRecycler", "Response Code: $responseCode")
@@ -271,8 +290,7 @@ class FragChartMonth : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("initCategoryRecycler 성공", response.body().toString())
 
-                    val chartMonthData = response.body()
-                    val categoryStatistics = chartMonthData?.categoryStatistics
+                    val categoryStatistics = response.body()?.categoryStatistics
                     val CategoryDatas = ArrayList<MonthPieData>()
 
                     categoryStatistics?.let { stats ->
@@ -280,7 +298,7 @@ class FragChartMonth : Fragment() {
                         if (stats.size >= 4) {
                             for (i in 0 until 4) {
                                 val monthPieData = stats[i]
-                                //CategoryDatas.add(monthPieData)
+                                CategoryDatas.add(monthPieData)
                             }
                         } else {
                             // 데이터가 4개 미만인 경우
@@ -289,7 +307,7 @@ class FragChartMonth : Fragment() {
 
                             // 기존 데이터 추가
                             stats.forEach { monthPieData ->
-                                //CategoryDatas.add(monthPieData)
+                                CategoryDatas.add(monthPieData)
                                 remainingRate -= monthPieData.rate.toDouble()
                             }
 
@@ -304,7 +322,7 @@ class FragChartMonth : Fragment() {
                     }
 
                     // 어댑터에 데이터 설정
-                    //adapter.datas = CategoryDatas
+                    adapter.datas = CategoryDatas
 
                     // 리사이클러뷰에 어댑터 및 레이아웃 매니저 설정
                     binding.myCategoryRecycler.adapter = adapter
@@ -313,7 +331,7 @@ class FragChartMonth : Fragment() {
                     Log.d("initCategoryRecycler 실패", response.body().toString())
                 }
             }
-            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
                 Log.d("서버 오류", "initCategoryRecycler 실패")
             }
         })
@@ -325,10 +343,10 @@ class FragChartMonth : Fragment() {
         binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
-        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetMonth(token,date = sdate).enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<ChartDayData>,
-                response: Response<ChartDayData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
                 Log.d("initCategoryPieChart", "Response Code: $responseCode")
@@ -376,7 +394,7 @@ class FragChartMonth : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
                 Log.d("서버 오류", "initCategoryPieChart 실패")
             }
         })
@@ -388,10 +406,10 @@ class FragChartMonth : Fragment() {
     private fun initBarChart(date: String) {
 
         // 서버 데이터 연결
-        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetMonth(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<ChartDayData>,
-                response: Response<ChartDayData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
                 Log.d("initBarChart", "Response Code: $responseCode")
@@ -459,7 +477,7 @@ class FragChartMonth : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
                 Log.d("서버 오류", "initBarChart 실패")
             }
         })
@@ -470,10 +488,10 @@ class FragChartMonth : Fragment() {
     // 꺾은선그래프 데이터셋 설정
     private fun initLineChart(date: String){
         // 서버 데이터 연결
-        api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
+        api.chartGetMonth(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartMonthData> {
             override fun onResponse(
-                call: Call<ChartDayData>,
-                response: Response<ChartDayData>
+                call: Call<ChartMonthData>,
+                response: Response<ChartMonthData>
             ) {
                 val responseCode = response.code()
                 Log.d("initLineChart", "Response Code: $responseCode")
@@ -490,7 +508,7 @@ class FragChartMonth : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+            override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
                 Log.d("서버 오류", "initLineChart 실패")
             }
         })

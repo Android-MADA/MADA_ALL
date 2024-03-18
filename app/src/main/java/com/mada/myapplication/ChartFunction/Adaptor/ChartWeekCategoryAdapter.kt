@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.mada.myapplication.ChartFunction.Data.DayPieData
+import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.R
 
-class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapter<MyRecordCategoryAdapter.ViewHolder>() {
+class ChartWeekCategoryAdapter(private val context: Context) : RecyclerView.Adapter<ChartWeekCategoryAdapter.ViewHolder>() {
 
-    var datas = mutableListOf<DayPieData>()
-            set(value) {
+    var datas = mutableListOf<MonthPieData>()
+        set(value) {
             field = value
             notifyDataSetChanged() // 데이터가 변경되었음을 알려 리사이클러뷰를 다시 그립니다.
         }
@@ -35,7 +35,7 @@ class MyRecordCategoryAdapter(private val context: Context) : RecyclerView.Adapt
         private val txtCategory: TextView = itemView.findViewById(R.id.record_category_name)
         private val viewColor: CardView = itemView.findViewById(R.id.record_category_color)
 
-        fun bind(item: DayPieData) {
+        fun bind(item: MonthPieData) {
             txtPercent.text = item.rate.toString()
             viewColor.setCardBackgroundColor(Color.parseColor("#"+item.color.replace("#","")))
             txtCategory.text = item.categoryName

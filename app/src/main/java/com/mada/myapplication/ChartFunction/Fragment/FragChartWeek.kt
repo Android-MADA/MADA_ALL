@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -24,15 +25,18 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
-import com.mada.myapplication.ChartFunction.Adaptor.MyRecordCategoryAdapter
+import com.mada.myapplication.ChartFunction.Adaptor.ChartWeekCategoryAdapter
 import com.mada.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartWeekData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.ChartWeekBinding
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class FragChartWeek : Fragment() {
@@ -40,6 +44,7 @@ class FragChartWeek : Fragment() {
     lateinit var navController: NavController
     val datas = mutableListOf<ChartWeekData>()
     val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
+    val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
@@ -63,6 +68,22 @@ class FragChartWeek : Fragment() {
         binding.btnTODAY.setOnClickListener {
             navController.navigate(R.id.action_fragChartWeek_to_fragChartDay)
         }
+
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    var title = binding.recordTitle0.text
+                    title = "${nick}님의 주별 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
         //달력 부분
@@ -251,7 +272,7 @@ class FragChartWeek : Fragment() {
 
     // 통계 우측 카테고리 리사이클러뷰 설정
     private fun initCategoryRecycler(month : Int, iweek : Int, sdate : String) {
-        val adapter = MyRecordCategoryAdapter(requireContext())
+        val adapter = ChartWeekCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
         // 서버 데이터 연결
