@@ -111,9 +111,9 @@
         <action
             android:id="@+id/action_homeCategoryFragment_to_fragHome"
             app:destination="@id/fragHome" />
-        <action
-            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"
-            app:destination="@id/categoryInActiveFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"-->
+<!--            app:destination="@id/categoryInActiveFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
