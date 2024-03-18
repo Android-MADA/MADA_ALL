@@ -293,7 +293,7 @@
     </fragment>
     <activity
         android:id="@+id/splash2Activity"
-        android:name="com.mada.myapplication.StartFuction.Splash2Activity"
+        android:name="com.mada.myapplication.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
     <fragment

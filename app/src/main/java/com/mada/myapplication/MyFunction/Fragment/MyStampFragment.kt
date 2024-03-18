@@ -1,4 +1,4 @@
-package com.mada.myapplication.MyFuction.Fragment
+package com.mada.myapplication.MyFunction.Fragment
 
 import android.os.Bundle
 import android.util.Log
