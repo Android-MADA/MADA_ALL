@@ -22,13 +22,18 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
@@ -46,6 +51,7 @@ import com.mada.myapplication.databinding.ChartMonthBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class FragChartMonth : Fragment() {
     private lateinit var binding: ChartMonthBinding
@@ -234,25 +240,27 @@ class FragChartMonth : Fragment() {
                 Log.d("setLineChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("setLineChartView 성공", response.body().toString())
+                    Log.d("setLineChartView 성공", response.body()?.achievementStatistics.toString())
 
                     val nowAchievementRate = response.body()?.nowAchievementRate
                     val nowCountCompleted = response.body()?.nowCountCompletedA
                     var diffCountC = response.body()?.diffCount
                     val diffCountCText = when {
-                        diffCountC == null -> "NULL"
-                        diffCountC > 0 -> "상승"
-                        diffCountC < 0 -> "하강"
+                        nowAchievementRate == null -> "NULL"
+                        nowAchievementRate > 0 -> "상승"
+                        nowAchievementRate < 0 -> "하강"
                         else -> "유지"
                     }
                     val diffCountCText2 = when {
-                        diffCountC == null -> "NULL"
-                        diffCountC > 0 -> "${diffCountC}개 많이"
-                        diffCountC < 0 -> "${Math.abs(diffCountC)}개 적게"
+                        nowAchievementRate == null -> "NULL"
+                        nowAchievementRate > 0 -> "${diffCountC}개 많이"
+                        nowAchievementRate < 0 -> "${diffCountC?.let { Math.abs(it) }}개 적게"
                         else -> "똑같이"
                     }
 
-                    val colorText0 = "${nowAchievementRate?.let { Math.abs(it) }}%"
+                    val formattedPercent = String.format("%.1f", nowAchievementRate?.let { Math.abs(it) })
+
+                    val colorText0 = "${formattedPercent}%p"
 
                     val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
                     val formattedText1 = when {
@@ -515,7 +523,56 @@ class FragChartMonth : Fragment() {
                 Log.d("initLineChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("initLineChart 성공", response.body().toString())
+                    Log.d("initLineChart 성공", response.body()?.achievementStatistics.toString())
+
+                    val achievementStatistics = response.body()?.achievementStatistics ?: ArrayList()
+
+                    //y축
+                    val entries: MutableList<Entry> = mutableListOf()
+                    for (i in achievementStatistics.indices){
+                        entries.add(Entry(i.toFloat(), achievementStatistics[i].achievementRate))
+                    }
+                    val lineDataSet =LineDataSet(entries,"entries")
+                    val lineChart = binding.LineChart
+
+                    lineDataSet.apply {
+                        color = resources.getColor(R.color.linechart1, null)
+                        circleRadius = 5f
+                        lineWidth = 2f
+                        setCircleColor(resources.getColor(R.color.linechart2, null))
+                        circleHoleColor = resources.getColor(R.color.linechart2, null)
+                        setDrawHighlightIndicators(false)
+                        setDrawValues(false) // 숫자표시
+                        valueTextColor = resources.getColor(R.color.linechart2, null)
+                        valueFormatter = DefaultValueFormatter(1)  // 소숫점 자릿수 설정
+                        valueTextSize = 10f
+                    }
+
+                    //차트 전체 설정
+                    lineChart.apply {
+                        axisRight.isEnabled = false
+                        axisLeft.isEnabled = false
+                        xAxis.isEnabled = false
+                        legend.isEnabled = false   //legend 사용여부
+                        description.isEnabled = false //주석
+                        isDragXEnabled = false   // x 축 드래그 여부
+                        isScaleYEnabled = false //y축 줌 사용여부
+                        isScaleXEnabled = false //x축 줌 사용여부
+                        setPinchZoom(false)
+                        setScaleEnabled(false)
+                        isDoubleTapToZoomEnabled = false
+                        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
+                        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER)
+                        legend.setOrientation(Legend.LegendOrientation.VERTICAL)
+                        legend.setDrawInside(true)
+                        xAxis.setLabelCount(6, true)
+                    }
+
+                    binding.LineChart.apply {
+                        data = LineData(lineDataSet)
+                        notifyDataSetChanged() //데이터 갱신
+                        invalidate() // view갱신
+                    }
 
                 } else {
                     Log.d("initLineChart 실패", response.body().toString())

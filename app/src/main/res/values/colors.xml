@@ -27,5 +27,7 @@
 
     <color name="barchart1">#51B6CD</color>
     <color name="barchart2">#7069AC</color>
+    <color name="linechart1">#C3497D</color>
+    <color name="linechart2">#412C52</color>
 
 </resources>

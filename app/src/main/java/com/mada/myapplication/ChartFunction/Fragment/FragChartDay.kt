@@ -507,12 +507,9 @@ class FragChartDay : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("initLineChart 성공", response.body().toString())
 
+
                 } else {
                     Log.d("initLineChart 실패", response.body().toString())
-
-                    // 서버 연결 전 UI 확인용으로 임시 데이터 작성
-
-
                 }
             }
 
