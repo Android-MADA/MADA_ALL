@@ -240,7 +240,7 @@ class FragChartMonth : Fragment() {
                 Log.d("setLineChartView", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("setLineChartView 성공", response.body()?.achievementStatistics.toString())
+                    Log.d("setLineChartView 성공", response.body().toString())
 
                     val nowAchievementRate = response.body()?.nowAchievementRate
                     val nowCountCompleted = response.body()?.nowCountCompletedA
@@ -257,17 +257,18 @@ class FragChartMonth : Fragment() {
                         nowAchievementRate < 0 -> "${diffCountC?.let { Math.abs(it) }}개 적게"
                         else -> "똑같이"
                     }
+                    val formattedText1 = when {
+                        nowCountCompleted == null -> "완료한 투두가 없어요"
+                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개의 투두를 완료했어요." +
+                                "\n지난 달에 비해 ${diffCountCText2} 해냈네요!"
+                    }
 
                     val formattedPercent = String.format("%.1f", nowAchievementRate?.let { Math.abs(it) })
 
                     val colorText0 = "${formattedPercent}%p"
 
                     val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
-                    val formattedText1 = when {
-                        nowCountCompleted == null -> "완료한 투두가 없어요"
-                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개의 투두를 완료했어요." +
-                                "\n지난 달에 비해 ${diffCountCText2} 해냈네요!"
-                    }
+
 
                     binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
                     binding.recordContext3.text = formattedText1
@@ -430,13 +431,16 @@ class FragChartMonth : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("initBarChart 성공", response.body()?.todoStatistics.toString())
+                    Log.d("todoStatistics 크기: ", response.body()?.todoStatistics?.size.toString())
 
                     val entries = ArrayList<BarEntry>()
                     val todoStatistics = response.body()?.todoStatistics ?: ArrayList()
-                    val endIndex = minOf(todoStatistics.size, 4) // 최대 4개의 데이터만 사용
-                    for (index in 0 until endIndex) {
-                        val data = todoStatistics[index]
-                        entries.add(BarEntry((index + 1).toFloat(), data.countCompleted))
+                    val formatSize = minOf(todoStatistics.size, 4) // 최대 4개의 데이터만 사용
+
+                    for (i in 0 until formatSize) {
+                        val x = i.toFloat()
+                        val y =  todoStatistics[formatSize-(i+1)].countCompleted
+                        entries.add(BarEntry(x,y))
                     }
 
                     binding.BarChart.run {
@@ -474,16 +478,18 @@ class FragChartMonth : Fragment() {
                     // 막대그래프의 막대 색상을 설정
                     val gradientDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_bar_gradient)
                     val colors = ArrayList<Int>()
-                    for (i in 0 until 4) {
-                        if (i == entries.size - 1) {
-                            // 4번째 막대의 색상을 설정
+                    for (i in 0 until formatSize) {
+                        if (i == formatSize - 1) {
+                            // 마지막 막대의 색상을 설정
+                            Log.d("마지막 막대 색칠", "i=${i}")
                             colors.add(ContextCompat.getColor(requireContext(), R.color.main))
-                        }
-                        else {
-                            // 나머지 막대의 색상을 설정
+                        } else {
+                            // 앞의 막대의 색상을 설정
+                            Log.d("앞의 막대 색칠", "i=${i}")
                             colors.add(ContextCompat.getColor(requireContext(), R.color.grey2))
                         }
                     }
+
                     val set = BarDataSet(entries, "DataSet")
                     set.colors = colors
 
@@ -526,11 +532,14 @@ class FragChartMonth : Fragment() {
                     Log.d("initLineChart 성공", response.body()?.achievementStatistics.toString())
 
                     val achievementStatistics = response.body()?.achievementStatistics ?: ArrayList()
+                    val formatSize = minOf(achievementStatistics.size, 6) // 최대 6개의 데이터만 사용
 
                     //y축
                     val entries: MutableList<Entry> = mutableListOf()
-                    for (i in achievementStatistics.indices){
-                        entries.add(Entry(i.toFloat(), achievementStatistics[i].achievementRate))
+                    for (i in 0 until formatSize) {
+                        val x = i.toFloat()
+                        val y =  achievementStatistics[formatSize-(i+1)].achievementRate
+                        entries.add(Entry(x,y))
                     }
                     val lineDataSet =LineDataSet(entries,"entries")
                     val lineChart = binding.LineChart
