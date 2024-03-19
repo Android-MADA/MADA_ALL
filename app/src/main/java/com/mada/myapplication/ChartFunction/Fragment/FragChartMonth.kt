@@ -176,7 +176,7 @@ class FragChartMonth : Fragment() {
             }
 
             override fun onFailure(call: Call<ChartMonthData>, t: Throwable) {
-                Log.d("서버 오류", "chartGetMonthMonth 실패")
+                Log.d("서버 오류", "setPieChartView 실패")
             }
         })
 

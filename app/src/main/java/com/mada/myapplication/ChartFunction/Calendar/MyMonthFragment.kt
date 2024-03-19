@@ -52,6 +52,8 @@ class MyMonthFragment : Fragment() {
 
         fun newInstance(millis: Long) = MyMonthFragment().apply {
             arguments = Bundle().apply {
+                //dayOrMonth = theDayOrMonth
+                //fm = theFm
                 putLong(MILLIS, millis)
             }
         }

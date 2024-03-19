@@ -36,8 +36,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.mada.myapplication.ChartFunction.Adaptor.ChartDayCategoryAdapter
-import com.mada.myapplication.ChartFunction.Calendar.MyMonthSliderlAdapter
+import com.mada.myapplication.ChartFunction.Calendar.MyDaySliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartDayData
+import com.mada.myapplication.ChartFunction.Data.DayPieData
+import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MyFunction.Data.FragMyData
@@ -50,7 +52,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FragChartDay : Fragment() {
-    private var curMenuItem : Int = 0
     private lateinit var binding: ChartDayBinding
     private lateinit var navController: NavController
     private var mInterstitialAd: InterstitialAd? = null
@@ -161,7 +162,6 @@ class FragChartDay : Fragment() {
                         beforeCategoryCount < 0 -> "${beforeCategoryCount}개 적게"
                         else -> "똑같이"
                     }
-                    beforeCategoryCount = beforeCategoryCount?.let { Math.abs(it) }
 
                     val formattedText1 = "${mostCategory}"
                     val formattedText2 = when {
@@ -304,22 +304,43 @@ class FragChartDay : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("initCategoryRecycler 성공", response.body().toString())
 
-                    datas.apply{
-                        val categoryStatistics = response.body()?.categoryStatistics
-                        val CategoryDatas = ArrayList<PieData>()
+                    val categoryStatistics = response.body()?.categoryStatistics
+                    val CategoryDatas = ArrayList<DayPieData>()
 
-                        categoryStatistics?.forEach { dayPieData ->
-//                            val categoryName = dayPieData.categoryName
-//                            val rate = dayPieData.rate
-//                            val colorCode = dayPieData.color
+                    categoryStatistics?.let { stats ->
+                        // 데이터가 4개 이상인 경우
+                        if (stats.size >= 4) {
+                            for (i in 0 until 4) {
+                                val dayPieData = stats[i]
+                                CategoryDatas.add(dayPieData)
+                            }
+                        } else {
+                            // 데이터가 4개 미만인 경우
+                            val totalRate = stats.sumByDouble { it.rate.toDouble() }
+                            var remainingRate = 100.0
 
-                            //CategoryDatas.add(dayPieData)
+                            // 기존 데이터 추가
+                            stats.forEach { dayPieData ->
+                                CategoryDatas.add(dayPieData)
+                                remainingRate -= dayPieData.rate.toDouble()
+                            }
+
+                            // 나머지 비율을 "기타" 카테고리로 추가
+                            val otherCategory = DayPieData(
+                                categoryName = "기타",
+                                rate = remainingRate.toFloat(),
+                                color = "#000000"
+                            )
+                            CategoryDatas.add(otherCategory)
                         }
                     }
 
-                    binding.myCategoryRecycler.adapter= adapter
-                    binding.myCategoryRecycler.layoutManager= manager
+                    // 어댑터에 데이터 설정
+                    adapter.datas = CategoryDatas
 
+                    // 리사이클러뷰에 어댑터 및 레이아웃 매니저 설정
+                    binding.myCategoryRecycler.adapter = adapter
+                    binding.myCategoryRecycler.layoutManager = manager
                 } else {
                     Log.d("initCategoryRecycler 실패", response.body().toString())
                 }
