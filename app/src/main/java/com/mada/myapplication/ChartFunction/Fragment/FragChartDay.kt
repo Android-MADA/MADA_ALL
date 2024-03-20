@@ -116,8 +116,10 @@ class FragChartDay : Fragment() {
 
         val currentDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
         val formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val sMonth = currentDate.format(DateTimeFormatter.ofPattern("MM"))
+        val sDay = currentDate.format(DateTimeFormatter.ofPattern("dd"))
         selectDay.text = formattedDate
-        dayChange(selectDay.text.toString())
+        dayChange(sMonth, sDay, selectDay.text.toString())
         //달력 부분
         val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2,selectDay)
 
@@ -158,8 +160,9 @@ class FragChartDay : Fragment() {
     }
 
     //날짜 클릭시 실행되는 함수
-    fun dayChange(date: String) {
+    fun dayChange(sMonth:String, sDay: String, date: String) {
         Log.d("dayChange", "${date}")
+        setTitleView(sMonth,sDay)
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)
@@ -169,6 +172,23 @@ class FragChartDay : Fragment() {
         initLineChart(date)
     }
 
+    // 타이틀 뷰 설정
+    private fun setTitleView(sMonth:String, sDay:String){
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    binding.recordTitle0.text = "${nick}님의 ${sMonth}월 ${sDay}일 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     // 원형그래프 뷰 설정
     private fun setPieChartView(sdate: String) {
@@ -192,20 +212,20 @@ class FragChartDay : Fragment() {
                     var beforeCategoryCount = response.body()?.beforeCategoryCount
                     val beforeCategoryCountText = when {
                         beforeCategoryCount == null -> "NULL"
-                        beforeCategoryCount > 0 -> "${beforeCategoryCount}개 많이"
-                        beforeCategoryCount < 0 -> "${beforeCategoryCount}개 적게"
+                        beforeCategoryCount > 0 -> "${beforeCategoryCount?.let { Math.abs(it) }}개 많이"
+                        beforeCategoryCount < 0 -> "${beforeCategoryCount?.let { Math.abs(it) }}개 적게"
                         else -> "똑같이"
                     }
 
                     val formattedText1 = "${mostCategory}"
                     val formattedText2 = when {
                         categoryStatistics.isNullOrEmpty() -> "추가한 카테고리가 없어요"
-                        else -> "오늘은 ${mostCategory} 카테고리에서 ${nowCategoryCount}개 완료했어요." +
-                                "\n어제에 비해 ${beforeCategoryCountText} 해내셨네요!"
+                        else -> "이 날은 ${mostCategory} 카테고리에서 ${nowCategoryCount}개 완료했어요." +
+                                "\n지난 날에 비해 ${beforeCategoryCountText} 해내셨네요!"
                     }
 
-                    binding.recordTitle2.text = createSpannableString(formattedText1, formattedText1)
-                    binding.recordContext2.text = formattedText2
+                    binding.recordTitle1.text = createSpannableString(formattedText1, formattedText1)
+                    binding.recordContext1.text = formattedText2
 
                 } else {
                     Log.d("setPieChartView 실패", response.body()?.categoryStatistics.toString())
@@ -239,15 +259,14 @@ class FragChartDay : Fragment() {
                     var diffCountB = response.body()?.diffCount
                     val diffCountBText = when {
                         diffCountB == null -> "NULL"
-                        diffCountB > 0 -> "어제보다 ${diffCountB}개 더"
-                        diffCountB < 0 -> "어제보다 ${diffCountB}개 덜"
-                        else -> "어제만큼"
+                        diffCountB > 0 -> "지난 날보다 ${diffCountB?.let { Math.abs(it) }}개 더"
+                        diffCountB < 0 -> "지난 날보다 ${diffCountB?.let { Math.abs(it) }}개 덜"
+                        else -> "지난 날만큼"
                     }
-                    diffCountB = diffCountB?.let { Math.abs(it) }
 
                     val colorText0 = "총 ${nowCountCompleted}개"
 
-                    val formattedText0 = "오늘은 ${colorText0} 완료했어요"
+                    val formattedText0 = "투두를 ${colorText0} 완료했어요"
                     val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
                             "\n${nowCountCompleted}개의 투두를 완료했어요." +
                             "\n${diffCountBText} 열심히 하루를 보내셨네요!"
@@ -291,19 +310,18 @@ class FragChartDay : Fragment() {
                     }
                     val diffCountCText2 = when {
                         diffCountC == null -> "NULL"
-                        diffCountC > 0 -> "${diffCountC}개 많이"
-                        diffCountC < 0 -> "${diffCountC}개 적게"
+                        diffCountC > 0 -> "${diffCountC?.let { Math.abs(it) }}개 많이"
+                        diffCountC < 0 -> "${diffCountC?.let { Math.abs(it) }}개 적게"
                         else -> "똑같이"
                     }
-                    diffCountC = diffCountC?.let { Math.abs(it) }
 
                     val colorText0 = "${nowAchievementRate}%"
 
-                    val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
+                    val formattedText0 = "투두달성도가 ${colorText0} ${diffCountCText}했어요"
                     val formattedText1 = when {
                         nowCountCompleted == null -> "완료한 투두가 없어요"
-                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개 이상의 투두를 완료했어요!+" +
-                                "\n어제에 비해 ${diffCountCText2} 해냈네요!"
+                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개 이상의 투두를 완료했어요!" +
+                                "\n지난 날에 비해 ${diffCountCText2} 해냈네요!"
                     }
 
                     binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
@@ -363,7 +381,7 @@ class FragChartDay : Fragment() {
                             val otherCategory = DayPieData(
                                 categoryName = "기타",
                                 rate = remainingRate.toFloat(),
-                                color = "#000000"
+                                color = "#A6A6A6"
                             )
                             CategoryDatas.add(otherCategory)
                         }
@@ -611,6 +629,7 @@ class FragChartDay : Fragment() {
                         legend.setOrientation(Legend.LegendOrientation.VERTICAL)
                         legend.setDrawInside(true)
                         xAxis.setLabelCount(6, true)
+                        animateX(1000) // X축으로 애니메이션 적용
                     }
 
                     binding.LineChart.apply {

@@ -84,21 +84,6 @@ class FragChartMonth : Fragment() {
             navController.navigate(R.id.action_fragChartMonth_to_fragChartDay)
         }
 
-        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
-            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
-                if(response.isSuccessful){
-                    var nick = response.body()?.data?.nickname
-                    binding.recordTitle0.text = "${nick}님의 월별 통계입니다."
-                }
-                else{
-                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
-                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
 
         //달력 부분
         val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
@@ -123,8 +108,9 @@ class FragChartMonth : Fragment() {
         })
 
     }
-    fun monthChange(date: String) {
+    fun monthChange(month: Int, date: String) {
         Log.d("monthChange", "${date}")
+        setTitleView(month)
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)
@@ -132,6 +118,24 @@ class FragChartMonth : Fragment() {
         initCategoryPieChart(date)
         initBarChart(date)
         initLineChart(date)
+    }
+
+    // 타이틀 뷰 설정
+    private fun setTitleView(month: Int){
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    binding.recordTitle0.text = "${nick}님의 ${month}월 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     // 원형그래프 뷰 설정
@@ -156,7 +160,7 @@ class FragChartMonth : Fragment() {
                     val beforeCategoryCount = response.body()?.beforeCategoryCount
                     val beforeCategoryCountText = when {
                         beforeCategoryCount == null -> "NULL"
-                        beforeCategoryCount > 0 -> "${beforeCategoryCount}개 많이"
+                        beforeCategoryCount > 0 -> "${Math.abs(beforeCategoryCount)}개 많이"
                         beforeCategoryCount < 0 -> "${Math.abs(beforeCategoryCount)}개 적게"
                         else -> "똑같이"
                     }
@@ -203,14 +207,14 @@ class FragChartMonth : Fragment() {
                     var diffCountB = response.body()?.diffCount
                     val diffCountBText = when {
                         diffCountB == null -> "NULL"
-                        diffCountB > 0 -> "지난 달보다 ${diffCountB}개 더"
+                        diffCountB > 0 -> "지난 달보다 ${Math.abs(diffCountB)}개 더"
                         diffCountB < 0 -> "지난 달보다 ${Math.abs(diffCountB)}개 덜"
                         else -> "지난 달만큼"
                     }
 
                     val colorText0 = "총 ${nowCountCompleted}개"
 
-                    val formattedText0 = "이번 달은 ${colorText0} 완료했어요"
+                    val formattedText0 = "투두를 ${colorText0} 완료했어요"
                     val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
                             "\n${nowCountCompleted}개의 투두를 완료했어요." +
                             "\n${diffCountBText} 열심히 한 달을 보내셨네요!"
@@ -254,7 +258,7 @@ class FragChartMonth : Fragment() {
                     }
                     val diffCountCText2 = when {
                         nowAchievementRate == null -> "NULL"
-                        nowAchievementRate > 0 -> "${diffCountC}개 많이"
+                        nowAchievementRate > 0 -> "${diffCountC?.let { Math.abs(it) }}개 많이"
                         nowAchievementRate < 0 -> "${diffCountC?.let { Math.abs(it) }}개 적게"
                         else -> "똑같이"
                     }
@@ -268,7 +272,7 @@ class FragChartMonth : Fragment() {
 
                     val colorText0 = "${formattedPercent}%p"
 
-                    val formattedText0 = "투두 달성도가 ${colorText0} ${diffCountCText}했어요"
+                    val formattedText0 = "투두달성도가 ${colorText0} ${diffCountCText}했어요"
 
 
                     binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
@@ -472,7 +476,7 @@ class FragChartMonth : Fragment() {
                         }
                         axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌
                         setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
-                        animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
+                        animateY(2000) // 밑에서부터 올라오는 애니매이션 적용
                         legend.isEnabled = false //차트 범례 설정
                     }
 
@@ -560,6 +564,7 @@ class FragChartMonth : Fragment() {
 
                     //차트 전체 설정
                     lineChart.apply {
+                        data = LineData(lineDataSet)
                         axisRight.isEnabled = false
                         axisLeft.isEnabled = false
                         xAxis.isEnabled = false
@@ -576,6 +581,7 @@ class FragChartMonth : Fragment() {
                         legend.setOrientation(Legend.LegendOrientation.VERTICAL)
                         legend.setDrawInside(true)
                         xAxis.setLabelCount(6, true)
+                        animateX(1000) // X축으로 애니메이션 적용
                     }
 
                     binding.LineChart.apply {

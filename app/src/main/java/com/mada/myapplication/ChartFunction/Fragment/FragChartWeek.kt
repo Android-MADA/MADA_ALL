@@ -82,22 +82,6 @@ class FragChartWeek : Fragment() {
             navController.navigate(R.id.action_fragChartWeek_to_fragChartDay)
         }
 
-        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
-            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
-                if(response.isSuccessful){
-                    var nick = response.body()?.data?.nickname
-                    binding.recordTitle0.text = "${nick}님의 주별 통계입니다."
-                }
-                else{
-                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
-                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-
         //달력 부분
         val calendarAdapter = MyWeekSliderlAdapter(
             this,
@@ -130,62 +114,31 @@ class FragChartWeek : Fragment() {
     }
     fun weekChange(month : Int, iweek : Int, date : String) {
         Log.d("weekchange", "${month}월 ${iweek}주 ${date}일")
+
+        setTitleView(month, iweek)
         setBarChartView(month, iweek, date)
         setPieChartView(month, iweek, date)
         setLineChartView(month, iweek, date)
-        initCategoryRecycler(month, iweek, date)
-        initCategoryPieChart(month, iweek, date)
-        initBarChart(month, iweek, date)
-        initLineChart(month, iweek, date)
+        initCategoryRecycler(date)
+        initCategoryPieChart(date)
+        initBarChart(date)
+        initLineChart(date)
     }
 
-
-    // 막대그래프 뷰 설정
-    private fun setBarChartView(month : Int, iweek : Int, sdate : String) {
-
-        // 서버 데이터 연결
-        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
-            override fun onResponse(
-                call: Call<ChartWeekData>,
-                response: Response<ChartWeekData>
-            ) {
-                val responseCode = response.code()
-                Log.d("chartGetWeek", "Response Code: $responseCode")
-
-                if (response.isSuccessful) {
-                    Log.d("setBarChartView 성공", response.body().toString())
-
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val completeTodoPercent = 99
-                    val compareTodoCnt = 9.9
-
-                    val weekOfMonthText = when (iweek) {
-                        1 -> "첫째"
-                        2 -> "둘째"
-                        3 -> "셋째"
-                        4 -> "넷째"
-                        5 -> "다섯째"
-                        else -> "Invalid week"
-                    }
-
-                    val colorText0 = "${weekOfMonthText} 주"
-                    val colorText1 = "총 ${completeTodoCnt}개"
-
-                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
-                    binding.recordTitle0.text = createSpannableString("${colorText0} 통계예요.", colorText0)
-                    binding.recordTitle1.text = createSpannableString("이번 주 ${colorText1} 완료했어요", colorText1)
-                    binding.recordContext1.text = "이번 주에는 ${totalTodoCnt}개의 투두 중에서\n" +
-                            "평균 $completeTodoPercent%인 ${completeTodoCnt}개의 투두를 완료했어요.\n" +
-                            "지난 주에 비해 ${compareTodoCnt}개 상승했네요."
-
-
-                } else {
-                    Log.d("setBarChartView 실패", response.body().toString())
+    // 타이틀 뷰 설정
+    private fun setTitleView(month : Int, iweek : Int){
+        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
+            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+                if(response.isSuccessful){
+                    var nick = response.body()?.data?.nickname
+                    binding.recordTitle0.text = "${nick}님의 ${month}월 ${iweek}주차 통계입니다."
+                }
+                else{
+                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-            override fun onFailure(call: Call<ChartWeekData>, t: Throwable) {
-                Log.d("서버 오류", "chartGetWeek 실패")
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -201,31 +154,28 @@ class FragChartWeek : Fragment() {
             ) {
 
                 if (response.isSuccessful) {
-                    Log.d("setPieChartView 성공", response.body().toString())
+                    Log.d("setPieChartView 성공", response.body()?.categoryStatistics.toString())
 
                     val categoryStatistics = response.body()?.categoryStatistics
                     val size = response.body()?.categoryStatistics?.size
-                    val addTodoCnt = 9
-                    val averageCompleteTodoCnt = 9.9
-                    val compareCompleteTodoText = "{1.2}개 상승"
-
-                    val colorText1 = "총 ${addTodoCnt}개"
-
-                    val formattedText1 = "이번 주 ${colorText1} 추가했어요"
-                    var formattedText2 = ""
-
-                    if (categoryStatistics.isNullOrEmpty()) {
-                        formattedText2 = "추가한 카테고리가 없어요"
-                    } else{
-                        val c1 = categoryStatistics[0].categoryName
-                        formattedText2 =
-                            "이번 주에는 ${c1} 카테고리에서" +
-                                    "\n평균 ${averageCompleteTodoCnt}개로 가장 많은 투두를 완료했어요." +
-                                    "\n지난 주에 비해 ${compareCompleteTodoText}했네요."
+                    val mostCategory = response.body()?.mostCategory
+                    val nowCategoryCount = response.body()?.nowCategoryCount
+                    val beforeCategoryCount = response.body()?.beforeCategoryCount
+                    val beforeCategoryCountText = when {
+                        beforeCategoryCount == null -> "NULL"
+                        beforeCategoryCount > 0 -> "${beforeCategoryCount?.let { Math.abs(it) }}개 많이"
+                        beforeCategoryCount < 0 -> "${beforeCategoryCount?.let { Math.abs(it) }}개 적게"
+                        else -> "똑같이"
                     }
 
-                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
-                    binding.recordTitle2.text = createSpannableString(formattedText1, colorText1)
+                    val formattedText1 = "${mostCategory}"
+                    val formattedText2 = when {
+                        categoryStatistics.isNullOrEmpty() -> "추가한 카테고리가 없어요"
+                        else -> "${iweek}주차는 ${mostCategory} 카테고리에서 ${nowCategoryCount}개 완료했어요." +
+                                "\n${iweek-1}주차에 비해 ${beforeCategoryCountText} 해내셨네요!"
+                    }
+
+                    binding.recordTitle2.text = createSpannableString(formattedText1, formattedText1)
                     binding.recordContext2.text = formattedText2
 
                 } else {
@@ -238,6 +188,51 @@ class FragChartWeek : Fragment() {
             }
         })
 
+    }
+
+    // 막대그래프 뷰 설정
+    private fun setBarChartView(month : Int, iweek : Int, sdate : String) {
+
+        // 서버 데이터 연결
+        api.chartGetWeek(token, date = sdate).enqueue(object : retrofit2.Callback<ChartWeekData> {
+            override fun onResponse(
+                call: Call<ChartWeekData>,
+                response: Response<ChartWeekData>
+            ) {
+                val responseCode = response.code()
+                Log.d("chartGetWeek", "Response Code: $responseCode")
+
+                    if (response.isSuccessful) {
+                        Log.d("setBarChartView 성공", response.body().toString())
+
+                        val nowTotalCount = response.body()?.nowTotalCount
+                        val nowCountCompleted = response.body()?.nowCountCompleted
+                        var diffCountB = response.body()?.diffCount
+                        val diffCountBText = when {
+                            diffCountB == null -> "NULL"
+                            diffCountB > 0 -> "지난 주보다 ${diffCountB?.let { Math.abs(it) }}개 더"
+                            diffCountB < 0 -> "지난 주보다 ${diffCountB?.let { Math.abs(it) }}개 덜"
+                            else -> "지난 주만큼"
+                        }
+
+                        val colorText0 = "총 ${nowCountCompleted}개"
+
+                        val formattedText0 = "투두를 ${colorText0} 완료했어요"
+                        val formattedText1 = "${nowTotalCount}개의 투두 중에서" +
+                                "\n${nowCountCompleted}개의 투두를 완료했어요." +
+                                "\n${diffCountBText} 열심히 하루를 보내셨네요!"
+
+                        binding.recordTitle1.text = createSpannableString(formattedText0, colorText0)
+                        binding.recordContext1.text = formattedText1
+
+                    } else {
+                    Log.d("setBarChartView 실패", response.body().toString())
+                }
+            }
+            override fun onFailure(call: Call<ChartWeekData>, t: Throwable) {
+                Log.d("서버 오류", "chartGetWeek 실패")
+            }
+        })
     }
 
     // 꺾은선그래프 뷰 설정
@@ -253,26 +248,36 @@ class FragChartWeek : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("setLineChartView 성공", response.body().toString())
 
-                    val totalTodoCnt = 999
-                    val completeTodoCnt = 9
-                    val compareTodoCnt = 9.9
-                    val compareTodoPercent = 99
-
-                    val colorText1 = "${compareTodoPercent}%"
-
-                    val formattedText1 = "투두 달성도가 ${colorText1} 상승했어요"
-                    var formattedText2 = ""
-
-                    if (totalTodoCnt==0) {
-                        formattedText2 = "추가한 투두가 없어요"
-                    } else{
-                        formattedText2 =
-                            "전체 투두에서 평균적으로 ${completeTodoCnt}개 이상의 투두를 완료하면서 지난 주에 비해서 평균 달성 개수가 ${compareTodoCnt}개 상승했어요"
+                    val nowAchievementRate = response.body()?.nowAchievementRate
+                    val nowCountCompleted = response.body()?.nowCountCompletedA
+                    var diffCountC = response.body()?.diffCount
+                    val diffCountCText = when {
+                        nowAchievementRate == null -> "NULL"
+                        nowAchievementRate > 0 -> "상승"
+                        nowAchievementRate < 0 -> "하강"
+                        else -> "유지"
+                    }
+                    val diffCountCText2 = when {
+                        nowAchievementRate == null -> "NULL"
+                        nowAchievementRate > 0 -> "${diffCountC?.let { Math.abs(it) }}개 많이"
+                        nowAchievementRate < 0 -> "${diffCountC?.let { Math.abs(it) }}개 적게"
+                        else -> "똑같이"
+                    }
+                    val formattedText1 = when {
+                        nowCountCompleted == null -> "완료한 투두가 없어요"
+                        else -> "전체 투두에서 평균적으로 ${nowCountCompleted}개의 투두를 완료했어요." +
+                                "\n지난 주차에 비해 ${diffCountCText2} 해냈네요!"
                     }
 
-                    // SpannableStringBuilder 생성 및 색상 적용 함수 호출
-                    binding.recordTitle3.text = createSpannableString(formattedText1, colorText1)
-                    binding.recordContext3.text = formattedText2
+                    val formattedPercent = String.format("%.1f", nowAchievementRate?.let { Math.abs(it) })
+
+                    val colorText0 = "${formattedPercent}%p"
+
+                    val formattedText0 = "투두달성도가 ${colorText0} ${diffCountCText}했어요"
+
+
+                    binding.recordTitle3.text = createSpannableString(formattedText0, colorText0)
+                    binding.recordContext3.text = formattedText1
 
                 } else {
                     Log.d("setLineChartView 실패", response.body().toString())
@@ -287,7 +292,7 @@ class FragChartWeek : Fragment() {
     }
 
     // 원형그래프 우측 카테고리 리사이클러뷰 설정
-    private fun initCategoryRecycler(month : Int, iweek : Int, sdate : String) {
+    private fun initCategoryRecycler(sdate : String) {
         val adapter = ChartWeekCategoryAdapter(requireContext())
         val manager = LinearLayoutManager(requireContext())
 
@@ -328,7 +333,7 @@ class FragChartWeek : Fragment() {
                             val otherCategory = WeekPieData(
                                 categoryName = "기타",
                                 rate = remainingRate.toFloat(),
-                                color = "#000000"
+                                color = "#A6A6A6"
                             )
                             CategoryDatas.add(otherCategory)
                         }
@@ -352,7 +357,7 @@ class FragChartWeek : Fragment() {
     }
 
     // 원형그래프 데이터셋 설정
-    private fun initCategoryPieChart(month : Int, iweek : Int, sdate : String) {
+    private fun initCategoryPieChart(sdate : String) {
         binding.PieChart.setUsePercentValues(true)
 
         // 서버 데이터 연결
@@ -418,7 +423,7 @@ class FragChartWeek : Fragment() {
     }
 
     // 막대그래프 데이터셋 설정
-    private fun initBarChart(month : Int, iweek : Int, sdate : String) {
+    private fun initBarChart(sdate : String) {
 
         // 서버 데이터 연결
         api.chartGetWeek(token, date = "${sdate}").enqueue(object : retrofit2.Callback<ChartWeekData> {
@@ -519,7 +524,7 @@ class FragChartWeek : Fragment() {
     }
 
     // 꺾은선그래프 데이터셋 설정
-    private fun initLineChart(month : Int, iweek : Int, sdate : String){
+    private fun initLineChart(sdate : String){
         // 서버 데이터 연결
         api.chartGetWeek(token, date = "${sdate}").enqueue(object : retrofit2.Callback<ChartWeekData> {
             override fun onResponse(
@@ -576,6 +581,7 @@ class FragChartWeek : Fragment() {
                         legend.setOrientation(Legend.LegendOrientation.VERTICAL)
                         legend.setDrawInside(true)
                         xAxis.setLabelCount(6, true)
+                        animateX(1000) // X축으로 애니메이션 적용
                     }
 
                     binding.LineChart.apply {
@@ -583,7 +589,6 @@ class FragChartWeek : Fragment() {
                         notifyDataSetChanged() //데이터 갱신
                         invalidate() // view갱신
                     }
-
                 } else {
                     Log.d("initLineChart 실패", response.body().toString())
                 }
