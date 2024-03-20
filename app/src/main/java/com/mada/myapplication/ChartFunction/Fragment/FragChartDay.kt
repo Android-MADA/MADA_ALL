@@ -131,6 +131,7 @@ class FragChartDay : Fragment() {
 
     //날짜 클릭시 실행되는 함수
     fun dayChange(date: String) {
+        Log.d("dayChange", "${date}")
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)

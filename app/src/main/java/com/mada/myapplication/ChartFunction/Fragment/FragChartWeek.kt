@@ -124,6 +124,7 @@ class FragChartWeek : Fragment() {
 
     }
     fun weekChange(month : Int, iweek : Int, date : String) {
+        Log.d("weekchange", "${month}월 ${iweek}주 ${date}일")
         setBarChartView(month, iweek, date)
         setPieChartView(month, iweek, date)
         setLineChartView(month, iweek, date)

@@ -124,6 +124,7 @@ class FragChartMonth : Fragment() {
 
     }
     fun monthChange(date: String) {
+        Log.d("monthChange", "${date}")
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)
