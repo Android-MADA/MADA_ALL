@@ -1,5 +1,6 @@
 package com.mada.myapplication.ChartFunction.Fragment
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -21,13 +22,18 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -36,10 +42,9 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarSliderAdapter
 import com.mada.myapplication.ChartFunction.Adaptor.ChartDayCategoryAdapter
-import com.mada.myapplication.ChartFunction.Calendar.MyDaySliderlAdapter
+import com.mada.myapplication.ChartFunction.Calendar.MyWeekSliderlAdapter
 import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.Data.DayPieData
-import com.mada.myapplication.ChartFunction.Data.MonthPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MyFunction.Data.FragMyData
@@ -101,7 +106,7 @@ class FragChartDay : Fragment() {
         })
 
         //달력 부분
-        val calendarAdapter = MyMonthSliderlAdapter(this,binding.textCalendar,binding.calendar2)
+        val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2)
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
@@ -423,6 +428,7 @@ class FragChartDay : Fragment() {
 
         // 서버 데이터 연결
         api.chartGetDay(token, date = "${date}").enqueue(object : retrofit2.Callback<ChartDayData> {
+            @SuppressLint("ResourceType")
             override fun onResponse(
                 call: Call<ChartDayData>,
                 response: Response<ChartDayData>
@@ -432,13 +438,16 @@ class FragChartDay : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("initBarChart 성공", response.body()?.todoStatistics.toString())
+                    Log.d("todoStatistics 크기: ", response.body()?.todoStatistics?.size.toString())
 
                     val entries = ArrayList<BarEntry>()
                     val todoStatistics = response.body()?.todoStatistics ?: ArrayList()
-                    val endIndex = minOf(todoStatistics.size, 4) // 최대 4개의 데이터만 사용
-                    for (index in 0 until endIndex) {
-                        val data = todoStatistics[index]
-                        entries.add(BarEntry((index + 1).toFloat(), data.countCompleted))
+                    val formatSize = minOf(todoStatistics.size, 4) // 최대 4개의 데이터만 사용
+
+                    for (i in 0 until formatSize) {
+                        val x = i.toFloat()
+                        val y =  todoStatistics[formatSize-(i+1)].countCompleted
+                        entries.add(BarEntry(x,y))
                     }
 
                     binding.BarChart.run {
@@ -476,16 +485,18 @@ class FragChartDay : Fragment() {
                     // 막대그래프의 막대 색상을 설정
                     val gradientDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_bar_gradient)
                     val colors = ArrayList<Int>()
-                    for (i in 0 until 4) {
-                        if (i == entries.size - 1) {
-                            // 4번째 막대의 색상을 설정
+                    for (i in 0 until formatSize) {
+                        if (i == formatSize - 1) {
+                            // 마지막 막대의 색상을 설정
+                            Log.d("마지막 막대 색칠", "i=${i}")
                             colors.add(ContextCompat.getColor(requireContext(), R.color.main))
-                        }
-                        else {
-                            // 나머지 막대의 색상을 설정
+                        } else {
+                            // 앞의 막대의 색상을 설정
+                            Log.d("앞의 막대 색칠", "i=${i}")
                             colors.add(ContextCompat.getColor(requireContext(), R.color.grey2))
                         }
                     }
+
                     val set = BarDataSet(entries, "DataSet")
                     set.colors = colors
 
@@ -511,7 +522,6 @@ class FragChartDay : Fragment() {
             }
         })
 
-
     }
 
     // 꺾은선그래프 데이터셋 설정
@@ -526,8 +536,59 @@ class FragChartDay : Fragment() {
                 Log.d("initLineChart", "Response Code: $responseCode")
 
                 if (response.isSuccessful) {
-                    Log.d("initLineChart 성공", response.body().toString())
+                    Log.d("initLineChart 성공", response.body()?.achievementStatistics.toString())
 
+                    val achievementStatistics = response.body()?.achievementStatistics ?: ArrayList()
+                    val formatSize = minOf(achievementStatistics.size, 6) // 최대 6개의 데이터만 사용
+
+                    //y축
+                    val entries: MutableList<Entry> = mutableListOf()
+                    for (i in 0 until formatSize) {
+                        val x = i.toFloat()
+                        val y =  achievementStatistics[formatSize-(i+1)].achievementRate
+                        entries.add(Entry(x,y))
+                    }
+                    val lineDataSet =LineDataSet(entries,"entries")
+                    val lineChart = binding.LineChart
+
+                    lineDataSet.apply {
+                        color = resources.getColor(R.color.linechart1, null)
+                        circleRadius = 5f
+                        lineWidth = 2f
+                        setCircleColor(resources.getColor(R.color.linechart2, null))
+                        circleHoleColor = resources.getColor(R.color.linechart2, null)
+                        setDrawHighlightIndicators(false)
+                        setDrawValues(false) // 숫자표시
+                        valueTextColor = resources.getColor(R.color.linechart2, null)
+                        valueFormatter = DefaultValueFormatter(1)  // 소숫점 자릿수 설정
+                        valueTextSize = 10f
+                    }
+
+                    //차트 전체 설정
+                    lineChart.apply {
+                        axisRight.isEnabled = false
+                        axisLeft.isEnabled = false
+                        xAxis.isEnabled = false
+                        legend.isEnabled = false   //legend 사용여부
+                        description.isEnabled = false //주석
+                        isDragXEnabled = false   // x 축 드래그 여부
+                        isScaleYEnabled = false //y축 줌 사용여부
+                        isScaleXEnabled = false //x축 줌 사용여부
+                        setPinchZoom(false)
+                        setScaleEnabled(false)
+                        isDoubleTapToZoomEnabled = false
+                        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
+                        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER)
+                        legend.setOrientation(Legend.LegendOrientation.VERTICAL)
+                        legend.setDrawInside(true)
+                        xAxis.setLabelCount(6, true)
+                    }
+
+                    binding.LineChart.apply {
+                        data = LineData(lineDataSet)
+                        notifyDataSetChanged() //데이터 갱신
+                        invalidate() // view갱신
+                    }
 
                 } else {
                     Log.d("initLineChart 실패", response.body().toString())
