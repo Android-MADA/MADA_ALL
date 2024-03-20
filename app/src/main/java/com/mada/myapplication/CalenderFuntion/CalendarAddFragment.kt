@@ -190,7 +190,6 @@ class CalendarAddFragment : Fragment() {
             binding.calendar2.adapter = calendarAdapter
             val comparisonResult =  ChronoUnit.MONTHS.between(todayMonth,LocalDate.parse(nextScheduleNum.text.toString()))
             binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt() , false)
-
         }
         binding.preBtn.setOnClickListener {
             binding.calendar2.setCurrentItem(binding.calendar2.currentItem-1, true)

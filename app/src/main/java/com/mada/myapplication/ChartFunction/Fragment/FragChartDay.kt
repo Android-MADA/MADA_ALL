@@ -14,6 +14,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -55,6 +56,10 @@ import com.mada.myapplication.databinding.ChartDayBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class FragChartDay : Fragment() {
     private lateinit var binding: ChartDayBinding
@@ -64,6 +69,9 @@ class FragChartDay : Fragment() {
     val api = RetrofitInstance.getInstance().create(RetrofitServiceChart::class.java)
     val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
+    val todayWeek = LocalDate.now()
+
+    lateinit var selectDay:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +79,7 @@ class FragChartDay : Fragment() {
     ): View? {
         binding = ChartDayBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = false
+        selectDay = TextView(requireContext())
         return binding.root
     }
 
@@ -105,8 +114,13 @@ class FragChartDay : Fragment() {
             }
         })
 
+        val currentDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
+        val formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        selectDay.text = formattedDate
+        dayChange(selectDay.text.toString())
         //달력 부분
-        val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2)
+        val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2,selectDay)
+
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {
@@ -127,6 +141,20 @@ class FragChartDay : Fragment() {
             false
         })
 
+    }
+
+    fun dayClick() {
+        binding.calendar2.adapter = null
+
+        binding.calendar2.adapter = MyWeekSliderlAdapter(
+            this,
+            binding.textCalendar,
+            binding.calendar2,
+            selectDay
+        )
+        val comparisonResult =  ChronoUnit.WEEKS.between(todayWeek,LocalDate.parse(selectDay.text.toString()))
+        Log.d("12345",comparisonResult.toString())
+        binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION+comparisonResult.toInt(), false)
     }
 
     //날짜 클릭시 실행되는 함수

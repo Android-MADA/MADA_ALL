@@ -61,7 +61,6 @@ class DaySmallItemView @JvmOverloads constructor(
             ScheduleNum.text = date.toString("yyyy-MM-dd")
             if(repeatFlag){
                 Scheldule.text = " ${date.year}년 ${date.monthOfYear}월 ${date.dayOfMonth}일"
-
             }
             else{
                 Scheldule.text = "  ${date.monthOfYear}월 ${date.dayOfMonth}일 (${weekdays[date.dayOfWeek().get()-1]})  "

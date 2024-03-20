@@ -20,7 +20,6 @@ class MyMonthSliderlAdapter(
                 monthWeekText.text = DateTime(millis).year.toString() + "년 "+ DateTime(millis).monthOfYear.toString()+ "월 "
 
                 (fm as? FragChartMonth)?.monthChange(DateTime(millis).toString("yyyy-MM-dd"))
-
             }
         })
     }
