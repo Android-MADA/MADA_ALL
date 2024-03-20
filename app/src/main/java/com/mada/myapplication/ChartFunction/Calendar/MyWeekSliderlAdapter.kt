@@ -1,5 +1,6 @@
 package com.mada.myapplication.ChartFunction.Calendar
 
+import android.util.Log
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -9,9 +10,10 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
 
 class MyWeekSliderlAdapter(
-    fm: Fragment,
+    private val fm: Fragment,
     private val monthWeekText: TextView,
-    private val viewPager: ViewPager2
+    private val viewPager: ViewPager2,
+    private val selectDay: TextView?
 ) : FragmentStateAdapter(fm) {
     init {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -28,8 +30,8 @@ class MyWeekSliderlAdapter(
                 }
                 monthWeekText.text = DateTime(millis).year.toString() + "년 "+ DateTime(millis).monthOfYear.toString() + "월 " + weekOfMonthText + "주"
 
+                Log.d("123",monthWeekText.text.toString())
                 (fm as? FragChartWeek)?.weekChange(DateTime(millis).monthOfYear,getWeekOfMonth(DateTime(millis)),DateTime(millis).toString("yyyy-MM-dd"))
-
             }
         })
     }
@@ -40,7 +42,7 @@ class MyWeekSliderlAdapter(
 
     override fun createFragment(position: Int): MyWeekFragment {
         val millis = getItemId(position)
-        return MyWeekFragment.newInstance(millis)
+        return MyWeekFragment.newInstance(millis,selectDay,fm)
     }
 
     override fun getItemId(position: Int): Long

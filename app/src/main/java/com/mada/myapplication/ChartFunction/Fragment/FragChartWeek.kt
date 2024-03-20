@@ -99,7 +99,12 @@ class FragChartWeek : Fragment() {
 
 
         //달력 부분
-        val calendarAdapter = MyWeekSliderlAdapter(this,binding.textCalendar,binding.calendar2)
+        val calendarAdapter = MyWeekSliderlAdapter(
+            this,
+            binding.textCalendar,
+            binding.calendar2,
+            null
+        )
         binding.calendar2.adapter = calendarAdapter
         binding.calendar2.setCurrentItem(CalendarSliderAdapter.START_POSITION, false)
         binding.preBtn.setOnClickListener {

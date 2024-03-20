@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
@@ -27,7 +28,8 @@ class MyDayItemView @JvmOverloads constructor(
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
     val date: DateTime = DateTime(),
-    val fm: Fragment
+    val fm: Fragment,
+    val selectDay: TextView?
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
@@ -44,9 +46,14 @@ class MyDayItemView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
-            Log.d("click","${date}")
-            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
-            (fm as? FragChartDay)?.dayChange(formatter.print(date))
+            if(selectDay!=null) {
+                Log.d("click","${date}")
+                val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+                selectDay.text = formatter.print(date)
+                (fm as? FragChartDay)?.dayChange(formatter.print(date))
+                (fm as? FragChartDay)?.dayClick()
+            }
+
         }
     }
 
@@ -56,34 +63,62 @@ class MyDayItemView @JvmOverloads constructor(
 
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
-        Log.d("date",date.toString())
+        Log.d("date1",date.toString())
         //날짜 그리기
-        if(isSameDay(date)) {
-            val paint2 = Paint()
-            paint2.isAntiAlias = true
-            paint2.color = Color.parseColor("#486DA3")
+        if(selectDay!=null) {
+            if(selectDay.text.toString()=="${date.year}-${String.format("%02d", date.monthOfYear)}-${String.format("%02d", date.dayOfMonth)}") {
+                val paint2 = Paint()
+                paint2.isAntiAlias = true
+                paint2.color = Color.parseColor("#486DA3")
 
-            // Draw rounded rectangle
-            val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
-                width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())
-            val cornerRadius = width/4.37f // 반지름 값 설정
-            canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
-            paint.color =Color.parseColor("#FFFFFF")
-            canvas.drawText(
-                dateString,
-                (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + height/3.5f).toFloat(),
-                paint
+                // Draw rounded rectangle
+                val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
+                    width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())
+                val cornerRadius = width/4.37f // 반지름 값 설정
+                canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
+                paint.color =Color.parseColor("#FFFFFF")
+                canvas.drawText(
+                    dateString,
+                    (width / 2 - bounds.width() / 2).toFloat(),
+                    (bounds.height() + height/3.5f).toFloat(),
+                    paint
 
-            )
-        }else {
-            canvas.drawText(
-                dateString,
-                (width / 2 - bounds.width() / 2).toFloat(),
-                (bounds.height() + height/3.5f).toFloat(),
-                paint
-            )
+                )
+            }else {
+                canvas.drawText(
+                    dateString,
+                    (width / 2 - bounds.width() / 2).toFloat(),
+                    (bounds.height() + height/3.5f).toFloat(),
+                    paint
+                )
+            }
+        } else {
+            if(isSameDay(date)) {
+                val paint2 = Paint()
+                paint2.isAntiAlias = true
+                paint2.color = Color.parseColor("#486DA3")
+
+                // Draw rounded rectangle
+                val roundedRect = RectF(0f+width*2f/10+3f,   ((bounds.height() + height/3.5)/7f).toFloat(), width*8f/10+3f,
+                    width*6f/10+ ((bounds.height() + height/3.5)/7f).toFloat())
+                val cornerRadius = width/4.37f // 반지름 값 설정
+                canvas.drawRoundRect(roundedRect, cornerRadius, cornerRadius, paint2)
+                paint.color =Color.parseColor("#FFFFFF")
+                canvas.drawText(
+                    dateString,
+                    (width / 2 - bounds.width() / 2).toFloat(),
+                    (bounds.height() + height/3.5f).toFloat(),
+                    paint
+
+                )
+            }else {
+                canvas.drawText(
+                    dateString,
+                    (width / 2 - bounds.width() / 2).toFloat(),
+                    (bounds.height() + height/3.5f).toFloat(),
+                    paint
+                )
+            }
         }
-
     }
 }
