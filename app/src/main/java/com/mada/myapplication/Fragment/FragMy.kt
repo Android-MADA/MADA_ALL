@@ -84,9 +84,9 @@ class FragMy : Fragment() {
         binding.myEditProfile.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myProfileFragment)
         }
-        binding.mySetPage.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_mySetFragment)
-        }
+//        binding.mySetPage.setOnClickListener {
+//            navController.navigate(R.id.action_fragMy_to_mySetFragment)
+//        }
         binding.myNotice.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
         }

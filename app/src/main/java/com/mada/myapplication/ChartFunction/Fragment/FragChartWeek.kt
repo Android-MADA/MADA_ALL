@@ -482,16 +482,13 @@ class FragChartWeek : Fragment() {
                     }
 
                     // 막대그래프의 막대 색상을 설정
-                    val gradientDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_bar_gradient)
                     val colors = ArrayList<Int>()
                     for (i in 0 until formatSize) {
                         if (i == formatSize - 1) {
                             // 마지막 막대의 색상을 설정
-                            Log.d("마지막 막대 색칠", "i=${i}")
-                            colors.add(ContextCompat.getColor(requireContext(), R.color.main))
+                            colors.add(ContextCompat.getColor(requireContext(), R.color.barchart1))
                         } else {
                             // 앞의 막대의 색상을 설정
-                            Log.d("앞의 막대 색칠", "i=${i}")
                             colors.add(ContextCompat.getColor(requireContext(), R.color.grey2))
                         }
                     }
@@ -550,12 +547,24 @@ class FragChartWeek : Fragment() {
                     val lineDataSet = LineDataSet(entries,"entries")
                     val lineChart = binding.LineChart
 
+                    // 막대그래프의 막대 색상을 설정
+                    val colors = ArrayList<Int>()
+                    for (i in 0 until formatSize) {
+                        if (i == formatSize - 1) {
+                            // 마지막 막대의 색상을 설정-
+                            colors.add(ContextCompat.getColor(requireContext(), R.color.linechart2))
+                        } else {
+                            // 앞의 막대의 색상을 설정-
+                            colors.add(ContextCompat.getColor(requireContext(), R.color.sub3))
+                        }
+                    }
+
                     lineDataSet.apply {
                         color = resources.getColor(R.color.linechart1, null)
                         circleRadius = 5f
-                        lineWidth = 2f
-                        setCircleColor(resources.getColor(R.color.linechart2, null))
-                        circleHoleColor = resources.getColor(R.color.linechart2, null)
+                        lineWidth = 1f
+                        setCircleColors(colors)
+                        circleHoleColor = resources.getColor(R.color.white, null)
                         setDrawHighlightIndicators(false)
                         setDrawValues(false) // 숫자표시
                         valueTextColor = resources.getColor(R.color.linechart2, null)
