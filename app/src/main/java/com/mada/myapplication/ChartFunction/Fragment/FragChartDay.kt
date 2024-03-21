@@ -48,6 +48,7 @@ import com.mada.myapplication.ChartFunction.Data.ChartDayData
 import com.mada.myapplication.ChartFunction.Data.DayPieData
 import com.mada.myapplication.ChartFunction.RetrofitServiceChart
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
@@ -99,21 +100,6 @@ class FragChartDay : Fragment() {
             navController.navigate(R.id.action_fragChartDay_to_fragChartMonth)
         }
 
-        apiMy.selectfragMy(token).enqueue(object : Callback<FragMyData> {
-            override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
-                if(response.isSuccessful){
-                    var nick = response.body()?.data?.nickname
-                    binding.recordTitle0.text = "${nick}님의 일별 통계입니다."
-                }
-                else{
-                    Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
-                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
         val currentDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
         val formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val sMonth = currentDate.format(DateTimeFormatter.ofPattern("MM"))
@@ -143,7 +129,7 @@ class FragChartDay : Fragment() {
             false
         })
 
-        // 타이틀뷰 설정
+        // 처음 타이틀뷰 세팅
         setTitleView(sMonth,sDay)
 
     }
@@ -682,21 +668,24 @@ class FragChartDay : Fragment() {
 
     // 전면 광고
     fun setupInterstitialAd() {
-        val adRequest = AdRequest.Builder().build()
-
-        InterstitialAd.load(requireContext(),
-            "ca-app-pub-4086521113003670/4380505190",
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("DEBUG: ", adError?.message.toString())
-                    mInterstitialAd = null
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            val adRequest = AdRequest.Builder().build()
+            InterstitialAd.load(requireContext(),
+                "ca-app-pub-4086521113003670/4380505190",
+                adRequest,
+                object : InterstitialAdLoadCallback() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        Log.d("DEBUG: ", adError?.message.toString())
+                        mInterstitialAd = null
+                    }
+                    override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                        Log.d("DEBUG: ", "Ad was loaded.")
+                        mInterstitialAd = interstitialAd
+                    }
                 }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    Log.d("DEBUG: ", "Ad was loaded.")
-                    mInterstitialAd = interstitialAd
-                }
-            })
+            )
+        }
     }
 }

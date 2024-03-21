@@ -29,6 +29,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
@@ -65,20 +66,16 @@ class FragMy : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("token:",token)
+
         navController = view.findNavController()
 
-        //구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adView
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-
+        setupAdView()
         setPage()
 
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_fragHome)
         }
-
         binding.myStampBtn.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myStampFragment)
         }
@@ -130,10 +127,9 @@ class FragMy : Fragment() {
             false
         })
 
-
     }
 
-    //페이지 설정
+    // 페이지 설정
     private fun setPage(){
         api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
             override fun onResponse(
@@ -166,7 +162,16 @@ class FragMy : Fragment() {
             }
         })
     }
-
+    // 배너 광고
+    private fun setupAdView() {
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        }
+    }
     // 로그아웃 팝업창 함수
     private fun showLogoutPopup() {
 
@@ -221,6 +226,7 @@ class FragMy : Fragment() {
             // Handle "No" button click if needed
         }
     }
+    // 앱 데이터 비우기
     fun clearAppData(context: Context) {
         val cache: File = context.cacheDir // 캐시 폴더 호출
         val appDir = File(cache.parent) // App Data 삭제를 위해 캐시 폴더의 부모 폴더까지 호출
@@ -233,7 +239,7 @@ class FragMy : Fragment() {
             }
         }
     }
-
+    // 디렉토리 삭제
     fun deleteDir(dir: File): Boolean {
         if (dir.isDirectory) {
             val children: Array<String> = dir.list() ?: return false
