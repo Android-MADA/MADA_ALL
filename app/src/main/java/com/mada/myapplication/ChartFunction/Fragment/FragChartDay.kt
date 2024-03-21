@@ -627,7 +627,7 @@ class FragChartDay : Fragment() {
                         legend.setOrientation(Legend.LegendOrientation.VERTICAL)
                         legend.setDrawInside(true)
                         xAxis.setLabelCount(6, true)
-                        animateX(1500) // X축으로 애니메이션 적용
+                        animateX(2000) // X축으로 애니메이션 적용
                     }
 
                     binding.LineChart.apply {

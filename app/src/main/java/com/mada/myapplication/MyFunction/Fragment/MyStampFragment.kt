@@ -112,7 +112,7 @@ class MyStampFragment : Fragment() {
             binding.textView30,
             binding.textView31
         )
-        var stampCnt = 0
+        val stampCnt = 0
 
         // 도장판 불러오기
         api.myGetStamp(token).enqueue(object : retrofit2.Callback<MyGetStampData> {
@@ -122,16 +122,21 @@ class MyStampFragment : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("getStamp 성공", response.body().toString())
-                    val stampCnt = response.body()?.data!!.data
-                    Log.d("stampCnt 개수 : ", "${stampCnt}")
+                    val stampCnt = response.body()!!.data
 
                     for (i in 0 until stampCnt) {
                         stampTexts[i].isVisible = false
                         stampViews[i].setBackgroundResource(R.drawable.stamp_my)
                     }
 
-                    stampTexts[stampCnt+1].isVisible = false
-                    stampViews[stampCnt+1].setBackgroundResource(R.drawable.stamp_click)
+                    stampTexts[stampCnt].isVisible = false
+                    stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_click)
+
+                    // 도장 찍기
+                    stampViews[stampCnt].setOnClickListener{
+                        stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_my)
+                        myPatchStamp()
+                    }
                 } else {
                     Log.d("getStamp 실패", "$responseCode")
                 }
@@ -142,13 +147,6 @@ class MyStampFragment : Fragment() {
             }
         })
 
-
-        // 도장 찍기
-        stampViews[stampCnt].setOnClickListener{
-            stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_my)
-            addStampCnt(stampCnt)
-        }
-
         // 엑스 버튼
         binding.cancelBtn.setOnClickListener {
             navController.navigate(R.id.action_myStampFragment_to_fragMy)
@@ -156,25 +154,23 @@ class MyStampFragment : Fragment() {
 
     }
 
-    // 도장 개수를 더하는 함수
-    private fun addStampCnt(stampCnt: Int){
-        api.myPatchStamp(token, stampCnt).enqueue(object : retrofit2.Callback<MyPatchStampData> {
+    // 도장 개수를 저장하는 함수
+    private fun myPatchStamp(){
+        api.myPatchStamp(token).enqueue(object : retrofit2.Callback<MyPatchStampData> {
             override fun onResponse(call: Call<MyPatchStampData>, response: Response<MyPatchStampData>) {
-                val responseCode = response.code()
-
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        Log.d("stampCnt: ${response.body()?.data!!.data}", "Response Code: $responseCode")
+                        Log.d("myPatchStamp 성공", "Data: ${response.body()!!.data} ")
                     } else
-                        Log.d("stampCnt: null", "Response Code: $responseCode")
+                        Log.d("myPatchStamp 실패", "stampCnt: null")
                 } else {
-                    Log.d("addStampCnt 실패", "Response Code: ${response.code()} ")
+                    Log.d("myPatchStamp 실패", "Response Code: ${response.code()} ")
                 }
             }
 
             override fun onFailure(call: Call<MyPatchStampData>, t: Throwable) {
-                Log.d("서버 오류", "addStampCnt 실패")
+                Log.d("서버 오류", "myPatchStamp 실패")
             }
         })
     }
@@ -203,12 +199,14 @@ class MyStampFragment : Fragment() {
             30 -> {
                 binding.stamp31.isVisible = false
                 binding.textView31.isVisible = false
+                binding.stampGift330.isVisible = true
             }
             29 -> {
                 binding.stamp30.isVisible = false
                 binding.textView30.isVisible = false
                 binding.stamp31.isVisible = false
                 binding.textView31.isVisible = false
+                binding.stampGift329.isVisible = true
             }
             28 -> {
                 binding.stamp29.isVisible = false
@@ -218,9 +216,12 @@ class MyStampFragment : Fragment() {
                 binding.textView30.isVisible = false
                 binding.stamp31.isVisible = false
                 binding.textView31.isVisible = false
+                binding.stampGift328.isVisible = true
             }
             else -> {
                 // 31일
+                binding.textView31.isVisible = false
+                binding.stampGift331.isVisible = true
             }
         }
     }

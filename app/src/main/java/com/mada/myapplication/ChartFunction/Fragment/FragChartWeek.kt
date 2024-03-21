@@ -477,7 +477,7 @@ class FragChartWeek : Fragment() {
                         }
                         axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌
                         setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
-                        animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
+                        animateY(1500) // 밑에서부터 올라오는 애니매이션 적용
                         legend.isEnabled = false //차트 범례 설정
                     }
 
@@ -590,7 +590,7 @@ class FragChartWeek : Fragment() {
                         legend.setOrientation(Legend.LegendOrientation.VERTICAL)
                         legend.setDrawInside(true)
                         xAxis.setLabelCount(6, true)
-                        animateX(1000) // X축으로 애니메이션 적용
+                        animateX(2000) // X축으로 애니메이션 적용
                     }
 
                     binding.LineChart.apply {

@@ -89,6 +89,6 @@ interface RetrofitServiceMy {
 
     // 출석 카운트 계산
     @PATCH("/user/attendance")
-    fun myPatchStamp(@Header("Authorization") token : String?, @Body data: Int
+    fun myPatchStamp(@Header("Authorization") token: String?
     ): Call<MyPatchStampData>
 }
