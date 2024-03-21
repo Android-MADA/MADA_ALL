@@ -228,14 +228,14 @@
             android:id="@+id/action_fragMy_to_mySetFragment"
             app:destination="@id/mySetFragment" />
         <action
-            android:id="@+id/action_fragMy_to_fragHome"
-            app:destination="@id/fragHome" />
-        <action
             android:id="@+id/action_fragMy_to_splash2Activity"
             app:destination="@id/splash2Activity" />
         <action
             android:id="@+id/action_fragMy_to_myStampFragment"
             app:destination="@id/myStampFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -296,15 +296,15 @@
         android:name="com.mada.myapplication.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
-<!--    <fragment-->
-<!--        android:id="@+id/categoryInActiveFragment"-->
-<!--        android:name="com.mada.myapplication.HomeFunction.view.CategoryInActiveFragment"-->
-<!--        android:label="CategoryInActiveFragment" >-->
-<!--        <action-->
-<!--            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"-->
-<!--            app:destination="@id/homeCategoryFragment"-->
-<!--            app:popUpTo="@id/fragHome" />-->
-<!--    </fragment>-->
+    <fragment
+        android:id="@+id/categoryInActiveFragment"
+        android:name="com.mada.myapplication.HomeFunction.view.CategoryInActiveFragment"
+        android:label="CategoryInActiveFragment" >
+        <action
+            android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"
+            app:destination="@id/homeCategoryFragment"
+            app:popUpTo="@id/fragHome" />
+    </fragment>
 
     <!--  Chart  부분   -->
     <fragment

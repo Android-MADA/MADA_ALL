@@ -12,14 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
-import com.mada.myapplication.MyFunction.Data.MySetPageData
-import com.mada.myapplication.MyFunction.Data.MySetPageData2
+import com.mada.myapplication.MyFunction.Data.MyGetSetPageData
+import com.mada.myapplication.MyFunction.Data.MyPostSetPageData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MySetBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,8 +25,8 @@ import retrofit2.Response
 class MySetFragment : Fragment() {
     private lateinit var binding: MySetBinding
     lateinit var navController: NavController
-    private val token = Splash2Activity.prefs.getString("token", "")
     private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,27 +46,26 @@ class MySetFragment : Fragment() {
         setupSwitchColor(binding.mySetSwitch2)
         setupSwitchColor(binding.mySetSwitch3)
 
+        GetSetPage()
+
         binding.backBtn.setOnClickListener {
-            GlobalScope.launch {
-                patchSetting(token, MySetPageData2(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
-            }
+            PostSetPage(token, MyPostSetPageData(binding.mySetSwitch3.isChecked, binding.mySetSwitch2.isChecked, binding.mySetSwitch1.isChecked))
             navController.navigate(R.id.action_mySetFragment_to_fragMy)
         }
 
-        GetSetPage()
     }
 
     private fun GetSetPage() {
-        api.myGetSettingPage(token).enqueue(object : Callback<MySetPageData> {
+        api.myGetSettingPage(token).enqueue(object : Callback<MyGetSetPageData> {
             override fun onResponse(
-                call: Call<MySetPageData>,
-                response: Response<MySetPageData>
+                call: Call<MyGetSetPageData>,
+                response: Response<MyGetSetPageData>
             ) {
                 val responseCode = response.code()
 
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        Log.d("GetSetPage 성공", response.body()?.data.toString())
+                        Log.d("GetSetPage 성공", response.body().toString())
                         binding.mySetSwitch1.isChecked = response.body()?.data!!.startTodoAtMonday
                         binding.mySetSwitch2.isChecked = response.body()?.data!!.newTodoStartSetting
                         binding.mySetSwitch3.isChecked = response.body()?.data!!.endTodoBackSetting
@@ -80,28 +77,36 @@ class MySetFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<MySetPageData>, t: Throwable) {
+            override fun onFailure(call: Call<MyGetSetPageData>, t: Throwable) {
                 Log.d("서버 오류", "GetSetPage 실패")
             }
         })
     }
 
-    private fun patchSetting(token: String, data: MySetPageData2) {
-        val aapi = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-        aapi.mySetPage(token, data)
-            .enqueue(object : Callback<MySetPageData> {
+    private fun PostSetPage(token: String, data: MyPostSetPageData) {
+        api.myPostSettingPage(token, data)
+            .enqueue(object : Callback<MyPostSetPageData> {
                 override fun onResponse(
-                    call: Call<MySetPageData>,
-                    response: Response<MySetPageData>
+                    call: Call<MyPostSetPageData>,
+                    response: Response<MyPostSetPageData>
                 ) {
+                    val responseCode = response.code()
+
                     if (response.isSuccessful) {
-                        // 서버에 세팅 저장 성공
+                        if (response.body() != null) {
+                            Log.d("patchSetting 성공", response.body().toString())
+                            binding.mySetSwitch1.isChecked = response.body()!!.startTodoAtMonday
+                            binding.mySetSwitch2.isChecked = response.body()!!.newTodoStartSetting
+                            binding.mySetSwitch3.isChecked = response.body()!!.endTodoBackSetting
+                        } else {
+                            Log.d("patchSetting response null ", "Response Code: $responseCode")
+                        }
                     } else {
-                        // 서버에 세팅 저장 실패
+                        Log.d("patchSetting 실패", "Response Code: $responseCode")
                     }
                 }
 
-                override fun onFailure(call: Call<MySetPageData>, t: Throwable) {
+                override fun onFailure(call: Call<MyPostSetPageData>, t: Throwable) {
                     Log.d("서버 연결 실패", "실패")
                 }
             })
