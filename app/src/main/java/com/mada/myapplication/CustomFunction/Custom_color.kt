@@ -209,16 +209,16 @@ class custom_color(val binding: CustomColorBinding) : Fragment() {
                         Log.d(
                             "getCustomItemCheckCloth",
                             "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
-                            )
-                        if (item.itemType=="color" && !item.have) {
+                        )
+                        if (item.itemType == "color" && item.have) {
                             Log.d(
-                                "ColorHideButton",
-                                "Item $index - id: ${item.id}  have:${item.have} itemCategory:${item.itemCategory}"
+                                "ColorShowButton",
+                                "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
                             )
-                            hideButton(item.id)
+                            showButton(item.id)
                         }
 
-                        }
+                    }
                 } else {
                     Log.d("getCustomItemCheckCloth", "Unsuccessful response: ${response.code()}")
                 }
@@ -231,9 +231,8 @@ class custom_color(val binding: CustomColorBinding) : Fragment() {
     }
 
 
-    private fun hideButton(itemCategory: Int) {
-        val buttonToHide = when (itemCategory) {
-
+    private fun showButton(itemCategory: Int) {
+        val buttonToShow = when (itemCategory) {
             10 -> binding.btnColorBasic
             13 -> binding.btnColorMint
             27 -> binding.btnColorRblue
@@ -247,31 +246,33 @@ class custom_color(val binding: CustomColorBinding) : Fragment() {
             18 -> binding.btnColorPink3
             51 -> binding.btnColorYellow2
             15 -> binding.btnColorOrange2
-
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
-        val parent = buttonToHide.parent as? TableRow
+        val parent = buttonToShow.parent as? TableRow
         parent?.let {
-            // 숨겨진 버튼 제거
-            parent.removeView(buttonToHide)
+            // 버튼을 보이도록 설정
+            buttonToShow.visibility = View.VISIBLE
 
             // 남은 버튼의 개수 확인
             val remainingButtonsCount = it.childCount
 
             // 남은 버튼의 개수가 0이 아니라면 가중치 조정
             if (remainingButtonsCount > 0) {
-                val weight = 1.0f / remainingButtonsCount
+                val weight = 1.0f / (remainingButtonsCount + 1) // 새 버튼을 고려하여 +1
                 for (i in 0 until remainingButtonsCount) {
                     val child = it.getChildAt(i)
                     val layoutParams = child.layoutParams as TableRow.LayoutParams
                     layoutParams.weight = weight
                     child.layoutParams = layoutParams
                 }
+                // 새 버튼에도 가중치 설정
+                val layoutParams = buttonToShow.layoutParams as TableRow.LayoutParams
+                layoutParams.weight = weight
+                buttonToShow.layoutParams = layoutParams
             }
         }
     }
-
 
 
 
