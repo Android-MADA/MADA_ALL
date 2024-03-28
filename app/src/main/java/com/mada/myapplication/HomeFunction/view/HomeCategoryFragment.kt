@@ -14,14 +14,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.HomeFunction.adapter.category.CateListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.databinding.CategoryLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.getAllCategory
+import com.mada.myapplication.getDescribe
 import com.mada.myapplication.hideBottomNavigation
 
 class HomeCategoryFragment : Fragment() {
@@ -66,17 +70,18 @@ class HomeCategoryFragment : Fragment() {
         Log.d("Category", "read fin")
 
         //livedata로 감지
+        val mainActivity = requireActivity() as MainActivity
         viewModel.cateEntityList.observe(viewLifecycleOwner, Observer {
             Log.d("Category", it.toString())
-
             val cateList = it as List<CateEntity>
 
+            viewModel.activeNum = cateList.size
             activeCount = cateList.size
-            if(!viewModel.isSubscribe && activeCount >= 5){
+
+            if(!mainActivity.getPremium() && activeCount >= 5) {
                 binding.categoryAddTv.isVisible = true
                 binding.categoryAddIv.isGone = true
-            }
-            else{
+            } else {
                 binding.categoryAddTv.isGone = true
                 binding.categoryAddIv.isVisible = true
             }
@@ -152,6 +157,11 @@ class HomeCategoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("onResume", "running")
+        getAllCategory(api, viewModel, this.requireActivity())
+        viewModel.readActiveCate(false)
+        viewModel.readQuitCate(true)
+        getDescribe(viewModel, requireContext())
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -4,6 +4,8 @@ package com.mada.myapplication.HomeFunction.api
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.CommentAdd
 import com.mada.myapplication.HomeFunction.Model.CommentData
+import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
+import com.mada.myapplication.HomeFunction.Model.PatchRequestRepeatTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
@@ -50,6 +52,29 @@ fun editTodo(
     @Body data : PatchRequestTodo
 ): Call<Void>
 
+    @PATCH("/api/home/todo/update/{todoId}")
+    fun editRepeatTodo(
+        @Header("Authorization") token: String?,
+        @Path("todoId", encoded = true) todoId: Int,
+        @Body data : PatchRequestRepeatTodo
+    ): Call<Void>
+
+
+
+    @PATCH("/api/home/todo/update/{todoId}")
+    fun changeCheckox(
+        @Header("Authorization") token: String?,
+        @Path("todoId", encoded = true) todoId: Int,
+        @Body data : PatchCheckboxTodo
+    ): Call<Void>
+
+    @PATCH("/api/home/todo/repeat/update/{repeatTodoId}")
+    fun changeRepeatCheckox(
+        @Header("Authorization") token: String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId: Int,
+        @Body data : PatchCheckboxTodo
+    ): Call<Void>
+
 
     @PATCH("/api/home/todo/delete/{todoId}")
     fun deleteTodo(
@@ -72,7 +97,8 @@ fun editTodo(
     //시간표 조회
     @GET("/api/home/time/daily/date/{date}")
     fun getTimetable(
-        @Header("Authorization") token: String?, @Path("date") date: String
+        @Header("Authorization") token: String?,
+        @Path("date") date: String
     ): Call<ScheduleListData>
 
     //시간표 추가
@@ -140,6 +166,12 @@ fun editTodo(
         @Path("date", encoded = true) date: String,
     ): Call<CategoryList1>
 
+    @GET("/api/home/category/date/{date}")
+    fun getHCategory2(
+        @Header("Authorization") token : String?,
+        @Path("date", encoded = true) date: String,
+    ): Call<CategoryList1>
+
 
 
     @POST("/api/home/category")
@@ -185,9 +217,30 @@ fun editTodo(
     ) : Call<Void>
 
 
-    @GET("/api/home/todo/repeat")
+    @GET("/api/home/todo/repeat/all")
     fun getHRepeatTodo(
         @Header("Authorization") token : String?
     ) : Call<RepeatData1>
+
+    //반복투두 삭제 - one
+    @PATCH("/api/home/todo/repeat/delete/{repeatTodoId}")
+    fun deleteRepeatTodoOne(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
+
+    //반복투두 삭제 - after
+    @PATCH("/api/home/todo/repeat/delete-all-future/{repeatTodoId}")
+    fun deleteRepeatTodoAfter(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
+
+    //반복투두 삭제 - all
+    @PATCH("/api/home/todo/repeat/delete-all/{repeatTodoId}")
+    fun deleteRepeatTodoAll(
+        @Header("Authorization") token : String?,
+        @Path("repeatTodoId", encoded = true) repeatTodoId : Int
+    ) : Call<Void>
 
 }

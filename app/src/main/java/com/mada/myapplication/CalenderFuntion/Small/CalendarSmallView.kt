@@ -70,7 +70,8 @@ class CalendarSmallView @JvmOverloads constructor(
         ScheduleNum: TextView,
         cal: LinearLayout,
         textDday : TextView,
-        repeatFlag: Boolean = false
+        repeatFlag: String? = null,
+        viewModel : HomeViewModel?
     ) {
         list.forEach {
             addView(DaySmallItemView(
@@ -81,7 +82,8 @@ class CalendarSmallView @JvmOverloads constructor(
                 ScheduleNum = ScheduleNum,
                 cal = cal,
                 textDday =  textDday,
-                repeatFlag = repeatFlag
+                repeatFlag = repeatFlag,
+                viewModel = viewModel
             ))
         }
 

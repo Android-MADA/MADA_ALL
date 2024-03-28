@@ -1,5 +1,6 @@
 package com.mada.myapplication.CalenderFuntion.Model
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
@@ -17,7 +18,12 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.mada.myapplication.BuildConfig
 import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
+import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.mada.myapplication.StartFunction.Splash2Activity
 import org.joda.time.DateTime
 import org.joda.time.Days
@@ -26,6 +32,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -40,6 +47,7 @@ class CalendarViewModel : ViewModel(){
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCalendar::class.java)
+    val homeApi = retrofit.create(HomeApi::class.java)
     var token = Splash2Activity.prefs.getString("token","")?: "123"
 
 
@@ -152,7 +160,135 @@ class CalendarViewModel : ViewModel(){
 
         })
     }
-    fun setPopupOne(theContext: Context,title : String, theView : View) {
+    fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        //팝업 타이틀 설정, 버튼 작용 시스템
+        if(flag == "delete"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
+
+        }
+        else if(flag == "quit"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
+
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+        }
+
+        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
+            mBuilder.dismiss()
+        }
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
+                callback(0)
+                mBuilder.dismiss()
+        }
+
+    }
+    fun setPopupTwo(theContext: Context,title : String, theView : View, moveFragment : Int, flag : String = "exit", categoryId : Int = 0) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        //팝업 타이틀 설정, 버튼 작용 시스템
+        if(flag == "delete"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
+
+        }
+        else if(flag == "quit"){
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
+
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+        }
+
+        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
+            mBuilder.dismiss()
+        }
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
+
+            if (flag == "exit") {
+                if (moveFragment != 0) {
+                    Navigation.findNavController(theView).navigate(moveFragment)
+                    mBuilder.dismiss()
+                } else {
+                    System.exit(0)
+                }
+            } else if (flag == "restore") {
+                if (moveFragment != 0) {
+                    mBuilder.dismiss()
+                } else {
+                    //복원 서버 처리
+                    Log.d("restore", "working")
+                    restoreCategory(theView, categoryId)
+                    mBuilder.dismiss()
+                }
+            } else if (flag == "quit") {
+                if (moveFragment != 0) {
+                    mBuilder.dismiss()
+                } else {
+                    // 종료 서버 처리
+                    Log.d("quit", "working")
+                    quitCateegory(theView, categoryId)
+                    mBuilder.dismiss()
+                }
+            } else if (flag == "delete") {
+                if (moveFragment != 0) {
+                    mBuilder.dismiss()
+                } else {
+                    // 삭제 서버 처리
+                    Log.d("delete", "working")
+                    removeCategory(theView, categoryId)
+                    mBuilder.dismiss()
+                }
+            }
+
+
+        }
+    }
+    @SuppressLint("MissingInflatedId")
+    fun setPopupOne(theContext: Context, title : String, theView : View, desc : String? = null) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_one, null)
         val mBuilder = AlertDialog.Builder(theContext)
             .setView(mDialogView)
@@ -174,9 +310,16 @@ class CalendarViewModel : ViewModel(){
 
         //팝업 타이틀 설정, 버튼 작용 시스템
         mDialogView.findViewById<TextView>(R.id.textTitle).text = title
-        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+        mDialogView.findViewById<TextView>(R.id.yesBtnText).setOnClickListener( {
             mBuilder.dismiss()
         })
+        if(desc.isNullOrEmpty()){
+            mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.GONE
+        }
+        else{
+            mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.VISIBLE
+            mDialogView.findViewById<TextView>(R.id.popone_desc).text = desc
+        }
     }
     //달력 관련 함수들
     fun convertToDateKoreanFormat123(dateString: String): String {
@@ -596,4 +739,75 @@ class CalendarViewModel : ViewModel(){
         } else callback(1)
 
     }
+
+    fun quitCateegory(view : View, categoryId : Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            homeApi.quitCategory(token, categoryId).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("catequit", "성공")
+                    }
+                    else{
+                        Log.d("catequit", "안드 잘못")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("catequit", "서버 연결 실패")
+                }
+
+            })
+            withContext(Dispatchers.Main){
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
+        }
+    }
+
+    fun restoreCategory(view : View, categoryId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            homeApi.activeCategory(token, categoryId).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("caterestore", "성공")
+                    }
+                    else{
+                        Log.d("caterestore", "안드 잘못")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("caterestore", "서버 연결 실패")
+                }
+
+            })
+            withContext(Dispatchers.Main){
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
+        }
+    }
+
+    fun removeCategory(view : View, categoryId : Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            homeApi.deleteCategory(token, categoryId).enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("categoryRemove", "success")
+                    }
+                    else{
+                        Log.d("categoryRemove", "Android fail")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("categoryRemove", "Server fail")
+                }
+
+            })
+
+            withContext(Dispatchers.Main){
+                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+            }
+        }
+    }
+
 }

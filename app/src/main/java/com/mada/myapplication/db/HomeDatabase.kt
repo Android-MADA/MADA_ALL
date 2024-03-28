@@ -9,7 +9,7 @@ import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 
-@Database(entities = [CateEntity::class, TodoEntity::class, RepeatEntity::class], version = 2)
+@Database(entities = [CateEntity::class, TodoEntity::class, RepeatEntity::class], version = 3)
 abstract class HomeDatabase : RoomDatabase() {
 
     abstract fun cateDao() : CateDao

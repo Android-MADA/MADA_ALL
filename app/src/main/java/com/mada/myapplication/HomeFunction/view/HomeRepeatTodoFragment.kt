@@ -11,10 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
-import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
-import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
-import com.mada.myapplication.HomeFunction.Model.repeatTodo
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatCateListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
@@ -36,6 +33,7 @@ class HomeRepeatTodoFragment : Fragment(){
     private var bottomFlag = true
     private val viewModel: HomeViewModel by activityViewModels()
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
+    private val calendarViewModel : CalendarViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +64,7 @@ class HomeRepeatTodoFragment : Fragment(){
             Log.d("cateList", cateList.toString())
             val mAdapter = RepeatCateListAdapter(view, requireFragmentManager(), this.requireActivity())
             mAdapter.viewModel = viewModel
+            mAdapter.calendarViewModel = calendarViewModel
             mAdapter.submitList(cateList)
             binding.repeatRv.adapter = mAdapter
             binding.repeatRv.layoutManager = LinearLayoutManager(this.requireActivity())
@@ -76,6 +75,7 @@ class HomeRepeatTodoFragment : Fragment(){
             Navigation.findNavController(view).navigate(R.id.action_homeRepeatTodoFragment_to_fragHome)
             bottomFlag = false
         }
+
     }
 
     override fun onDestroyView() {
