@@ -9,6 +9,8 @@ import com.mada.myapplication.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RepeatBottomSheetDialog(val itemClick : (Int) -> Unit) : BottomSheetDialogFragment() {
+
+    override fun getTheme(): Int = R.style.AppBottomSheetDialogTheme
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

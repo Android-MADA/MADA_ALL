@@ -17,7 +17,12 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.HomeBackCustomDialog
 import com.mada.myapplication.HomeFunction.HomeCustomDialogListener
 import com.mada.myapplication.HomeFunction.HomeDeleteCustomDialog
@@ -29,6 +34,7 @@ import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.dialog.ActiveBottomSheetDialog
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.R
 import com.mada.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.mada.myapplication.db.entity.CateEntity
@@ -45,6 +51,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
     lateinit var binding: HomeFragmentCategoryAddBinding
     private val viewModel: HomeViewModel by activityViewModels()
+    private val calendarViewModel : CalendarViewModel by activityViewModels()
 
     val cateIconArray = ArrayList<String>()
     val cateColorArray = ArrayList<String>()
@@ -55,6 +62,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     private lateinit var backDialog: HomeBackCustomDialog
     private lateinit var deleteDialog: HomeDeleteCustomDialog
     private lateinit var argsArray: java.util.ArrayList<String>
+    private lateinit var mAdView : AdView
 
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     override fun onAttach(context: Context) {
@@ -69,52 +77,37 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 else if(binding.btnHomeCateAddSave.isGone && binding.edtHomeCategoryName.isVisible){
                     //active 수정 상황
                     if (binding.edtHomeCategoryName.text.isBlank()) {
-                        Toast.makeText(context, "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", requireView())
                     }
                     else {
-                        CoroutineScope(Dispatchers.IO).launch {
-
                             val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
                             val cateData = CateEntity(id = argsArray[0].toInt(), categoryName = binding.edtHomeCategoryName.text.toString(), color = colorAdapter.selecetedColor, iconId = findIconId(iconAdapter.selectedIcon), isInActive = false)
                             //서버에 patch 전송
-                            api.editHCategory(
-                                viewModel.userToken,
-                                categoryId = argsArray[0].toInt(),
-                                catePostData
-                            ).enqueue(object : Callback<PatchResponseCategory> {
-                                override fun onResponse(
-                                    call: Call<PatchResponseCategory>,
-                                    response: Response<PatchResponseCategory>
-                                ) {
-                                    if (response.isSuccessful) {
-                                        viewModel.updateCate(cateData)
-                                        viewModel.readActiveCate(false)
-                                        viewModel.readQuitCate(true)
+                            viewModel.editCategoryAPI(categoryId = argsArray[0].toInt(), category = catePostData, cateDB = cateData) { result ->
+                                when (result) {
+                                    0 -> {
+                                        //success
+                                        findNavController().popBackStack()
+                                    }
 
-                                    } else {
-                                        Log.d("cateupdate", "안드 잘못 실패")
+                                    1 -> {
+                                        //fail
+                                        Toast.makeText(
+                                            context,
+                                            "카테고리 수정에 실패했습니다.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        findNavController().popBackStack()
                                     }
                                 }
 
-                                override fun onFailure(
-                                    call: Call<PatchResponseCategory>,
-                                    t: Throwable
-                                ) {
-                                    Log.d("cateupdate", "서버 연결 실패")
-                                }
-
-                            })
-                            //viewModel.updateCate(cateData)
-                            withContext(Dispatchers.Main){
-                                Navigation.findNavController(view!!).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                             }
-
-                        }
                     }
                 }
                 else{
                     //inActive show
-                    Navigation.findNavController(view!!).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                    findNavController().popBackStack()
                 }
 
             }
@@ -142,7 +135,21 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //기존 카테고리 조회 시
+        /**
+         * 구글 광고
+         */
+        //구글 플레이스토어 광고
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adViewCategory.loadAd(adRequest)
+        }
+
+        /**
+         * 기존 카테고리 조회 시
+         */
         if(arguments != null){
             argsArray =requireArguments().getStringArrayList("key")!!
 
@@ -177,12 +184,16 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             2 -> {
                                 // 복원 동작
-                                restoreCategory()
+                                if(!viewModel.isSubscribe && viewModel.activeNum >=5){
+                                    calendarViewModel.setPopupOne(requireContext(), "더 이상 카테고리를 추가할 수 없습니다.", view, "프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요.")
+                                }
+                                else{
+                                    calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
+                                }
                             }
                             1 -> {
                                 // 삭제 동작
-                                //deleteCategory()
-                                removeCategory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
                             }
                         }
                     }
@@ -220,12 +231,13 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             0 -> {
                                 // 종료 동작
-                                quitCateegory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 종료하시겠습니까?", view, 0, "quit", argsArray!![0].toInt())
+                                //quitCateegory()
                             }
                             1 -> {
                                 // 삭제 동작
-                                //deleteCategory()
-                                removeCategory()
+                                calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
+                                //removeCategory()
                             }
                         }
                     }
@@ -313,47 +325,29 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             }
             else if(binding.btnHomeCateAddSave.isGone && binding.edtHomeCategoryName.isVisible){
                 //active 수정 상황
-
                 if (binding.edtHomeCategoryName.text.isBlank()) {
-                    Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
                 }
                 else {
-                    CoroutineScope(Dispatchers.IO).launch {
-
                         val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
                         val cateData = CateEntity(id = argsArray[0].toInt(), categoryName = binding.edtHomeCategoryName.text.toString(), color = colorAdapter.selecetedColor, iconId = findIconId(iconAdapter.selectedIcon), isInActive = false)
-                        //서버에 patch 전송
-                        api.editHCategory(
-                            viewModel.userToken,
-                            categoryId = argsArray[0].toInt(),
-                            catePostData
-                        ).enqueue(object : Callback<PatchResponseCategory> {
-                            override fun onResponse(
-                                call: Call<PatchResponseCategory>,
-                                response: Response<PatchResponseCategory>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Log.d("cateupdate", "성공")
-                                    viewModel.updateCate(cateData)
-                                    viewModel.readActiveCate(false)
-                                    viewModel.readQuitCate(true)
-
-                                } else {
-                                    Log.d("cateupdate", "안드 잘못 실패")
-                                }
+                    //서버에 patch 전송
+                    viewModel.editCategoryAPI(categoryId = argsArray[0].toInt(), category = catePostData, cateDB = cateData) { result ->
+                        when (result) {
+                            0 -> {
+                                //success
+                                findNavController().popBackStack()
                             }
 
-                            override fun onFailure(
-                                call: Call<PatchResponseCategory>,
-                                t: Throwable
-                            ) {
-                                Log.d("cateupdate", "서버 연결 실패")
+                            1 -> {
+                                //fail
+                                Toast.makeText(
+                                    context,
+                                    "카테고리 수정에 실패했습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                findNavController().popBackStack()
                             }
-
-                        })
-                        viewModel.updateCate(cateData)
-                        withContext(Dispatchers.Main){
-                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                         }
 
                     }
@@ -362,7 +356,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
             }
             else{
                 //inActive show
-                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+                findNavController().popBackStack()
             }
         }
 
@@ -370,10 +364,9 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         binding.btnHomeCateAddSave.setOnClickListener {
                 //카테고리 등록 상황
                 if (binding.edtHomeCategoryName.text.isBlank()) {
-                    Toast.makeText(this.requireActivity(), "카테고리 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
                 }
                 else {
-                    CoroutineScope(Dispatchers.IO).launch {
                         //내용 db 저장
                         val cateName = binding.edtHomeCategoryName.text.toString()
                         val cateColor = colorAdapter.selecetedColor
@@ -381,32 +374,25 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
 
                         //서버 post 후 response id 넣어서 db 저장
                         val catePostData = PostRequestCategory(cateName, cateColor, cateIconId, false, false)
-                        api.postHCategory(viewModel.userToken, catePostData).enqueue(object :Callback<PatchResponseCategory>{
-                            override fun onResponse(
-                                call: Call<PatchResponseCategory>,
-                                response: Response<PatchResponseCategory>
-                            ) {
-                                if(response.isSuccessful){
-                                    viewModel.createCate(CateEntity(id = response.body()!!.data.Category.id, categoryName = cateName, color = cateColor, isInActive = false, iconId = cateIconId))
-                                } else {
-                                    Log.d("cate안드 잘못", "서버 연결 실패")
+
+                        viewModel.addCategoryAPI(catePostData, cateName, cateColor, cateIconId){
+                            result ->
+                            when(result){
+                                0 -> {
+                                    //success
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
+
+
+                                }
+                                1 -> {
+                                    //fail
+                                    Toast.makeText(context, "카테고리 생성에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                    Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
 
                                 }
                             }
-
-                            override fun onFailure(
-                                call: Call<PatchResponseCategory>,
-                                t: Throwable
-                            ) {
-                                Log.d("cate서버 연결 오류", "서버 연결 실패")
-                            }
-
-                        })
-                        // navigaiton 이동
-                        withContext(Dispatchers.Main){
-                            Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
                         }
-                    }
+
                 }
         }
 
@@ -466,11 +452,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
     private fun customBackDialog() {
         backDialog = HomeBackCustomDialog(requireActivity(), this)
         backDialog.show()
-    }
-
-    private fun customDeleteDialog() {
-        deleteDialog = HomeDeleteCustomDialog(requireActivity(), this)
-        deleteDialog.show()
     }
 
     // 커스텀 다이얼로그에서 버튼 클릭 시
@@ -650,98 +631,5 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         return icon
     }
 
-    fun deleteCategory(){
-        //val cateData = CateEntity(argsArray!![0].toInt(), argsArray!![1], argsArray!![2], true, argsArray!![3].toInt())
-        CoroutineScope(Dispatchers.IO).launch {
-            //서버 전송
-            api.deleteHCategory(token = viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("catedelete", "성공")
-                        //viewModel.deleteCate(cateData)
-                        //viewModel.readActiveCate(false)
-                        //viewModel.readQuitCate(true)
-                    } else {
-                        Log.d("catedelete", "안드 잘못 실패")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("catedelete", "서버 연결 실패")
-                }
-
-            })
-            //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
-
-    fun removeCategory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.deleteCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("categoryRemove", "success")
-                    }
-                    else{
-                        Log.d("categoryRemove", "Android fail")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("categoryRemove", "Server fail")
-                }
-
-            })
-        }
-    }
-
-    fun quitCateegory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("catequit", "성공")
-                    }
-                    else{
-                        Log.d("catequit", "안드 잘못")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("catequit", "서버 연결 실패")
-                }
-
-            })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
-
-    fun restoreCategory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.activeCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("caterestore", "성공")
-                    }
-                    else{
-                        Log.d("caterestore", "안드 잘못")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("caterestore", "서버 연결 실패")
-                }
-
-            })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
 
 }

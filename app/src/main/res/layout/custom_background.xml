@@ -34,6 +34,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -44,6 +45,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -54,6 +56,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -64,6 +67,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -74,6 +78,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
         </TableRow>
@@ -92,6 +97,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -102,6 +108,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -112,6 +119,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
@@ -122,6 +130,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"
                 ></ImageButton>
 
@@ -133,6 +142,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"
                 ></ImageButton>
 

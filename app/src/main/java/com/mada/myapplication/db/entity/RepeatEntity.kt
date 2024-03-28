@@ -30,10 +30,8 @@ data class RepeatEntity(
     val todoName: String,
     @ColumnInfo(name = "repeat")
     val repeat: String,
-    @ColumnInfo(name = "repeatWeek")
-    val repeatWeek: String?,
-    @ColumnInfo(name = "repeatMonth")
-    val repeatMonth: String?,
+    @ColumnInfo(name = "repeatInfo")
+    var repeatInfo : Int?,
     @ColumnInfo(name = "startRepeatDate")
     val startRepeatDate: String?,
     @ColumnInfo(name = "endRepeatDate")

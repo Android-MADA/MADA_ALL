@@ -11,6 +11,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class ActiveBottomSheetDialog(val itemClick : (Int) -> Unit) : BottomSheetDialogFragment() {
 
     var flag = "active"
+
+    override fun getTheme(): Int = R.style.AppBottomSheetDialogTheme
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
