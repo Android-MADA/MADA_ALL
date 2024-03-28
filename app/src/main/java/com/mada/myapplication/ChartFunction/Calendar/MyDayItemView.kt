@@ -50,7 +50,7 @@ class MyDayItemView @JvmOverloads constructor(
                 Log.d("click","${date}")
                 val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
                 selectDay.text = formatter.print(date)
-                (fm as? FragChartDay)?.dayChange(formatter.print(date))
+                (fm as? FragChartDay)?.dayChange(date.monthOfYear.toString(), date.dayOfMonth.toString(),formatter.print(date))
                 (fm as? FragChartDay)?.dayClick()
             }
 

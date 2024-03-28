@@ -51,9 +51,7 @@ class MyProfileNickFragment : Fragment() {
     }
 
     private fun changeNickname(nickName: String) {
-        val call1 = api.changeNickname(token, nickName)
-        call1.enqueue(object : Callback<MyChangeNicknameData> {
-
+        api.changeNickname(token, nickName).enqueue(object : Callback<MyChangeNicknameData> {
             override fun onResponse(
                 call: Call<MyChangeNicknameData>,
                 response: Response<MyChangeNicknameData>

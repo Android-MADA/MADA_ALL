@@ -9,17 +9,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFunction.Data.MyGetStampData
+import com.mada.myapplication.MyFunction.Data.MyPatchStampData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MyStampBinding
+import retrofit2.Call
+import retrofit2.Response
 import java.util.Calendar
 
 class MyStampFragment : Fragment() {
     private lateinit var binding: MyStampBinding
     lateinit var navController: NavController
-    private var isButtonClicked = false
-
-    // retrofit
-    private var token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2NGpySjgxclkxMEY5OEduM01VM3NON3huRkQ4SEhnN3hmb18xckZFdmRZIiwiYXV0aG9yaXR5IjoiVVNFUiIsImlhdCI6MTY5MjM3NDYwOCwiZXhwIjoxNjkyNDEwNjA4fQ.FWaurv6qy-iiha07emFxGIZjAnwL3fluFsZSQY-AvlmBBsHe5ZtfRL69l6zP1ntOGIWEGb5IbCLd5JP4MjWu4w"
+    private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +41,11 @@ class MyStampFragment : Fragment() {
 
         // 도장판의 개수 조정
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1  // 월은 0부터 시작하므로 +1
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1  // 월의 초기값만 0
         val daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth)
         setStampNumInDaysCnt(daysInCurrentMonth)
 
-        // 도장 찍기 & 이미 찍은 거 불러오기(임시데이터)
-        val stampCnt = 21
-
+        // 도장 바인딩
         val stampViews = arrayOf(
             binding.stamp1,
             binding.stamp2,
@@ -109,26 +112,67 @@ class MyStampFragment : Fragment() {
             binding.textView30,
             binding.textView31
         )
+        val stampCnt = 0
 
-        for (i in 0 until stampCnt) {
-            stampTexts[i].isVisible = false
-            stampViews[i].setBackgroundResource(R.drawable.stamp_my)
-        }
+        // 도장판 불러오기
+        api.myGetStamp(token).enqueue(object : retrofit2.Callback<MyGetStampData> {
+            override fun onResponse(call: Call<MyGetStampData>, response: Response<MyGetStampData>) {
+                val responseCode = response.code()
+                Log.d("getStamp", "Response Code: $responseCode")
 
-        stampTexts[stampCnt].isVisible = false
-        stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_click)
+                if (response.isSuccessful) {
+                    Log.d("getStamp 성공", response.body().toString())
+                    val stampCnt = response.body()!!.data
 
-        // 스탬프 클릭
-        stampViews[stampCnt].setOnClickListener{
-            stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_my)
-            // 서버 연결
-        }
+                    for (i in 0 until stampCnt) {
+                        stampTexts[i].isVisible = false
+                        stampViews[i].setBackgroundResource(R.drawable.stamp_my)
+                    }
+
+                    stampTexts[stampCnt].isVisible = false
+                    stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_click)
+
+                    // 도장 찍기
+                    stampViews[stampCnt].setOnClickListener{
+                        stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_my)
+                        myPatchStamp()
+                    }
+                } else {
+                    Log.d("getStamp 실패", "$responseCode")
+                }
+            }
+
+            override fun onFailure(call: Call<MyGetStampData>, t: Throwable) {
+                Log.d("서버 오류", "getStamp 실패")
+            }
+        })
 
         // 엑스 버튼
         binding.cancelBtn.setOnClickListener {
             navController.navigate(R.id.action_myStampFragment_to_fragMy)
         }
 
+    }
+
+    // 도장 개수를 저장하는 함수
+    private fun myPatchStamp(){
+        api.myPatchStamp(token).enqueue(object : retrofit2.Callback<MyPatchStampData> {
+            override fun onResponse(call: Call<MyPatchStampData>, response: Response<MyPatchStampData>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        Log.d("myPatchStamp 성공", "Data: ${response.body()!!.data} ")
+                    } else
+                        Log.d("myPatchStamp 실패", "stampCnt: null")
+                } else {
+                    Log.d("myPatchStamp 실패", "Response Code: ${response.code()} ")
+                }
+            }
+
+            override fun onFailure(call: Call<MyPatchStampData>, t: Throwable) {
+                Log.d("서버 오류", "myPatchStamp 실패")
+            }
+        })
     }
 
     // 해당 월의 마지막 날짜를 받아오는 함수
@@ -155,18 +199,29 @@ class MyStampFragment : Fragment() {
             30 -> {
                 binding.stamp31.isVisible = false
                 binding.textView31.isVisible = false
+                binding.stampGift330.isVisible = true
             }
             29 -> {
                 binding.stamp30.isVisible = false
                 binding.textView30.isVisible = false
+                binding.stamp31.isVisible = false
+                binding.textView31.isVisible = false
+                binding.stampGift329.isVisible = true
             }
             28 -> {
                 binding.stamp29.isVisible = false
                 binding.connect7.isVisible = false
                 binding.textView29.isVisible = false
+                binding.stamp30.isVisible = false
+                binding.textView30.isVisible = false
+                binding.stamp31.isVisible = false
+                binding.textView31.isVisible = false
+                binding.stampGift328.isVisible = true
             }
             else -> {
                 // 31일
+                binding.textView31.isVisible = false
+                binding.stampGift331.isVisible = true
             }
         }
     }

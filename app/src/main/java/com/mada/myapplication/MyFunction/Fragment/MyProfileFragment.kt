@@ -21,6 +21,8 @@ class MyProfileFragment : Fragment() {
 
     private lateinit var binding: MyProfileBinding
     lateinit var navController: NavController
+    private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
+    private val token = Splash2Activity.prefs.getString("token", "")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +45,6 @@ class MyProfileFragment : Fragment() {
         binding.nextBtn.setOnClickListener {
             navController.navigate(R.id.action_myProfileFragment_to_myProfileNickFragment)
         }
-
-        // 서버 연결 시작
-        val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
-        val token = Splash2Activity.prefs.getString("token", "")
 
         api.myGetProfile(token).enqueue(object : retrofit2.Callback<MyGetProfileData> {
             override fun onResponse(call: Call<MyGetProfileData>, response: Response<MyGetProfileData>) {
