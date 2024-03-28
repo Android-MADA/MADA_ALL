@@ -44,7 +44,7 @@ import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.getHomeTodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

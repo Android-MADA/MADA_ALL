@@ -37,8 +37,8 @@ import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.launch
-import com.mada.myapplication.MyFuction.Data.FragMyData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
