@@ -39,6 +39,7 @@ import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatWeeklyAdapte
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.R
 import com.mada.myapplication.databinding.FragmentRepeatTodoAddBinding
 import com.mada.myapplication.db.entity.RepeatEntity
@@ -474,10 +475,13 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
          * 5. google ad
          */
         //구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adViewRepeat
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adViewRepeat.loadAd(adRequest)
+        }
 
     }
 

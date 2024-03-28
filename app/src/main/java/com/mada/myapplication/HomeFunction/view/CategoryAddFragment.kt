@@ -34,6 +34,7 @@ import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.dialog.ActiveBottomSheetDialog
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
+import com.mada.myapplication.MainActivity
 import com.mada.myapplication.R
 import com.mada.myapplication.databinding.HomeFragmentCategoryAddBinding
 import com.mada.myapplication.db.entity.CateEntity
@@ -138,12 +139,17 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
          * 구글 광고
          */
         //구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adViewCategory
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adViewCategory.loadAd(adRequest)
+        }
 
-        //기존 카테고리 조회 시
+        /**
+         * 기존 카테고리 조회 시
+         */
         if(arguments != null){
             argsArray =requireArguments().getStringArrayList("key")!!
 
@@ -178,19 +184,16 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         when(it){
                             2 -> {
                                 // 복원 동작
-                                if(viewModel.isSubscribe || viewModel.cateEntityList.value!!.size < 5){
-                                    calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
-                                }
-                                else{
+                                if(!viewModel.isSubscribe && viewModel.activeNum >=5){
                                     calendarViewModel.setPopupOne(requireContext(), "더 이상 카테고리를 추가할 수 없습니다.", view, "프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요.")
                                 }
-
-                                //restoreCategory()
+                                else{
+                                    calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
+                                }
                             }
                             1 -> {
                                 // 삭제 동작
                                 calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
-                                //removeCategory()
                             }
                         }
                     }
@@ -451,11 +454,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         backDialog.show()
     }
 
-    private fun customDeleteDialog() {
-        deleteDialog = HomeDeleteCustomDialog(requireActivity(), this)
-        deleteDialog.show()
-    }
-
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
         if (flag == "delete") {
@@ -633,102 +631,5 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
         return icon
     }
 
-    fun deleteCategory(){
-        //val cateData = CateEntity(argsArray!![0].toInt(), argsArray!![1], argsArray!![2], true, argsArray!![3].toInt())
-        CoroutineScope(Dispatchers.IO).launch {
-            //서버 전송
-            api.deleteHCategory(token = viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object :Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("catedelete", "성공")
-                        //viewModel.deleteCate(cateData)
-                        //viewModel.readActiveCate(false)
-                        //viewModel.readQuitCate(true)
-                    } else {
-                        Log.d("catedelete", "안드 잘못 실패")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("catedelete", "서버 연결 실패")
-                }
-
-            })
-            //해당 카테고리 내 보든 반복투두와 투두 삭제 코드
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
-
-    fun removeCategory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.deleteCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("categoryRemove", "success")
-                    }
-                    else{
-                        Log.d("categoryRemove", "Android fail")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("categoryRemove", "Server fail")
-                }
-
-            })
-
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
-
-    fun quitCateegory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.quitCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("catequit", "성공")
-                    }
-                    else{
-                        Log.d("catequit", "안드 잘못")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("catequit", "서버 연결 실패")
-                }
-
-            })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
-
-    fun restoreCategory(){
-        CoroutineScope(Dispatchers.IO).launch {
-            api.activeCategory(viewModel.userToken, categoryId = argsArray!![0].toInt()).enqueue(object : Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("caterestore", "성공")
-                    }
-                    else{
-                        Log.d("caterestore", "안드 잘못")
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("caterestore", "서버 연결 실패")
-                }
-
-            })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(requireView()).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
-    }
 
 }

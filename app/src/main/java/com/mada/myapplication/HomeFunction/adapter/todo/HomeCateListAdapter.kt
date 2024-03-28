@@ -125,8 +125,9 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                             ) {
                                 if(response.isSuccessful){
                                     //db에 저장
-                                    val Tresponse = response.body()!!.data.Todo
-                                    val data = TodoEntity(0, id = Tresponse.id, date = viewModel!!.homeDate.value.toString(), category = Tresponse.category.id, todoName = holder.edtAdd.text.toString(), complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
+                                    val response = response.body()!!.data.Todo
+                                    Log.d("todoAdd", response.toString())
+                                    val data = TodoEntity(0, id = response.id, date = viewModel!!.homeDate.value.toString(), category = response.category.id, todoName = todoData.todoName, complete = false, repeat = "N", repeatInfo = null, startRepeatDate =  null, endRepeatDate = null)
                                     viewModel!!.createTodo(data, holder.edtAdd)
 
                                 } else{
@@ -141,9 +142,8 @@ class HomeCateListAdapter(private val view : View?, fragmentManager : FragmentMa
                         })
                     }
                 }
-
-                holder.layoutAdd.isGone = true
                 holder.edtAdd.text.clear()
+                holder.layoutAdd.isGone = true
                 true
             }
 

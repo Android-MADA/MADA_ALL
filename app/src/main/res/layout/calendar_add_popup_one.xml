@@ -27,6 +27,7 @@
         android:text="프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요."
         android:textColor="@color/grey1"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         />
 
     <TextView

@@ -26,12 +26,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
+import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.PatchCheckboxTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestRepeatTodo
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PatchResponseCategory
 import com.mada.myapplication.HomeFunction.Model.PostRequestCategory
 import com.mada.myapplication.HomeFunction.Model.Todo
+import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -175,6 +177,7 @@ class HomeViewModel : ViewModel() {
     var homeCateEntityList : LiveData<List<CateEntity>>? = null
     lateinit var cateEntityList : LiveData<List<CateEntity>>
     lateinit var quitCateEntityList : LiveData<List<CateEntity>>
+    var activeNum = 0
 
     //특정 카테고리 1개 저장(수정, 삭제 시)
     var _cate = MutableLiveData<CateEntity>(null)
@@ -676,23 +679,75 @@ class HomeViewModel : ViewModel() {
         var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
         Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
         callback(1)
-//        api.editRepeatTodo(userToken, selectedRepeatTodo!!.id!!, data).enqueue(object : Callback<Void>{
-//            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                if(response.isSuccessful){
-//                    Log.d("repeat Edit", "success")
-//                    callback(0)
-//                }
-//                else{
-//                    Log.d("repeat Edit", "android fail")
-//                    callback(1)
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Void>, t: Throwable) {
-//                Log.d("repeat Edit", "fail")
-//                callback(1)
-//            }
-//
-//        })
+
     }
+
+    fun getHomeAllTodo(context: Context, callback: (Int) -> Unit){
+        api.getAllMyTodo(userToken, homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+                if(response.isSuccessful){
+                    for(i in response.body()!!.data.TodoList){
+                        val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                        Log.d("MainActivity todo server", todoData.toString())
+                        createTodo(todoData, null)
+                    }
+                    for(i in response.body()!!.data.RepeatTodoList){
+                        val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.categoryId, todoName = i.repeatTodoName, complete = i.complete, repeat = "Y")
+                        Log.d("MainActivity repeat server", repeatData.toString())
+                        createTodo(repeatData, null)
+                    }
+                    //닉네임 저장하기
+                    _dUserName.value = response.body()!!.data.nickname
+                    callback(0)
+                }
+                else {
+                    Log.d("todo안드 잘못", "서버 연결 실패")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<TodoList>, t: Throwable) {
+                Log.d("todo서버 연결 오류", "서버 연결 실패")
+                callback(1)
+            }
+
+        })
+    }
+
+    fun getHomeMyCategory(context: Context, callback: (Int) -> Unit){
+        deleteAllCate()
+        api.getHCategory(userToken, homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
+            override fun onResponse(
+                call: Call<CategoryList1>,
+                response: Response<CategoryList1>
+            ) {
+                if (response.isSuccessful) {
+                    for (i in response.body()!!.data.CategoryList) {
+                        val cateData = CateEntity(
+                            id = i.id,
+                            categoryName = i.categoryName,
+                            color = i.color,
+                            iconId = i.iconId,
+                            isInActive = i.isInActive
+                        )
+                        createCate(cateData)
+                    }
+                    //getHomeTodo(api, context)
+                    callback(0)
+                } else {
+                    Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+                Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
+                callback(1)
+            }
+
+        })
+    }
+
+
 }
+
