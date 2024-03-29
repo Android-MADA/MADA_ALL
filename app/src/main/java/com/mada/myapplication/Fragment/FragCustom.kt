@@ -200,10 +200,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     fun getSavedSelectedButtonInfo(): selectedButtonInfo {
         val sharedPreferences = requireActivity().getSharedPreferences("selected_info", Context.MODE_PRIVATE)
 
-        val colorButtonId = sharedPreferences.getInt("color_button_id", 0)
-        val clothButtonId = sharedPreferences.getInt("cloth_button_id", 0)
-        val itemButtonId = sharedPreferences.getInt("item_button_id", 0)
-        val backgroundButtonId = sharedPreferences.getInt("background_button_id", 0)
+        val colorButtonId = sharedPreferences.getInt("color_button_id", 10)
+        val clothButtonId = sharedPreferences.getInt("cloth_button_id", 49)
+        val itemButtonId = sharedPreferences.getInt("item_button_id", 50)
+        val backgroundButtonId = sharedPreferences.getInt("background_button_id", 48)
 
         // 가져온 정보를 바탕으로 selectedButtonInfo 객체를 만듭니다.
         val selectedColorButtonInfo = when (colorButtonId) {
@@ -530,6 +530,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         }
 
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        bottomNavigationView?.setOnItemSelectedListener{ menuItem ->
+            curMenuItem = menuItem.itemId
+            if (unsavedChanges) {
+                showBackConfirmationDialog()
+                false
+            } else {
+                findNavController().navigate(menuItem.itemId)
+                true
+            }
+        }
+
+
 
 
 
@@ -767,6 +781,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     }
                 }
             })
+
+
+
 
 
 

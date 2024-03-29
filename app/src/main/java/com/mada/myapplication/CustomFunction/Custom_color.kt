@@ -157,14 +157,14 @@ class custom_color(val binding: CustomColorBinding) : Fragment() {
             R.id.btn_color_green -> ButtonInfo(clickedButton.id, 12, R.drawable.c_ramdyg)
             R.id.btn_color_mint -> ButtonInfo(clickedButton.id, 13, R.drawable.c_ramdyb)
             R.id.btn_color_orange -> ButtonInfo(clickedButton.id, 14, R.drawable.c_ramdyo)
-            R.id.btn_color_orange2 -> ButtonInfo(clickedButton.id, 15, R.drawable.c_ramdi)
+            R.id.btn_color_orange2 -> ButtonInfo(clickedButton.id, 15, R.drawable.c_ramdyoy)
             R.id.btn_color_pink -> ButtonInfo(clickedButton.id, 16, R.drawable.c_ramdypn)
-            R.id.btn_color_pink2 -> ButtonInfo(clickedButton.id, 17, R.drawable.c_ramdi)
-            R.id.btn_color_pink3-> ButtonInfo(clickedButton.id, 18, R.drawable.c_ramdi)
+            R.id.btn_color_pink2 -> ButtonInfo(clickedButton.id, 17, R.drawable.c_ramdypink)
+            R.id.btn_color_pink3-> ButtonInfo(clickedButton.id, 18, R.drawable.c_ramdydp)
             R.id.btn_color_purple -> ButtonInfo(clickedButton.id, 26, R.drawable.c_ramdyp)
             R.id.btn_color_Rblue -> ButtonInfo(clickedButton.id, 27, R.drawable.c_ramdyrb)
             R.id.btn_color_yellow -> ButtonInfo(clickedButton.id, 28, R.drawable.c_ramdyy)
-            R.id.btn_color_yellow2 -> ButtonInfo(clickedButton.id, 51, R.drawable.c_ramdi)
+            R.id.btn_color_yellow2 -> ButtonInfo(clickedButton.id, 51, R.drawable.c_ramdyyellow)
 
 
             else -> throw IllegalArgumentException("Unknown button ID")
