@@ -88,6 +88,16 @@
                 android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
+            <ImageButton
+                android:id="@+id/btn_color_Rblue"
+                android:src="@drawable/color_rblue"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:background="#FFFFFF"></ImageButton>
+
 
 
 
@@ -100,7 +110,9 @@
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            >
 
             <ImageButton
                 android:id="@+id/btn_color_pink2"
@@ -165,15 +177,7 @@
                 android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
-            <ImageButton
-                android:id="@+id/btn_color_Rblue"
-                android:src="@drawable/color_rblue"
-                android:layout_margin ="10dp"
-                android:scaleType="fitStart"
-                android:adjustViewBounds="true"
-                android:layout_width="40dp"
-                android:visibility="gone"
-                android:background="#FFFFFF"></ImageButton>
+
 
 
 

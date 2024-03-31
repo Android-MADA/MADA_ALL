@@ -14,7 +14,7 @@ import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
-import com.mada.myapplication.Fragment.onCategorySelected
+//import com.mada.myapplication.Fragment.onCategorySelected
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
@@ -40,7 +40,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
     val token = Splash2Activity.prefs.getString("token", "")
 
-    private val serverIdToDrawableMap = mapOf(
+    /*private val serverIdToDrawableMap = mapOf(
         900 to R.drawable.custom_empty,
         41 to R.drawable.set_dev,
         44 to R.drawable.set_movie,
@@ -51,7 +51,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
         42 to R.drawable.set_hanbokf,
         43 to R.drawable.set_hanbokm,
         45 to R.drawable.set_snowman
-    )
+    )*/
 
 
     override fun onAttach(context: Context) {

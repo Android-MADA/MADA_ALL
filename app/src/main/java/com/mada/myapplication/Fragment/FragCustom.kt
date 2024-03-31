@@ -334,21 +334,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
             13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyp)
+            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypn)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdypn)
+            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
+            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
             26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
             27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
             28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyy)
+            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
             else -> savedData?.selectedColorButtonInfo
         }
 
@@ -635,22 +634,20 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             patchCustomItemChange(combinedIds)
 
 
-
-
             var colorbuttonInfo = when (serverpatchList[0]) {
                 10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
                 12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
                 13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
                 14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-                15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyp)
+                15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
                 16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-                17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypn)
-                18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdypn)
+                17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
+                18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
                 26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
                 27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
                 28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-                51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyy)
+                51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
                 else -> savedData?.selectedColorButtonInfo
             }
 
@@ -880,20 +877,23 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         if (selectedButtonInfo == null){
 
 
+
+
+
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
             13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyp)
+            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypn)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdypn)
+            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
+            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
             26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
             27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
             28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyy)
+            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
             else -> savedData?.selectedColorButtonInfo
         }
 
