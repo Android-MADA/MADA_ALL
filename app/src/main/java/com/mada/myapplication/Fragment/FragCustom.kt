@@ -1106,7 +1106,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-    fun postcustomItemBuy(itemID: Int) {
+    /*fun postcustomItemBuy(itemID: Int) {
         val call: Call<Void> = service.customItemBuy(token, itemID)
 
         call.enqueue(object : Callback<Void> {
@@ -1119,7 +1119,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 Log.d("error", t.message.toString())
             }
         })
-    }
+    }*/
 
     private fun navigateToSelectedFragment(itemId: Int) {
         if (unsavedChanges) {
