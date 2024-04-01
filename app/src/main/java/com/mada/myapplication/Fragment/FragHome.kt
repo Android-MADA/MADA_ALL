@@ -76,7 +76,7 @@ class FragHome : Fragment() {
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
+            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
             15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)

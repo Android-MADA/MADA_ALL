@@ -210,7 +210,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
+            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
             15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyp)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
@@ -230,7 +230,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
             40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
             46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
             47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
@@ -338,7 +338,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
+            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
             15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
@@ -473,6 +473,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
 
                 if (colorBinding != null && clothBinding != null && backgroundBinding != null && itemBinding != null) {
+
+
+
                     //item 초기화
 
                     itemBinding.btnItemGlassNormal?.setImageResource(R.drawable.gh_normal_s)
@@ -638,7 +641,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
                 12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-                13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
+                13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
                 14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
                 15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
                 16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
@@ -884,7 +887,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdyb)
+            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
             15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)

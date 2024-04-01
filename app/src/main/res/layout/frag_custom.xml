@@ -79,32 +79,6 @@
                 android:src="@drawable/custom_empty">
             </ImageView>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/custom_emptytable">
-            </ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="80dp"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/custom_emptytable">
-            </ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="140dp"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/custom_emptytable">
-            </ImageView>
 
         </FrameLayout>
 
