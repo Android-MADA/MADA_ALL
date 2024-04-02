@@ -317,7 +317,6 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
             37 -> binding.btnItemHatV
             38 -> binding.btnItemHatHeads
             50 -> return //basic
-            51 -> return
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 

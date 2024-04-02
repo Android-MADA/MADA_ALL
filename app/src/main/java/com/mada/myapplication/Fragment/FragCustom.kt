@@ -217,7 +217,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
             28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
             51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedColorButtonInfo
         }
 
         val selectedClothButtonInfo = when (clothButtonId) {
@@ -232,7 +232,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
             45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedClothButtonInfo
         }
 
         val selectedItemButtonInfo = when (itemButtonId) {
@@ -254,7 +254,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
             29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
             38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedItemButtonInfo
         }
 
         val selectedBackgroundButtonInfo = when (backgroundButtonId) {
@@ -268,7 +268,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
             2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
             6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-            else -> throw IllegalArgumentException("Unknown button ID")
+            else -> savedData?.selectedBackgroundButtonInfo
         }
 
 
@@ -588,7 +588,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             if(temdata.selectedClothButtonInfo?.serverID == null) {
                 if(itemIds[1]!=49) {
                     uniqueItemIds.add(itemIds[1])
-                    serverpatchIds[1] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID!!.toInt()
+                    serverpatchIds[1] = DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID!!.toInt()
                 }
             } else {
                 if(temdata.selectedClothButtonInfo?.serverID !=49){
@@ -599,7 +599,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             if(temdata.selectedItemButtonInfo?.serverID == null) {
                 if(itemIds[2]!=50) {
                     uniqueItemIds.add(itemIds[2])
-                    serverpatchIds[2] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID!!.toInt()
+                    serverpatchIds[2] = DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID!!.toInt()
                 }
             } else {
                 if(temdata.selectedItemButtonInfo?.serverID!=50){
@@ -610,7 +610,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
                 if(itemIds[3]!=48) {
                     uniqueItemIds.add(itemIds[3])
-                    serverpatchIds[3] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID!!.toInt()
+                    serverpatchIds[3] = DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID!!.toInt()
                 }
             } else {
                 if(temdata.selectedBackgroundButtonInfo?.serverID!=48) {
@@ -629,8 +629,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
             )
 
-// Now you can use combinedIds as needed
             patchCustomItemChange(combinedIds)
+
 
 
             var colorbuttonInfo = when (serverpatchList[0]) {
@@ -647,7 +647,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
                 28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
                 51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-                else -> savedData?.selectedColorButtonInfo
+                else -> temdata.selectedColorButtonInfo
             }
 
             var clothbuttonInfo = when (serverpatchList[1]) {
@@ -661,7 +661,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
                 43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
                 45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-                else -> savedData?.selectedClothButtonInfo
+                else -> temdata.selectedClothButtonInfo
             }
 
             var itembuttonInfo = when (serverpatchList[2]) {
@@ -683,7 +683,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
                 29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
                 38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-                else -> savedData?.selectedItemButtonInfo
+                else -> temdata.selectedItemButtonInfo
             }
 
             var backgroundbuttonInfo = when (serverpatchList[3]) {
@@ -697,7 +697,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
                 2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
                 6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-                else -> savedData?.selectedBackgroundButtonInfo
+                else -> temdata.selectedBackgroundButtonInfo
             }
 
             val SaveButtonInfo = selectedButtonInfo(colorbuttonInfo,clothbuttonInfo,itembuttonInfo,backgroundbuttonInfo)
@@ -732,7 +732,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
             Log.d(
                 "DataRepo",
-                "buttonInfoEntityButtonInfo(): ${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID}"
+                "buttonInfoEntityButtonInfo(): ${DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID} ${DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID}"
             )
 
             unsavedChanges = false
@@ -805,7 +805,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
         binding.imgCustomCloth.setImageResource(itembuttonInfo.selectedImageResource)
-        selectedClothButtonInfo = itembuttonInfo
+        selectedItemButtonInfo = itembuttonInfo
         unsavedChanges = true
     }
 
