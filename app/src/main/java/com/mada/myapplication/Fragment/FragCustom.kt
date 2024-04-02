@@ -122,8 +122,6 @@ val itemsCategory = ArrayList<String>(100) //카테고리 중복 확인 변수
 
 //카테고리 처리
 fun onCategorySelected(serverID:Int) {
-    // 여러 카테고리 정보를 받아 처리하는 로직을 구현
-    // 예를 들어 각 카테고리 정보를 반복하여 토스트 메시지를 표시하는 등의 로직을 추가할 수 있습니다.
     val itemCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
     if (itemCategories != null) {
         for (category in itemCategories) {
@@ -150,7 +148,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var selectedClothButtonInfo: ButtonInfo? = null
     private var selectedItemButtonInfo: ButtonInfo? = null
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
-    private var custom_save = false
     private val viewModel: CustomViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var savedData: selectedButtonInfo
@@ -182,7 +179,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         var selectedBackgroundButtonInfo: ButtonInfo?
     )
 
-    // 데이터 저장하기
+    // sharedPreferences 데이터 저장하기
     fun saveSelectedButtonInfo(selectedInfo: selectedButtonInfo) {
         val sharedPreferences = requireActivity().getSharedPreferences("selected_info", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -212,14 +209,14 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
             13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
             14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyp)
+            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
             16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypn)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdypn)
+            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
+            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
             26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
             27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
             28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyy)
+            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 
@@ -235,7 +232,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
             45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         val selectedItemButtonInfo = when (itemButtonId) {
@@ -348,7 +345,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
             28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
             51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-            else -> savedData?.selectedColorButtonInfo
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
@@ -362,7 +359,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
             45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> savedData?.selectedClothButtonInfo
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
@@ -384,7 +381,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
             29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
             38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> savedData?.selectedItemButtonInfo
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         val backgroundbuttonInfo = when (DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID) {
@@ -398,7 +395,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
             2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
             6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-            else -> savedData?.selectedBackgroundButtonInfo
+            else -> throw IllegalArgumentException("Unknown button ID")
         }
 
         binding.customRamdi.setImageResource(
@@ -472,8 +469,8 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 binding.imgCustomItem.setImageResource(R.drawable.custom_empty)
                 binding.imgCustomBackground.setImageResource(R.drawable.custom_empty)
 
+                //아이템 선택 버튼 초기화
                 if (colorBinding != null && clothBinding != null && backgroundBinding != null && itemBinding != null) {
-
 
 
                     //item 초기화
@@ -553,7 +550,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         //저장하기 클릭 리스너
         binding.btnCustomSave.setOnClickListener {
-            custom_save = true
             viewModel.saveButtonInfo(getSelectedButtonInfo())
 
             var temdata = getSelectedButtonInfo()
@@ -793,7 +789,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
     override fun onColorButtonSelected(colorbuttonInfo: ButtonInfo) {
         // 선택한 버튼에 대한 리소스를 이미지뷰에 적용
-        custom_save = false
         Log.d("customcolorbtncheck", "${colorbuttonInfo.selectedImageResource}")
         binding.customRamdi.setImageResource(colorbuttonInfo.selectedImageResource)
         selectedColorButtonInfo = colorbuttonInfo
@@ -803,21 +798,18 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
-        custom_save = false
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
         selectedClothButtonInfo = clothbuttonInfo
         unsavedChanges = true
     }
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
-        custom_save = false
         binding.imgCustomCloth.setImageResource(itembuttonInfo.selectedImageResource)
         selectedClothButtonInfo = itembuttonInfo
         unsavedChanges = true
     }
 
     override fun onBackgroundButtonSelected(backgroundbuttonInfo: ButtonInfo) {
-        custom_save = false
         binding.imgCustomBackground.setImageResource(backgroundbuttonInfo.selectedImageResource)
         selectedBackgroundButtonInfo = backgroundbuttonInfo
         unsavedChanges = true
