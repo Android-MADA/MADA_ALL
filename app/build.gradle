@@ -16,12 +16,12 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 33
-        versionCode 10
-        versionName "test_version:0.24.0304.0"
+        versionCode 14
+        versionName "test_version:0.26.0402.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-         buildConfigField "String", "MADA_BASE", properties['mada_base']
+        buildConfigField "String", "MADA_BASE", properties['mada_base']
     }
 
     buildTypes {

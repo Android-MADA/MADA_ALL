@@ -33,6 +33,7 @@ class TimeTableWeekFragment : Fragment() {
 
     lateinit var today : String
     var recyclerViewList = ArrayList<RecyclerView>()
+    var commentIs = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +83,6 @@ class TimeTableWeekFragment : Fragment() {
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
-        var commentIs = false
         //파이차트
         viewModelTime.getScheduleWeeks() { result ->
             when (result) {
@@ -107,8 +107,8 @@ class TimeTableWeekFragment : Fragment() {
                     }
                     2 -> {
                         binding.textTimeTodayHanmadi.setText("")
+                        binding.textTimeTodayHanmadi.setHint("오늘의 한마디!")
                         commentIs = false
-
                     }
                     3-> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -158,7 +158,33 @@ class TimeTableWeekFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.timeChangeBtn.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
+            val enteredText = binding.textTimeTodayHanmadi.text.toString()
+            Log.d("test",enteredText)
+            if(commentIs) {
+                viewModelTime.editComment(today, CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTime)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         binding.fabHomeTime.setOnClickListener {

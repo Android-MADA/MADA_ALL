@@ -7,28 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TableRow
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnBackgroundImageChangeListener
-import com.mada.myapplication.Fragment.OnResetButtonClickListener
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomBackgroundBinding
+import com.mada.myapplication.databinding.CustomClothBinding
+import com.mada.myapplication.databinding.CustomColorBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class custom_background : Fragment() {
-    lateinit var binding: CustomBackgroundBinding
+class custom_background(val binding: CustomBackgroundBinding) : Fragment() {
     private var selectedButton: ImageButton? = null
 
     private var imageChangeListener: OnBackgroundImageChangeListener? = null
-    private var resetButtonClickListener: OnResetButtonClickListener? = null
+    //private var resetButtonClickListener: OnResetButtonClickListener? = null
 
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
+    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
         .addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
@@ -42,17 +43,16 @@ class custom_background : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CustomBackgroundBinding.inflate(inflater, container, false)
-        getCustomItemCheck("background")
+        //binding = CustomBackgroundBinding.inflate(inflater, container, false)
+        getCustomItemCheck()
 
 
-        binding.btnBackBasic.setOnClickListener{
-            onImageButtonClick(binding.btnBackBasic)
-            onBackgroundButtonClick(it as ImageButton)}
+
         binding.btnBackBridS.setOnClickListener{
             onImageButtonClick(binding.btnBackBridS)
             onBackgroundButtonClick(it as ImageButton)}
@@ -95,7 +95,6 @@ class custom_background : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_back_basic -> R.drawable.custom_nullchoice
             R.id.btn_back_brid_s -> R.drawable.back_bird_choice
             R.id.btn_back_n_s -> R.drawable.back_n_choice
             R.id.btn_back_win_s -> R.drawable.back_win_choice
@@ -112,7 +111,6 @@ class custom_background : Fragment() {
 
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_back_basic -> R.drawable.custom_null
             R.id.btn_back_brid_s -> R.drawable.back_bird_s_1
             R.id.btn_back_n_s -> R.drawable.back_n_s_1
             R.id.btn_back_win_s -> R.drawable.back_win_s_1
@@ -129,7 +127,6 @@ class custom_background : Fragment() {
 
     fun onBackgroundButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
-            R.id.btn_back_basic -> ButtonInfo(clickedButton.id, 700, R.drawable.custom_empty)
             R.id.btn_back_brid_s -> ButtonInfo(clickedButton.id, 1, R.drawable.back_brid)
             R.id.btn_back_n_s -> ButtonInfo(clickedButton.id, 3, R.drawable.back_n)
             R.id.btn_back_win_s -> ButtonInfo(clickedButton.id, 8, R.drawable.back_win)
@@ -144,8 +141,9 @@ class custom_background : Fragment() {
 
         imageChangeListener?.onBackgroundButtonSelected(buttonInfo)
     }
-    fun resetButtonBackground() {
-        binding.btnBackBasic.setImageResource(R.drawable.custom_null)
+
+    /*fun resetButtonBackground() {
+        Log.d("BackgroundFrag", "resetButtonBackground()")
         binding.btnBackBridS.setImageResource(R.drawable.back_bird_s_1)
         binding.btnBackNS.setImageResource(R.drawable.back_n_s_1)
         binding.btnBackWinS.setImageResource(R.drawable.back_win_s_1)
@@ -156,10 +154,10 @@ class custom_background : Fragment() {
         binding.btnBackCinS.setImageResource(R.drawable.back_cin_s_1)
         binding.btnBackSumS.setImageResource(R.drawable.back_sr_s_1)
 
-    }
+    }*/
 
-    fun getCustomItemCheck(itemType: String) {
-        val call: Call<customItemCheckDATA> = service.customItemCheck(token, itemType)
+    fun getCustomItemCheck() {
+        val call: Call<customItemCheckDATA> = service.customItemCheck(token)
 
         call.enqueue(object : Callback<customItemCheckDATA> {
             override fun onResponse(
@@ -172,8 +170,16 @@ class custom_background : Fragment() {
                         itemList.itemList.forEachIndexed { index, item ->
                             Log.d(
                                 "getCustomItemCheckCloth",
-                                "Item $index - id: ${item.id} ${item.name} ${item.itemType} ${item.itemUnlockCondition} ${item.filePath} ${item.have}"
+                                "Item $index - id: ${item.id} itemType:${item.itemType} have:${item.have} itemCategory:${item.itemCategory}"
                             )
+
+                            if (item.itemType == "background" && item.have) {
+                                Log.d(
+                                    "BackgroundShowButton",
+                                    "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
+                                )
+                                showButton(item.id)
+                            }
                         }
                     }
                 } else {
@@ -187,6 +193,45 @@ class custom_background : Fragment() {
         })
     }
 
+    private fun showButton(itemCategory: Int) {
+        val buttonToShow = when (itemCategory) {
+            1 -> binding.btnBackBridS
+            2 -> binding.btnBackCinS
+            3 -> binding.btnBackNS
+            4 -> binding.btnBackNormalS
+            5 -> binding.btnBackStoreS
+            6 -> binding.btnBackSumS
+            7 -> binding.btnBackUniS
+            8 -> binding.btnBackWinS
+            9 -> binding.btnBackZzimS
+            48 -> return //basic
+            else -> throw IllegalArgumentException("Unknown button ID")
+        }
+
+        val parent = buttonToShow.parent as? TableRow
+        parent?.let {
+            // 버튼을 보이도록 설정
+            buttonToShow.visibility = View.VISIBLE
+
+            // 남은 버튼의 개수 확인
+            val remainingButtonsCount = it.childCount
+
+            // 남은 버튼의 개수가 0이 아니라면 가중치 조정
+            if (remainingButtonsCount > 0) {
+                val weight = 1.0f / (remainingButtonsCount + 1) // 새 버튼을 고려하여 +1
+                for (i in 0 until remainingButtonsCount) {
+                    val child = it.getChildAt(i)
+                    val layoutParams = child.layoutParams as TableRow.LayoutParams
+                    layoutParams.weight = weight
+                    child.layoutParams = layoutParams
+                }
+                // 새 버튼에도 가중치 설정
+                val layoutParams = buttonToShow.layoutParams as TableRow.LayoutParams
+                layoutParams.weight = weight
+                buttonToShow.layoutParams = layoutParams
+            }
+        }
+    }
 
 
 

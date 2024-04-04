@@ -2,5 +2,5 @@
     android:shape="oval">
     <!-- 버튼 색깔 -->
     <solid android:color="#F0F0F0"/>
-    <size android:width="54dp" android:height="54dp"/>
+    <size android:width="50dp" android:height="50dp"/>
 </shape>

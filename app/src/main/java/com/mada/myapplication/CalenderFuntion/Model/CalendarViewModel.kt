@@ -20,11 +20,11 @@ import com.mada.myapplication.BuildConfig
 import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.mada.myapplication.StartFunction.Splash2Activity
 import org.joda.time.DateTime
 import org.joda.time.Days
 import retrofit2.Call
@@ -124,6 +124,41 @@ class CalendarViewModel : ViewModel(){
         val currentDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
         val formattedDate = currentDate.format(dateFormatter)
         return formattedDate
+    }
+    fun setPopupTwo(theContext: Context,title : String, theView : View, moveFragment : Int) {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mBuilder.show()
+
+        //팝업 사이즈 조절
+        DisplayMetrics()
+        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
+        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        display.getSize(size)
+        val screenWidth = size.x
+        val popupWidth = (screenWidth * 0.8).toInt()
+        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        //팝업 타이틀 설정, 버튼 작용 시스템
+        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+            mBuilder.dismiss()
+        })
+        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+            if(moveFragment!=0) {
+                Navigation.findNavController(theView).navigate(moveFragment)
+                mBuilder.dismiss()
+            } else {
+                System.exit(0)
+            }
+
+        })
     }
     fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
@@ -285,6 +320,21 @@ class CalendarViewModel : ViewModel(){
             mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.VISIBLE
             mDialogView.findViewById<TextView>(R.id.popone_desc).text = desc
         }
+    }
+    fun setPopupBuffering(theContext: Context) : AlertDialog {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        mBuilder.show()
+        mBuilder.setCancelable(false)
+        mBuilder.setCanceledOnTouchOutside(false)
+
+        return mBuilder
     }
     //달력 관련 함수들
     fun convertToDateKoreanFormat123(dateString: String): String {
@@ -687,7 +737,8 @@ class CalendarViewModel : ViewModel(){
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
                                         data.color,"No",data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
-                                    ddayArrayList.add(tmp)
+                                    if(daysRemainingToDate(tmp.endDate)>=0)
+                                        ddayArrayList.add(tmp)
                                 }
                             }
                             ddayArrayList.sortBy { daysRemainingToDate(it.endDate) }

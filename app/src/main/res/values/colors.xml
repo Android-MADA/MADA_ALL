@@ -25,4 +25,8 @@
     <color name="color5">#21C362</color>
     <color name="color6">#0E9746</color>
 
+    <color name="barchart1">#618FBC</color>
+    <color name="linechart1">#C3497D</color>
+    <color name="linechart2">#803A67</color>
+
 </resources>

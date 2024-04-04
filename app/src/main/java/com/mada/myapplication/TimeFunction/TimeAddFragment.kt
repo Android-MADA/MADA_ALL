@@ -292,6 +292,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
         //등록 btn
         btnSubmit.setOnClickListener {
             if(btnSubmit.text.toString()=="삭제"){
+                val buffer = viewModelTime.setPopupBuffering(requireContext())
                 viewModelTime.delTimeDatas(curId) { result ->
                     when (result) {
                         1 -> {
@@ -304,9 +305,11 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                             }
                             val bundle = Bundle()
                             bundle.putString("today",today)
+                            buffer.dismiss()
                             findNavController().navigate(preFragment,bundle)
                         }
                         2 -> {
+                            buffer.dismiss()
                             Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -319,7 +322,7 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                 var check = true
                 if (receivedData != null) {
                     for (data in receivedData) {
-                        if(data.divisionNumber!=-1) {
+                        if(data.divisionNumber!=-1&&data.divisionNumber!=999) {
                             var tmpStart = data.startHour * 60 + data.startMin
                             var tmpEnd = data.endHour * 60 + data.endMin
                             if (tmpEnd == 0)
@@ -332,12 +335,13 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
                     }
                 }
                 if(binding.edtHomeCategoryName.text.toString()=="") {
-                    viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", view)
+                    viewModelTime.setPopupOne(requireContext(),"스케줄명을 입력하시오", requireView())
                 } else if(viewModelTime.compareTimes(binding.tvHomeTimeStart.text.toString(),binding.tvHomeTimeEnd.text.toString())) {
                     viewModelTime.setPopupOne(requireContext(),"30분 미만의 시간표는 추가하실수 없습니다", view)
                 } else if(!check){            //이미 해당 시간에 일정이 있을 때
                     viewModelTime.setPopupOne(requireContext(),"해당 시간에 이미 일정이 존재합니다", view)
                 } else {
+                    val buffer = viewModelTime.setPopupBuffering(requireContext())
                     val tmp = ScheduleAdd(today,binding.edtHomeCategoryName.text.toString(),curColor,viewModelTime.timeChange(binding.tvHomeTimeStart.text.toString()),
                         viewModelTime.timeChange(binding.tvHomeTimeEnd.text.toString()),binding.edtHomeScheduleMemo.text.toString(),false,"DAILY")
                     if(btnSubmit.text.toString()=="등록") {
@@ -355,9 +359,11 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
+                                    buffer.dismiss()
                                     findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
+                                    buffer.dismiss()
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -380,9 +386,11 @@ class TimeAddFragment : Fragment(), HomeCustomDialogListener {
 
                                     val bundle = Bundle()
                                     bundle.putString("today",today)
+                                    buffer.dismiss()
                                     findNavController().navigate(preFragment,bundle)
                                 }
                                 2 -> {
+                                    buffer.dismiss()
                                     Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                                 }
                             }

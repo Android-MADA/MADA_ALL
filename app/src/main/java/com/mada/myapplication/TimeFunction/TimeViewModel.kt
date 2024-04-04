@@ -29,7 +29,7 @@ import com.mada.myapplication.HomeFunction.Model.ScheduleWeekResponse
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +52,7 @@ class TimeViewModel : ViewModel() {
         get() = _myLiveToday
 
     var todayString : String =""
+    var hanmadi = ""
 
 
     //2023-08-01 형식
@@ -98,6 +99,21 @@ class TimeViewModel : ViewModel() {
             }
         }
         return 0
+    }
+    fun setPopupBuffering(theContext: Context) : AlertDialog {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        mBuilder.show()
+        mBuilder.setCancelable(false)
+        mBuilder.setCanceledOnTouchOutside(false)
+
+        return mBuilder
     }
     fun timeChange(time: String): String {
         val inputFormat = SimpleDateFormat("ah:mm", Locale("en","US"))
@@ -179,10 +195,11 @@ class TimeViewModel : ViewModel() {
         val screenWidth = size.x
         val popupWidth = (screenWidth * 0.8).toInt()
         mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+        mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.GONE
 
         //팝업 타이틀 설정, 버튼 작용 시스템
         mDialogView.findViewById<TextView>(R.id.textTitle).text = title
-        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+        mDialogView.findViewById<TextView>(R.id.yesBtnText).setOnClickListener( {
             mBuilder.dismiss()
         })
     }

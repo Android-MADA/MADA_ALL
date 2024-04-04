@@ -39,6 +39,8 @@ class FragTime : Fragment() {
     private lateinit var customCircleBarView: CustomCircleBarView       //프로그래스바
     var loadWeek = false
 
+    var commentIs = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -52,7 +54,6 @@ class FragTime : Fragment() {
         var formattedDate: String = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         if(viewModelTime.todayString!="")  formattedDate = viewModelTime.todayString
 
-        var commentIs = false
 
         val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ko","KR"))
         val outputDateFormat = SimpleDateFormat("M월 d일 E요일", Locale("ko", "KR"))
@@ -82,6 +83,9 @@ class FragTime : Fragment() {
                         if(tmpList.size==0) {
                             loadWeek= true
                             binding.fabHomeTime.setImageResource(R.drawable.time_clock_img)
+                        } else {
+                            binding.fabHomeTime.setImageResource(R.drawable.calendar_plus_btn)
+                            loadWeek= false
                         }
                         pirChartOn(tmpList)
 
@@ -99,8 +103,8 @@ class FragTime : Fragment() {
                     }
                     2 -> {
                         binding.textTimeTodayHanmadi.setText("")
+                        binding.textTimeTodayHanmadi.setHint("오늘의 한마디!")
                         commentIs = false
-
                     }
                     3-> {
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
@@ -173,7 +177,33 @@ class FragTime : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.timeChangeBtn.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+            val enteredText = binding.textTimeTodayHanmadi.text.toString()
+            Log.d("test",enteredText)
+            if(commentIs) {
+                viewModelTime.editComment(today,CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeTable)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         binding.fabHomeTime.setOnClickListener {

@@ -172,6 +172,7 @@ class CalendarAddDdayFragment : Fragment() {
             } else if(binding.textTitle.text.toString() == "") {
                 CalendarViewModel.setPopupOne(requireContext(),"제목을 입력해 주십시오",view)
             }   else {
+                val buffering = CalendarViewModel.setPopupBuffering(requireContext())
                 if(binding.addBtn.text.toString()=="수정") {
                     CalendarViewModel.editCalendar(
                         CalendarDataEdit( curId,binding.textTitle.text.toString(),ScheduleNum.text.toString(),ScheduleNum.text.toString(),
@@ -193,9 +194,11 @@ class CalendarAddDdayFragment : Fragment() {
                                 delDday(initSchedule.substring(0,4).toInt(),initSchedule.substring(5,7).toInt(),curId)
                                 addDday(ScheduleNum.text.substring(0,4).toInt(),ScheduleNum.text.substring(5,7).toInt(),curId
                                 )
+                                buffering.dismiss()
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
                             }
                             2 -> {
+                                buffering.dismiss()
                                 Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -214,9 +217,11 @@ class CalendarAddDdayFragment : Fragment() {
 
                                 addDday(ScheduleNum.text.substring(0,4).toInt(),ScheduleNum.text.substring(5,7).toInt(),tmpId)
 
+                                buffering.dismiss()
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
                             }
                             2 -> {
+                                buffering.dismiss()
                                 Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -233,9 +238,11 @@ class CalendarAddDdayFragment : Fragment() {
                                     }
                                 }
                                 delDday(initSchedule.substring(0,4).toInt(),initSchedule.substring(5,7).toInt(),curId)
+                                buffering.dismiss()
                                 Navigation.findNavController(view).navigate(R.id.action_calendarAddDday_to_calendarDday)
                             }
                             2 -> {
+                                buffering.dismiss()
                                 Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
                             }
                         }

@@ -3,11 +3,13 @@ package com.mada.myapplication.CustomFunction
 import androidx.annotation.Keep
 
 @Keep
-data class CustomItemChangeDATA (
-    val status: Int,
+data class customItemChangeDATA(
     val success: Boolean,
-    val message: String
+    val data : wearingItems
 )
+
+
+
 
 
 
