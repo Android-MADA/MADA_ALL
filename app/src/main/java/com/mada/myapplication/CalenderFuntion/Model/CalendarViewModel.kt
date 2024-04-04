@@ -260,8 +260,10 @@ class CalendarViewModel : ViewModel(){
                     mBuilder.dismiss()
                 } else {
                     //복원 서버 처리
+                    val buffering = setPopupBuffering(theContext)
                     Log.d("restore", "working")
                     restoreCategory(theView, categoryId)
+                    buffering.dismiss()
                     mBuilder.dismiss()
                 }
             } else if (flag == "quit") {
@@ -269,8 +271,10 @@ class CalendarViewModel : ViewModel(){
                     mBuilder.dismiss()
                 } else {
                     // 종료 서버 처리
+                    val buffering = setPopupBuffering(theContext)
                     Log.d("quit", "working")
                     quitCateegory(theView, categoryId)
+                    buffering.dismiss()
                     mBuilder.dismiss()
                 }
             } else if (flag == "delete") {
@@ -278,8 +282,10 @@ class CalendarViewModel : ViewModel(){
                     mBuilder.dismiss()
                 } else {
                     // 삭제 서버 처리
+                    val buffering = setPopupBuffering(theContext)
                     Log.d("delete", "working")
                     removeCategory(theView, categoryId)
+                    buffering.dismiss()
                     mBuilder.dismiss()
                 }
             }
@@ -757,73 +763,61 @@ class CalendarViewModel : ViewModel(){
     }
 
     fun quitCateegory(view : View, categoryId : Int){
-        CoroutineScope(Dispatchers.IO).launch {
             homeApi.quitCategory(token, categoryId).enqueue(object : Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
                         Log.d("catequit", "성공")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                     else{
                         Log.d("catequit", "안드 잘못")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d("catequit", "서버 연결 실패")
-                }
+                    Navigation.findNavController(view).popBackStack()                }
 
             })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
+
     }
 
     fun restoreCategory(view : View, categoryId: Int){
-        CoroutineScope(Dispatchers.IO).launch {
+
             homeApi.activeCategory(token, categoryId).enqueue(object : Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
                         Log.d("caterestore", "성공")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                     else{
                         Log.d("caterestore", "안드 잘못")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d("caterestore", "서버 연결 실패")
-                }
+                    Navigation.findNavController(view).popBackStack()                }
 
             })
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
     }
 
     fun removeCategory(view : View, categoryId : Int){
-        CoroutineScope(Dispatchers.IO).launch {
+
             homeApi.deleteCategory(token, categoryId).enqueue(object : Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
                         Log.d("categoryRemove", "success")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                     else{
                         Log.d("categoryRemove", "Android fail")
-                    }
+                        Navigation.findNavController(view).popBackStack()                    }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d("categoryRemove", "Server fail")
+                    Navigation.findNavController(view).popBackStack()
                 }
 
             })
-
-            withContext(Dispatchers.Main){
-                Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-            }
-        }
     }
 
 }

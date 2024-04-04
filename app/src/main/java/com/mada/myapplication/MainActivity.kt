@@ -73,27 +73,6 @@ class MainActivity : AppCompatActivity() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        /**
-         * 1-1 database clear
-         */
-        //clearHomeDatabase(viewModel)
-
-        /**
-         * 1-2 캐릭터 서버에서 받아오기
-         */
-
-
-        /**
-         * 2. GET home Category
-         */
-        //getHomeCategory(api, viewModel, this)
-
-
-        /**
-         * 3. GET home Todo
-         */
-        //getHomeTodo(api, viewModel, this)
-        //getHomeTodo(api, viewModel, this)
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 

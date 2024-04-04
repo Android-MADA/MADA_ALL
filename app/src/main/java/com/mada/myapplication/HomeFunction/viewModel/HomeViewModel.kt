@@ -597,6 +597,7 @@ class HomeViewModel : ViewModel() {
                 when(result){
                     0 -> {
                         //삭제
+                        val buffering = setPopupBufferingTodo(theContext)
                         when(selectedFlag){
                             "one" -> {
                                 deleteRepeatTodoOne(repeatId){
@@ -639,6 +640,7 @@ class HomeViewModel : ViewModel() {
                                 }
                             }
                         }
+                        buffering.dismiss()
                     }
                     else -> {
                         Log.d("repeatTodo delete", "fail")
@@ -746,6 +748,22 @@ class HomeViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun setPopupBufferingTodo(theContext: Context) : AlertDialog {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        mBuilder.show()
+        mBuilder.setCancelable(false)
+        mBuilder.setCanceledOnTouchOutside(false)
+
+        return mBuilder
     }
 
 

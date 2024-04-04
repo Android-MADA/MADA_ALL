@@ -92,6 +92,7 @@ class HomeCategoryFragment : Fragment() {
             cateAdapter.setItemClickListener(object : CateListAdapter.OnItemClickListener{
                 override fun onClick(v: View, dataSet: CateEntity) {
 
+                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
                     viewModel._cate.value = dataSet
 
                     val bundle = Bundle()
@@ -102,7 +103,7 @@ class HomeCategoryFragment : Fragment() {
                         dataSet.iconId.toString(),
                         "active"
                     ))
-
+                    buffering.dismiss()
                     Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
                 }
 
@@ -122,7 +123,7 @@ class HomeCategoryFragment : Fragment() {
             quitCateAdapter.submitList(quitCateList)
             quitCateAdapter.setItemClickListener(object : CateListAdapter.OnItemClickListener{
                 override fun onClick(v: View, dataSet: CateEntity) {
-
+                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
                     viewModel._cate.value = dataSet
 
                     val bundle = Bundle()
@@ -133,7 +134,7 @@ class HomeCategoryFragment : Fragment() {
                         dataSet.iconId.toString(),
                         "inactive"
                     ))
-
+                    buffering.dismiss()
                     Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment, bundle)
                 }
 
@@ -150,7 +151,9 @@ class HomeCategoryFragment : Fragment() {
 
         //카테고리 추가 버튼 클리리스너
         binding.categoryAddIv.setOnClickListener {
+            val buffering = viewModel.setPopupBufferingTodo(requireContext())
             Navigation.findNavController(view).navigate(R.id.action_homeCategoryFragment_to_categoryAddFragment)
+            buffering.dismiss()
         }
 
     }

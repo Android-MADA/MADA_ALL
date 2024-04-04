@@ -188,6 +188,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                                     calendarViewModel.setPopupOne(requireContext(), "더 이상 카테고리를 추가할 수 없습니다.", view, "프리미엄 결제 시 카테고리를 제한 없이 추가할 수 있어요.")
                                 }
                                 else{
+
                                     calendarViewModel.setPopupTwo(requireContext(), "카테고리를 복원하시겠습니까?", view, 0, "restore", argsArray!![0].toInt())
                                 }
                             }
@@ -232,12 +233,10 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                             0 -> {
                                 // 종료 동작
                                 calendarViewModel.setPopupTwo(requireContext(), "정말 종료하시겠습니까?", view, 0, "quit", argsArray!![0].toInt())
-                                //quitCateegory()
                             }
                             1 -> {
                                 // 삭제 동작
                                 calendarViewModel.setPopupTwo(requireContext(), "정말 삭제하시겠습니까?", view, 0, "delete", argsArray!![0].toInt())
-                                //removeCategory()
                             }
                         }
                     }
@@ -329,7 +328,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                     calendarViewModel.setPopupOne(requireContext(), "제목을 입력해주세요.", view)
                 }
                 else {
-                        val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
+                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
+                    val catePostData = PostRequestCategory(binding.edtHomeCategoryName.text.toString(), colorAdapter.selecetedColor, findIconId(iconAdapter.selectedIcon), false, false)
                         val cateData = CateEntity(id = argsArray[0].toInt(), categoryName = binding.edtHomeCategoryName.text.toString(), color = colorAdapter.selecetedColor, iconId = findIconId(iconAdapter.selectedIcon), isInActive = false)
                     //서버에 patch 전송
                     viewModel.editCategoryAPI(categoryId = argsArray[0].toInt(), category = catePostData, cateDB = cateData) { result ->
@@ -351,6 +351,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                         }
 
                     }
+                    buffering.dismiss()
                 }
 
             }
@@ -368,7 +369,8 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                 }
                 else {
                         //내용 db 저장
-                        val cateName = binding.edtHomeCategoryName.text.toString()
+                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
+                    val cateName = binding.edtHomeCategoryName.text.toString()
                         val cateColor = colorAdapter.selecetedColor
                         val cateIconId = findIconId(iconAdapter.selectedIcon)
 
@@ -381,8 +383,6 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                                 0 -> {
                                     //success
                                     Navigation.findNavController(view).navigate(R.id.action_categoryAddFragment_to_homeCategoryFragment)
-
-
                                 }
                                 1 -> {
                                     //fail
@@ -392,6 +392,7 @@ class CategoryAddFragment : Fragment(), HomeCustomDialogListener {
                                 }
                             }
                         }
+                    buffering.dismiss()
 
                 }
         }

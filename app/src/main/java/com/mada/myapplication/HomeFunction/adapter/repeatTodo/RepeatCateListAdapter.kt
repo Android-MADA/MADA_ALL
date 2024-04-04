@@ -90,12 +90,14 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
         }
 
         holder.btnAdd.setOnClickListener {
-            var bundle = Bundle()
+            val buffering = viewModel!!.setPopupBufferingTodo(mContext)
 
+            var bundle = Bundle()
             bundle.putStringArrayList("keyAdd", arrayListOf(
                 holder.data!!.id.toString(),
             ))
             Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+            buffering.dismiss()
         }
 
         //edt 저장
