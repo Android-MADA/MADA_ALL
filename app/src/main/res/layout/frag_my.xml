@@ -90,7 +90,7 @@
                                 android:layout_marginTop="30dp"
                                 android:layout_marginEnd="3dp"
                                 android:breakStrategy="balanced"
-                                android:text="안녕하세요, 김마다님!"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />

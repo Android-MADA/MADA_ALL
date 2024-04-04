@@ -112,7 +112,6 @@ class MyStampFragment : Fragment() {
             binding.textView30,
             binding.textView31
         )
-        val stampCnt = 0
 
         // 도장판 불러오기
         api.myGetStamp(token).enqueue(object : retrofit2.Callback<MyGetStampData> {
@@ -129,7 +128,6 @@ class MyStampFragment : Fragment() {
                         stampViews[i].setBackgroundResource(R.drawable.stamp_my)
                     }
 
-                    stampTexts[stampCnt].isVisible = false
                     stampViews[stampCnt].setBackgroundResource(R.drawable.stamp_click)
 
                     // 도장 찍기

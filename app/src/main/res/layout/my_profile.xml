@@ -76,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|end"
-                android:text="김마다"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
