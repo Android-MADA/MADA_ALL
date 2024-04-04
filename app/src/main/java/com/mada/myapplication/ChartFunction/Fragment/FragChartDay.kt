@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -129,7 +130,7 @@ class FragChartDay : Fragment() {
             false
         })
 
-        // 처음 타이틀뷰 세팅
+        // 맨 처음 타이틀뷰 세팅
         setTitleView(sMonth,sDay)
 
     }
@@ -152,6 +153,7 @@ class FragChartDay : Fragment() {
     fun dayChange(sMonth:String, sDay: String, date: String) {
         Log.d("dayChange", "${date}")
         setTitleView(sMonth,sDay)
+        setChartView(date)
         setBarChartView(date)
         setPieChartView(date)
         setLineChartView(date)
@@ -175,6 +177,30 @@ class FragChartDay : Fragment() {
             }
             override fun onFailure(call: Call<FragMyData>, t: Throwable) {
                 Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    // 차트 뷰 설정
+    private fun setChartView(sdate: String){
+        api.chartGetDay(token,date = sdate).enqueue(object : retrofit2.Callback<ChartDayData> {
+            override fun onResponse(
+                call: Call<ChartDayData>,
+                response: Response<ChartDayData>
+            ) {
+                Log.d("setChartView 성공", response.body().toString())
+                if (response.body() == null) {
+                    Log.d("차트를 데이터가 없음", response.body().toString())
+                    binding.todoAndTimetable.isGone = true
+                    binding.errorPage.isVisible = true
+                } else {
+                    Log.d("차트를 데이터가 있음", response.body().toString())
+                    binding.todoAndTimetable.isVisible = true
+                    binding.errorPage.isGone = true
+                }
+            }
+            override fun onFailure(call: Call<ChartDayData>, t: Throwable) {
+                Log.d("서버 오류", "setPieChartView 실패")
             }
         })
     }
