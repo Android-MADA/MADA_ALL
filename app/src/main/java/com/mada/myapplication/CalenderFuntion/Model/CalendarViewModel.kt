@@ -114,6 +114,12 @@ class CalendarViewModel : ViewModel(){
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
     }
+    fun daysRemainingToDates(targetDate1: String,targetDate2: String): Int {
+        val target1 = LocalDate.parse(targetDate1, dateFormatter)
+        val target2 = LocalDate.parse(targetDate2, dateFormatter)
+        val daysRemaining = target2.toEpochDay() - target1.toEpochDay()
+        return daysRemaining.toInt()
+    }
     fun RemainingTwoDates(date1: String, date2: String): Int {
         val date1 = LocalDate.parse(date1, dateFormatter)
         val date2 = LocalDate.parse(date2, dateFormatter)
@@ -470,7 +476,7 @@ class CalendarViewModel : ViewModel(){
                             //startMon = apiResponse.data.startMon
                             if(datas != null) {
                                 for (data in datas) {
-                                    Log.d("data",data.toString())
+                                    //Log.d("data",data.toString())
                                     val dura : Boolean
                                     if(data.start_date==data.end_date) dura = false
                                     else dura = true
@@ -637,28 +643,27 @@ class CalendarViewModel : ViewModel(){
                 hashMapDataMonth.get(startDate)?.add(clone)
 
                 val daysBetween = Days.daysBetween(startDate, endDate).days
-                val clone2 = clone.copy()
                 for(day in 1..daysBetween) {
+                    val clone2 = clone.copy()
                     val currentDate = startDate.plusDays(day)
                     if(hashMapDataMonth.get(currentDate)==null) {
                         hashMapDataMonth.put(currentDate,ArrayList<AndroidCalendarData>())
-                    } else {
-                        if(clone2.floor>=maxFloor&&hashMapDataMonth.get(currentDate)!!.size<maxFloor) {
-                            var tmpFloor = 0
-                            for (data in hashMapDataMonth.get(currentDate)!!) {
-                                if(data.floor!=tmpFloor) {
-                                    clone2.startDate2 = currentDate.toString("yyyy-MM-dd")
-                                    clone2.floor = tmpFloor
-                                    break
-                                } else tmpFloor++;
-                            }
-                            if(tmpFloor<maxFloor)  {
-                                clone2.floor = tmpFloor
-                                clone2.startDate2 = currentDate.toString("yyyy-MM-dd")
-                            }
-                            //Log.d("${currentDate} ${clone2.title}","${clone2.floor} ${hashMapDataMonth.get(currentDate)!!.size}")
-                        }
                     }
+                    clone2.startDate2 = currentDate.toString("yyyy-MM-dd")
+                    if(clone2.floor>=maxFloor&&hashMapDataMonth.get(currentDate)!!.size<maxFloor) {
+                        var tmpFloor = 0
+                        for (data in hashMapDataMonth.get(currentDate)!!) {
+                            if(data.floor!=tmpFloor) {
+                                clone2.floor = tmpFloor
+                                break
+                            } else tmpFloor++;
+                        }
+                        if(tmpFloor<maxFloor)  {
+                            clone2.floor = tmpFloor
+                        }
+                        //Log.d("${currentDate} ${clone2.title}","${clone2.floor} ${hashMapDataMonth.get(currentDate)!!.size}")
+                    }
+
                     hashMapDataMonth.get(currentDate)?.add(clone2)
                 }
             }
