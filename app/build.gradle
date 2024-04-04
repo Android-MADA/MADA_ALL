@@ -16,8 +16,8 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 33
-        versionCode 14
-        versionName "test_version:0.26.0402.2"
+        versionCode 17
+        versionName "test_version:0.17.0404.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -143,4 +143,7 @@ dependencies {
 
     //gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    // 버전확인
+    implementation("com.google.android.play:app-update-ktx:2.0.1")
 }
