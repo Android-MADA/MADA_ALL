@@ -499,6 +499,7 @@ class CalendarAddFragment : Fragment() {
                 CalendarViewModel.setPopupOne(requireContext(),"올바른 시간을 입력해 주십시오",view)
             }
             else {
+                val buffering = CalendarViewModel.setPopupBuffering(requireContext())
                 if (binding.switch2.isChecked) {
                     binding.preScheldule2.text = "오전 12:00"
                     binding.nextScheldule2.text = "오전 12:00"
@@ -517,9 +518,11 @@ class CalendarAddFragment : Fragment() {
                                     CalendarViewModel.ddayArrayList.sortBy { CalendarViewModel.daysRemainingToDate(it.endDate) }
 
                                     addDday(nextScheduleNum.text.substring(0,4).toInt(),nextScheduleNum.text.substring(5,7).toInt(),tmpId)
+                                    buffering.dismiss()
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
                                 2 -> {
+                                    buffering.dismiss()
                                     Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -538,9 +541,11 @@ class CalendarAddFragment : Fragment() {
                                         CalendarViewModel.timeChangeNum(binding.preScheldule2.text.toString()),CalendarViewModel.timeChangeNum(binding.nextScheldule2.text.toString()),curColor,curCycle,curDday,binding.textTitle.text.toString(),
                                         -1,false,binding.textMemo.text.toString(),"CAL",tmpId,curRepeatText))*/
 
+                                    buffering.dismiss()
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
                                 2 -> {
+                                    buffering.dismiss()
                                     Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -569,9 +574,11 @@ class CalendarAddFragment : Fragment() {
                                     delDday(initnextSchedule.substring(0,4).toInt(),initnextSchedule.substring(5,7).toInt(),curId)
                                     addDday(nextScheduleNum.text.substring(0,4).toInt(),nextScheduleNum.text.substring(5,7).toInt(),curId
                                     )
+                                    buffering.dismiss()
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
                                 2 -> {
+                                    buffering.dismiss()
                                     Toast.makeText(context, "추가 실패", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -597,9 +604,11 @@ class CalendarAddFragment : Fragment() {
                                         addCal(curId)
                                     }
                                     else  CalendarViewModel.hashMapArrayCal.clear()
+                                    buffering.dismiss()
                                     Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
                                 }
                                 2 -> {
+                                    buffering.dismiss()
                                     Toast.makeText(context, "수정 실패", Toast.LENGTH_SHORT).show()
                                 }
                             }

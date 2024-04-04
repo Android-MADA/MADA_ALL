@@ -321,6 +321,21 @@ class CalendarViewModel : ViewModel(){
             mDialogView.findViewById<TextView>(R.id.popone_desc).text = desc
         }
     }
+    fun setPopupBuffering(theContext: Context) : AlertDialog {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        mBuilder.show()
+        mBuilder.setCancelable(false)
+        mBuilder.setCanceledOnTouchOutside(false)
+
+        return mBuilder
+    }
     //달력 관련 함수들
     fun convertToDateKoreanFormat123(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-M-d", Locale.getDefault())
@@ -722,7 +737,8 @@ class CalendarViewModel : ViewModel(){
                                 for (data in datas) {
                                     val tmp = AndroidCalendarData(data.start_date,data.start_date,data.end_date, data.start_time,data.end_time,
                                         data.color,"No",data.d_day,data.name, -1,false,data.memo,"CAL",data.id,data.repeatInfo)
-                                    ddayArrayList.add(tmp)
+                                    if(daysRemainingToDate(tmp.endDate)>=0)
+                                        ddayArrayList.add(tmp)
                                 }
                             }
                             ddayArrayList.sortBy { daysRemainingToDate(it.endDate) }
