@@ -680,7 +680,24 @@ class HomeViewModel : ViewModel() {
     fun editRepeatTodo(todoName : String, repeat : String, repeatInfo : Int?, endDate : String, startDate : String, callback: (Int) -> Unit){
         var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
         Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
-        callback(1)
+        api.editRepeatTodo(token = userToken, todoId = selectedRepeatTodo!!.id!!, data = data).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("repeat patch", "success")
+                    callback(0)
+                }
+                else{
+                    Log.d("repeat patch", "success")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("repeat patch", "success")
+                callback(1)
+            }
+
+        })
 
     }
 

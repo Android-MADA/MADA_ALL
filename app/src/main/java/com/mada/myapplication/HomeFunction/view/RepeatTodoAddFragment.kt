@@ -475,6 +475,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                     buffering.dismiss()
                 }
             }
+            Log.d("save", "click")
         }
 
         /**
