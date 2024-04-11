@@ -597,6 +597,7 @@ class HomeViewModel : ViewModel() {
                 when(result){
                     0 -> {
                         //삭제
+                        val buffering = setPopupBufferingTodo(theContext)
                         when(selectedFlag){
                             "one" -> {
                                 deleteRepeatTodoOne(repeatId){
@@ -639,6 +640,7 @@ class HomeViewModel : ViewModel() {
                                 }
                             }
                         }
+                        buffering.dismiss()
                     }
                     else -> {
                         Log.d("repeatTodo delete", "fail")
@@ -678,7 +680,24 @@ class HomeViewModel : ViewModel() {
     fun editRepeatTodo(todoName : String, repeat : String, repeatInfo : Int?, endDate : String, startDate : String, callback: (Int) -> Unit){
         var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
         Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
-        callback(1)
+        api.editRepeatTodo(token = userToken, todoId = selectedRepeatTodo!!.id!!, data = data).enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    Log.d("repeat patch", "success")
+                    callback(0)
+                }
+                else{
+                    Log.d("repeat patch", "success")
+                    callback(1)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("repeat patch", "success")
+                callback(1)
+            }
+
+        })
 
     }
 
@@ -746,6 +765,22 @@ class HomeViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun setPopupBufferingTodo(theContext: Context) : AlertDialog {
+        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+        val mBuilder = AlertDialog.Builder(theContext)
+            .setView(mDialogView)
+            .create()
+
+        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        mBuilder.show()
+        mBuilder.setCancelable(false)
+        mBuilder.setCanceledOnTouchOutside(false)
+
+        return mBuilder
     }
 
 

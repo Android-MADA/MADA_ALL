@@ -116,7 +116,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ){
-
+                val buffering = viewModel!!.setPopupBufferingTodo(context!!)
                 val context = MyApp.context()
                 //키보드 내리기
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -131,6 +131,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if(response.isSuccessful){
                             Log.d("todo server", "성공")
+                            buffering.dismiss()
                         }
                         else {
                             Log.d("todo안드 잘못", "서버 연결 실패")
@@ -168,6 +169,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                                     holder.edtTodo.setText(holder.data!!.todoName)
                                 }
                                 else if(value == "delete"){
+                                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
                                     val data = holder.data
                                     api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
                                         override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -184,11 +186,10 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                                             Log.d("서버 문제", "서버 연결 실패")
                                         }
                                     })
+                                    buffering.dismiss()
                                 }
                                 else if(value == "date"){
-                                    Log.d("바꿀 날짜", viewModel.selectedChangedDate)
-                                    //val data = TodoEntity(holder.data!!.todoId, holder.data!!.id, holder.data!!.todoName, holder.data!!.category, holder.data!!.todoName, holder.data!!.complete, holder.data!!.repeat, holder.data!!.repeatWeek, holder.data!!.repeatMonth, holder.data!!.startRepeatDate, holder.data!!.endRepeatDate, holder.data!!.isAlarm, holder.data!!.startTodoAtMonday, holder.data!!.endTodoBackSetting, holder.data!!.newTodoStartSetting)
-                                    //viewModel!!.updateTodo(data)
+                                    val buffering = viewModel.setPopupBufferingTodo(requireContext())
                                     val updateData = PatchRequestTodo(todoName = holder.data!!.todoName, repeat = "N",  repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, endRepeatDate = holder.data!!.endRepeatDate, complete = holder.data!!.complete, date = viewModel.selectedChangedDate)
                                     Log.d("todo server", updateData.toString())
                                     api.editTodo(viewModel!!.userToken, holder.data!!.id!!, updateData).enqueue(object :Callback<Void>{
@@ -206,6 +207,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                                             Log.d("서버 문제", "서버 연결 실패")
                                         }
                                     })
+                                    buffering.dismiss()
 
                                 }
 
@@ -227,6 +229,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                 var checkUpdateData = TodoEntity(repeatId = holder.data!!.repeatId, todoId = holder.data!!.todoId, id = holder.data!!.id, category = holder.data!!.category, date = holder.data!!.date, complete = isChecked, endRepeatDate =holder.data!!.endRepeatDate, repeat = holder.data!!.repeat, repeatInfo = holder.data!!.repeatInfo, startRepeatDate = holder.data!!.startRepeatDate, todoName = holder.data!!.todoName )
             //서버 연결
             if(holder.data!!.repeat == "N"){
+                val buffering = viewModel!!.setPopupBufferingTodo(context!!)
                 //일반투두 체크박스 변경
                 Log.d("checkbox patch", checkUpdateData.toString())
                 api.changeCheckox(viewModel!!.userToken, holder.data!!.id!!, PatchCheckboxTodo(isChecked)).enqueue(object : Callback<Void>{
@@ -245,9 +248,11 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                     }
 
                 })
+                buffering.dismiss()
             }
             else{
                 //반복 투두 체크박스 변경
+                val buffering = viewModel!!.setPopupBufferingTodo(context!!)
                 Log.d("check", checkUpdateData.toString())
                 viewModel!!.changeRepeatCb(checkUpdateData, isChecked){
                     result ->
@@ -258,6 +263,7 @@ class HomeTodoListAdapter(fragmentManager : FragmentManager) : ListAdapter<TodoE
                         }
                     }
                 }
+                buffering.dismiss()
             }
 
 

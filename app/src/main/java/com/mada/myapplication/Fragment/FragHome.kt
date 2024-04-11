@@ -183,7 +183,9 @@ class FragHome : Fragment() {
          */
 
         binding.todoRepeatIv.setOnClickListener {
+            val buffering = CalendarViewModel.setPopupBuffering(requireContext())
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeRepeatTodoFragment)
+            buffering.dismiss()
         }
 
 
@@ -191,7 +193,9 @@ class FragHome : Fragment() {
          * 5. 마이페이지 페이지 이동
          */
         binding.todoMyIv.setOnClickListener {
+            val buffering = CalendarViewModel.setPopupBuffering(requireContext())
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_fragMy)
+            buffering.dismiss()
         }
 
         /**
@@ -249,10 +253,14 @@ class FragHome : Fragment() {
          * 9. 카테고리 페이지 이동
          */
         binding.categoryIv.setOnClickListener {
+            val buffering = CalendarViewModel.setPopupBuffering(requireContext())
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
+            buffering.dismiss()
         }
         binding.todoNoCategoryBtn.setOnClickListener {
+            val buffering = CalendarViewModel.setPopupBuffering(requireContext())
             Navigation.findNavController(view).navigate(R.id.action_fragHome_to_homeCategoryFragment)
+            buffering.dismiss()
         }
 
 
@@ -296,11 +304,13 @@ class FragHome : Fragment() {
          * 11. 날짜 변경 시 bottomsheetdialog 처리
          */
         binding.todoDateLayout.setOnClickListener{
+            val buffering = CalendarViewModel.setPopupBuffering(requireContext())
             val todoMenuBottomSheet = TodoDateBottomSheetDialog(viewModel)
             if (todoMenuBottomSheet != null) {
                 viewModel.isTodoMenu = false
                 todoMenuBottomSheet.show(childFragmentManager, todoMenuBottomSheet.tag)
             }
+            buffering.dismiss()
         }
         viewModel.homeDate.observe(viewLifecycleOwner, Observer {
             Log.d("date변경", it.toString())

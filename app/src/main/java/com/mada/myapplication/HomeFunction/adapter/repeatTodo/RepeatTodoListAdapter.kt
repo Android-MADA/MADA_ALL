@@ -77,6 +77,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                             result ->
                             when(result){
                                 0 -> {
+                                    val buffering = viewModel!!.setPopupBufferingTodo(mContext)
                                     val data = holder.data
                         //서버 연결 delete
                         api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
@@ -97,6 +98,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                                 Log.d("서버 문제", "서버 연결 실패")
                             }
                         })
+                                    buffering.dismiss()
                                 }
                                 else -> {
                                     Log.d("repeatTodo delete", "fail")
@@ -107,6 +109,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                     }
                     1 -> {
                         //수정
+                        val buffering = viewModel!!.setPopupBufferingTodo(mContext)
                         Log.d("repeatMenu", "edit")
                         val bundle = Bundle()
 
@@ -123,6 +126,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                         viewModel!!.selectedRepeatTodo = holder.data!!
 
                         Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+                        buffering.dismiss()
                     }
                 }
             }
