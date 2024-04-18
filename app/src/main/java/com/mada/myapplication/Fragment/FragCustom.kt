@@ -578,6 +578,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 }
             }
 
+
             if(temdata.selectedColorButtonInfo?.serverID == null) {
                 uniqueItemIds.add(itemIds[0])
                 serverpatchIds[0] = DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID!!.toInt()
@@ -585,38 +586,33 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 uniqueItemIds.add(temdata.selectedColorButtonInfo?.serverID)
                 serverpatchIds[0] = temdata.selectedColorButtonInfo?.serverID!!.toInt()
             }
+
+
             if(temdata.selectedClothButtonInfo?.serverID == null) {
-                if(itemIds[1]!=49) {
                     uniqueItemIds.add(itemIds[1])
                     serverpatchIds[1] = DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID!!.toInt()
-                }
             } else {
-                if(temdata.selectedClothButtonInfo?.serverID !=49){
                     uniqueItemIds.add(temdata.selectedClothButtonInfo?.serverID)
                     serverpatchIds[1] = temdata.selectedClothButtonInfo?.serverID!!.toInt()
-                }
             }
+
+
             if(temdata.selectedItemButtonInfo?.serverID == null) {
-                if(itemIds[2]!=50) {
                     uniqueItemIds.add(itemIds[2])
                     serverpatchIds[2] = DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID!!.toInt()
-                }
             } else {
-                if(temdata.selectedItemButtonInfo?.serverID!=50){
                     uniqueItemIds.add(temdata.selectedItemButtonInfo?.serverID)
                     serverpatchIds[2] = temdata.selectedItemButtonInfo?.serverID!!.toInt()
-                }
             }
+
+
+
             if(temdata.selectedBackgroundButtonInfo?.serverID == null) {
-                if(itemIds[3]!=48) {
                     uniqueItemIds.add(itemIds[3])
                     serverpatchIds[3] = DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID!!.toInt()
-                }
             } else {
-                if(temdata.selectedBackgroundButtonInfo?.serverID!=48) {
                     uniqueItemIds.add(temdata.selectedBackgroundButtonInfo?.serverID)
                     serverpatchIds[3] = temdata.selectedBackgroundButtonInfo?.serverID!!.toInt()
-                }
             }
 
 
