@@ -88,7 +88,7 @@ class DayDataItemView @JvmOverloads constructor(
 
             mBuilder?.window?.setGravity(Gravity.CENTER)
 
-            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth} 일"
+            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth}일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[date.dayOfWeek().get()-1] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val today = date.toString("yyyy-MM-dd")
