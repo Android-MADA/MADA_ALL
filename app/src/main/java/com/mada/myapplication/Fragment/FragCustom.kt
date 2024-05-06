@@ -117,24 +117,9 @@ val serverIdToCategoryMap = mapOf(
 )
 
 
-val categoryList = mutableListOf<String>()
+
 val itemsCategory = ArrayList<String>(100) //카테고리 중복 확인 변수
 
-//카테고리 처리
-fun onCategorySelected(serverID:Int) {
-    val itemCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
-    if (itemCategories != null) {
-        for (category in itemCategories) {
-            if (itemsCategory.contains(category)) {
-                //Toast.makeText(requireContext(), "이미 선택된 카테고리입니다.", Toast.LENGTH_SHORT).show()
-                return
-            }
-            itemsCategory.add(category)
-        }
-        //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
-        Log.d("itemsCategory", "선택된 카테고리: $itemsCategory")
-    }
-}
 
 
 
@@ -577,6 +562,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     itemIds[3]=(idAndItemType.id)
                 }
             }
+
 
 
             if(temdata.selectedColorButtonInfo?.serverID == null) {
