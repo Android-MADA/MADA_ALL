@@ -16,8 +16,8 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 33
-        versionCode 17
-        versionName "test_version:0.17.0404.2"
+        versionCode 18
+        versionName "test_version:0.18.0419.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

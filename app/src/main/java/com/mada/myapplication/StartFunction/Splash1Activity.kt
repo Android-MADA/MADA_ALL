@@ -53,7 +53,7 @@ class Splash1Activity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                val mDialogView = LayoutInflater.from(this).inflate(R.layout.calendar_add_popup_one, null)
+                val mDialogView = LayoutInflater.from(this).inflate(R.layout.update_popup, null)
                 val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
                     .create()
@@ -73,9 +73,6 @@ class Splash1Activity : AppCompatActivity() {
                 mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
                 //팝업 타이틀 설정, 버튼 작용 시스템
-                mDialogView.findViewById<TextView>(R.id.textTitle).text = "새로운 버전을 업데이트 해주세요"
-                mDialogView.findViewById<TextView>(R.id.yesBtnText).text = "바로가기"
-                mDialogView.findViewById<TextView>(R.id.popone_desc).visibility = View.GONE
                 mDialogView.findViewById<TextView>(R.id.yesBtnText).setOnClickListener( {
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse("market://details?id=$packageName")
