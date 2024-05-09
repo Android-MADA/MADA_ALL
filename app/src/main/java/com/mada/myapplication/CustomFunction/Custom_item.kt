@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
 import com.mada.myapplication.Fragment.OnItemImageChangeListener
-import com.mada.myapplication.Fragment.onCategorySelected
+import com.mada.myapplication.Fragment.itemsCategory
+import com.mada.myapplication.Fragment.serverIdToCategoryMap
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
@@ -54,6 +56,25 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     }
 
+    //카테고리 처리
+    fun onCategorySelected(serverID: Int) : Int {
+        val selectedCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
+        if (selectedCategories != null) {
+            for (category in selectedCategories) {
+                if (itemsCategory.contains(category)) {
+                    //Toast.makeText("이미 선택된 카테고리입니다.", Toast.LENGTH_SHORT).show()
+                    return 0
+                }
+                itemsCategory.add(category)
+            }
+            //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
+            Log.d("itemsCategory", "선택된 카테고리: $itemsCategory")
+            return 1
+        }
+        return -1 // selectedCategories가 null
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,9 +88,10 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
 
         binding.btnItemGlassNormal.setOnClickListener{
-            //onCategorySelected(R.id.btn_item_glass_normal)
-            onItemButtonClick(it as ImageButton)
-            onImageButtonClick(binding.btnItemGlassNormal)
+            if (onCategorySelected(22) == 1) {
+                onItemButtonClick(it as ImageButton)
+                onImageButtonClick(binding.btnItemGlassNormal)
+            }
             }
         binding.btnItemHatBer.setOnClickListener{
             //onCategorySelected(R.id.btn_item_hat_ber)
