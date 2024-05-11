@@ -85,3 +85,7 @@ data class CharacterResponse (
 data class nickName (
     @SerializedName("nickName") val name: String
 )
+
+data class subscribe(
+    @SerializedName("is_subscribe") val is_subscribe: Boolean
+)

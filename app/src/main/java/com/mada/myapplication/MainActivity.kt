@@ -2,6 +2,7 @@ package com.mada.myapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,9 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.nickName
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.RepeatData1
 import com.mada.myapplication.HomeFunction.Model.TodoList
@@ -41,9 +45,12 @@ import com.mada.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.launch
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
+import com.mada.myapplication.StartFunction.MySignup2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -133,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                         if(purchasesList.isEmpty()) {
                             // 구독 안한 상태
                             premium = false
+
+
                         }
                         for (purchase in purchasesList) {
                             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
@@ -140,6 +149,19 @@ class MainActivity : AppCompatActivity() {
                                 premium = true
                             }
                         }
+                        val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+                        val call = service.patchSubscribe(viewModel.userToken, subscribe(premium))
+                        Log.d("viewmodelcheck", "?")
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Log.d("viewmodelcheck", response.toString())
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("viewmodelcheck", t.toString())
+                            }
+                        })
                     }
                 }
             }

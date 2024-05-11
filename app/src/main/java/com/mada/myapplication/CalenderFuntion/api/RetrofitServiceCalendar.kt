@@ -6,6 +6,7 @@ import com.mada.myapplication.CalenderFuntion.Model.CalendarDataEdit
 import com.mada.myapplication.CalenderFuntion.Model.CalendarDatas
 import com.mada.myapplication.CalenderFuntion.Model.CalendarDatasData
 import com.mada.myapplication.CalenderFuntion.Model.nickName
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -62,5 +63,12 @@ interface RetrofitServiceCalendar {
 
     @POST("/user/signup/nickName")
     fun singup(@Header("Authorization") token: String?, @Body name: nickName
+    ) : Call<Void>
+
+    // 프리미엄 구독
+    @PATCH("/user/subscribe")
+    fun patchSubscribe(
+        @Header("Authorization") token : String?,
+        @Body is_subscribe : subscribe
     ) : Call<Void>
 }
