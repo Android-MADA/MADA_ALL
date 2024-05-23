@@ -77,7 +77,9 @@ class FragMy : Fragment() {
             navController.navigate(R.id.action_fragMy_to_fragHome)
         }
         binding.myStampBtn.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            //navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            // 서버 되기 전까지 기능 막아두기
+            Toast.makeText(requireContext(), "아직 준비 중인 기능입니다.", Toast.LENGTH_SHORT).show()
         }
 
         // 바텀 시트 항목 선택 리스너
