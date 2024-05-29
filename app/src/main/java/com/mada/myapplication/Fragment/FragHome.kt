@@ -1,9 +1,9 @@
 package com.mada.myapplication.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +11,22 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mada.myapplication.BuildConfig
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.DataRepo
+import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
+import com.mada.myapplication.CustomFunction.customPrintDATA
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
-import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
@@ -33,13 +37,17 @@ import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.getHomeCategory
 import com.mada.myapplication.getHomeTodo
 import com.mada.myapplication.hideBottomNavigation
-import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Calendar
+
 
 class FragHome : Fragment() {
 
@@ -72,6 +80,17 @@ class FragHome : Fragment() {
         //날짜 변경 시 서버에서 cateogry, todo받아오기
 
 
+        getCustomPrint()
+
+        // 딜레이 후 확인하는 코드 추가
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000) // 2초 후 확인
+            Log.d("DataRepo", "After API Call: ${DataRepo.buttonInfoEntity.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity.clothButtonInfo?.serverID} ${DataRepo.buttonInfoEntity.itemButtonInfo?.serverID}")
+
+        }
+
+
+
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
@@ -95,7 +114,7 @@ class FragHome : Fragment() {
             44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
             40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
             46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
             47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
             42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
             43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
@@ -134,6 +153,8 @@ class FragHome : Fragment() {
         binding.ivHomeItem.setImageResource(
             itembuttonInfo.selectedImageResource ?: 0
         )
+        Log.d("buttoninfo","${colorbuttonInfo.serverID} ${clothbuttonInfo.serverID} ${itembuttonInfo.serverID}")
+
         return view
     }
 
@@ -405,4 +426,46 @@ fun checkCategory(viewModel: HomeViewModel) : Boolean {
         Log.d("checkHomeCate", "not blank")
     }
     return isCate
+}
+
+
+
+
+
+
+val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
+    .addConverterFactory(GsonConverterFactory.create()).build()
+val service = retrofit.create(RetrofitServiceCustom::class.java)
+
+val token = Splash2Activity.prefs.getString("token", "")
+fun getCustomPrint() {
+    val call: Call<customPrintDATA> = service.customPrint(token)
+    call.enqueue(object : Callback<customPrintDATA> {
+        override fun onResponse(
+            call: Call<customPrintDATA>,
+            response: Response<customPrintDATA>
+        ) {
+            val printInfo = response.body()
+            val responseCode = response.code()
+            val datas = printInfo?.data?.wearingItems
+
+            datas?.forEachIndexed { index, item ->
+                //printId = item.id
+                //itemType = item.itemType
+                //printfilePath = item.filePath
+                Log.d(
+                    "getCustomPrint",
+                    "Response Code: $responseCode Item $index - id: ${item.id}"
+                )
+
+                DataRepo.updateButtonInfoEntity(index, item.id)
+                Log.d("DataRepo", "Updated: ${DataRepo.buttonInfoEntity.colorButtonInfo?.serverID} ${DataRepo.buttonInfoEntity.clothButtonInfo?.serverID} ${DataRepo.buttonInfoEntity.itemButtonInfo?.serverID}")
+
+            }
+        }
+
+        override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
+            Log.d("error", t.message.toString())
+        }
+    })
 }
