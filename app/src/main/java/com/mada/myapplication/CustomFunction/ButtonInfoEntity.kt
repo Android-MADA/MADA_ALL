@@ -14,4 +14,13 @@ data class ButtonInfoEntity(
     var clothButtonInfo: ButtonInfo?, // 이 필드에 Type Converter 적용
     var itemButtonInfo: ButtonInfo?, // 이 필드에 Type Converter 적용
     var backgroundButtonInfo: ButtonInfo? // 이 필드에 Type Converter 적용
-)
+) {
+    fun updateButtonInfo(index: Int, buttonInfo: ButtonInfo) {
+        when (index) {
+            0 -> colorButtonInfo = buttonInfo
+            1 -> clothButtonInfo = buttonInfo
+            2 -> itemButtonInfo = buttonInfo
+            3 -> backgroundButtonInfo = buttonInfo
+        }
+    }
+}
