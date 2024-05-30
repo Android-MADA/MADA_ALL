@@ -7,11 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.ButtonInfoEntity
 import com.mada.myapplication.HomeFunction.Model.PatchRequestTodo
 import com.mada.myapplication.HomeFunction.adapter.repeatTodo.RepeatTodoListAdapter
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
@@ -267,5 +270,25 @@ class HomeViewModel : ViewModel() {
     //투두 수정
     fun patchHTodo(todoId : Int, data : PatchRequestTodo) = viewModelScope.launch {
         api.editTodo(userToken, todoId, data)
+    }
+
+    private val _buttonInfoEntity = MutableLiveData<ButtonInfoEntity>()
+    val buttonInfoEntity: LiveData<ButtonInfoEntity> get() = _buttonInfoEntity
+
+    init {
+        _buttonInfoEntity.value = ButtonInfoEntity(
+            id = 0,
+            colorButtonInfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi),
+            clothButtonInfo = ButtonInfo(0, 49, R.drawable.custom_empty),
+            itemButtonInfo = ButtonInfo(0, 50, R.drawable.custom_empty),
+            backgroundButtonInfo = ButtonInfo(0, 48, R.drawable.custom_empty)
+        )
+    }
+
+    fun updateButtonInfoEntity(index: Int, id: Int) {
+        val currentEntity = _buttonInfoEntity.value ?: return
+        val newButtonInfo = ButtonInfo(id, id, id)
+        currentEntity.updateButtonInfo(index, newButtonInfo)
+        _buttonInfoEntity.value = currentEntity
     }
 }

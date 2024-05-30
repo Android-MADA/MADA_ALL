@@ -2,6 +2,7 @@ package com.mada.myapplication.CustomFunction
 
 import android.util.Log
 import com.mada.myapplication.BuildConfig
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import retrofit2.Call
@@ -19,9 +20,9 @@ object DataRepo {
         backgroundButtonInfo = ButtonInfo(0, 48, R.drawable.custom_empty)
     )
 
-    fun updateButtonInfoEntity(index: Int, id: Int) {
-        val newButtonInfo = ButtonInfo(0, id, 0)
-        buttonInfoEntity.updateButtonInfo(index, newButtonInfo)
+
+    fun updateButtonInfoEntity(viewModel: HomeViewModel, index: Int, id: Int) {
+        viewModel.updateButtonInfoEntity(index, id)
     }
 
 }

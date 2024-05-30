@@ -597,6 +597,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "serverpatchList",
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
             )
+            //uniqueItemIds 리스트 로그
+            Log.d(
+                "uniqueItemIds",
+                "${uniqueItemIds[0]} ${uniqueItemIds[1]} ${uniqueItemIds[2]} ${uniqueItemIds[3]}"
+            )
 
             patchCustomItemChange(combinedIds) //patch: 서버에 아이템 정보 저장
 
