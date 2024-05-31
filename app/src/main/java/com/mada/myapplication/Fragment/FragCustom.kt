@@ -58,6 +58,8 @@ import com.mada.myapplication.databinding.CustomBackgroundBinding
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.CustomItemBinding
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -141,8 +143,22 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var alertDialog: AlertDialog
 
 
-    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
-        .addConverterFactory(GsonConverterFactory.create()).build()
+    // HttpLoggingInterceptor 설정
+    val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    // OkHttpClient에 Interceptor 추가
+    val httpClient = OkHttpClient.Builder()
+        .addInterceptor(logging)
+        .build()
+
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.MADA_BASE)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(httpClient)  // HttpClient를 추가해야 로그 인터셉터가 동작
+        .build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
     val token = Splash2Activity.prefs.getString("token", "")
@@ -589,7 +605,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-            val combinedIds = uniqueItemIds.map { it!!.toLong() }
+            val combinedIds = uniqueItemIds.map { it!!.toInt() }
             val serverpatchList = serverpatchIds.toList()
 
             //server patch 리스트 로그
@@ -597,13 +613,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "serverpatchList",
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
             )
+            serverpatchIds.forEachIndexed { index, value ->
+                Log.d("serverpatchList", "Index: $index, Value: $value, Type: ${value::class.simpleName}")
+            }
             //uniqueItemIds 리스트 로그
             Log.d(
                 "uniqueItemIds",
                 "${uniqueItemIds[0]} ${uniqueItemIds[1]} ${uniqueItemIds[2]} ${uniqueItemIds[3]}"
             )
 
-            patchCustomItemChange(combinedIds) //patch: 서버에 아이템 정보 저장
+            patchCustomItemChange(serverpatchList) //patch: 서버에 아이템 정보 저장
 
 
 
@@ -995,7 +1014,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-    fun patchCustomItemChange(itemIds: List<Long>) {
+    fun patchCustomItemChange(itemIds: List<Int>) {
         val call: Call<customItemChangeDATA> = service.customItemChange(token, itemIds)
 
         call.enqueue(object : Callback<customItemChangeDATA> {
@@ -1003,9 +1022,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val responseCode = response.code()
                 if (response.isSuccessful) {
                     Log.d("patchCustomItemChange", "Response Code: $responseCode")
-                }
-                else{
-                    Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
+                    val responseBody = response.body()
+                    Log.d("patchCustomItemChange", "Response Body: ${responseBody?.data}")
+                } else {
+                    Log.d("patchCustomItemChangeFail", "Response Code: $responseCode, Error: ${response.errorBody()?.string()}")
                 }
             }
             override fun onFailure(call: Call<customItemChangeDATA>, t: Throwable) {
