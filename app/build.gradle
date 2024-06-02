@@ -144,6 +144,9 @@ dependencies {
     //gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
+    //HTTP 로그 인터셉터
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
     // 버전확인
     implementation("com.google.android.play:app-update-ktx:2.0.1")
 }
