@@ -21,6 +21,8 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
@@ -30,6 +32,11 @@ import com.mada.myapplication.databinding.MyPremiumBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -49,7 +56,6 @@ class MyPremiumFragment : Fragment() {
         PurchasesUpdatedListener { billingResult, purchases ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
-                    Log.d("안녕하세요","구매")
                     lifecycleScope.launch {
                         handlePurchase(purchase)
                     }
@@ -81,6 +87,19 @@ class MyPremiumFragment : Fragment() {
             binding.myPremiumBtn.text = "구독 중"
             val mainActivity = requireActivity() as MainActivity
             mainActivity.setPremium()
+            val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val service = retrofit.create(RetrofitServiceCalendar::class.java)
+            val call = service.patchSubscribe(token, subscribe(true))
+            Log.d("viewmodelcheck", "?")
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Log.d("viewmodelcheck", response.toString())
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("viewmodelcheck", t.toString())
+                }
+            })
         } else {
             // fail
         }

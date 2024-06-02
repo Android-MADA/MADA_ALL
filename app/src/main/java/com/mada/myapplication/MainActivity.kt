@@ -2,9 +2,12 @@ package com.mada.myapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -25,6 +28,9 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.nickName
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.RepeatData1
 import com.mada.myapplication.HomeFunction.Model.TodoList
@@ -37,9 +43,14 @@ import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.launch
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
+import com.mada.myapplication.StartFunction.MySignup2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,27 +82,6 @@ class MainActivity : AppCompatActivity() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        /**
-         * 1-1 database clear
-         */
-        //clearHomeDatabase(viewModel)
-
-        /**
-         * 1-2 캐릭터 서버에서 받아오기
-         */
-
-
-        /**
-         * 2. GET home Category
-         */
-        //getHomeCategory(api, viewModel, this)
-
-
-        /**
-         * 3. GET home Todo
-         */
-        //getHomeTodo(api, viewModel, this)
-        //getHomeTodo(api, viewModel, this)
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
@@ -150,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                         if(purchasesList.isEmpty()) {
                             // 구독 안한 상태
                             premium = false
+
+
                         }
                         for (purchase in purchasesList) {
                             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
@@ -157,6 +149,19 @@ class MainActivity : AppCompatActivity() {
                                 premium = true
                             }
                         }
+                        val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+                        val call = service.patchSubscribe(viewModel.userToken, subscribe(premium))
+                        Log.d("viewmodelcheck", "?")
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Log.d("viewmodelcheck", response.toString())
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("viewmodelcheck", t.toString())
+                            }
+                        })
                     }
                 }
             }
@@ -184,6 +189,12 @@ class MainActivity : AppCompatActivity() {
     fun setPremium() {
         premium = true
     }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
+    }
 }
 
 
@@ -207,50 +218,20 @@ fun clearHomeDatabase(viewModel: HomeViewModel){
     Log.d("MainActivity", "1-1-3 deleteAllRepeatTodo")
 }
 
-fun getHomeCategory(api: HomeApi, viewModel : HomeViewModel, context: Context){
-    Log.d("MainActivity", "2. getHomeCategoryStart")
-    viewModel.deleteAllCate()
-    api.getHCategory(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
-        override fun onResponse(
-            call: Call<CategoryList1>,
-            response: Response<CategoryList1>
-        ) {
-            if (response.isSuccessful) {
-                for (i in response.body()!!.data.CategoryList) {
-                    val cateData = CateEntity(
-                        id = i.id,
-                        categoryName = i.categoryName,
-                        color = i.color,
-                        iconId = i.iconId,
-                        isInActive = i.isInActive
-                    )
-                    Log.d("MainActivity cate 추가중", cateData.categoryName.toString())
-                    viewModel.createCate(cateData)
-                }
-            } else {
-                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
-                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
-            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
-        }
-
-    })
-    Log.d("MainActivity", "2. getHomeCategoryFin")
-}
-
 fun getHomeTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
     Log.d("MainActivity", "3. GET homeTodoStart")
     api.getAllMyTodo(viewModel.userToken, viewModel.homeDate.value.toString()).enqueue(object : Callback<TodoList> {
         override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.TodoList){
-                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
+                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
                     Log.d("MainActivity todo server", todoData.toString())
                     viewModel.createTodo(todoData, null)
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.categoryId, todoName = i.repeatTodoName, complete = i.complete, repeat = "Y")
+                    Log.d("MainActivity repeat server", repeatData.toString())
+                    viewModel.createTodo(repeatData, null)
                 }
                 //닉네임 저장하기
                 viewModel._dUserName.value = response.body()!!.data.nickname
@@ -310,7 +291,8 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
         override fun onResponse(call: Call<RepeatData1>, response: Response<RepeatData1>) {
             if(response.isSuccessful){
                 for(i in response.body()!!.data.RepeatTodoList){
-                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    var repeatData = RepeatEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, repeat = i.repeat, repeatInfo = i.repeatInfo?.toInt(), endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    Log.d("GET repeatTodo", repeatData.toString())
                     viewModel.createRepeatTodo(repeatData, null)
                 }
             }
@@ -327,6 +309,24 @@ fun getRepeatTodo(api : HomeApi, viewModel: HomeViewModel, context: Context){
 
     })
 
+}
+
+fun getDescribe(viewModel : HomeViewModel, context : Context){
+    RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java).selectfragMy(viewModel.userToken).enqueue(object : Callback<FragMyData>{
+        override fun onResponse(call: Call<FragMyData>, response: Response<FragMyData>) {
+            if(response.isSuccessful){
+                viewModel.isSubscribe = response.body()!!.data.subscribe
+            }
+            else{
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+            Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+    })
 }
 
 

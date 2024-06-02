@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/fragCalendar">
+    app:startDestination="@id/fragHome">
 
     <fragment
         android:id="@+id/fragHome"
@@ -111,9 +111,9 @@
         <action
             android:id="@+id/action_homeCategoryFragment_to_fragHome"
             app:destination="@id/fragHome" />
-        <action
-            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"
-            app:destination="@id/categoryInActiveFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"-->
+<!--            app:destination="@id/categoryInActiveFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
@@ -228,14 +228,14 @@
             android:id="@+id/action_fragMy_to_mySetFragment"
             app:destination="@id/mySetFragment" />
         <action
-            android:id="@+id/action_fragMy_to_fragHome"
-            app:destination="@id/fragHome" />
-        <action
             android:id="@+id/action_fragMy_to_splash2Activity"
             app:destination="@id/splash2Activity" />
         <action
             android:id="@+id/action_fragMy_to_myStampFragment"
             app:destination="@id/myStampFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -293,7 +293,7 @@
     </fragment>
     <activity
         android:id="@+id/splash2Activity"
-        android:name="com.mada.myapplication.StartFuction.Splash2Activity"
+        android:name="com.mada.myapplication.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
     <fragment

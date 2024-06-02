@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodo
 import com.mada.myapplication.HomeFunction.Model.PostRequestTodoCateId
 import com.mada.myapplication.HomeFunction.Model.PostResponseTodo
@@ -59,6 +60,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
 
     //viewmodel 가져오기
     var viewModel : HomeViewModel? = null
+    var calendarViewModel : CalendarViewModel? = null
     private var repeatFragmentManager = fragmentManager
     private var mContext = context
 
@@ -78,6 +80,7 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
             //todoadapter 연결하기
             val mTodoAdapter = RepeatTodoListAdapter(view, repeatFragmentManager, mContext)
             mTodoAdapter.viewModel = viewModel
+            mTodoAdapter.calendarViewModel = calendarViewModel
             // 반복투두 읽어오기
             viewModel!!.readRepeatTodo(cateId, mTodoAdapter)
             withContext(Dispatchers.Main){
@@ -87,95 +90,17 @@ class RepeatCateListAdapter(private val view : View, fragmentManager : FragmentM
         }
 
         holder.btnAdd.setOnClickListener {
-//            if(holder.layoutAdd.isGone == true){
-//                holder.layoutAdd.isVisible = true
-//            }
-//            else {
-//                holder.edtAdd.text.clear()
-//                holder.layoutAdd.isGone = true
-//            }
-            var bundle = Bundle()
+            val buffering = viewModel!!.setPopupBufferingTodo(mContext)
 
+            var bundle = Bundle()
             bundle.putStringArrayList("keyAdd", arrayListOf(
                 holder.data!!.id.toString(),
             ))
             Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+            buffering.dismiss()
         }
 
         //edt 저장
-
-        holder.edtAdd.setOnKeyListener { view, keyCode, event ->
-            // Enter Key Action
-            var handled = false
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_ENTER
-            ) {
-
-                val context = MyApp.context()
-                //키보드 내리기
-                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(holder.edtAdd.windowToken, 0)
-                handled = true
-
-                var endDate = viewModel!!.changeDate((viewModel!!.homeDate.value!!.year + 1), viewModel!!.homeDate.value!!.monthValue, viewModel!!.homeDate.value!!.dayOfMonth, null)
-                //서버 post
-                //response로 id 값 넣기
-                val addData = PostRequestTodo(date = null, todoName = holder.edtAdd.text.toString(), category = PostRequestTodoCateId(holder.data!!.id), complete = false, repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
-                CoroutineScope(Dispatchers.IO).launch {
-                    api.addTodo(viewModel!!.userToken, addData).enqueue(object : Callback<PostResponseTodo>{
-                        override fun onResponse(
-                            call: Call<PostResponseTodo>,
-                            response: Response<PostResponseTodo>
-                        ) {
-                            if(response.isSuccessful){
-                                //반복투두 db에 추가
-                                val Rresponse = response.body()!!.data.Todo
-                                val data = RepeatEntity(0, id = Rresponse.id, date = null, category = holder.data!!.id, todoName = holder.edtAdd.text.toString(),  repeat = "DAY", repeatWeek = null, repeatMonth = null, startRepeatDate = viewModel!!.homeDate.value.toString(), endRepeatDate = endDate)
-                                viewModel!!.createRepeatTodo(data, holder.edtAdd)
-                                //투두 db 모두 삭제
-                                viewModel!!.deleteAllTodo()
-                                //투두 새로 서버 에서 읽어오기
-                                api.getAllMyTodo(viewModel!!.userToken, LocalDate.now().toString()).enqueue(object : Callback<TodoList> {
-                                    override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                                        if(response.isSuccessful){
-                                            for(i in response.body()!!.data.TodoList){
-                                                val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatWeek = i.repeatWeek, repeatMonth = i.repeatMonth, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate, isAlarm = i.isAlarm, startTodoAtMonday = i.startTodoAtMonday,  endTodoBackSetting = i.endTodoBackSetting, newTodoStartSetting = i.newTodoStartSetting )
-                                                Log.d("todo server", todoData.toString())
-                                                viewModel!!.createTodo(todoData, null)
-                                            }
-                                            //닉네임 저장하기
-                                        }
-                                        else {
-                                            Log.d("todo안드 잘못", "서버 연결 실패")
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                                        Log.d("todo서버 연결 오류", "서버 연결 실패")
-                                    }
-
-                                })
-
-
-                            }
-                            else {
-                                Log.d("addRTodo", "And fail")
-
-                            }
-                        }
-
-                        override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
-                            Log.d("addRTodo", "server fail")
-                        }
-                    })
-                }
-
-                holder.layoutAdd.isGone = true
-                true
-            }
-            handled
-            false
-        }
 
     }
 

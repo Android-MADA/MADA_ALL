@@ -1,8 +1,10 @@
 package com.mada.myapplication.ChartFunction.Calendar
+
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
@@ -58,7 +60,7 @@ class MyWeekView @JvmOverloads constructor(
      * 달력 그리기 시작한다.
      * @param firstDayOfMonth   한 달의 시작 요일
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
-     */
+     *//*
     fun initCalendar(
         list: List<DateTime>
     ) {
@@ -71,17 +73,19 @@ class MyWeekView @JvmOverloads constructor(
             )
         }
 
-    }
+    }*/
     fun initCalendar2(
         list: List<DateTime>,
-        fm: Fragment
+        fm: Fragment,
+        selectDay: TextView?
     ) {
         list.forEach {
             addView(
                 MyDayItemView(
                     context = context,
                     date = it,
-                    fm = fm
+                    fm = fm,
+                    selectDay = selectDay
                 )
             )
         }

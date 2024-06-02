@@ -36,9 +36,10 @@ class MyMonthFragment : Fragment() {
         binding.calendarView.children.forEach { dayItemView ->
             dayItemView.setOnClickListener {
                 val date = (dayItemView as MyItemView).date
+                val month = (dayItemView as MyItemView).date.monthOfYear
                 Log.d("달력 선택", "${date}")
                 val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
-                (parentFragment as? FragChartMonth)?.monthChange(formatter.print(date))
+                (parentFragment as? FragChartMonth)?.monthChange(month, formatter.print(date))
             }
         }
 
@@ -52,6 +53,8 @@ class MyMonthFragment : Fragment() {
 
         fun newInstance(millis: Long) = MyMonthFragment().apply {
             arguments = Bundle().apply {
+                //dayOrMonth = theDayOrMonth
+                //fm = theFm
                 putLong(MILLIS, millis)
             }
         }

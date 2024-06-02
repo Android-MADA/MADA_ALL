@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.api.HomeApi
@@ -50,6 +52,7 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
     }
 
     var viewModel : HomeViewModel? = null
+    var calendarViewModel : CalendarViewModel? = null
     var category : Category? = null
     private var mFragmentManager = fragmentManager
     private var mContext = context
@@ -70,7 +73,12 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                     0 ->{
                         //삭제
                         Log.d("repeatMenu", "delete")
-                        val data = holder.data
+                        calendarViewModel!!.setPopupTwo2(mContext, "정말 삭제하시겠습니까?", flag = "deleteRepeat"){
+                            result ->
+                            when(result){
+                                0 -> {
+                                    val buffering = viewModel!!.setPopupBufferingTodo(mContext)
+                                    val data = holder.data
                         //서버 연결 delete
                         api.deleteTodo(viewModel!!.userToken, holder.data!!.id!!).enqueue(object :Callback<Void>{
                             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -90,26 +98,35 @@ class RepeatTodoListAdapter(private val view : View, fragmentManager: FragmentMa
                                 Log.d("서버 문제", "서버 연결 실패")
                             }
                         })
+                                    buffering.dismiss()
+                                }
+                                else -> {
+                                    Log.d("repeatTodo delete", "fail")
+                                }
+                            }
+                        }
+//
                     }
                     1 -> {
                         //수정
+                        val buffering = viewModel!!.setPopupBufferingTodo(mContext)
                         Log.d("repeatMenu", "edit")
                         val bundle = Bundle()
 
                         bundle.putStringArrayList("keyEdit", arrayListOf(
-                            holder.data!!.todoId.toString(),
                             holder.data!!.id.toString(),
                             holder.data!!.date,
                             holder.data!!.category.toString(),
                             holder.data!!.todoName,
                             holder.data!!.repeat,
-                            holder.data!!.repeatWeek,
-                            holder.data!!.repeatMonth,
+                            holder.data!!.repeatInfo.toString(),
                             holder.data!!.startRepeatDate,
                             holder.data!!.endRepeatDate,
                         ))
+                        viewModel!!.selectedRepeatTodo = holder.data!!
 
                         Navigation.findNavController(view!!).navigate(R.id.action_homeRepeatTodoFragment_to_repeatTodoAddFragment, bundle)
+                        buffering.dismiss()
                     }
                 }
             }

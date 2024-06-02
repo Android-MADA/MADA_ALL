@@ -24,7 +24,7 @@ data class MonthPieData(
 
 data class MonthBarData(
     @SerializedName("date") val date: String,
-    @SerializedName("countCompleted") val countCompleted: String
+    @SerializedName("countCompleted") val countCompleted: Float
 )
 
 data class MonthLineData(

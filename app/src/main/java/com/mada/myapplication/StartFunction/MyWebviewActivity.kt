@@ -67,7 +67,6 @@ class MyWebviewActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
                             }
-
                         }
                     }
 

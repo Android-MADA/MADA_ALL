@@ -16,8 +16,8 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 33
-        versionCode 10
-        versionName "test_version:0.24.0304.0"
+        versionCode 19
+        versionName "test_version:0.19.0510.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -146,4 +146,7 @@ dependencies {
 
     //HTTP 로그 인터셉터
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+    // 버전확인
+    implementation("com.google.android.play:app-update-ktx:2.0.1")
 }

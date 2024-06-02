@@ -19,6 +19,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.lifecycle.ViewModel
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameMonth
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import org.joda.time.DateTime
 import java.time.LocalDate
@@ -35,7 +36,8 @@ class DaySmallItemView @JvmOverloads constructor(
     private val ScheduleNum: TextView,
     private val cal: LinearLayout,
     private val textDday : TextView,
-    private var repeatFlag: Boolean = false
+    private var repeatFlag: String? = null,
+    viewModel: HomeViewModel? = null
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val weekdays = arrayOf("월","화", "수", "목", "금", "토","일")
     private val bounds = Rect()
@@ -59,9 +61,14 @@ class DaySmallItemView @JvmOverloads constructor(
         setOnClickListener {
             cal.visibility = GONE
             ScheduleNum.text = date.toString("yyyy-MM-dd")
-            if(repeatFlag){
+            if(repeatFlag == "start"){
                 Scheldule.text = " ${date.year}년 ${date.monthOfYear}월 ${date.dayOfMonth}일"
+                viewModel!!.repeatStartDate = changeDate(date.year, date.monthOfYear, date.dayOfMonth )
 
+            }
+            else if (repeatFlag == "end"){
+                Scheldule.text = " ${date.year}년 ${date.monthOfYear}월 ${date.dayOfMonth}일"
+                viewModel!!.repeatEndDate = changeDate(date.year, date.monthOfYear, date.dayOfMonth)
             }
             else{
                 Scheldule.text = "  ${date.monthOfYear}월 ${date.dayOfMonth}일 (${weekdays[date.dayOfWeek().get()-1]})  "
@@ -113,5 +120,19 @@ class DaySmallItemView @JvmOverloads constructor(
         val target = LocalDate.parse(targetDate, dateFormatter)
         val daysRemaining = target.toEpochDay() - today.toEpochDay()
         return daysRemaining.toInt()
+    }
+
+    private fun changeDate(year : Int, month : Int, dayOfWeek : Int) : LocalDate {
+        var monthString : String = month.toString()
+        var dayString = dayOfWeek.toString()
+
+        if(month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8 || month == 9){
+            monthString = "0${month}"
+        }
+        if(dayOfWeek == 1 || dayOfWeek == 2 || dayOfWeek == 3 || dayOfWeek == 4 || dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7 || dayOfWeek == 8 || dayOfWeek == 9){
+            dayString = "0${dayOfWeek}"
+        }
+
+        return LocalDate.parse("${year}-${monthString}-${dayString}")
     }
 }

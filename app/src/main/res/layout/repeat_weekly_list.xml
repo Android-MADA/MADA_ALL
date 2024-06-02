@@ -2,22 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/week_list_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="금"
-        android:textSize="16sp"
+        android:text="월"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="12dp"
+        android:paddingHorizontal="10dp"
         android:background="@drawable/background_10_strokex"
         android:backgroundTint="@color/grey2"
         android:layout_marginVertical="5dp"
+        android:gravity="center"
         />
 
 </LinearLayout>

@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/cancelBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/ic_delete" />
     </LinearLayout>
 
@@ -31,15 +31,15 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/my_stampboard_background"
         android:elevation="20dp"
         android:paddingHorizontal="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="20"
             android:layout_marginEnd="16dp"
@@ -49,8 +49,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="257"
             android:layout_marginStart="16dp"
@@ -60,8 +60,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="20"
             android:layout_marginEnd="16dp"
@@ -71,8 +71,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect4"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="257"
             android:layout_marginStart="16dp"
@@ -82,8 +82,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect5"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="20"
             android:layout_marginEnd="16dp"
@@ -93,8 +93,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect6"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="257"
             android:layout_marginStart="16dp"
@@ -104,8 +104,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connect7"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampconnect_background"
             android:rotation="20"
             android:layout_marginEnd="16dp"
@@ -115,8 +115,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -140,8 +140,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -164,8 +164,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -188,8 +188,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp4"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
             android:background="@drawable/my_stampitem_background"
@@ -213,8 +213,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp5"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -237,8 +237,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp6"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toStartOf="@id/stamp5"
@@ -261,8 +261,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp7"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toStartOf="@id/stamp6"
@@ -285,8 +285,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp8"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="27dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -310,8 +310,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp9"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintBottom_toTopOf="@id/stamp17"
@@ -334,8 +334,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp10"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintBottom_toTopOf="@+id/stamp18"
@@ -347,7 +347,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:text=""
                 android:textColor="@color/grey3"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -357,9 +357,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/stamp_gift1"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/stamp18"
+            app:layout_constraintEnd_toStartOf="@id/stamp11"
+            app:layout_constraintStart_toEndOf="@id/stamp9"
+            app:layout_constraintTop_toBottomOf="@+id/stamp2">
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp11"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toStartOf="@id/stamp12"
@@ -382,8 +394,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp12"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="27dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -407,8 +419,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp13"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -432,8 +444,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp14"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -457,8 +469,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp15"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -482,8 +494,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp16"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="27dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
@@ -508,8 +520,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp17"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -533,8 +545,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp18"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -558,8 +570,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp19"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -583,8 +595,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp20"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="27dp"
             android:background="@drawable/my_stampitem_background"
@@ -598,7 +610,7 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20"
+                android:text=""
                 android:textColor="@color/grey3"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -608,9 +620,23 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="27dp"
+            android:background="@drawable/stamp_gift2"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp19"
+            app:layout_constraintTop_toBottomOf="@id/stamp12"
+            app:layout_constraintBottom_toTopOf="@+id/stamp28">
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp21"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -634,8 +660,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp22"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:clickable="true"
@@ -660,8 +686,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp23"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -685,8 +711,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp24"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="27dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
@@ -711,8 +737,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp25"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toStartOf="@id/stamp26"
@@ -735,8 +761,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp26"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
             app:layout_constraintEnd_toStartOf="@id/stamp27"
@@ -759,8 +785,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp27"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -784,8 +810,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp28"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="27dp"
             android:background="@drawable/my_stampitem_background"
@@ -805,13 +831,28 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift3_28"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="27dp"
+            android:background="@drawable/stamp_gift3"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stamp27"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="80dp"
+            android:visibility="invisible"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp29"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -829,13 +870,26 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift3_29"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/stamp_gift3"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stamp22"
+            android:visibility="invisible"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp30"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -853,13 +907,26 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift3_30"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/stamp_gift3"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stamp29"
+            app:layout_constraintStart_toEndOf="@+id/stamp23"
+            android:visibility="invisible"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stamp31"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/my_stampitem_background"
             android:elevation="5dp"
@@ -877,8 +944,21 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stamp_gift3_31"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/stamp_gift3"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stamp30"
+            app:layout_constraintStart_toEndOf="@+id/stamp24"
+            android:visibility="invisible"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

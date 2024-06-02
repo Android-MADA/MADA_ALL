@@ -11,11 +11,12 @@
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
                   <value value="$USER_HOME$/.android/avd/Mada_demo2_API_33_1.avd" />
+
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-14T18:19:06.460677Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-05-17T02:34:20.966650600Z" />
         </State>
       </entry>
     </value>

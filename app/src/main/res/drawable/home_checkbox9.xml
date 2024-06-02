@@ -6,5 +6,5 @@
         />
     <!-- 체크박스 선택 상태 -->
     <item android:state_checked="true"
-        android:drawable="@drawable/ch_checked_color9"/>
+        android:drawable="@drawable/ch_checked_color5"/>
 </selector>

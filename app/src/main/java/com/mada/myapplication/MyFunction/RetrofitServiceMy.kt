@@ -6,9 +6,11 @@ import com.mada.myapplication.MyFunction.Data.MyAlarmData
 import com.mada.myapplication.MyFunction.Data.MyChangeNicknameData
 import com.mada.myapplication.MyFunction.Data.MyGetNoticesData
 import com.mada.myapplication.MyFunction.Data.MyGetProfileData
+import com.mada.myapplication.MyFunction.Data.MyGetSetPageData
+import com.mada.myapplication.MyFunction.Data.MyGetStampData
+import com.mada.myapplication.MyFunction.Data.MyPatchStampData
+import com.mada.myapplication.MyFunction.Data.MyPostSetPageData
 import com.mada.myapplication.MyFunction.Data.MyPremiumData
-import com.mada.myapplication.MyFunction.Data.MySetPageData
-import com.mada.myapplication.MyFunction.Data.MySetPageData2
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -58,33 +60,35 @@ interface RetrofitServiceMy {
     // 화면 설정 조회 -> 확인
     @GET("/user/pageInfo")
     fun myGetSettingPage(@Header("Authorization") token: String?
-    ): Call<MySetPageData>
+    ): Call<MyGetSetPageData>
 
     // 화면 설정 저장 -> 확인
     @POST("/user/pageInfo/change")
-    fun mySetPage(
-        @Header("Authorization") token: String?,
-        @Body data : MySetPageData2
-    ) : Call<MySetPageData>
+    fun myPostSettingPage(@Header("Authorization") token: String?, @Body data : MyPostSetPageData
+    ) : Call<MyPostSetPageData>
 
-    // 알림 설정 조회 -> 확인
+    // 알림 설정 조회 -> 삭제
     @GET("/user/alarmInfo")
     fun myGetAlarm(@Header("Authorization") token: String?
     ): Call<MyAlarmData>
 
-    // 알림 설정 저장-> 미확인
+    // 알림 설정 저장-> 삭제
     @PATCH("/user/alarmInfo")
     fun mySetAlarm(@Header("Authorization") token: String?,  @Body isSettings: Boolean
     ): Call<MyAlarmData>
 
-    // 프리미엄 구독 저장-> 미확인
+    // 프리미엄 구독 저장-> 삭제
     @PATCH("/user/subscribe")
     fun mySetPremium(@Header("Authorization") token: String?, @Body is_subscribe: Boolean
     ): Call<MyPremiumData>
 
-//    // 주, 월별 투두, 카테고리 통계 조회
-//    @POST("/user/statistics")
-//    fun myGetRecord(@Header("Authorization") token: String?, @Body data: MyRecordOptionData
-//    ): Call<MyRecordData>
+    // 출석 카운트 조회
+    @GET("/user/attendance/total")
+    fun myGetStamp(@Header("Authorization") token : String?
+    ): Call<MyGetStampData>
 
+    // 출석 카운트 계산
+    @PATCH("/user/attendance")
+    fun myPatchStamp(@Header("Authorization") token: String?
+    ): Call<MyPatchStampData>
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
-import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -21,18 +20,14 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.Data.FragMyData
@@ -43,8 +38,6 @@ import com.mada.myapplication.databinding.FragMyBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
 
@@ -53,17 +46,11 @@ class FragMy : Fragment() {
     private lateinit var binding: FragMyBinding
     lateinit var navController: NavController
     private lateinit var alertDialog: AlertDialog
-    private val CalendarViewModel : CalendarViewModel by activityViewModels()
     lateinit var mAdView : AdView
-
-    //서버연결 시작
-    val retrofit = Retrofit.Builder().baseUrl("http://15.165.210.13:8080/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-
     val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     val token = Splash2Activity.prefs.getString("token", "")
-
-    val mainActivity = requireActivity() as MainActivity
+    //val mainActivity = requireActivity() as MainActivity
+    //private val viewModel: HomeViewModel by activityViewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -73,69 +60,35 @@ class FragMy : Fragment() {
         binding = FragMyBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
 
-        // 서버 데이터 연결
-        api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
-            override fun onResponse(
-                call: Call<FragMyData>,
-                response: Response<FragMyData>
-            ) {
-                val responseCode = response.code()
-                Log.d("selectfragMy", "Response Code: $responseCode")
-
-                if (response.isSuccessful) {
-                    Log.d("selectfragMy 성공", response.body().toString())
-
-                    if (response.body()!!.data.subscribe == true) {binding.userType.text = "프리미엄 유저"}
-                    else { binding.userType.text = "일반 유저" }
-
-                    binding.myNickname.text = "안녕하세요, "+"${response.body()!!.data.nickname}"+"님!"
-                } else {
-                    Log.d("selectfragMy 실패", response.body().toString())
-                }
-            }
-            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
-                Log.d("서버 오류", "selectfragMy 실패")
-            }
-        })
-
-        //구글 플레이스토어 광고
-        MobileAds.initialize(this.requireContext()) {}
-        mAdView = binding.adView
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("token:",token)
+
         navController = view.findNavController()
 
-        // 프리미엄 시 마이 화면 설정 (마스터 합치면 활성화)
-//        if(mainActivity.getPremium()){
-//            binding.userType.text = "프리미엄 유저"
-//            binding.userType.setTextColor(getResources().getColor(R.color.point_main))
-//            binding.adView.removeAllViews()
-//        }
+        setupAdView()
+        setPage()
 
         binding.backBtn.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_fragHome)
         }
-
         binding.myStampBtn.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            //navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            // 서버 되기 전까지 기능 막아두기
+            Toast.makeText(requireContext(), "아직 준비 중인 기능입니다.", Toast.LENGTH_SHORT).show()
         }
 
         // 바텀 시트 항목 선택 리스너
         binding.myEditProfile.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myProfileFragment)
         }
-        binding.mySetPage.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_mySetFragment)
-        }
+//        binding.mySetPage.setOnClickListener {
+//            navController.navigate(R.id.action_fragMy_to_mySetFragment)
+//        }
         binding.myNotice.setOnClickListener {
             navController.navigate(R.id.action_fragMy_to_myNoticeFragment)
         }
@@ -176,31 +129,51 @@ class FragMy : Fragment() {
             false
         })
 
-
-
     }
 
+    // 페이지 설정
+    private fun setPage(){
+        api.selectfragMy(token).enqueue(object : retrofit2.Callback<FragMyData> {
+            override fun onResponse(
+                call: Call<FragMyData>,
+                response: Response<FragMyData>
+            ) {
+                val responseCode = response.code()
+                Log.d("selectfragMy", "Response Code: $responseCode")
 
-    // 스위치 색 설정 함수
-    private fun setupSwitchColor(mySwitch: SwitchCompat) {
-        mySwitch.setOnCheckedChangeListener { _, isChecked ->
-            val trackColor = if (isChecked) {
-                ContextCompat.getColor(requireContext(), R.color.main)
-            } else {
-                ContextCompat.getColor(requireContext(), R.color.grey5)
+                if (response.isSuccessful) {
+                    Log.d("selectfragMy 성공", response.body().toString())
+
+                    // 닉네임 제공
+                    binding.myNickname.text = "안녕하세요, "+ response.body()!!.data.nickname +"님!"
+
+                    // 유저타입 제공
+                    if (response.body()!!.data.subscribe == true) {
+                        binding.userType.text = "프리미엄 유저"
+                        binding.userType.setTextColor(getResources().getColor(R.color.point_main))
+                        binding.adView.removeAllViews()
+                    } else {
+                        binding.userType.text = "일반 유저"
+                    }
+                } else {
+                    Log.d("selectfragMy 실패", response.body().toString())
+                }
             }
-            val thumbColor = if (isChecked) {
-                ContextCompat.getColor(requireContext(),  R.color.sub4)
-            } else {
-                ContextCompat.getColor(requireContext(), R.color.grey2)
+            override fun onFailure(call: Call<FragMyData>, t: Throwable) {
+                Log.d("서버 오류", "selectfragMy 실패")
             }
-            mySwitch.trackDrawable?.setColorFilter(trackColor, PorterDuff.Mode.SRC_IN)
-            mySwitch.thumbDrawable?.setColorFilter(thumbColor, PorterDuff.Mode.SRC_IN)
+        })
+    }
+    // 배너 광고
+    private fun setupAdView() {
+        val mainActivity = requireActivity() as MainActivity
+        if(mainActivity.getPremium()) {
+        } else {
+            MobileAds.initialize(this.requireContext()) {}
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
         }
     }
-
-
-
     // 로그아웃 팝업창 함수
     private fun showLogoutPopup() {
 
@@ -249,21 +222,13 @@ class FragMy : Fragment() {
                     Log.d("로그아웃 실패 ", "서버 오류")
                 }
             })
-
-            // 뷰 설정
-
         }
         btnNo.setOnClickListener {
             alertDialog.dismiss()
             // Handle "No" button click if needed
         }
-
-        // 뷰 사이즈 조절
-
-
-        // 호출
-
     }
+    // 앱 데이터 비우기
     fun clearAppData(context: Context) {
         val cache: File = context.cacheDir // 캐시 폴더 호출
         val appDir = File(cache.parent) // App Data 삭제를 위해 캐시 폴더의 부모 폴더까지 호출
@@ -276,7 +241,7 @@ class FragMy : Fragment() {
             }
         }
     }
-
+    // 디렉토리 삭제
     fun deleteDir(dir: File): Boolean {
         if (dir.isDirectory) {
             val children: Array<String> = dir.list() ?: return false

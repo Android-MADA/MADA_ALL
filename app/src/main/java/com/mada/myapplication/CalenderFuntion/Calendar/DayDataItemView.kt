@@ -88,7 +88,7 @@ class DayDataItemView @JvmOverloads constructor(
 
             mBuilder?.window?.setGravity(Gravity.CENTER)
 
-            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth} 일"
+            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth}일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[date.dayOfWeek().get()-1] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val today = date.toString("yyyy-MM-dd")
@@ -206,10 +206,13 @@ class DayDataItemView @JvmOverloads constructor(
                         //Log.d("dsadsa",date.dayOfWeek().get().toString())
                         val tmpToday= date.toString("yyyy-MM-dd")
                         paint3.color = Color.WHITE
+                        val inteval = CalendarViewModel.daysRemainingToDates(data.startDate,data.startDate2)
+                        val textX =  if (inteval>0 ) inteval*width else 30f
+                        Log.d("asdasdas","${inteval},${data.startDate2}, ${textX}")
+
                         paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
                         if((data.startDate==tmpToday&& date.dayOfWeek().get()==6) ||(data.endDate==tmpToday&& date.dayOfWeek().get()==7)
-                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&& date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)
-                            || (data.startDate2==tmpToday&& date.dayOfWeek().get()==6) ||(data.startDate2==tmpToday&&rightRound)) {
+                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&& date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)) {
                             canvas.drawRoundRect(roundedRect, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -217,7 +220,7 @@ class DayDataItemView @JvmOverloads constructor(
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
-                        } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7 || data.startDate2==tmpToday) {
+                        } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7) {
                             canvas.drawRoundRect(roundedRectLeft, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -227,8 +230,20 @@ class DayDataItemView @JvmOverloads constructor(
                             )
                         } else if(data.endDate==tmpToday || date.dayOfWeek().get()==6 || rightRound) {
                             canvas.drawRoundRect(roundedRectRight, 15f, 15f, paint2)
+                            canvas.drawText(
+                                data.title,
+                                30f-textX.toFloat(),
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
                         } else {
                             canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
+                            canvas.drawText(
+                                data.title,
+                                30f-textX.toFloat(),
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
                         }
 
 

@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="3dp"
-                    android:text="김마다님의 n월 통계예요."
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -334,7 +334,7 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/BarChart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginHorizontal="16dp" />
 
@@ -382,7 +382,7 @@
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/LineChart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginHorizontal="16dp" />
 
@@ -411,6 +411,50 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/error_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="115dp"
+                    android:layout_height="114dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/chart_ramdi" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="앗! 확인할 기록이 없어요."
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="120dp"
+                    android:text="통계를 낼 수 있는 투두 내역이 없네요"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

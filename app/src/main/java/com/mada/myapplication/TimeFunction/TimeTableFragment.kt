@@ -30,6 +30,7 @@ class TimeTableFragment : Fragment() {
     private val viewModel : HomeViewModel by activityViewModels()
     private val viewModelTime: TimeViewModel by activityViewModels()
     var loadWeek = false
+    var commentIs = false
 
     lateinit var today : String
     var pieChartDataArray : ArrayList<TimeViewModel.PieChartData> = ArrayList()
@@ -71,7 +72,6 @@ class TimeTableFragment : Fragment() {
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
-        var commentIs = false
         //시간표
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
@@ -85,6 +85,9 @@ class TimeTableFragment : Fragment() {
                         if(tmpList.size==0) {
                             loadWeek= true
                             binding.fabHomeTime.setImageResource(R.drawable.time_clock_img)
+                        } else {
+                            loadWeek= false
+                            binding.fabHomeTime.setImageResource(R.drawable.calendar_plus_btn)
                         }
                         timeTableOn(tmpList,today)
                     }
@@ -101,6 +104,7 @@ class TimeTableFragment : Fragment() {
                     }
                     2 -> {
                         binding.textTimeTodayHanmadi.setText("")
+                        binding.textTimeTodayHanmadi.setHint("오늘의 한마디!")
                         commentIs = false
 
                     }
@@ -152,7 +156,33 @@ class TimeTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.timeChangeBtn.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+            val enteredText = binding.textTimeTodayHanmadi.text.toString()
+            Log.d("test",enteredText)
+            if(commentIs) {
+                viewModelTime.editComment(today, CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                    when (result) {
+                        1 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+                        }
+                        2 -> {
+                            Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeTableWeek)
+                            Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         binding.fabHomeTime.setOnClickListener {

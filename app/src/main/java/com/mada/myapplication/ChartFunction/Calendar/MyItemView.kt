@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
@@ -53,7 +54,7 @@ class MyItemView @JvmOverloads constructor(
 
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
-        Log.d("date",date.toString())
+        Log.d("date2",date.toString())
         //날짜 그리기
         if(isSameDay(date)) {
             val paint2 = Paint()
@@ -70,7 +71,6 @@ class MyItemView @JvmOverloads constructor(
                 (width / 2 - bounds.width() / 2).toFloat(),
                 (bounds.height() + height/3.5f).toFloat(),
                 paint
-
             )
         }else {
             canvas.drawText(
