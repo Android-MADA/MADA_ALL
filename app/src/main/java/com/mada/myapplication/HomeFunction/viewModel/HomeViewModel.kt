@@ -47,7 +47,6 @@ import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.getHomeTodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -469,7 +468,7 @@ class HomeViewModel : ViewModel() {
         currentEntity.updateButtonInfo(index, newButtonInfo)
         _buttonInfoEntity.value = currentEntity
     }
-}
+
     // 서버 연결 테스트 코드
 
     var categoryListHome = mutableListOf<Category>()
