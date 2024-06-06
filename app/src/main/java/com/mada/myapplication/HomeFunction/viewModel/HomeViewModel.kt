@@ -47,7 +47,6 @@ import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.getHomeTodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -469,343 +468,342 @@ class HomeViewModel : ViewModel() {
         currentEntity.updateButtonInfo(index, newButtonInfo)
         _buttonInfoEntity.value = currentEntity
     }
-}
-    // 서버 연결 테스트 코드
 
-    var categoryListHome = mutableListOf<Category>()
-    var todoListHome = mutableListOf<Todo>()
+// 서버 연결 테스트 코드
+
+var categoryListHome = mutableListOf<Category>()
+var todoListHome = mutableListOf<Todo>()
 
 
-    //////
-    /**
-     * 다이얼로그 - repeat delete
-     */
-    private fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
-        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
-        val mBuilder = AlertDialog.Builder(theContext)
-            .setView(mDialogView)
-            .create()
+//////
+/**
+ * 다이얼로그 - repeat delete
+ */
+private fun setPopupTwo2(theContext: Context,title : String, flag : String?, callback: (Int) -> Unit) {
+    val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
+    val mBuilder = AlertDialog.Builder(theContext)
+        .setView(mDialogView)
+        .create()
 
-        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        mBuilder.show()
+    mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+    mBuilder.show()
 
-        //팝업 사이즈 조절
-        DisplayMetrics()
-        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        display.getSize(size)
-        val screenWidth = size.x
-        val popupWidth = (screenWidth * 0.8).toInt()
-        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+    //팝업 사이즈 조절
+    DisplayMetrics()
+    theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val size = Point()
+    val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+    display.getSize(size)
+    val screenWidth = size.x
+    val popupWidth = (screenWidth * 0.8).toInt()
+    mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        //팝업 타이틀 설정, 버튼 작용 시스템
-        if(flag == "delete"){
-            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
-            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
-
-        }
-        else if(flag == "quit"){
-            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
-            mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
-
-        }
-        else{
-            mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
-        }
-
-        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
-
-        mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
-            callback(1)
-            mBuilder.dismiss()
-        }
-        mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
-            callback(0)
-            mBuilder.dismiss()
-        }
+    //팝업 타이틀 설정, 버튼 작용 시스템
+    if(flag == "delete"){
+        mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+        mDialogView.findViewById<TextView>(R.id.textDescribe).text = "과거의 카테고리 속 투두도 함께 삭제되며\n삭제된 카테고리와 투두는 복구할 수 없습니다."
 
     }
+    else if(flag == "quit"){
+        mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.VISIBLE
+        mDialogView.findViewById<TextView>(R.id.textDescribe).text = "종료된 카테고리에는 더 이상 투두를 추가할 수 없으며\n과거의 투두 기록은 삭제되지 않습니다."
 
-    @SuppressLint("MissingInflatedId")
-    fun setPopupDelete(theContext: Context, todo : TodoEntity) {
-        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.repeat_delete_dialog, null)
-        val mBuilder = AlertDialog.Builder(theContext)
-            .setView(mDialogView)
-            .create()
-        val repeatId : Int = todo.repeatId!!
+    }
+    else{
+        mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+    }
 
-        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        mBuilder.show()
+    mDialogView.findViewById<TextView>(R.id.textTitle).text = title
 
-        //팝업 사이즈 조절
-        DisplayMetrics()
-        theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        display.getSize(size)
-        val screenWidth = size.x
-        val popupWidth = (screenWidth * 0.8).toInt()
-        mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
-        var deleteFlag = "one"
+    mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener {
+        callback(1)
+        mBuilder.dismiss()
+    }
+    mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener {
+        callback(0)
+        mBuilder.dismiss()
+    }
 
-        /**
-         * 레이아웃 설정
-         */
-        val dialogOne = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_one)
-        val dialogAfter = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_after)
-        val dialogAll = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_all)
-        val layoutOne = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_one)
-        val layoutAfter = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_after)
-        val layoutAll = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_all)
+}
 
-        var selectedFlag = "one"
+@SuppressLint("MissingInflatedId")
+fun setPopupDelete(theContext: Context, todo : TodoEntity) {
+    val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.repeat_delete_dialog, null)
+    val mBuilder = AlertDialog.Builder(theContext)
+        .setView(mDialogView)
+        .create()
+    val repeatId : Int = todo.repeatId!!
 
+    mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+    mBuilder.show()
+
+    //팝업 사이즈 조절
+    DisplayMetrics()
+    theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val size = Point()
+    val display = (theContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+    display.getSize(size)
+    val screenWidth = size.x
+    val popupWidth = (screenWidth * 0.8).toInt()
+    mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+    var deleteFlag = "one"
+
+    /**
+     * 레이아웃 설정
+     */
+    val dialogOne = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_one)
+    val dialogAfter = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_after)
+    val dialogAll = mDialogView.findViewById<RadioButton>(R.id.radio_repeat_delete_all)
+    val layoutOne = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_one)
+    val layoutAfter = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_after)
+    val layoutAll = mDialogView.findViewById<LinearLayout>(R.id.layout_delete_all)
+
+    var selectedFlag = "one"
+
+    dialogOne.isChecked = true
+    dialogAfter.isChecked = false
+    dialogAll.isChecked = false
+
+    dialogOne.setOnClickListener {
         dialogOne.isChecked = true
-        dialogAfter.isChecked = false
         dialogAll.isChecked = false
+        dialogAfter.isChecked = false
+        selectedFlag = "one"
+    }
 
-        dialogOne.setOnClickListener {
-            dialogOne.isChecked = true
-            dialogAll.isChecked = false
-            dialogAfter.isChecked = false
-            selectedFlag = "one"
-        }
+    layoutOne.setOnClickListener {
+        dialogOne.isChecked = true
+        dialogAll.isChecked = false
+        dialogAfter.isChecked = false
+        selectedFlag = "one"
+    }
 
-        layoutOne.setOnClickListener {
-            dialogOne.isChecked = true
-            dialogAll.isChecked = false
-            dialogAfter.isChecked = false
-            selectedFlag = "one"
-        }
+    dialogAfter.setOnClickListener {
+        dialogAfter.isChecked = true
+        dialogAll.isChecked = false
+        dialogOne.isChecked = false
+        selectedFlag = "after"
+    }
 
-        dialogAfter.setOnClickListener {
-            dialogAfter.isChecked = true
-            dialogAll.isChecked = false
-            dialogOne.isChecked = false
-            selectedFlag = "after"
-        }
+    layoutAfter.setOnClickListener {
+        dialogAfter.isChecked = true
+        dialogAll.isChecked = false
+        dialogOne.isChecked = false
+        selectedFlag = "after"
+    }
 
-        layoutAfter.setOnClickListener {
-            dialogAfter.isChecked = true
-            dialogAll.isChecked = false
-            dialogOne.isChecked = false
-            selectedFlag = "after"
-        }
+    dialogAll.setOnClickListener {
+        dialogAll.isChecked = true
+        dialogOne.isChecked = false
+        dialogAfter.isChecked = false
+        selectedFlag = "all"
+    }
 
-        dialogAll.setOnClickListener {
-            dialogAll.isChecked = true
-            dialogOne.isChecked = false
-            dialogAfter.isChecked = false
-            selectedFlag = "all"
-        }
-
-        layoutAll.setOnClickListener {
-            dialogAll.isChecked = true
-            dialogOne.isChecked = false
-            dialogAfter.isChecked = false
-            selectedFlag = "all"
-        }
+    layoutAll.setOnClickListener {
+        dialogAll.isChecked = true
+        dialogOne.isChecked = false
+        dialogAfter.isChecked = false
+        selectedFlag = "all"
+    }
 
 
-        mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
-            mBuilder.dismiss()
-        }
+    mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_cancel).setOnClickListener {
+        mBuilder.dismiss()
+    }
 
-        mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
-            setPopupTwo2(theContext, "정말 삭제하시겠습니까?",flag = "deleteRepeat"){
-                    result ->
-                when(result){
-                    0 -> {
-                        //삭제
-                        val buffering = setPopupBufferingTodo(theContext)
-                        when(selectedFlag){
-                            "one" -> {
-                                deleteRepeatTodoOne(repeatId){
-                                        result ->
-                                    when(result){
-                                        0 -> {
-                                            deleteTodo(todo)
-                                            mBuilder.dismiss()
-                                            Toast.makeText(theContext, "one 삭제 성공", Toast.LENGTH_SHORT).show()
-                                        }
-                                        1 -> {Toast.makeText(theContext, "one 삭제 실패", Toast.LENGTH_SHORT).show()}
+    mDialogView.findViewById<TextView>(R.id.btn_repeat_delete_delete).setOnClickListener {
+        setPopupTwo2(theContext, "정말 삭제하시겠습니까?",flag = "deleteRepeat"){
+                result ->
+            when(result){
+                0 -> {
+                    //삭제
+                    val buffering = setPopupBufferingTodo(theContext)
+                    when(selectedFlag){
+                        "one" -> {
+                            deleteRepeatTodoOne(repeatId){
+                                    result ->
+                                when(result){
+                                    0 -> {
+                                        deleteTodo(todo)
+                                        mBuilder.dismiss()
+                                        Toast.makeText(theContext, "one 삭제 성공", Toast.LENGTH_SHORT).show()
                                     }
+                                    1 -> {Toast.makeText(theContext, "one 삭제 실패", Toast.LENGTH_SHORT).show()}
                                 }
                             }
-                            "after" ->{
-                                deleteRepeatTodoAfter(repeatId){
-                                        result ->
-                                    when(result){
-                                        0 ->{
-                                            deleteTodo(todo)
-                                            mBuilder.dismiss()
-                                            Toast.makeText(theContext, "after 삭제 성공", Toast.LENGTH_SHORT).show()}
-                                        1 -> {Toast.makeText(theContext, "after 삭제 실패", Toast.LENGTH_SHORT).show()}
-                                    }
+                        }
+                        "after" ->{
+                            deleteRepeatTodoAfter(repeatId){
+                                    result ->
+                                when(result){
+                                    0 ->{
+                                        deleteTodo(todo)
+                                        mBuilder.dismiss()
+                                        Toast.makeText(theContext, "after 삭제 성공", Toast.LENGTH_SHORT).show()}
+                                    1 -> {Toast.makeText(theContext, "after 삭제 실패", Toast.LENGTH_SHORT).show()}
                                 }
                             }
-                            "all" ->{
-                                deleteRepeatTodoAll(repeatId){
-                                        result ->
-                                    when(result){
-                                        0 -> {
-                                            deleteTodo(todo)
-                                            mBuilder.dismiss()
-                                            Toast.makeText(theContext, "all 삭제 성공", Toast.LENGTH_SHORT).show()
-                                        }
-                                        1 -> {
-                                            Toast.makeText(theContext, "all 삭제 실패", Toast.LENGTH_SHORT).show()
-                                        }
+                        }
+                        "all" ->{
+                            deleteRepeatTodoAll(repeatId){
+                                    result ->
+                                when(result){
+                                    0 -> {
+                                        deleteTodo(todo)
+                                        mBuilder.dismiss()
+                                        Toast.makeText(theContext, "all 삭제 성공", Toast.LENGTH_SHORT).show()
+                                    }
+                                    1 -> {
+                                        Toast.makeText(theContext, "all 삭제 실패", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
                         }
-                        buffering.dismiss()
                     }
-                    else -> {
-                        Log.d("repeatTodo delete", "fail")
-                    }
+                    buffering.dismiss()
+                }
+                else -> {
+                    Log.d("repeatTodo delete", "fail")
                 }
             }
-
         }
 
-
-
-
     }
 
-    fun changeRepeatCb(todoEntity: TodoEntity, isChecked : Boolean, callback: (Int) -> Unit){
-        api.changeRepeatCheckox(userToken, todoEntity.repeatId!!, PatchCheckboxTodo(isChecked)).enqueue(object : Callback<Void>{
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(response.isSuccessful){
-                    Log.d("repeat patch", "success")
-                    updateTodo(todoEntity)
-                    callback(0)
-                }
-                else{
-                    Log.d("android fail", "fail")
-                    callback(1)
-                }
-            }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.d("server fail", "fail")
-                callback(1)
-            }
-
-        })
-    }
-
-    fun editRepeatTodo(todoName : String, repeat : String, repeatInfo : Int?, endDate : String, startDate : String, callback: (Int) -> Unit){
-        var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
-        Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
-        api.editRepeatTodo(token = userToken, todoId = selectedRepeatTodo!!.id!!, data = data).enqueue(object : Callback<Void>{
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(response.isSuccessful){
-                    Log.d("repeat patch", "success")
-                    callback(0)
-                }
-                else{
-                    Log.d("repeat patch", "success")
-                    callback(1)
-                }
-            }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.d("repeat patch", "success")
-                callback(1)
-            }
-
-        })
-
-    }
-
-    fun getHomeAllTodo(context: Context, callback: (Int) -> Unit){
-        api.getAllMyTodo(userToken, homeDate.value.toString()).enqueue(object : Callback<TodoList> {
-            override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
-                if(response.isSuccessful){
-                    for(i in response.body()!!.data.TodoList){
-                        val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
-                        Log.d("MainActivity todo server", todoData.toString())
-                        createTodo(todoData, null)
-                    }
-                    for(i in response.body()!!.data.RepeatTodoList){
-                        val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.categoryId, todoName = i.repeatTodoName, complete = i.complete, repeat = "Y")
-                        Log.d("MainActivity repeat server", repeatData.toString())
-                        createTodo(repeatData, null)
-                    }
-                    //닉네임 저장하기
-                    _dUserName.value = response.body()!!.data.nickname
-                    callback(0)
-                }
-                else {
-                    Log.d("todo안드 잘못", "서버 연결 실패")
-                    callback(1)
-                }
-            }
-
-            override fun onFailure(call: Call<TodoList>, t: Throwable) {
-                Log.d("todo서버 연결 오류", "서버 연결 실패")
-                callback(1)
-            }
-
-        })
-    }
-
-    fun getHomeMyCategory(context: Context, callback: (Int) -> Unit){
-        deleteAllCate()
-        api.getHCategory(userToken, homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
-            override fun onResponse(
-                call: Call<CategoryList1>,
-                response: Response<CategoryList1>
-            ) {
-                if (response.isSuccessful) {
-                    for (i in response.body()!!.data.CategoryList) {
-                        val cateData = CateEntity(
-                            id = i.id,
-                            categoryName = i.categoryName,
-                            color = i.color,
-                            iconId = i.iconId,
-                            isInActive = i.isInActive
-                        )
-                        createCate(cateData)
-                    }
-                    //getHomeTodo(api, context)
-                    callback(0)
-                } else {
-                    Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
-                    callback(1)
-                }
-            }
-
-            override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
-                Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
-                callback(1)
-            }
-
-        })
-    }
-
-    fun setPopupBufferingTodo(theContext: Context) : AlertDialog {
-        val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
-        val mBuilder = AlertDialog.Builder(theContext)
-            .setView(mDialogView)
-            .create()
-
-        mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-        mBuilder.show()
-        mBuilder.setCancelable(false)
-        mBuilder.setCanceledOnTouchOutside(false)
-
-        return mBuilder
-    }
 
 
 }
 
+fun changeRepeatCb(todoEntity: TodoEntity, isChecked : Boolean, callback: (Int) -> Unit){
+    api.changeRepeatCheckox(userToken, todoEntity.repeatId!!, PatchCheckboxTodo(isChecked)).enqueue(object : Callback<Void>{
+        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            if(response.isSuccessful){
+                Log.d("repeat patch", "success")
+                updateTodo(todoEntity)
+                callback(0)
+            }
+            else{
+                Log.d("android fail", "fail")
+                callback(1)
+            }
+        }
+
+        override fun onFailure(call: Call<Void>, t: Throwable) {
+            Log.d("server fail", "fail")
+            callback(1)
+        }
+
+    })
+}
+
+fun editRepeatTodo(todoName : String, repeat : String, repeatInfo : Int?, endDate : String, startDate : String, callback: (Int) -> Unit){
+    var data = PatchRequestRepeatTodo(todoName = todoName, repeat = repeat, repeatInfo = repeatInfo, endRepeatDate = endDate, startRepeatDate = startDate)
+    Log.d("check", data.toString() + selectedRepeatTodo!!.id!! )
+    api.editRepeatTodo(token = userToken, todoId = selectedRepeatTodo!!.id!!, data = data).enqueue(object : Callback<Void>{
+        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            if(response.isSuccessful){
+                Log.d("repeat patch", "success")
+                callback(0)
+            }
+            else{
+                Log.d("repeat patch", "success")
+                callback(1)
+            }
+        }
+
+        override fun onFailure(call: Call<Void>, t: Throwable) {
+            Log.d("repeat patch", "success")
+            callback(1)
+        }
+
+    })
+
+}
+
+fun getHomeAllTodo(context: Context, callback: (Int) -> Unit){
+    api.getAllMyTodo(userToken, homeDate.value.toString()).enqueue(object : Callback<TodoList> {
+        override fun onResponse(call: Call<TodoList>, response: Response<TodoList>) {
+            if(response.isSuccessful){
+                for(i in response.body()!!.data.TodoList){
+                    val todoData = TodoEntity(id = i.id, date = i.date, category = i.category.id, todoName = i.todoName, complete = i.complete, repeat = i.repeat, repeatInfo = i.repeatInfo, endRepeatDate = i.endRepeatDate, startRepeatDate = i.startRepeatDate)
+                    Log.d("MainActivity todo server", todoData.toString())
+                    createTodo(todoData, null)
+                }
+                for(i in response.body()!!.data.RepeatTodoList){
+                    val repeatData = TodoEntity(id = i.todoId, repeatId = i.id, date = i.date, category = i.categoryId, todoName = i.repeatTodoName, complete = i.complete, repeat = "Y")
+                    Log.d("MainActivity repeat server", repeatData.toString())
+                    createTodo(repeatData, null)
+                }
+                //닉네임 저장하기
+                _dUserName.value = response.body()!!.data.nickname
+                callback(0)
+            }
+            else {
+                Log.d("todo안드 잘못", "서버 연결 실패")
+                callback(1)
+            }
+        }
+
+        override fun onFailure(call: Call<TodoList>, t: Throwable) {
+            Log.d("todo서버 연결 오류", "서버 연결 실패")
+            callback(1)
+        }
+
+    })
+}
+
+fun getHomeMyCategory(context: Context, callback: (Int) -> Unit){
+    deleteAllCate()
+    api.getHCategory(userToken, homeDate.value.toString()).enqueue(object : Callback<CategoryList1> {
+        override fun onResponse(
+            call: Call<CategoryList1>,
+            response: Response<CategoryList1>
+        ) {
+            if (response.isSuccessful) {
+                for (i in response.body()!!.data.CategoryList) {
+                    val cateData = CateEntity(
+                        id = i.id,
+                        categoryName = i.categoryName,
+                        color = i.color,
+                        iconId = i.iconId,
+                        isInActive = i.isInActive
+                    )
+                    createCate(cateData)
+                }
+                //getHomeTodo(api, context)
+                callback(0)
+            } else {
+                Log.d("MainActivity cate안드 잘못", "서버 연결 실패")
+                callback(1)
+            }
+        }
+
+        override fun onFailure(call: Call<CategoryList1>, t: Throwable) {
+            Log.d("MainActivity cate서버 연결 오류", "서버 연결 실패")
+            callback(1)
+        }
+
+    })
+}
+
+fun setPopupBufferingTodo(theContext: Context) : AlertDialog {
+    val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup_buffering, null)
+    val mBuilder = AlertDialog.Builder(theContext)
+        .setView(mDialogView)
+        .create()
+
+    mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+    mBuilder.show()
+    mBuilder.setCancelable(false)
+    mBuilder.setCanceledOnTouchOutside(false)
+
+    return mBuilder
+}
+
+
+}
