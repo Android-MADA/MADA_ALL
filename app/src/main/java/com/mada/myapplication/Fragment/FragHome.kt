@@ -100,7 +100,7 @@ class FragHome : Fragment() {
 
         getCustomPrint(CustomviewModel)
 
-
+/*
 
         // ViewModel에서 데이터가 변경될 때마다 UI를 업데이트하는 Observer 설정
         CustomviewModel.buttonInfoEntity.observe(viewLifecycleOwner, Observer {
@@ -249,7 +249,7 @@ class FragHome : Fragment() {
             itembuttonInfo.selectedImageResource ?: 0
         )
         Log.d("buttoninfo","${colorbuttonInfo.serverID} ${clothbuttonInfo.serverID} ${itembuttonInfo.serverID}")
-
+*/
 
         val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragHome)
 
