@@ -13,6 +13,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.ButtonInfoEntity
+import com.mada.myapplication.CustomFunction.CustomViewModel
 import com.mada.myapplication.CustomFunction.DataRepo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customPrintDATA
@@ -64,15 +66,19 @@ class FragHome : Fragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
     private val CustomviewModel: HomeViewModel by activityViewModels()
+    private val CustomviewModel2: CustomViewModel by activityViewModels()
+
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     private val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     private lateinit var mAdView : AdView
+    lateinit var savedData: FragCustom.selectedButtonInfo
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        getCustomPrint(CustomviewModel)
+        //getCustomPrint(CustomviewModel)
 
     }
 
@@ -94,7 +100,7 @@ class FragHome : Fragment() {
 
         getCustomPrint(CustomviewModel)
 
-
+/*
 
         // ViewModel에서 데이터가 변경될 때마다 UI를 업데이트하는 Observer 설정
         CustomviewModel.buttonInfoEntity.observe(viewLifecycleOwner, Observer {
@@ -243,6 +249,19 @@ class FragHome : Fragment() {
             itembuttonInfo.selectedImageResource ?: 0
         )
         Log.d("buttoninfo","${colorbuttonInfo.serverID} ${clothbuttonInfo.serverID} ${itembuttonInfo.serverID}")
+*/
+
+        val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragHome)
+
+        binding.todoCharacterIv.setImageResource(
+            buttonInfo?.selectedColorButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeCloth.setImageResource(
+            buttonInfo?.selectedClothButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeItem.setImageResource(
+            buttonInfo?.selectedItemButtonInfo?.selectedImageResource ?: 0
+        )
 
         return view
     }
@@ -251,6 +270,17 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        /*val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragHome)
+
+        binding.todoCharacterIv.setImageResource(
+            buttonInfo?.selectedColorButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeCloth.setImageResource(
+            buttonInfo?.selectedClothButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeItem.setImageResource(
+            buttonInfo?.selectedItemButtonInfo?.selectedImageResource ?: 0
+        )*/
 
 
         /**
