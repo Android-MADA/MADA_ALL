@@ -82,16 +82,10 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         //binding = CustomItemBinding.inflate(inflater, container, false)
         getCustomItemCheck()
 
-        /*val defaultButton = binding.btnItemBasic
-        onImageButtonClick(defaultButton)
-        onItemButtonClick(defaultButton)*/
-
 
         binding.btnItemGlassNormal.setOnClickListener{
-            if (onCategorySelected(22) == 1) {
-                onItemButtonClick(it as ImageButton)
-                onImageButtonClick(binding.btnItemGlassNormal)
-            }
+            onItemButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnItemGlassNormal)
             }
         binding.btnItemHatBer.setOnClickListener{
             //onCategorySelected(R.id.btn_item_hat_ber)
@@ -189,7 +183,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_item_glass_normal -> R.drawable.g_normal_choice
+            R.id.btn_item_glass_normal -> R.drawable.gh_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice
             R.id.btn_item_glass_8bit -> R.drawable.g_8bit_choice
@@ -259,26 +253,6 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
         imageChangeListener?.onItemButtonSelected(buttonInfo)
     }
-
-    /*fun resetButtonItem() {
-        binding.btnItemGlassNormal.setImageResource(R.drawable.gh_normal_s)
-        binding.btnItemHatBer.setImageResource(R.drawable.hat_ber_s)
-        binding.btnItemHatGrad.setImageResource(R.drawable.hat_grad_s)
-        binding.btnItemGlass8bit.setImageResource(R.drawable.g_8bit_s)
-        binding.btnItemGlassWoig.setImageResource(R.drawable.g_woig_s)
-        binding.btnItemHatIpod.setImageResource(R.drawable.hat_ipod_s)
-        binding.btnItemGlassSunR.setImageResource(R.drawable.g_sunr_s)
-        binding.btnItemGlassSunB.setImageResource(R.drawable.g_sunb_s)
-        binding.btnItemHatFlower.setImageResource(R.drawable.hat_flower_s)
-        binding.btnItemHatV.setImageResource(R.drawable.hat_v_s)
-        binding.btnItemHatDinof.setImageResource(R.drawable.hat_dinof_s)
-        binding.btnItemHatSheep.setImageResource(R.drawable.hat_sheep_s)
-        binding.btnItemBagE.setImageResource(R.drawable.bag_e_s)
-        binding.btnItemBagLuck.setImageResource(R.drawable.bag_luck_s)
-        binding.btnItemHatHeart.setImageResource(R.drawable.hat_heart_s)
-        binding.btnItemHatBee.setImageResource(R.drawable.hat_bee_s)
-        binding.btnItemHatHeads.setImageResource(R.drawable.heads_s)
-    }*/
 
     fun getCustomItemCheck() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token)
