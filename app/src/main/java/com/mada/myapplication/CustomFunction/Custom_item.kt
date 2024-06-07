@@ -88,10 +88,10 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
 
         binding.btnItemGlassNormal.setOnClickListener{
-            if (onCategorySelected(22) == 1) {
+            //if (onCategorySelected(22) == 1) {
                 onItemButtonClick(it as ImageButton)
                 onImageButtonClick(binding.btnItemGlassNormal)
-            }
+            //}
             }
         binding.btnItemHatBer.setOnClickListener{
             //onCategorySelected(R.id.btn_item_hat_ber)
