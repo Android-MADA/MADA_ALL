@@ -374,8 +374,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
                 //아이템 선택 버튼 초기화
                 if (colorBinding != null && clothBinding != null && backgroundBinding != null && itemBinding != null) {
-
-
                     //item 초기화
                     itemBinding.btnItemGlassNormal?.setImageResource(R.drawable.gh_normal_s)
                     itemBinding.btnItemHatBer?.setImageResource(R.drawable.hat_ber_s)
@@ -443,8 +441,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 true
             }
         }
-
-
 
 
         //저장하기 클릭 리스너
@@ -515,23 +511,12 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     serverpatchIds[3] = temdata.selectedBackgroundButtonInfo?.serverID!!.toInt()
             }
 
-
-
-            val combinedIds = uniqueItemIds.map { it!!.toInt() }
             val serverpatchList = serverpatchIds.toList()
 
             //server patch 리스트 로그
             Log.d(
                 "serverpatchList",
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
-            )
-            serverpatchIds.forEachIndexed { index, value ->
-                Log.d("serverpatchList", "Index: $index, Value: $value, Type: ${value::class.simpleName}")
-            }
-            //uniqueItemIds 리스트 로그
-            Log.d(
-                "uniqueItemIds",
-                "${uniqueItemIds[0]} ${uniqueItemIds[1]} ${uniqueItemIds[2]} ${uniqueItemIds[3]}"
             )
 
             patchCustomItemChange(serverpatchList) //patch: 서버에 아이템 정보 저장
@@ -612,7 +597,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             saveSelectedButtonInfo(SaveButtonInfo)
 
 
-            //여기가 문젠가
             binding.customRamdi.setImageResource(
                 colorbuttonInfo?.selectedImageResource?: 0
             )
@@ -648,6 +632,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
         //저장하기 클릭리스너 끝
 
+
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
         alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
@@ -662,7 +647,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         btnNo.setOnClickListener {
             alertDialog.dismiss()
-            // Handle "No" button click if needed
         }
 
         btnYes.setOnClickListener {
@@ -686,10 +670,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             })
 
 
-
-
-
-
         return view
     }
 
@@ -709,7 +689,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     }
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
-        binding.imgCustomCloth.setImageResource(itembuttonInfo.selectedImageResource)
+        binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
         unsavedChanges = true
     }
@@ -720,14 +700,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         unsavedChanges = true
 
     }
-
-    /*override fun onResetButtonClicked() {
-        Log.d("FragCustom", "onResetButtonClicked()")
-        colorFragment?.resetButtonColor()
-        clothFragment?.resetButtonCloth()
-        itemFragment?.resetButtonItem()
-        backgroundFragment?.resetButtonBackground()
-    }*/
 
     fun getSelectedButtonInfo(): selectedButtonInfo {
 
