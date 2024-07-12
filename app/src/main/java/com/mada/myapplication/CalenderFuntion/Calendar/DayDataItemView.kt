@@ -146,7 +146,7 @@ class DayDataItemView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
         val textHeight = bounds.height().toFloat()

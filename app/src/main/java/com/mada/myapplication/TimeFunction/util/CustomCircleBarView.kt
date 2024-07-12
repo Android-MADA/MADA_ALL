@@ -16,7 +16,7 @@ class CustomCircleBarView : View {
     private var progress = 0
 
     // 원형 프로그레스바 그리기
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // Paint 객체 생성
