@@ -424,6 +424,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                 calendarViewModel.setPopupOne(requireContext(), "가능한 날짜를 선택해주세요.", view)
             }
             else{
+                val buffering = viewModel.setPopupBufferingTodo(requireContext())
                 val data = PostRequestTodo(category = PostRequestTodoCateId(_argsArrayAdd!![0].toInt()), complete = false, repeat = selectedType, repeatInfo = inputRepeatInfo, date = viewModel.homeDate.value.toString(), endRepeatDate = viewModel.repeatEndDate.toString(), startRepeatDate = viewModel.repeatStartDate.toString(), todoName = binding.edtHomeCategoryName.text.toString())
                 api.addTodo(viewModel.userToken, data).enqueue(object : Callback<PostResponseTodo>{
                     override fun onResponse(
@@ -431,14 +432,17 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                         response: Response<PostResponseTodo>
                     ) {
                         if(response.isSuccessful){
+                            buffering.dismiss()
                             Navigation.findNavController(view).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
                         }
                         else{
+                            buffering.dismiss()
                             Log.d("repeat Add", "Android fail")
                         }
                     }
 
                     override fun onFailure(call: Call<PostResponseTodo>, t: Throwable) {
+                        buffering.dismiss()
                         Log.d("repeat Add", "server fail")
                     }
 
@@ -455,6 +459,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                 calendarViewModel.setPopupOne(requireContext(), "가능한 날짜를 선택해주세요.", view)
             }
             else{
+                val buffering = viewModel.setPopupBufferingTodo(requireContext())
                 viewModel.editRepeatTodo(todoName = binding.edtHomeCategoryName.text.toString(), repeat = selectedType, repeatInfo = inputRepeatInfo, endDate = viewModel.repeatEndDate.toString(), startDate = viewModel.repeatStartDate.toString()){
                     result ->
                     when(result){
@@ -467,8 +472,10 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
                             Log.d("repeat Edit", "fail")
                         }
                     }
+                    buffering.dismiss()
                 }
             }
+            Log.d("save", "click")
         }
 
         /**
@@ -493,7 +500,7 @@ class RepeatTodoAddFragment : Fragment(), HomeCustomDialogListener {
 
     // 커스텀 다이얼로그에서 버튼 클릭 시
     override fun onYesButtonClicked(dialog: Dialog, flag: String) {
-            Navigation.findNavController(requireView()).navigate(R.id.action_repeatTodoAddFragment_to_homeRepeatTodoFragment)
+        findNavController().popBackStack()
         dialog.dismiss()
     }
 

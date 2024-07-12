@@ -7,115 +7,186 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/CustomScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    <TableLayout
-        android:id="@+id/custom_colortable"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        >
+        <TableLayout
+            android:id="@+id/img_custom_colortable"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp">
 
-        <TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
 
             <ImageButton
                 android:id="@+id/btn_color_basic"
                 android:src="@drawable/color_basic"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:layout_width="40dp"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_color_blue"
-                android:src="@drawable/color_blue"
+                android:id="@+id/btn_color_orange2"
+                android:src="@drawable/color_orange2"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:background="#FFFFFF"></ImageButton>
+
+
+            <ImageButton
+                android:id="@+id/btn_color_pink"
+                android:src="@drawable/color_pink"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_color_green"
-                android:src="@drawable/color_green"
+                android:id="@+id/btn_color_pink3"
+                android:src="@drawable/color_pink3"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
-        </TableRow>
+            <ImageButton
+                android:id="@+id/btn_color_mint"
+                android:src="@drawable/color_mint"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:background="#FFFFFF"></ImageButton>
 
-        <TableRow>
+
+
+
+            <ImageButton
+                android:id="@+id/btn_color_yellow2"
+                android:src="@drawable/color_yellow2"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_Rblue"
                 android:src="@drawable/color_rblue"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
+
+
+
+
+
+
+
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            >
+
+            <ImageButton
+                android:id="@+id/btn_color_pink2"
+                android:src="@drawable/color_pink2"
+                android:layout_margin ="10dp"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
+                android:background="#FFFFFF"></ImageButton>
+
+
+
 
             <ImageButton
                 android:id="@+id/btn_color_bluepurple"
                 android:src="@drawable/color_bluepurple"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_orange"
                 android:src="@drawable/color_orange"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btn_color_yellow"
                 android:src="@drawable/color_yellow"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btn_color_purple"
                 android:src="@drawable/color_purple"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
             <ImageButton
-                android:id="@+id/btn_color_pink"
-                android:src="@drawable/color_pink"
+                android:id="@+id/btn_color_green"
+                android:src="@drawable/color_green"
                 android:layout_margin ="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:adjustViewBounds="true"
+                android:layout_width="40dp"
+                android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
+
+
+
+
+
+
 
         </TableRow>
 
     </TableLayout>
 
-    </ScrollView>
+    </HorizontalScrollView>
 </LinearLayout>
 

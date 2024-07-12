@@ -46,7 +46,7 @@
                         android:id="@+id/textTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:text="기말 강의평가 기간"
                         android:textColor="@color/black"

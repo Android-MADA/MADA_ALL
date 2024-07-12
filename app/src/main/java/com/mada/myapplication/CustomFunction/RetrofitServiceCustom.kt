@@ -14,19 +14,25 @@ interface RetrofitServiceCustom {
     fun customReset(@Header("Authorization") token : String?
     ) : Call<Void> //완료
 
+
+    //캐릭터 출력
     @GET("/api/custom/")
     fun customPrint(@Header("Authorization") token : String?
     ) : Call<customPrintDATA>
 
 
-    @GET("/api/custom/item/{item_type}")
-    fun customItemCheck(@Header("Authorization") token : String?, @Path("item_type") item_type : String
-    ) : Call<customItemCheckDATA>
+    //아이템 조회
+    @GET("/api/custom/item")
+    fun customItemCheck(@Header("Authorization") token : String?
+    ) : Call<customItemCheckDATA> //완료
 
 
 
+
+    //아이템 변경
+    // 완료
     @PATCH("/api/custom/change")
-    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<String>): Call<Void>
+    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Int>): Call<customItemChangeDATA>
 
     @POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int

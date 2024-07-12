@@ -17,6 +17,7 @@ import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.R
 import com.mada.myapplication.TimeFunction.calendar.TimeMonthSliderAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 
 class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFragment() {
     val viewModel = viewModel
@@ -59,21 +60,24 @@ class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFra
             val dateSaveBtn = view?.findViewById<TextView>(R.id.todo_menu_date_save_btn)
 
             todoMenuDelete?.setOnClickListener {
+                val buffering = viewModel.setPopupBufferingTodo(requireContext())
                 Log.d("todo menu", "delete click")
                 if(listener == null) return@setOnClickListener
                 listener?.sendValue("delete")
+                buffering.dismiss()
                 dismiss()
             }
 
             todoMenuEdit?.setOnClickListener {
+                val buffering = viewModel.setPopupBufferingTodo(requireContext())
                 Log.d("todo menu", "edit click")
                 if(listener == null) return@setOnClickListener
                 listener?.sendValue("edit")
+                buffering.dismiss()
                 dismiss()
             }
 
             todoMenuChangeDate?.setOnClickListener {
-
                 if(calView!!.isVisible){
                     calView?.isGone = true
                 }
@@ -83,8 +87,10 @@ class TodoDateBottomSheetDialog(viewModel: HomeViewModel) : BottomSheetDialogFra
             }
 
             dateSaveBtn?.setOnClickListener {
+                val buffering = viewModel.setPopupBufferingTodo(requireContext())
                 if(listener == null) return@setOnClickListener
                 listener?.sendValue("date")
+                buffering.dismiss()
                 dismiss()
             }
 

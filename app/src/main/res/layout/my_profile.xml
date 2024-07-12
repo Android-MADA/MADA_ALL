@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".MyFuction.Fragment.MyProfileFragment"
+    tools:context=".MyFunction.Fragment.MyProfileFragment"
     android:id="@+id/nav_host_fragment_container"
     app:navGraph="@navigation/home_nav_graph">
 
@@ -76,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|end"
-                android:text="김마다"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 

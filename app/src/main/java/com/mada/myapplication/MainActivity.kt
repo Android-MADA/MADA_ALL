@@ -2,11 +2,14 @@ package com.mada.myapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -23,29 +26,31 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.nickName
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.RepeatData1
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
-import com.mada.myapplication.StartFuction.Splash2Activity
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.ActivityMainBinding
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import kotlinx.coroutines.launch
-import com.mada.myapplication.MyFuction.Data.FragMyData
-import com.mada.myapplication.MyFuction.RetrofitServiceMy
+import com.mada.myapplication.MyFunction.Data.FragMyData
+import com.mada.myapplication.MyFunction.RetrofitServiceMy
+import com.mada.myapplication.StartFunction.MySignup2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -77,27 +82,6 @@ class MainActivity : AppCompatActivity() {
 
         val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
 
-        /**
-         * 1-1 database clear
-         */
-        //clearHomeDatabase(viewModel)
-
-        /**
-         * 1-2 캐릭터 서버에서 받아오기
-         */
-
-
-        /**
-         * 2. GET home Category
-         */
-        //getHomeCategory(api, viewModel, this)
-
-
-        /**
-         * 3. GET home Todo
-         */
-        //getHomeTodo(api, viewModel, this)
-        //getHomeTodo(api, viewModel, this)
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
@@ -156,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                         if(purchasesList.isEmpty()) {
                             // 구독 안한 상태
                             premium = false
+
+
                         }
                         for (purchase in purchasesList) {
                             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
@@ -163,6 +149,19 @@ class MainActivity : AppCompatActivity() {
                                 premium = true
                             }
                         }
+                        val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+                        val call = service.patchSubscribe(viewModel.userToken, subscribe(premium))
+                        Log.d("viewmodelcheck", "?")
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Log.d("viewmodelcheck", response.toString())
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("viewmodelcheck", t.toString())
+                            }
+                        })
                     }
                 }
             }
@@ -189,6 +188,12 @@ class MainActivity : AppCompatActivity() {
     }
     fun setPremium() {
         premium = true
+    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
     }
 }
 

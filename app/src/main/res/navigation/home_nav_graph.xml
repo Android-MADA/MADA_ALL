@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/fragCalendar">
+    app:startDestination="@id/fragHome">
 
     <fragment
         android:id="@+id/fragHome"
@@ -111,9 +111,9 @@
         <action
             android:id="@+id/action_homeCategoryFragment_to_fragHome"
             app:destination="@id/fragHome" />
-        <action
-            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"
-            app:destination="@id/categoryInActiveFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_homeCategoryFragment_to_categoryInActiveFragment"-->
+<!--            app:destination="@id/categoryInActiveFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
@@ -228,18 +228,18 @@
             android:id="@+id/action_fragMy_to_mySetFragment"
             app:destination="@id/mySetFragment" />
         <action
-            android:id="@+id/action_fragMy_to_fragHome"
-            app:destination="@id/fragHome" />
-        <action
             android:id="@+id/action_fragMy_to_splash2Activity"
             app:destination="@id/splash2Activity" />
         <action
             android:id="@+id/action_fragMy_to_myStampFragment"
             app:destination="@id/myStampFragment" />
+        <action
+            android:id="@+id/action_fragMy_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyProfileFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyProfileFragment"
         android:label="MyProfileFragment" >
         <action
             android:id="@+id/action_myProfileFragment_to_myProfileNickFragment"
@@ -250,7 +250,7 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileNickFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyProfileNickFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyProfileNickFragment"
         android:label="MyProfileNickFragment" >
         <action
             android:id="@+id/action_myProfileNickFragment_to_fragMy"
@@ -258,7 +258,7 @@
     </fragment>
     <fragment
         android:id="@+id/mySetFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MySetFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MySetFragment"
         android:label="MySetFragment" >
         <action
             android:id="@+id/action_mySetFragment_to_fragMy"
@@ -266,7 +266,7 @@
     </fragment>
     <fragment
         android:id="@+id/myNoticeFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyNoticeFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyNoticeFragment"
         android:label="MyNoticeFragment" >
         <action
             android:id="@+id/action_myNoticeFragment_to_fragMy"
@@ -274,7 +274,7 @@
     </fragment>
     <fragment
         android:id="@+id/myPremiumFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyPremiumFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyPremiumFragment"
         android:label="MyPremiumFragment" >
         <action
             android:id="@+id/action_myPremiumFragment_to_fragMy"
@@ -282,7 +282,7 @@
     </fragment>
     <fragment
         android:id="@+id/myWithdrawFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyWithdrawFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyWithdrawFragment"
         android:label="MyWithdrawFragment" >
         <action
             android:id="@+id/action_myWithdrawFragment_to_splash2Activity"
@@ -293,7 +293,7 @@
     </fragment>
     <activity
         android:id="@+id/splash2Activity"
-        android:name="com.mada.myapplication.StartFuction.Splash2Activity"
+        android:name="com.mada.myapplication.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
     <fragment
@@ -348,7 +348,7 @@
     </fragment>
     <fragment
         android:id="@+id/myStampFragment"
-        android:name="com.mada.myapplication.MyFuction.Fragment.MyStampFragment"
+        android:name="com.mada.myapplication.MyFunction.Fragment.MyStampFragment"
         android:label="MyStampFragment" >
         <action
             android:id="@+id/action_myStampFragment_to_fragMy"

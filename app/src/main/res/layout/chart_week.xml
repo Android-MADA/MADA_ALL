@@ -256,10 +256,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="3dp"
-                    android:text="김마다님의 n째 주 통계예요."
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="01\n이번 주의 MVP 카테고리는 바로"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,7 +280,7 @@
                     android:padding="20dp">
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/my_chart"
+                        android:id="@+id/PieChart"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
                         android:layout_weight="3" />
@@ -291,7 +301,7 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="카테고리명"
-                    android:textColor="@color/black"
+                    android:textColor="#C3497D"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -306,10 +316,27 @@
                     android:textColor="@color/grey1"
                     android:textSize="12sp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#E5E5E5"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="24dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="02\n이번 주의 TO-DO는 얼마나 진심이었냐면요"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
+
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/BarChart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="32dp" />
 
@@ -337,7 +364,22 @@
                     android:textSize="12sp" />
 
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#E5E5E5"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="24dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="03\n지금 나, 잘 하고 있는 걸까? MADA가 알려드릴게요!"
+                    android:textColor="@color/grey3"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/LineChart"
@@ -349,9 +391,9 @@
                 <TextView
                     android:id="@+id/record_title3"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="투두 달성도가 nn%p 상승했어요"
                     android:textColor="@color/black"
@@ -371,6 +413,50 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/error_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="115dp"
+                    android:layout_height="114dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/chart_ramdi" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="앗! 확인할 기록이 없어요."
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="120dp"
+                    android:text="통계를 낼 수 있는 투두 내역이 없네요"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

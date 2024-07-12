@@ -91,7 +91,7 @@ class TimeItemView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (canvas == null) return
         val dateString = date.dayOfMonth.toString()

@@ -11,19 +11,21 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.isSameDay
 import com.mada.myapplication.R
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 class MyItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes private val defStyleAttr: Int = R.attr.itemSmallViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.CalendarSmall_ItemSmallViewStyle,
-    private val date: DateTime = DateTime()
+    val date: DateTime = DateTime()
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
 
@@ -41,16 +43,18 @@ class MyItemView @JvmOverloads constructor(
             }
         }
         setOnClickListener {
+            Log.d("click","${date}")
+            val formatter = DateTimeFormat.forPattern("yyyy-MM-dd")
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (canvas == null) return
 
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
-        Log.d("date",date.toString())
+        Log.d("date2",date.toString())
         //날짜 그리기
         if(isSameDay(date)) {
             val paint2 = Paint()
@@ -67,7 +71,6 @@ class MyItemView @JvmOverloads constructor(
                 (width / 2 - bounds.width() / 2).toFloat(),
                 (bounds.height() + height/3.5f).toFloat(),
                 paint
-
             )
         }else {
             canvas.drawText(

@@ -29,6 +29,7 @@
     <string name="cloth_name">의상</string>
     <string name="item_name">소품</string>
     <string name="background_name">배경</string>
+    <string name="underlined_btn"><u>저장하기</u></string>
 
     //Calendar
     <string name="number_picker_formatter">%02d</string>
