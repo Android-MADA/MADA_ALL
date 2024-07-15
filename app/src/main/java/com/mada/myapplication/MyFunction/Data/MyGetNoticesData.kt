@@ -1,11 +1,13 @@
 package com.mada.myapplication.MyFunction.Data
 
+import com.google.gson.annotations.SerializedName
+
 data class MyGetNoticesData(
-    val data: ArrayList<MyNoticesData>
+    @SerializedName("data") val data: ArrayList<MyNoticesData>
 )
 data class MyNoticesData(
-    val id:Int,
-    val title:String,
-    val content:String,
-    val date: String,
+    @SerializedName("id") val id:Int,
+    @SerializedName("title") val title:String,
+    @SerializedName("content") val content:String,
+    @SerializedName("date") val date: String,
 )
