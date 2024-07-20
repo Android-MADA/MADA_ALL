@@ -54,6 +54,8 @@ class CalendarView2 @JvmOverloads constructor(
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
      */
     fun getCalendarData(list: List<DateTime>,year :  String ,month : String,CalendarViewModel : CalendarViewModel) {
+        removeAllViews() // Remove all existing child views
+        CalendarViewModel.tmpDateInterval = IntArray(10)
         list.forEach {
             this.list = list
             this.CalendarViewModel = CalendarViewModel
@@ -72,6 +74,7 @@ class CalendarView2 @JvmOverloads constructor(
 
     fun updateCalendarData() {
         removeAllViews() // Remove all existing child views
+        CalendarViewModel.tmpDateInterval = IntArray(10)
         // Add new child views based on the new calendar data
         list.forEach { date ->
             addView(DayDataItemView(

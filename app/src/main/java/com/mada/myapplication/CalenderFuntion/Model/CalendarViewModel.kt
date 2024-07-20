@@ -61,6 +61,8 @@ class CalendarViewModel : ViewModel(){
 
     var addId = 0
 
+    var tmpDateInterval = IntArray(10)
+
     fun getToday():String {
         try {
             // 한국 시간대를 지정

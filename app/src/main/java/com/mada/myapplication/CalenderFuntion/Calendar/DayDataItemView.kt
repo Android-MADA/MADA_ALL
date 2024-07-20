@@ -206,13 +206,23 @@ class DayDataItemView @JvmOverloads constructor(
                         //Log.d("dsadsa",date.dayOfWeek().get().toString())
                         val tmpToday= date.toString("yyyy-MM-dd")
                         paint3.color = Color.WHITE
-                        val inteval = CalendarViewModel.daysRemainingToDates(data.startDate,data.startDate2)
-                        val textX =  if (inteval>0 ) inteval*width else 30f
-                        Log.d("asdasdas","${inteval},${data.startDate2}, ${textX}")
+                        var inteval = CalendarViewModel.daysRemainingToDates(data.startDate,data.startDate2)
 
+
+                        if(date.dayOfWeek().get()==6) {
+                            // 토요일의 경우
+                            Log.d("Test!!!!","Save!!!")
+                            CalendarViewModel.tmpDateInterval[data.floor] = inteval +1
+                            inteval += CalendarViewModel.tmpDateInterval[data.floor]
+                        }
+                        inteval -= CalendarViewModel.tmpDateInterval[data.floor]
+                        Log.d("Test!!!!","${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval}")
+
+                        val textX =  if (inteval>0) inteval*width else 0f
                         paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
                         if((data.startDate==tmpToday&& date.dayOfWeek().get()==6) ||(data.endDate==tmpToday&& date.dayOfWeek().get()==7)
-                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&& date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)) {
+                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&&date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)) {
+                            // 양쪽 다 둥근
                             canvas.drawRoundRect(roundedRect, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -221,14 +231,16 @@ class DayDataItemView @JvmOverloads constructor(
                                 paint3
                             )
                         } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7) {
+                            // 왼쪽
                             canvas.drawRoundRect(roundedRectLeft, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
-                                30f,
+                                30f-textX.toFloat(),
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
                         } else if(data.endDate==tmpToday || date.dayOfWeek().get()==6 || rightRound) {
+                            // 오른쪽
                             canvas.drawRoundRect(roundedRectRight, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -236,7 +248,11 @@ class DayDataItemView @JvmOverloads constructor(
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
+                            if(data.endDate==tmpToday) {
+                                CalendarViewModel.tmpDateInterval[data.floor] = 0
+                            }
                         } else {
+                            // 가운데
                             canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -293,5 +309,6 @@ class DayDataItemView @JvmOverloads constructor(
                 }
             }
         }
+
     }
 }
