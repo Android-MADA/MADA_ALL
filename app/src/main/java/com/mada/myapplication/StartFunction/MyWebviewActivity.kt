@@ -2,9 +2,11 @@ package com.mada.myapplication.StartFunction
 
 import android.app.Activity
 import android.content.Intent
+import android.net.http.NetworkException.ERROR_CONNECTION_REFUSED
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -83,6 +85,12 @@ class MyWebviewActivity : AppCompatActivity() {
             }
             override fun onPageFinished(view: WebView, url: String) {
 
+            }
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                if (error?.errorCode == ERROR_CONNECTION_REFUSED) {
+                    binding.tvError.visibility = View.VISIBLE
+                }
             }
         })
     }

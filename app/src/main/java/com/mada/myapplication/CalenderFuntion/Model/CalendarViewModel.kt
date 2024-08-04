@@ -164,6 +164,7 @@ class CalendarViewModel : ViewModel(){
                 mBuilder.dismiss()
             } else {
                 System.exit(0)
+                System.exit(0)
             }
 
         })
