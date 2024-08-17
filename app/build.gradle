@@ -16,9 +16,9 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 34
-        versionCode 29
+        versionCode 31
         // 버전 이름 (큰 버전, 작은 버전, 날짜)
-        versionName "gusto_version:1.6.0804"
+        versionName "mad_version:1.8:20240817"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
