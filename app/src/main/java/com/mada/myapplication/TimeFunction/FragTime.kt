@@ -3,6 +3,7 @@ package com.mada.myapplication.TimeFunction
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +75,7 @@ class FragTime : Fragment() {
         }
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
+            Log.d("comment !!!!",newValue)
             binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(newValue))
             today = newValue
             viewModelTime.getScheduleDatas(newValue) { result ->
@@ -96,6 +98,7 @@ class FragTime : Fragment() {
                 }
             }
             viewModelTime.getComment(newValue) { result, content ->
+                Log.d("comment !",content)
                 when (result) {
                     1 -> {
                         binding.textTimeTodayHanmadi.setText(content)
@@ -229,6 +232,16 @@ class FragTime : Fragment() {
                 Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragTimeAdd,bundle)
             }
         }
+
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragTime_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
     override fun onDestroyView() {
         super.onDestroyView()

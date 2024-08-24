@@ -3,6 +3,7 @@ package com.mada.myapplication.TimeFunction
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,7 +76,7 @@ class TimeTableFragment : Fragment() {
         //시간표
         viewModelTime.updateData(formattedDate)
         viewModelTime.myLiveToday.observe(viewLifecycleOwner, { newValue ->
-            Log.d("observe","dsadas")
+            Log.d("comment !!!!",newValue)
             binding.textHomeTimeName.text = outputDateFormat.format(inputDateFormat.parse(newValue))
             today = newValue
             viewModelTime.getScheduleDatas(newValue) { result ->
@@ -97,6 +98,7 @@ class TimeTableFragment : Fragment() {
                 }
             }
             viewModelTime.getComment(newValue) { result, content ->
+                Log.d("comment !", content)
                 when (result) {
                     1 -> {
                         binding.textTimeTodayHanmadi.setText(content)
@@ -208,6 +210,15 @@ class TimeTableFragment : Fragment() {
                 Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragTimeAdd,bundle)
             }
         }
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragTimeTable_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -247,6 +258,7 @@ class TimeTableFragment : Fragment() {
         val adapter = TimeTableAdpater(pieChartDataArray, today,viewModelTime)
         recyclerView.adapter = adapter
     }
+
 
 }
 

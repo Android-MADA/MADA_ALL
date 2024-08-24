@@ -133,7 +133,7 @@ class CalendarViewModel : ViewModel(){
         val formattedDate = currentDate.format(dateFormatter)
         return formattedDate
     }
-    fun setPopupTwo(theContext: Context,title : String, theView : View, moveFragment : Int) {
+    fun setPopupTwo(theContext: Context,describe : String, theView : View, moveFragment : Int) {
         val mDialogView = LayoutInflater.from(theContext).inflate(R.layout.calendar_add_popup, null)
         val mBuilder = AlertDialog.Builder(theContext)
             .setView(mDialogView)
@@ -154,7 +154,7 @@ class CalendarViewModel : ViewModel(){
         mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
 
         //팝업 타이틀 설정, 버튼 작용 시스템
-        mDialogView.findViewById<TextView>(R.id.textTitle).text = title
+        mDialogView.findViewById<TextView>(R.id.textDescribe).text = describe
         mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
             mBuilder.dismiss()
         })
