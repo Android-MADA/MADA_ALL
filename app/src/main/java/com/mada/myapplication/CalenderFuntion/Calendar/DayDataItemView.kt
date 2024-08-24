@@ -212,11 +212,14 @@ class DayDataItemView @JvmOverloads constructor(
                         if(date.dayOfWeek().get()==6) {
                             // 토요일의 경우
                             Log.d("Test!!!!","Save!!!")
+                            var tmp = CalendarViewModel.tmpDateInterval[data.floor]
                             CalendarViewModel.tmpDateInterval[data.floor] = inteval +1
+                            inteval -= tmp
                             inteval += CalendarViewModel.tmpDateInterval[data.floor]
                         }
+                        //Log.d("Test!!!!","1 ${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval[data.floor]}")
                         inteval -= CalendarViewModel.tmpDateInterval[data.floor]
-                        Log.d("Test!!!!","${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval}")
+                        Log.d("Test!!!!","[${data.floor}]${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval[data.floor]}")
 
                         val textX =  if (inteval>0) inteval*width else 0f
                         paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
@@ -248,9 +251,7 @@ class DayDataItemView @JvmOverloads constructor(
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
-                            if(data.endDate==tmpToday) {
-                                CalendarViewModel.tmpDateInterval[data.floor] = 0
-                            }
+
                         } else {
                             // 가운데
                             canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
@@ -261,7 +262,9 @@ class DayDataItemView @JvmOverloads constructor(
                                 paint3
                             )
                         }
-
+                        if(data.endDate==tmpToday) {
+                            CalendarViewModel.tmpDateInterval[data.floor] = 0
+                        }
 
                     } else {
                         canvas.drawRoundRect(roundedRectNoDuration, 10f, 10f, paint2)
