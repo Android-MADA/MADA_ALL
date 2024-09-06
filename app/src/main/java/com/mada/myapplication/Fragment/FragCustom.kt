@@ -519,7 +519,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
             )
 
-            patchCustomItemChange(serverpatchList) //patch: 서버에 아이템 정보 저장
+
+
+            patchCustomItemChange(serverpatchIds) { serverCode ->
+                if (serverCode == 200) {
+                    Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "저장에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
 
 
 
@@ -627,7 +635,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             )
 
             unsavedChanges = false
-            Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
         }
         //저장하기 클릭리스너 끝
@@ -898,7 +906,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         })
     }
 
-    fun patchCustomItemChange(itemIds: List<Int>) {
+    fun patchCustomItemChange(itemIds: List<Int>, callback: (Int) -> Unit) {
         val call: Call<customItemChangeDATA> = service.customItemChange(token, itemIds)
 
         call.enqueue(object : Callback<customItemChangeDATA> {
@@ -908,12 +916,16 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     Log.d("patchCustomItemChange", "Response Code: $responseCode")
                     val responseBody = response.body()
                     Log.d("patchCustomItemChange", "Response Body: ${responseBody?.data}")
+                    callback(responseCode)
+                    //Toast.makeText(binding.root.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d("patchCustomItemChangeFail", "Response Code: $responseCode, Error: ${response.errorBody()?.string()}")
+                    callback(responseCode)
                 }
             }
             override fun onFailure(call: Call<customItemChangeDATA>, t: Throwable) {
                 Log.d("patchCustomItemChange", t.message.toString())
+                callback(500)
             }
         })
     }
