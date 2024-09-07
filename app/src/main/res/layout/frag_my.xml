@@ -262,16 +262,36 @@
                             android:layout_height="1dp"
                             android:background="?android:attr/listDivider" />
 
-                        <TextView
-                            android:id="@+id/my_kakao"
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_kakao"
-                            android:drawablePadding="10dp"
-                            android:padding="15dp"
-                            android:text="카카오톡 문의하기"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:orientation="horizontal">
+
+                            <!-- 이미지 뷰 -->
+                            <ImageView
+                                android:id="@+id/kakao_icon"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginVertical="15dp"
+                                android:layout_gravity="center_vertical"
+                                android:contentDescription="카카오톡 아이콘"
+                                android:src="@drawable/ic_kakao" />
+
+                            <!-- 텍스트 뷰 -->
+                            <TextView
+                                android:id="@+id/my_kakao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginVertical="15dp"
+                                android:text="카카오톡 문의하기"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:layout_gravity="center_vertical" />
+                        </LinearLayout>
+
 
                         <View
                             android:layout_width="match_parent"
