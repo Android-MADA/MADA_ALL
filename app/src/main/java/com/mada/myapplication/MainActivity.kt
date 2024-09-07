@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.setupWithNavController/*
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -25,7 +25,7 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
-import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.QueryPurchasesParams*/
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import com.mada.myapplication.CalenderFuntion.Model.nickName
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: HomeViewModel
 
-    private lateinit var billingClient : BillingClient
+    /*private lateinit var billingClient : BillingClient*/
     private lateinit var sharedPreferences: SharedPreferences
     private var premium = false
 
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
-        billingClient = BillingClient.newBuilder(this)
+        /*billingClient = BillingClient.newBuilder(this)
             .setListener(purchasesUpdatedListener)
             .enablePendingPurchases()
             .build()
@@ -165,10 +165,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        })
+        })*/
 
     }
-    private val purchasesUpdatedListener =
+    /*private val purchasesUpdatedListener =
         PurchasesUpdatedListener { billingResult, purchases ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                 // Handle any other error codes.
                 Log.d("안녕하세요","구매요청 실패")
             }
-        }
+        }*/
 
     fun getPremium() : Boolean {
         return premium

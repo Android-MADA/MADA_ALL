@@ -244,9 +244,11 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:background="?android:attr/listDivider" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/my_premium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
