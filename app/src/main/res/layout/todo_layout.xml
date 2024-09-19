@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="6월 7일 수요일"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     />

@@ -88,7 +88,7 @@ class DayDataItemView @JvmOverloads constructor(
 
             mBuilder?.window?.setGravity(Gravity.CENTER)
 
-            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth} 일"
+            mDialogView.findViewById<TextView>(R.id.textDay2).text = "${date.dayOfMonth}일"
             mDialogView.findViewById<TextView>(R.id.textPosition).text = weekdays[date.dayOfWeek().get()-1] + "요일"
             mDialogView.findViewById<AppCompatImageButton>(R.id.addBtn).setOnClickListener( {
                 val today = date.toString("yyyy-MM-dd")
@@ -146,7 +146,7 @@ class DayDataItemView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         val dateString = date.dayOfMonth.toString()
         paint.getTextBounds(dateString, 0, dateString.length, bounds)
         val textHeight = bounds.height().toFloat()
@@ -206,10 +206,26 @@ class DayDataItemView @JvmOverloads constructor(
                         //Log.d("dsadsa",date.dayOfWeek().get().toString())
                         val tmpToday= date.toString("yyyy-MM-dd")
                         paint3.color = Color.WHITE
+                        var inteval = CalendarViewModel.daysRemainingToDates(data.startDate,data.startDate2)
+
+
+                        if(date.dayOfWeek().get()==6) {
+                            // 토요일의 경우
+                            Log.d("Test!!!!","Save!!!")
+                            var tmp = CalendarViewModel.tmpDateInterval[data.floor]
+                            CalendarViewModel.tmpDateInterval[data.floor] = inteval +1
+                            inteval -= tmp
+                            inteval += CalendarViewModel.tmpDateInterval[data.floor]
+                        }
+                        //Log.d("Test!!!!","1 ${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval[data.floor]}")
+                        inteval -= CalendarViewModel.tmpDateInterval[data.floor]
+                        Log.d("Test!!!!","[${data.floor}]${inteval},${data.startDate2}, ${CalendarViewModel.tmpDateInterval[data.floor]}")
+
+                        val textX =  if (inteval>0) inteval*width else 0f
                         paint3.textSize = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11f, getResources().getDisplayMetrics()))
                         if((data.startDate==tmpToday&& date.dayOfWeek().get()==6) ||(data.endDate==tmpToday&& date.dayOfWeek().get()==7)
-                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&& date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)
-                            || (data.startDate2==tmpToday&& date.dayOfWeek().get()==6) ||(data.startDate2==tmpToday&&rightRound)) {
+                            || (leftRound&& date.dayOfWeek().get()==6)||(rightRound&&date.dayOfWeek().get()==7) || (data.startDate==tmpToday&&rightRound)) {
+                            // 양쪽 다 둥근
                             canvas.drawRoundRect(roundedRect, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
@@ -217,20 +233,38 @@ class DayDataItemView @JvmOverloads constructor(
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
-                        } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7 || data.startDate2==tmpToday) {
+                        } else if(data.startDate==tmpToday || leftRound ||date.dayOfWeek().get()==7) {
+                            // 왼쪽
                             canvas.drawRoundRect(roundedRectLeft, 15f, 15f, paint2)
                             canvas.drawText(
                                 data.title,
-                                30f,
+                                30f-textX.toFloat(),
                                 y+32f + 50f*data.floor,
                                 paint3
                             )
                         } else if(data.endDate==tmpToday || date.dayOfWeek().get()==6 || rightRound) {
+                            // 오른쪽
                             canvas.drawRoundRect(roundedRectRight, 15f, 15f, paint2)
-                        } else {
-                            canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
-                        }
+                            canvas.drawText(
+                                data.title,
+                                30f-textX.toFloat(),
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
 
+                        } else {
+                            // 가운데
+                            canvas.drawRoundRect(roundedRectCenter, 15f, 15f, paint2)
+                            canvas.drawText(
+                                data.title,
+                                30f-textX.toFloat(),
+                                y+32f + 50f*data.floor,
+                                paint3
+                            )
+                        }
+                        if(data.endDate==tmpToday) {
+                            CalendarViewModel.tmpDateInterval[data.floor] = 0
+                        }
 
                     } else {
                         canvas.drawRoundRect(roundedRectNoDuration, 10f, 10f, paint2)
@@ -278,5 +312,6 @@ class DayDataItemView @JvmOverloads constructor(
                 }
             }
         }
+
     }
 }

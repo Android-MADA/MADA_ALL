@@ -159,6 +159,9 @@
         <action
             android:id="@+id/action_fragTime_to_fragTime"
             app:destination="@id/fragTime" />
+        <action
+            android:id="@+id/action_fragTime_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeTable"
@@ -173,6 +176,9 @@
         <action
             android:id="@+id/action_fragTimeTable_to_fragTimeTable"
             app:destination="@id/fragTimeTable" />
+        <action
+            android:id="@+id/action_fragTimeTable_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeTableWeek"
@@ -187,6 +193,9 @@
         <action
             android:id="@+id/action_fragTimeTableWeek_to_fragTimeTableWeek"
             app:destination="@id/fragTimeTableWeek" />
+        <action
+            android:id="@+id/action_fragTimeTableWeek_to_fragHome"
+            app:destination="@id/fragHome" />
     </fragment>
     <fragment
         android:id="@+id/fragTimeAdd"

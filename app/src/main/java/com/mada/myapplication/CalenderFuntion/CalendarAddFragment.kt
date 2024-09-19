@@ -1,5 +1,7 @@
 package com.mada.myapplication.CalenderFuntion
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -7,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -482,7 +485,7 @@ class CalendarAddFragment : Fragment() {
                 binding.nextScheldule2.text.toString() != "  오전 11:00  " || binding.cyclebtn.text.toString() != "반복 안함" ||
                 binding.textMemo.text.toString()!="") {
                 //팝업 띄우기
-                CalendarViewModel.setPopupTwo(requireContext(),"수정하지 않고 나가시겠습니까?",view,R.id.action_calendarAdd_to_fragCalendar)
+                CalendarViewModel.setPopupTwo(requireContext(),"지금 나가시면 수정된 내용이 저장되지 않아요.",view,R.id.action_calendarAdd_to_fragCalendar)
             } else {
                 Navigation.findNavController(view).navigate(R.id.action_calendarAdd_to_fragCalendar)
             }

@@ -2,9 +2,12 @@ package com.mada.myapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -14,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.setupWithNavController/*
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -22,9 +25,12 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
-import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.QueryPurchasesParams*/
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.nickName
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.RepeatData1
 import com.mada.myapplication.HomeFunction.Model.TodoList
@@ -39,16 +45,19 @@ import com.mada.myapplication.db.entity.TodoEntity
 import kotlinx.coroutines.launch
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
+import com.mada.myapplication.StartFunction.MySignup2Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: HomeViewModel
 
-    private lateinit var billingClient : BillingClient
+    /*private lateinit var billingClient : BillingClient*/
     private lateinit var sharedPreferences: SharedPreferences
     private var premium = false
 
@@ -76,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
-        billingClient = BillingClient.newBuilder(this)
+        /*billingClient = BillingClient.newBuilder(this)
             .setListener(purchasesUpdatedListener)
             .enablePendingPurchases()
             .build()
@@ -131,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                         if(purchasesList.isEmpty()) {
                             // 구독 안한 상태
                             premium = false
+
+
                         }
                         for (purchase in purchasesList) {
                             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
@@ -138,13 +149,26 @@ class MainActivity : AppCompatActivity() {
                                 premium = true
                             }
                         }
+                        val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                        val service = retrofit.create(RetrofitServiceCalendar::class.java)
+                        val call = service.patchSubscribe(viewModel.userToken, subscribe(premium))
+                        Log.d("viewmodelcheck", "?")
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Log.d("viewmodelcheck", response.toString())
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("viewmodelcheck", t.toString())
+                            }
+                        })
                     }
                 }
             }
-        })
+        })*/
 
     }
-    private val purchasesUpdatedListener =
+    /*private val purchasesUpdatedListener =
         PurchasesUpdatedListener { billingResult, purchases ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
@@ -157,13 +181,19 @@ class MainActivity : AppCompatActivity() {
                 // Handle any other error codes.
                 Log.d("안녕하세요","구매요청 실패")
             }
-        }
+        }*/
 
     fun getPremium() : Boolean {
         return premium
     }
     fun setPremium() {
         premium = true
+    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
     }
 }
 

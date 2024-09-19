@@ -32,7 +32,7 @@ interface RetrofitServiceCustom {
     //아이템 변경
     // 완료
     @PATCH("/api/custom/change")
-    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Long>): Call<customItemChangeDATA>
+    fun customItemChange(@Header("Authorization") token: String?, @Query("item_id") itemIds: List<Int>): Call<customItemChangeDATA>
 
     @POST("/api/custom/buy/{item_id}")
     fun customItemBuy(@Header("Authorization") token : String?, @Path("item_id") item_id : Int

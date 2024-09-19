@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.findNavController/*
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener
 import com.android.billingclient.api.BillingClient
@@ -19,8 +19,10 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
-import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.QueryPurchasesParams*/
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.mada.myapplication.CalenderFuntion.Model.subscribe
+import com.mada.myapplication.CalenderFuntion.api.RetrofitServiceCalendar
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
@@ -30,6 +32,11 @@ import com.mada.myapplication.databinding.MyPremiumBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -42,14 +49,13 @@ class MyPremiumFragment : Fragment() {
     lateinit var navController: NavController
     private val api = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     private val token = Splash2Activity.prefs.getString("token", "")
-    private lateinit var billingClient : BillingClient
-    lateinit var billingFlowParams : BillingFlowParams
+    /*private lateinit var billingClient : BillingClient
+    lateinit var billingFlowParams : BillingFlowParams*/
 
-    private val purchasesUpdatedListener =
+    /*private val purchasesUpdatedListener =
         PurchasesUpdatedListener { billingResult, purchases ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
-                    Log.d("안녕하세요","구매")
                     lifecycleScope.launch {
                         handlePurchase(purchase)
                     }
@@ -81,17 +87,30 @@ class MyPremiumFragment : Fragment() {
             binding.myPremiumBtn.text = "구독 중"
             val mainActivity = requireActivity() as MainActivity
             mainActivity.setPremium()
+            val retrofit = Retrofit.Builder().baseUrl("http://www.madaumc.store/")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val service = retrofit.create(RetrofitServiceCalendar::class.java)
+            val call = service.patchSubscribe(token, subscribe(true))
+            Log.d("viewmodelcheck", "?")
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Log.d("viewmodelcheck", response.toString())
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("viewmodelcheck", t.toString())
+                }
+            })
         } else {
             // fail
         }
-    }
+    }*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = MyPremiumBinding.inflate(inflater, container, false)
 
-        billingClient = BillingClient.newBuilder(requireContext())
+        /*billingClient = BillingClient.newBuilder(requireContext())
             .setListener(purchasesUpdatedListener)
             .enablePendingPurchases()
             .build()
@@ -134,14 +153,14 @@ class MyPremiumFragment : Fragment() {
                 // Google Play by calling the startConnection() method.
                 Toast.makeText(requireContext(), "구글 플레이 연결 실패", Toast.LENGTH_SHORT).show()
             }
-        })
+        })*/
 
 
         return binding.root
     }
     suspend fun queryPurchaseAsync() {
 
-        val params = QueryPurchasesParams.newBuilder()
+        /*val params = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.SUBS)
             .build()
 
@@ -178,7 +197,7 @@ class MyPremiumFragment : Fragment() {
                 val debugMessage = purchasesResult.debugMessage
                 Toast.makeText(requireContext(), "결제 이력을 불러오는 중에 오류 발생", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -190,7 +209,7 @@ class MyPremiumFragment : Fragment() {
         }
 
         binding.myPremiumBtn.setOnClickListener {
-            val billingResult = billingClient.launchBillingFlow(requireActivity(), billingFlowParams)
+            /*val billingResult = billingClient.launchBillingFlow(requireActivity(), billingFlowParams)*/
         }
     }
 

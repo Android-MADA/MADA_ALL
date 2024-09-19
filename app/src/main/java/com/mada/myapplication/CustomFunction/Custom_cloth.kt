@@ -29,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class custom_cloth(val binding: CustomClothBinding) : Fragment() {
     lateinit var fragbinding: FragCustomBinding
     private var selectedButton: ImageButton? = null
-    private val buttonLockMap = mutableMapOf<Int, Boolean>()
 
     private var imageChangeListener: OnClothImageChangeListener? = null
     //private var resetButtonClickListener: OnResetButtonClickListener? = null
@@ -40,20 +39,6 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
     val token = Splash2Activity.prefs.getString("token", "")
 
-    /*private val serverIdToDrawableMap = mapOf(
-        900 to R.drawable.custom_empty,
-        41 to R.drawable.set_dev,
-        44 to R.drawable.set_movie,
-        40 to R.drawable.set_caffk,
-        46 to R.drawable.set_v,
-        39 to R.drawable.set_astronauts,
-        47 to R.drawable.set_zzim,
-        42 to R.drawable.set_hanbokf,
-        43 to R.drawable.set_hanbokm,
-        45 to R.drawable.set_snowman
-    )*/
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is OnClothImageChangeListener) {
@@ -62,9 +47,6 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
             throw IllegalArgumentException("The parent fragment must implement OnImageChangeListener.")
         }
     }
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

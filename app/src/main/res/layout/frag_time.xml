@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="18dp"
             android:layout_height="34dp"
             android:orientation="horizontal">
@@ -35,7 +35,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/image_cal" />
 
                 <TextView

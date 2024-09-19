@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,25 +11,32 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mada.myapplication.BuildConfig
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.mada.myapplication.CalenderFuntion.Model.CalendarViewModel
 import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.ButtonInfoEntity
+import com.mada.myapplication.CustomFunction.CustomViewModel
 import com.mada.myapplication.CustomFunction.DataRepo
+import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
+import com.mada.myapplication.CustomFunction.customPrintDATA
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
 import com.mada.myapplication.HomeFunction.Model.Todo
 import com.mada.myapplication.HomeFunction.Model.TodoList
 import com.mada.myapplication.HomeFunction.adapter.todo.HomeCateListAdapter
-import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.HomeFunction.bottomsheetdialog.TodoDateBottomSheetDialog
+import com.mada.myapplication.HomeFunction.viewModel.HomeViewModel
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.Data.FragMyData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
@@ -41,27 +47,38 @@ import com.mada.myapplication.databinding.TodoLayoutBinding
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.getHomeTodo
 import com.mada.myapplication.hideBottomNavigation
-import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Calendar
 import kotlin.concurrent.thread
+
 
 class FragHome : Fragment() {
 
     lateinit var binding : TodoLayoutBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private val CalendarViewModel : CalendarViewModel by activityViewModels()
+    private val CustomviewModel: HomeViewModel by activityViewModels()
+    private val CustomviewModel2: CustomViewModel by activityViewModels()
+
     private val api = RetrofitInstance.getInstance().create(HomeApi::class.java)
     private val apiMy = RetrofitInstance.getInstance().create(RetrofitServiceMy::class.java)
     private lateinit var mAdView : AdView
+    lateinit var savedData: FragCustom.selectedButtonInfo
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //getCustomPrint(CustomviewModel)
 
     }
 
@@ -81,69 +98,20 @@ class FragHome : Fragment() {
 
         //날짜 변경 시 서버에서 cateogry, todo받아오기
 
+        //getCustomPrint(CustomviewModel)
 
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
-            12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
-            26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
-            27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
-            28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
-            49 -> ButtonInfo(0, 49, R.drawable.custom_empty)
-            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
-            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
-            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
-            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
-            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
-            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
-            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
-            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
-
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            50 -> ButtonInfo(0, 50, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> throw IllegalArgumentException("Unknown button ID")
-        }
+        val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragHome)
 
         binding.todoCharacterIv.setImageResource(
-            colorbuttonInfo.selectedImageResource ?: 0
+            buttonInfo?.selectedColorButtonInfo?.selectedImageResource ?: 0
         )
         binding.ivHomeCloth.setImageResource(
-            clothbuttonInfo.selectedImageResource ?: 0
+            buttonInfo?.selectedClothButtonInfo?.selectedImageResource ?: 0
         )
         binding.ivHomeItem.setImageResource(
-            itembuttonInfo.selectedImageResource ?: 0
+            buttonInfo?.selectedItemButtonInfo?.selectedImageResource ?: 0
         )
+
         return view
     }
 
@@ -151,6 +119,17 @@ class FragHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        /*val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragHome)
+
+        binding.todoCharacterIv.setImageResource(
+            buttonInfo?.selectedColorButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeCloth.setImageResource(
+            buttonInfo?.selectedClothButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.ivHomeItem.setImageResource(
+            buttonInfo?.selectedItemButtonInfo?.selectedImageResource ?: 0
+        )*/
 
 
         /**
@@ -437,3 +416,42 @@ fun checkCategory(viewModel: HomeViewModel) : Boolean {
     }
     return isCate
 }
+
+
+
+
+
+
+val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
+    .addConverterFactory(GsonConverterFactory.create()).build()
+val service = retrofit.create(RetrofitServiceCustom::class.java)
+
+val token = Splash2Activity.prefs.getString("token", "")
+
+
+fun getCustomPrint(viewModel: HomeViewModel) {
+    val call: Call<customPrintDATA> = service.customPrint(token)
+    call.enqueue(object : Callback<customPrintDATA> {
+        override fun onResponse(
+            call: Call<customPrintDATA>,
+            response: Response<customPrintDATA>
+        ) {
+            val printInfo = response.body()
+            val responseCode = response.code()
+            val datas = printInfo?.data?.wearingItems
+
+            datas?.forEachIndexed { index, item ->
+                Log.d(
+                    "getCustomPrint",
+                    "Response Code: $responseCode Item $index - id: ${item.id}"
+                )
+                DataRepo.updateButtonInfoEntity(viewModel, index, item.id)
+            }
+        }
+
+        override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
+            Log.d("error", t.message.toString())
+        }
+    })
+}
+

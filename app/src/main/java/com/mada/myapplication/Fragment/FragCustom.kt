@@ -40,6 +40,8 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.children
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -53,10 +55,13 @@ import com.mada.myapplication.CustomBottomSheetViewPager
 import com.mada.myapplication.CustomFunction.ButtonInfoEntity
 import com.mada.myapplication.CustomFunction.customItemChangeDATA
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
+import com.mada.myapplication.CustomFunction.customPrintDATA
 import com.mada.myapplication.databinding.CustomBackgroundBinding
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
 import com.mada.myapplication.databinding.CustomItemBinding
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,12 +83,10 @@ interface OnBackgroundImageChangeListener {
     fun onBackgroundButtonSelected(buttonInfo: ButtonInfo)
 }
 
-
 data class IdAndItemType(
     val id: Int,
     val itemType: String
 )
-
 
 
 //카테고리매핑
@@ -116,29 +119,7 @@ val serverIdToCategoryMap = mapOf(
     R.id.btn_cloth_zzim to "hat,earring,clothes,goods"
 )
 
-
-val categoryList = mutableListOf<String>()
 val itemsCategory = ArrayList<String>(100) //카테고리 중복 확인 변수
-
-//카테고리 처리
-fun onCategorySelected(serverID:Int) {
-    val itemCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
-    if (itemCategories != null) {
-        for (category in itemCategories) {
-            if (itemsCategory.contains(category)) {
-                //Toast.makeText(requireContext(), "이미 선택된 카테고리입니다.", Toast.LENGTH_SHORT).show()
-                return
-            }
-            itemsCategory.add(category)
-        }
-        //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
-        Log.d("itemsCategory", "선택된 카테고리: $itemsCategory")
-    }
-}
-
-
-
-
 
 
 class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeListener,
@@ -148,9 +129,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private var selectedClothButtonInfo: ButtonInfo? = null
     private var selectedItemButtonInfo: ButtonInfo? = null
     private var selectedBackgroundButtonInfo: ButtonInfo? = null
-    private val viewModel: CustomViewModel by viewModels()
+    private val viewModel: CustomViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
-    private lateinit var savedData: selectedButtonInfo
+    lateinit var savedData: selectedButtonInfo
 
 
 
@@ -164,8 +145,22 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     private lateinit var alertDialog: AlertDialog
 
 
-    val retrofit = Retrofit.Builder().baseUrl(BuildConfig.MADA_BASE)
-        .addConverterFactory(GsonConverterFactory.create()).build()
+    // HttpLoggingInterceptor 설정
+    val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    // OkHttpClient에 Interceptor 추가
+    val httpClient = OkHttpClient.Builder()
+        .addInterceptor(logging)
+        .build()
+
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.MADA_BASE)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(httpClient)  // HttpClient를 추가해야 로그 인터셉터가 동작
+        .build()
     val service = retrofit.create(RetrofitServiceCustom::class.java)
 
     val token = Splash2Activity.prefs.getString("token", "")
@@ -192,96 +187,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         editor.apply()
     }
-
-    // 데이터 불러오기
-    fun getSavedSelectedButtonInfo(): selectedButtonInfo {
-        val sharedPreferences = requireActivity().getSharedPreferences("selected_info", Context.MODE_PRIVATE)
-
-        val colorButtonId = sharedPreferences.getInt("color_button_id", 10)
-        val clothButtonId = sharedPreferences.getInt("cloth_button_id", 49)
-        val itemButtonId = sharedPreferences.getInt("item_button_id", 50)
-        val backgroundButtonId = sharedPreferences.getInt("background_button_id", 48)
-
-        // 가져온 정보를 바탕으로 selectedButtonInfo 객체를 만듭니다.
-        val selectedColorButtonInfo = when (colorButtonId) {
-            10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
-            12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
-            26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
-            27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
-            28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-            else -> savedData?.selectedColorButtonInfo
-        }
-
-        val selectedClothButtonInfo = when (clothButtonId) {
-            0 -> ButtonInfo(0, 49, R.drawable.custom_empty)
-            49 -> ButtonInfo(0, 49, R.drawable.custom_empty)
-            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
-            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
-            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
-            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts)
-            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
-            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
-            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
-            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> savedData?.selectedClothButtonInfo
-        }
-
-        val selectedItemButtonInfo = when (itemButtonId) {
-            50 -> ButtonInfo(0, 50, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> savedData?.selectedItemButtonInfo
-        }
-
-        val selectedBackgroundButtonInfo = when (backgroundButtonId) {
-            48 -> ButtonInfo(0, 48, R.drawable.custom_empty)
-            1 -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
-            3 -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
-            8 -> ButtonInfo(R.id.btn_back_win_s, 8, R.drawable.back_win)
-            4 -> ButtonInfo(R.id.btn_back_normal_s, 4, R.drawable.back_nomal)
-            5 -> ButtonInfo(R.id.btn_back_store_s, 5, R.drawable.back_store)
-            9 -> ButtonInfo(R.id.btn_back_zzim_s, 9, R.drawable.back_zzim)
-            7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
-            2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
-            6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-            else -> savedData?.selectedBackgroundButtonInfo
-        }
-
-
-        return selectedButtonInfo(
-                selectedColorButtonInfo,
-                selectedClothButtonInfo,
-                selectedItemButtonInfo,
-                selectedBackgroundButtonInfo
-            )
-    }
-
-
-
 
 
     override fun onCreateView(
@@ -327,10 +232,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
 
 
-
-
-
-
+        // DataRepo에서 가져온 정보를 바탕으로 ButtonInfo 객체를 만듭니다.
         val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
             10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
             11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
@@ -453,8 +355,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         fragmentTransaction.commit()
 
 
+        //초기화 버튼 클릭 리스너
         binding.btnCustomReset.setOnClickListener {
-            itemsCategory.clear()
+            itemsCategory.clear() //카테고리 선택 초기화
             if (::binding.isInitialized) {
                 val colorbtninfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 selectedColorButtonInfo = colorbtninfo
@@ -471,10 +374,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
                 //아이템 선택 버튼 초기화
                 if (colorBinding != null && clothBinding != null && backgroundBinding != null && itemBinding != null) {
-
-
                     //item 초기화
-
                     itemBinding.btnItemGlassNormal?.setImageResource(R.drawable.gh_normal_s)
                     itemBinding.btnItemHatBer?.setImageResource(R.drawable.hat_ber_s)
                     itemBinding.btnItemHatGrad?.setImageResource(R.drawable.hat_grad_s)
@@ -543,11 +443,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
 
 
-
-
-
-
-
         //저장하기 클릭 리스너
         binding.btnCustomSave.setOnClickListener {
             viewModel.saveButtonInfo(getSelectedButtonInfo())
@@ -561,7 +456,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             printIds.forEachIndexed { index, itemId ->
                 Log.d("getCustomPrint", "printIds[$index]: $itemId")
             }
-            val itemIds = arrayOf(10, 49, 50, 48) //49:set, 50:item, 48:background
+            val itemIds = arrayOf(10, 49, 50, 48) //10: basic color 49:set, 50:item, 48:background
             var serverpatchIds = mutableListOf(10, 49, 50, 48)
 
             val uniqueItemIds = mutableListOf<Int?>()
@@ -577,6 +472,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     itemIds[3]=(idAndItemType.id)
                 }
             }
+
 
 
             if(temdata.selectedColorButtonInfo?.serverID == null) {
@@ -615,20 +511,19 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     serverpatchIds[3] = temdata.selectedBackgroundButtonInfo?.serverID!!.toInt()
             }
 
-
-// Convert uniqueItemIds set back to a list
-            val combinedIds = uniqueItemIds.map { it!!.toLong() }
             val serverpatchList = serverpatchIds.toList()
 
+            //server patch 리스트 로그
             Log.d(
                 "serverpatchList",
                 "${serverpatchIds[0]} ${serverpatchIds[1]} ${serverpatchIds[2]} ${serverpatchIds[3]}"
             )
 
-            patchCustomItemChange(combinedIds)
+            patchCustomItemChange(serverpatchList) //patch: 서버에 아이템 정보 저장
 
 
 
+            //서버에 저장한 리스트를 buttoninfo에 저장
             var colorbuttonInfo = when (serverpatchList[0]) {
                 10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
                 11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
@@ -737,6 +632,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
         //저장하기 클릭리스너 끝
 
+
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
         alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
@@ -751,7 +647,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
 
         btnNo.setOnClickListener {
             alertDialog.dismiss()
-            // Handle "No" button click if needed
         }
 
         btnYes.setOnClickListener {
@@ -775,10 +670,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             })
 
 
-
-
-
-
         return view
     }
 
@@ -791,8 +682,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         unsavedChanges = true
     }
 
-
-
     override fun onClothButtonSelected(clothbuttonInfo: ButtonInfo) {
         binding.imgCustomCloth.setImageResource(clothbuttonInfo.selectedImageResource)
         selectedClothButtonInfo = clothbuttonInfo
@@ -800,7 +689,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     }
 
     override fun onItemButtonSelected(itembuttonInfo: ButtonInfo) {
-        binding.imgCustomCloth.setImageResource(itembuttonInfo.selectedImageResource)
+        binding.imgCustomItem.setImageResource(itembuttonInfo.selectedImageResource)
         selectedItemButtonInfo = itembuttonInfo
         unsavedChanges = true
     }
@@ -811,15 +700,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         unsavedChanges = true
 
     }
-
-    /*override fun onResetButtonClicked() {
-        Log.d("FragCustom", "onResetButtonClicked()")
-        colorFragment?.resetButtonColor()
-        clothFragment?.resetButtonCloth()
-        itemFragment?.resetButtonItem()
-        backgroundFragment?.resetButtonBackground()
-    }*/
-
 
     fun getSelectedButtonInfo(): selectedButtonInfo {
 
@@ -853,104 +733,95 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         savedData = viewModel.getSavedButtonInfo() ?:
         selectedButtonInfo(ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi),
             ButtonInfo(0, 49, R.drawable.custom_empty),
             ButtonInfo(0, 50, R.drawable.custom_empty),
             ButtonInfo(0, 48, R.drawable.custom_empty))
 
-
-        val selectedButtonInfo: selectedButtonInfo? = getSavedSelectedButtonInfo()
-
+        val selectedButtonInfo: selectedButtonInfo? = viewModel.getSavedSelectedButtonInfo(this)
 
         if (selectedButtonInfo == null){
+            val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
+                10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
+                11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
+                12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
+                13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
+                14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
+                15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
+                16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
+                17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
+                18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
+                26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
+                27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
+                28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
+                51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
+                else -> savedData?.selectedColorButtonInfo
+            }
 
+            val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
+                49 -> ButtonInfo(0, 49, R.drawable.custom_empty)
+                41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
+                44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
+                40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
+                46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
+                39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
+                47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
+                42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
+                43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
+                45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
+                else -> savedData?.selectedClothButtonInfo
+            }
 
+            val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
+                50 -> ButtonInfo(0, 50, R.drawable.custom_empty)
+                22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
+                30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
+                33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
+                21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
+                25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
+                35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
+                24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
+                23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
+                32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
+                37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
+                31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
+                36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
+                19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
+                20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
+                34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
+                29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
+                38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
+                else -> savedData?.selectedItemButtonInfo
+            }
 
+            val backgroundbuttonInfo = when (DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID) {
+                48 -> ButtonInfo(0, 48, R.drawable.custom_empty)
+                1 -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
+                3 -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
+                8 -> ButtonInfo(R.id.btn_back_win_s, 8, R.drawable.back_win)
+                4 -> ButtonInfo(R.id.btn_back_normal_s, 4, R.drawable.back_nomal)
+                5 -> ButtonInfo(R.id.btn_back_store_s, 5, R.drawable.back_store)
+                9 -> ButtonInfo(R.id.btn_back_zzim_s, 9, R.drawable.back_zzim)
+                7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
+                2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
+                6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
+                else -> savedData?.selectedBackgroundButtonInfo
+            }
 
+            binding.customRamdi.setImageResource(
+                colorbuttonInfo?.selectedImageResource ?: R.drawable.custom_empty
+            )
 
-        val colorbuttonInfo = when (DataRepo.buttonInfoEntity?.colorButtonInfo?.serverID) {
-            10 -> ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi)
-            11 -> ButtonInfo(R.id.btn_color_bluepurple, 11, R.drawable.c_ramdybp)
-            12 -> ButtonInfo(R.id.btn_color_green, 12, R.drawable.c_ramdyg)
-            13 -> ButtonInfo(R.id.btn_color_mint, 13, R.drawable.c_ramdymint)
-            14 -> ButtonInfo(R.id.btn_color_orange, 14, R.drawable.c_ramdyo)
-            15 -> ButtonInfo(R.id.btn_color_orange2, 15, R.drawable.c_ramdyoy)
-            16 -> ButtonInfo(R.id.btn_color_pink, 16, R.drawable.c_ramdypn)
-            17 -> ButtonInfo(R.id.btn_color_pink2, 17, R.drawable.c_ramdypink)
-            18 -> ButtonInfo(R.id.btn_color_pink3, 18, R.drawable.c_ramdydp)
-            26 -> ButtonInfo(R.id.btn_color_purple, 26, R.drawable.c_ramdyp)
-            27 -> ButtonInfo(R.id.btn_color_Rblue, 27, R.drawable.c_ramdyrb)
-            28 -> ButtonInfo(R.id.btn_color_yellow, 28, R.drawable.c_ramdyy)
-            51 -> ButtonInfo(R.id.btn_color_yellow2, 51, R.drawable.c_ramdyyellow)
-            else -> savedData?.selectedColorButtonInfo
-        }
-
-        val clothbuttonInfo = when (DataRepo.buttonInfoEntity?.clothButtonInfo?.serverID) {
-            49 -> ButtonInfo(0, 49, R.drawable.custom_empty)
-            41 -> ButtonInfo(R.id.btn_cloth_dev, 41, R.drawable.set_dev)
-            44 -> ButtonInfo(R.id.btn_cloth_movie, 44, R.drawable.set_movie)
-            40 -> ButtonInfo(R.id.btn_cloth_caffK, 40, R.drawable.set_caffk)
-            46 -> ButtonInfo(R.id.btn_cloth_v, 46, R.drawable.set_v)
-            39 -> ButtonInfo(R.id.btn_cloth_astronauts, 39, R.drawable.set_astronauts,)
-            47 -> ButtonInfo(R.id.btn_cloth_zzim, 47, R.drawable.set_zzim)
-            42 -> ButtonInfo(R.id.btn_cloth_hanbokF, 42, R.drawable.set_hanbokf)
-            43 -> ButtonInfo(R.id.btn_cloth_hanbokM, 43, R.drawable.set_hanbokm)
-            45 -> ButtonInfo(R.id.btn_cloth_snowman, 45, R.drawable.set_snowman)
-            else -> savedData?.selectedClothButtonInfo
-        }
-
-        val itembuttonInfo = when (DataRepo.buttonInfoEntity?.itemButtonInfo?.serverID) {
-            50 -> ButtonInfo(0, 50, R.drawable.custom_empty)
-            22 -> ButtonInfo(R.id.btn_item_glass_normal, 22,R.drawable.g_nomal)
-            30 -> ButtonInfo(R.id.btn_item_hat_ber, 30, R.drawable.hat_ber)
-            33 -> ButtonInfo(R.id.btn_item_hat_grad, 33, R.drawable.hat_grad)
-            21 -> ButtonInfo(R.id.btn_item_glass_8bit, 21,R.drawable.g_8bit)
-            25 -> ButtonInfo(R.id.btn_item_glass_woig, 25, R.drawable.g_woig)
-            35 -> ButtonInfo(R.id.btn_item_hat_ipod , 35, R.drawable.hat_ipod)
-            24 -> ButtonInfo(R.id.btn_item_glass_sunR , 24,R.drawable.g_sunr)
-            23 -> ButtonInfo(R.id.btn_item_glass_sunB,23, R.drawable.g_sunb)
-            32 -> ButtonInfo(R.id.btn_item_hat_flower, 32, R.drawable.hat_flower)
-            37 -> ButtonInfo(R.id.btn_item_hat_v, 37, R.drawable.hat_v)
-            31 -> ButtonInfo(R.id.btn_item_hat_dinof, 31,R.drawable.hat_dinof)
-            36 -> ButtonInfo(R.id.btn_item_hat_sheep, 36, R.drawable.hat_sheep)
-            19 -> ButtonInfo(R.id.btn_item_bag_e,19, R.drawable.bag_e)
-            20 -> ButtonInfo(R.id.btn_item_bag_luck,20, R.drawable.bag_luck)
-            34 -> ButtonInfo(R.id.btn_item_hat_heart,34, R.drawable.hat_heart)
-            29 -> ButtonInfo(R.id.btn_item_hat_bee, 29, R.drawable.hat_bee)
-            38 -> ButtonInfo(R.id.btn_item_hat_heads, 38, R.drawable.heads)
-            else -> savedData?.selectedItemButtonInfo
-        }
-
-        val backgroundbuttonInfo = when (DataRepo.buttonInfoEntity?.backgroundButtonInfo?.serverID) {
-            48 -> ButtonInfo(0, 48, R.drawable.custom_empty)
-            1 -> ButtonInfo(R.id.btn_back_brid_s, 1, R.drawable.back_brid)
-            3 -> ButtonInfo(R.id.btn_back_n_s, 3, R.drawable.back_n)
-            8 -> ButtonInfo(R.id.btn_back_win_s, 8, R.drawable.back_win)
-            4 -> ButtonInfo(R.id.btn_back_normal_s, 4, R.drawable.back_nomal)
-            5 -> ButtonInfo(R.id.btn_back_store_s, 5, R.drawable.back_store)
-            9 -> ButtonInfo(R.id.btn_back_zzim_s, 9, R.drawable.back_zzim)
-            7 -> ButtonInfo(R.id.btn_back_uni_s, 7, R.drawable.back_uni)
-            2 -> ButtonInfo(R.id.btn_back_cin_s, 2, R.drawable.back_cin)
-            6 -> ButtonInfo(R.id.btn_back_sum_s, 6, R.drawable.back_sum)
-            else -> savedData?.selectedBackgroundButtonInfo
-        }
-
-        binding.customRamdi.setImageResource(
-            colorbuttonInfo?.selectedImageResource ?: R.drawable.custom_empty
-        )
-
-        binding.imgCustomCloth.setImageResource(
-            clothbuttonInfo?.selectedImageResource ?: 0
-        )
-        binding.imgCustomItem.setImageResource(
-            itembuttonInfo?.selectedImageResource ?: 0
-        )
-        binding.imgCustomBackground.setImageResource(
-            backgroundbuttonInfo?.selectedImageResource ?: 0
-        )
+            binding.imgCustomCloth.setImageResource(
+                clothbuttonInfo?.selectedImageResource ?: 0
+            )
+            binding.imgCustomItem.setImageResource(
+                itembuttonInfo?.selectedImageResource ?: 0
+            )
+            binding.imgCustomBackground.setImageResource(
+                backgroundbuttonInfo?.selectedImageResource ?: 0
+            )
         }
         else{
             binding.customRamdi.setImageResource(
@@ -966,14 +837,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             binding.imgCustomBackground.setImageResource(
                 selectedButtonInfo.selectedBackgroundButtonInfo?.selectedImageResource ?: 0
             )
-
         }
 
-
-
-
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
         bottomNavigationView?.setOnItemSelectedListener{ menuItem ->
             curMenuItem = menuItem.itemId
             if (unsavedChanges) {
@@ -984,6 +850,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 true
             }
         }
+
         view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
@@ -994,14 +861,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             false
         })
 
-
-
-
     }
 
-
-
-    /*private fun getCustomPrint() {
+    fun getCustomPrint() {
         val call: Call<customPrintDATA> = service.customPrint(token)
         call.enqueue(object : Callback<customPrintDATA> {
             override fun onResponse(
@@ -1013,9 +875,9 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val datas = printInfo?.data?.wearingItems
 
                 datas?.forEachIndexed { index, item ->
-                    printId = item.id
-                    itemType = item.itemType
-                    printfilePath = item.filePath
+                    //printId = item.id
+                    //itemType = item.itemType
+                    //printfilePath = item.filePath
                     Log.d(
                         "getCustomPrint",
                         "Item $index - id: ${item.id} itemType: ${item.itemType} filePath: ${item.filePath}"
@@ -1028,39 +890,15 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     printIds.add(idAndItemType)
 
                 }
-                if (datas != null) {
-                    for (item in datas) {
-                        if (item.itemType == "color") {
-                            Picasso.get()
-                                .load(item.filePath)
-                                .into(binding.customRamdi)
-                        } else if (item.itemType == "set") {
-                            Picasso.get()
-                                .load(item.filePath)
-                                .into(binding.imgCustomCloth)
-                        } else if (item.itemType == "item") {
-                            Picasso.get()
-                                .load(item.filePath)
-                                .into(binding.imgCustomItem)
-                        } else if (item.itemType == "background") {
-                            Picasso.get()
-                                .load(item.filePath)
-                                .into(binding.imgCustomBackground)
-                        }
-                    }
-                }
-
-
             }
 
             override fun onFailure(call: Call<customPrintDATA>, t: Throwable) {
                 Log.d("error", t.message.toString())
             }
         })
-    }*/
+    }
 
-
-    fun patchCustomItemChange(itemIds: List<Long>) {
+    fun patchCustomItemChange(itemIds: List<Int>) {
         val call: Call<customItemChangeDATA> = service.customItemChange(token, itemIds)
 
         call.enqueue(object : Callback<customItemChangeDATA> {
@@ -1068,9 +906,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 val responseCode = response.code()
                 if (response.isSuccessful) {
                     Log.d("patchCustomItemChange", "Response Code: $responseCode")
-                }
-                else{
-                    Log.d("patchCustomItemChangeFail", "Response Code: $responseCode")
+                    val responseBody = response.body()
+                    Log.d("patchCustomItemChange", "Response Body: ${responseBody?.data}")
+                } else {
+                    Log.d("patchCustomItemChangeFail", "Response Code: $responseCode, Error: ${response.errorBody()?.string()}")
                 }
             }
             override fun onFailure(call: Call<customItemChangeDATA>, t: Throwable) {
@@ -1078,7 +917,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
             }
         })
     }
-
     fun getcustomReset() {
         val call: Call<Void> = service.customReset(token)
 
@@ -1107,8 +945,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 Log.d("error", t.message.toString())
             }
         })
-    }*/
-
+    }
     private fun navigateToSelectedFragment(itemId: Int) {
         if (unsavedChanges) {
             showBackConfirmationDialog()
@@ -1126,14 +963,10 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 R.id.fragMy -> navController.navigate(R.id.fragMy)
             }
         }
-    }
-
+    }*/
     private fun showBackConfirmationDialog() {
         alertDialog.show()
-
         //사이즈 조절
-        val displayMetrics = DisplayMetrics()
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = Point()
         val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         display.getSize(size)
@@ -1141,8 +974,5 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         val popupWidth = (screenWidth * 0.8).toInt()
         alertDialog?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
     }
-
-
-
 
 }

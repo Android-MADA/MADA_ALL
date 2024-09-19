@@ -24,6 +24,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.ButtonInfoEntity
 import androidx.navigation.Navigation
 import com.mada.myapplication.HomeFunction.Model.Category
 import com.mada.myapplication.HomeFunction.Model.CategoryList1
@@ -39,12 +41,12 @@ import com.mada.myapplication.HomeFunction.adapter.todo.HomeTodoListAdapter
 import com.mada.myapplication.HomeFunction.api.HomeApi
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.R
+import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.db.entity.CateEntity
 import com.mada.myapplication.db.entity.RepeatEntity
 import com.mada.myapplication.db.entity.TodoEntity
 import com.mada.myapplication.db.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.getHomeTodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -447,7 +449,27 @@ class HomeViewModel : ViewModel() {
         api.editTodo(userToken, todoId, data)
     }
 
-    // 서버 연결 테스트 코드
+    private val _buttonInfoEntity = MutableLiveData<ButtonInfoEntity>()
+    val buttonInfoEntity: LiveData<ButtonInfoEntity> get() = _buttonInfoEntity
+
+    init {
+        _buttonInfoEntity.value = ButtonInfoEntity(
+            id = 0,
+            colorButtonInfo = ButtonInfo(R.id.btn_color_basic, 10, R.drawable.c_ramdi),
+            clothButtonInfo = ButtonInfo(0, 49, R.drawable.custom_empty),
+            itemButtonInfo = ButtonInfo(0, 50, R.drawable.custom_empty),
+            backgroundButtonInfo = ButtonInfo(0, 48, R.drawable.custom_empty)
+        )
+    }
+
+    fun updateButtonInfoEntity(index: Int, id: Int) {
+        val currentEntity = _buttonInfoEntity.value ?: return
+        val newButtonInfo = ButtonInfo(id, id, id)
+        currentEntity.updateButtonInfo(index, newButtonInfo)
+        _buttonInfoEntity.value = currentEntity
+    }
+
+// 서버 연결 테스트 코드
 
     var categoryListHome = mutableListOf<Category>()
     var todoListHome = mutableListOf<Todo>()

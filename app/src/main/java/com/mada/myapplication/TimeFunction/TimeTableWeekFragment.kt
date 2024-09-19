@@ -3,6 +3,7 @@ package com.mada.myapplication.TimeFunction
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -190,7 +191,15 @@ class TimeTableWeekFragment : Fragment() {
         binding.fabHomeTime.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragTimeWeekAdd)
         }
-
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Navigation.findNavController(view).navigate(R.id.action_fragTimeTableWeek_to_fragHome)
+                return@OnKeyListener true
+            }
+            false
+        })
 
     }
 

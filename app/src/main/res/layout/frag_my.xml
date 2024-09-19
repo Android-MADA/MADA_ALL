@@ -90,7 +90,7 @@
                                 android:layout_marginTop="30dp"
                                 android:layout_marginEnd="3dp"
                                 android:breakStrategy="balanced"
-                                android:text="안녕하세요, 김마다님!"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -199,7 +199,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     ads:adSize="BANNER"
-                    ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
+                    ads:adUnitId="ca-app-pub-4086521113003670/1878645147"/>
 
 
 
@@ -244,9 +244,11 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:background="?android:attr/listDivider" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/my_premium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -262,16 +264,36 @@
                             android:layout_height="1dp"
                             android:background="?android:attr/listDivider" />
 
-                        <TextView
-                            android:id="@+id/my_kakao"
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_kakao"
-                            android:drawablePadding="10dp"
-                            android:padding="15dp"
-                            android:text="카카오톡 문의하기"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:orientation="horizontal">
+
+                            <!-- 이미지 뷰 -->
+                            <ImageView
+                                android:id="@+id/kakao_icon"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginVertical="15dp"
+                                android:layout_gravity="center_vertical"
+                                android:contentDescription="카카오톡 아이콘"
+                                android:src="@drawable/ic_kakao" />
+
+                            <!-- 텍스트 뷰 -->
+                            <TextView
+                                android:id="@+id/my_kakao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginVertical="15dp"
+                                android:text="카카오톡 문의하기"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:layout_gravity="center_vertical" />
+                        </LinearLayout>
+
 
                         <View
                             android:layout_width="match_parent"

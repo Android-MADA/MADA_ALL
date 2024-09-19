@@ -22,12 +22,16 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mada.myapplication.CustomFunction.ButtonInfo
+import com.mada.myapplication.CustomFunction.CustomViewModel
+import com.mada.myapplication.CustomFunction.DataRepo
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
 import com.mada.myapplication.MainActivity
 import com.mada.myapplication.MyFunction.Data.FragMyData
@@ -51,6 +55,7 @@ class FragMy : Fragment() {
     val token = Splash2Activity.prefs.getString("token", "")
     //val mainActivity = requireActivity() as MainActivity
     //private val viewModel: HomeViewModel by activityViewModels()
+    private val CustomviewModel2: CustomViewModel by activityViewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -59,6 +64,21 @@ class FragMy : Fragment() {
     ): View? {
         binding = FragMyBinding.inflate(inflater, container, false)
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.isGone = true
+
+
+
+        val buttonInfo = CustomviewModel2.getSavedSelectedButtonInfo(this@FragMy)
+
+        binding.myRamdi.setImageResource(
+            buttonInfo?.selectedColorButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.imgMyCloth.setImageResource(
+            buttonInfo?.selectedClothButtonInfo?.selectedImageResource ?: 0
+        )
+        binding.imgMyItem.setImageResource(
+            buttonInfo?.selectedItemButtonInfo?.selectedImageResource ?: 0
+        )
+
 
         return binding.root
     }
@@ -77,7 +97,9 @@ class FragMy : Fragment() {
             navController.navigate(R.id.action_fragMy_to_fragHome)
         }
         binding.myStampBtn.setOnClickListener {
-            navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            //navController.navigate(R.id.action_fragMy_to_myStampFragment)
+            // 서버 되기 전까지 기능 막아두기
+            Toast.makeText(requireContext(), "아직 준비 중인 기능입니다.", Toast.LENGTH_SHORT).show()
         }
 
         // 바텀 시트 항목 선택 리스너

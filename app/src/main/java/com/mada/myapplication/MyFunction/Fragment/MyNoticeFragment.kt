@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mada.myapplication.HomeFunction.api.RetrofitInstance
+import com.mada.myapplication.MyFunction.Adapter.MyNoticeAdapter
+import com.mada.myapplication.MyFunction.Adapter.Notice
 import com.mada.myapplication.MyFunction.Data.MyGetNoticesData
 import com.mada.myapplication.MyFunction.RetrofitServiceMy
 import com.mada.myapplication.R
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.MyNoticeBinding
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class MyNoticeFragment : Fragment() {
@@ -42,7 +46,11 @@ class MyNoticeFragment : Fragment() {
         }
 
         // 서버에서 공지사항 불러오기
-        api.myGetNotices(token).enqueue(object : retrofit2.Callback<MyGetNoticesData> {
+        fetchNotices()
+    }
+
+    private fun fetchNotices() {
+        api.myGetNotices(token).enqueue(object : Callback<MyGetNoticesData> {
             override fun onResponse(
                 call: Call<MyGetNoticesData>,
                 response: Response<MyGetNoticesData>
@@ -52,12 +60,10 @@ class MyNoticeFragment : Fragment() {
 
                 if (response.isSuccessful) {
                     Log.d("GetNotices 성공", response.body().toString())
-                    binding.title1.text = response.body()!!.data[0].title
-                    binding.title2.text = response.body()!!.data[1].title
-                    binding.content1.text = response.body()!!.data[0].content
-                    binding.content2.text = response.body()!!.data[1].content
-                    binding.date1.text = response.body()!!.data[0].date
-                    binding.date2.text = response.body()!!.data[1].date
+
+                    val dataList = response.body()?.data?.map { Notice(it.title, it.content, it.date) } ?: emptyList()
+
+                    setupRecyclerView(dataList)
 
                 } else {
                     Log.d("GetNotices 실패", response.body().toString())
@@ -68,5 +74,11 @@ class MyNoticeFragment : Fragment() {
                 Log.d("서버 오류", "GetNotices 실패")
             }
         })
+    }
+
+    private fun setupRecyclerView(noticeList: List<Notice>) {
+        val adapter = MyNoticeAdapter(noticeList)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = adapter
     }
 }

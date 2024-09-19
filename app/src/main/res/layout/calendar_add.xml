@@ -297,17 +297,20 @@
                         android:id="@+id/dday_cb"
                         android:buttonTint="@color/sub4"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        style="?android:attr/checkboxStyle"
+                        />
 
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:id="@+id/dday_ly"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/dday_ly"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
                     <TextView
                         android:id="@+id/textDday"
                         android:layout_width="match_parent"
@@ -318,11 +321,12 @@
                         android:textColor="@color/point_main"
                         android:textSize="32sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/textDdayBlank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -606,7 +610,6 @@
                             android:id="@+id/timePicker"
                             android:layout_width="match_parent"
                             android:layout_height="170dp"
-                            android:layout_marginHorizontal="20dp"
                             android:orientation="horizontal"
                             android:visibility="gone">
 

@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mada.myapplication.CustomFunction.ButtonInfo
 import com.mada.myapplication.CustomFunction.RetrofitServiceCustom
 import com.mada.myapplication.CustomFunction.customItemCheckDATA
 import com.mada.myapplication.Fragment.OnClothImageChangeListener
 import com.mada.myapplication.Fragment.OnItemImageChangeListener
-import com.mada.myapplication.Fragment.onCategorySelected
+import com.mada.myapplication.Fragment.itemsCategory
+import com.mada.myapplication.Fragment.serverIdToCategoryMap
 import com.mada.myapplication.StartFunction.Splash2Activity
 import com.mada.myapplication.databinding.CustomClothBinding
 import com.mada.myapplication.databinding.CustomColorBinding
@@ -54,6 +56,25 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     }
 
+    //카테고리 처리
+    fun onCategorySelected(serverID: Int) : Int {
+        val selectedCategories = serverIdToCategoryMap[serverID]?.split(",") //현재 선택 아이템의 카테고리
+        if (selectedCategories != null) {
+            for (category in selectedCategories) {
+                if (itemsCategory.contains(category)) {
+                    //Toast.makeText("이미 선택된 카테고리입니다.", Toast.LENGTH_SHORT).show()
+                    return 0
+                }
+                itemsCategory.add(category)
+            }
+            //val categoriesString = itemCategories.joinToString(", ") // 리스트의 문자열들을 합쳐서 표시
+            Log.d("itemsCategory", "선택된 카테고리: $itemsCategory")
+            return 1
+        }
+        return -1 // selectedCategories가 null
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,13 +82,8 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         //binding = CustomItemBinding.inflate(inflater, container, false)
         getCustomItemCheck()
 
-        /*val defaultButton = binding.btnItemBasic
-        onImageButtonClick(defaultButton)
-        onItemButtonClick(defaultButton)*/
-
 
         binding.btnItemGlassNormal.setOnClickListener{
-            //onCategorySelected(R.id.btn_item_glass_normal)
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassNormal)
             }
@@ -167,7 +183,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
-            R.id.btn_item_glass_normal -> R.drawable.g_normal_choice
+            R.id.btn_item_glass_normal -> R.drawable.gh_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice
             R.id.btn_item_glass_8bit -> R.drawable.g_8bit_choice
@@ -237,26 +253,6 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
         imageChangeListener?.onItemButtonSelected(buttonInfo)
     }
-
-    /*fun resetButtonItem() {
-        binding.btnItemGlassNormal.setImageResource(R.drawable.gh_normal_s)
-        binding.btnItemHatBer.setImageResource(R.drawable.hat_ber_s)
-        binding.btnItemHatGrad.setImageResource(R.drawable.hat_grad_s)
-        binding.btnItemGlass8bit.setImageResource(R.drawable.g_8bit_s)
-        binding.btnItemGlassWoig.setImageResource(R.drawable.g_woig_s)
-        binding.btnItemHatIpod.setImageResource(R.drawable.hat_ipod_s)
-        binding.btnItemGlassSunR.setImageResource(R.drawable.g_sunr_s)
-        binding.btnItemGlassSunB.setImageResource(R.drawable.g_sunb_s)
-        binding.btnItemHatFlower.setImageResource(R.drawable.hat_flower_s)
-        binding.btnItemHatV.setImageResource(R.drawable.hat_v_s)
-        binding.btnItemHatDinof.setImageResource(R.drawable.hat_dinof_s)
-        binding.btnItemHatSheep.setImageResource(R.drawable.hat_sheep_s)
-        binding.btnItemBagE.setImageResource(R.drawable.bag_e_s)
-        binding.btnItemBagLuck.setImageResource(R.drawable.bag_luck_s)
-        binding.btnItemHatHeart.setImageResource(R.drawable.hat_heart_s)
-        binding.btnItemHatBee.setImageResource(R.drawable.hat_bee_s)
-        binding.btnItemHatHeads.setImageResource(R.drawable.heads_s)
-    }*/
 
     fun getCustomItemCheck() {
         val call: Call<customItemCheckDATA> = service.customItemCheck(token)

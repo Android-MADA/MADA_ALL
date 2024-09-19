@@ -53,6 +53,7 @@ class TimeViewModel : ViewModel() {
 
     var todayString : String =""
     var hanmadi = ""
+    val hanmadiMap: HashMap<String, String> = HashMap()
 
 
     //2023-08-01 형식
@@ -507,11 +508,13 @@ class TimeViewModel : ViewModel() {
                         callback(2,"")
                     }
                 } else {
-                    callback(2,"")
+                    Log.d("comment error",response.toString())
+                    callback(3,"")
                 }
             }
             override fun onFailure(call: Call<CommentData>, t: Throwable) {
-                callback(2,"")
+                Log.d("comment error",t.toString())
+                callback(3,"")
             }
         })
     }

@@ -399,7 +399,7 @@ class TimeAddWeekFragment : Fragment(), HomeCustomDialogListener {
                     binding.homeTimeTodoList.adapter = adapter
                 }
                 2 -> {
-                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "서버 와의 통신 불안정12", Toast.LENGTH_SHORT).show()
                 }
             }
         }
