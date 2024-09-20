@@ -1,6 +1,6 @@
 # 매일마다 작성하는 일정관리 서비스, 마다
 
-[마다_배너.png.zip](https://github.com/user-attachments/files/17071621/_.png.zip)
+![마다_배너](https://github.com/user-attachments/assets/732a76c3-7134-4dbd-9e3d-2b9b80dc0b2a)
 
 
 # 사진첩
