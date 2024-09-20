@@ -25,6 +25,17 @@
             android:layout_height="wrap_content">
 
 
+            <ImageButton
+                android:id="@+id/btn_back_basic"
+                android:src="@drawable/custom_null"
+                android:layout_margin ="10dp"
+                android:layout_width="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                android:background="@drawable/custom_radius"></ImageButton>
+
 
             <ImageButton
                 android:id="@+id/btn_back_brid_s"
@@ -70,6 +81,15 @@
                 android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
 
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
             <ImageButton
                 android:id="@+id/btn_back_store_s"
                 android:src="@drawable/back_store_s_1"
@@ -80,13 +100,6 @@
                 android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:background="#FFFFFF"></ImageButton>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="100dp">
 
 
 
