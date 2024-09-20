@@ -82,7 +82,10 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
         //binding = CustomItemBinding.inflate(inflater, container, false)
         getCustomItemCheck()
 
-
+        binding.btnItemBasic.setOnClickListener{
+            onItemButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnItemBasic)
+        }
         binding.btnItemGlassNormal.setOnClickListener{
             onItemButtonClick(it as ImageButton)
             onImageButtonClick(binding.btnItemGlassNormal)
@@ -183,6 +186,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
+            R.id.btn_item_basic -> R.drawable.custom_nullchoice
             R.id.btn_item_glass_normal -> R.drawable.gh_normal_choice
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_choice
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_choice
@@ -207,6 +211,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
+            R.id.btn_item_basic -> R.drawable.custom_null
             R.id.btn_item_glass_normal -> R.drawable.gh_normal_s
             R.id.btn_item_hat_ber -> R.drawable.hat_ber_s
             R.id.btn_item_hat_grad -> R.drawable.hat_grad_s
@@ -230,6 +235,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
 
     fun onItemButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
+            R.id.btn_item_basic -> ButtonInfo(0, 50,R.drawable.custom_empty)
             R.id.btn_item_glass_normal -> ButtonInfo(clickedButton.id, 22,R.drawable.g_nomal)
             R.id.btn_item_hat_ber -> ButtonInfo(clickedButton.id, 30, R.drawable.hat_ber)
             R.id.btn_item_hat_grad -> ButtonInfo(clickedButton.id, 33, R.drawable.hat_grad)
@@ -276,6 +282,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
                                     "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
                                 )
                                 showButton(item.id)
+                                showButton(50)
                             }
                         }
                     }
@@ -312,7 +319,7 @@ class custom_item(val binding: CustomItemBinding) : Fragment() {
             36 -> binding.btnItemHatSheep
             37 -> binding.btnItemHatV
             38 -> binding.btnItemHatHeads
-            50 -> return //basic
+            50 -> binding.btnItemBasic
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 

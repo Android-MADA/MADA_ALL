@@ -57,6 +57,11 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
         getCustomItemCheck()
 
 
+        binding.btnClothBasic.setOnClickListener {
+            //onCategorySelected(R.id.btn_cloth_dev)
+            onClothButtonClick(it as ImageButton)
+            onImageButtonClick(binding.btnClothBasic)
+        }
         binding.btnClothDev.setOnClickListener {
             //onCategorySelected(R.id.btn_cloth_dev)
             onClothButtonClick(it as ImageButton)
@@ -121,6 +126,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
     private fun getSelectedImageResource(button: ImageButton): Int {
         return when (button.id) {
+            R.id.btn_cloth_basic -> R.drawable.custom_nullchoice
             R.id.btn_cloth_dev -> R.drawable.set_dev_choice
             R.id.btn_cloth_movie -> R.drawable.set_movie_choice
             R.id.btn_cloth_caffK -> R.drawable.set_caffk_choice
@@ -139,6 +145,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
     private fun getUnselectedImageResource(button: ImageButton): Int {
         return when (button.id) {
+            R.id.btn_cloth_basic -> R.drawable.custom_null
             R.id.btn_cloth_dev -> R.drawable.set_dev_s
             R.id.btn_cloth_movie -> R.drawable.set_movie_s
             R.id.btn_cloth_caffK -> R.drawable.set_caffk_s
@@ -156,6 +163,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
 
     fun onClothButtonClick(clickedButton: ImageButton) {
         val buttonInfo = when (clickedButton.id) {
+            R.id.btn_cloth_basic -> ButtonInfo(0, 49, R.drawable.custom_empty)
             R.id.btn_cloth_dev -> ButtonInfo(clickedButton.id, 41, R.drawable.set_dev)
             R.id.btn_cloth_movie -> ButtonInfo(clickedButton.id, 44, R.drawable.set_movie)
             R.id.btn_cloth_caffK -> ButtonInfo(clickedButton.id, 40, R.drawable.set_caffk)
@@ -194,6 +202,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
                                 "Item $index - id: ${item.id} have:${item.have} itemCategory:${item.itemCategory}"
                             )
                             showButton(item.id)
+                            showButton(49)
                         }
                     }
                 } else {
@@ -218,7 +227,7 @@ class custom_cloth(val binding: CustomClothBinding) : Fragment() {
             45 -> binding.btnClothSnowman
             46 -> binding.btnClothV
             47 -> binding.btnClothZzim
-            49 -> return //basic
+            49 -> binding.btnClothBasic
             else -> throw IllegalArgumentException("Unknown button ID")
         }
 

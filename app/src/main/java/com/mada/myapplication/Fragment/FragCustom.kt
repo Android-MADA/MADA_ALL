@@ -631,7 +631,11 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     //Toast.makeText(this.requireActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
                     Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
+                    //카테고리, have 처리
+
                     Toast.makeText(requireContext(), "저장에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "이미 착용하고 있는 카테고리입니다.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "소유하지 않은 아이템을 저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
