@@ -530,7 +530,6 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
         }
 
 
-
         binding.btnCustomSave.setOnClickListener {
             // 기존 SharedPreferences에서 값 불러오기
             val currentData = loadSelectedButtonInfo()
@@ -546,10 +545,7 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 selectedBackgroundButtonInfo = newData.selectedBackgroundButtonInfo ?: currentData.selectedBackgroundButtonInfo
             )
 
-            // 변경된 정보를 SharedPreferences에 저장
-            saveSelectedButtonInfo(updatedData)
-
-            // 서버 업데이트 및 UI 반영
+            // 서버 업데이트 후, 성공 시에만 SharedPreferences에 데이터를 저장
             patchCustomItemChange(listOf(
                 updatedData.selectedColorButtonInfo?.serverID ?: 10,
                 updatedData.selectedClothButtonInfo?.serverID ?: 49,
@@ -557,22 +553,33 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                 updatedData.selectedBackgroundButtonInfo?.serverID ?: 48
             )) { serverCode ->
                 if (serverCode == 200) {
-                    // 성공적으로 저장 후 UI 업데이트
+                    // 서버에 성공적으로 저장되면 SharedPreferences에 변경 사항을 저장
+                    saveSelectedButtonInfo(updatedData)
+
+                    // UI 업데이트
                     unsavedChanges = false
                     Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+                    // UI에 반영
                     binding.customRamdi.setImageResource(updatedData.selectedColorButtonInfo?.selectedImageResource ?: 0)
                     binding.imgCustomCloth.setImageResource(updatedData.selectedClothButtonInfo?.selectedImageResource ?: 0)
                     binding.imgCustomItem.setImageResource(updatedData.selectedItemButtonInfo?.selectedImageResource ?: 0)
                     binding.imgCustomBackground.setImageResource(updatedData.selectedBackgroundButtonInfo?.selectedImageResource ?: 0)
                 } else {
+                    // 서버 저장 실패 시 메시지 출력
                     Toast.makeText(requireContext(), "저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
                     //Toast.makeText(requireContext(), "이미 착용하고 있는 카테고리입니다.", Toast.LENGTH_SHORT).show()
                     //Toast.makeText(requireContext(), "소유하지 않은 아이템을 저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
+
+                    // 실패한 경우 UI 업데이트를 하지 않고, 기존 상태를 유지
+                    // 필요 시 기존 상태를 그대로 유지
+                    // 예를 들어, 기본 값을 다시 적용할 수 있음
+
                 }
             }
-
-
         }
+
+
 
 
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.notice_home_back, null)
