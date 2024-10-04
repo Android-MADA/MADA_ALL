@@ -190,11 +190,11 @@ class FragChartDay : Fragment() {
             ) {
                 Log.d("setChartView 성공", response.body().toString())
                 if (response.body() == null) {
-                    Log.d("차트를 데이터가 없음", response.body().toString())
+                    Log.d("차트에 데이터가 없음", response.body().toString())
                     binding.todoAndTimetable.isGone = true
                     binding.errorPage.isVisible = true
                 } else {
-                    Log.d("차트를 데이터가 있음", response.body().toString())
+                    Log.d("차트에 데이터가 있음", response.body().toString())
                     binding.todoAndTimetable.isVisible = true
                     binding.errorPage.isGone = true
                 }

@@ -2,11 +2,11 @@ package com.mada.myapplication.ChartFunction.Calendar
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.mada.myapplication.CalenderFuntion.Calendar.CalendarUtils.Companion.getWeekList
 import com.mada.myapplication.databinding.MyRecordSliderWeekViewBinding
 import org.joda.time.DateTime
@@ -16,7 +16,7 @@ class MyWeekFragment() : Fragment() {
 
     private var millis: Long = 0L
     var selectDay:TextView?=null
-    lateinit var fm:Fragment
+    var fm: Fragment? = null
     lateinit var binding: MyRecordSliderWeekViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +32,7 @@ class MyWeekFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyRecordSliderWeekViewBinding.inflate(inflater, container, false)
-        binding.calendarView.initCalendar2(getWeekList(DateTime(millis)),fm,selectDay)
+        fm?.let { binding.calendarView.initCalendar2(getWeekList(DateTime(millis)), it,selectDay) }
         return binding.root
     }
     companion object {
