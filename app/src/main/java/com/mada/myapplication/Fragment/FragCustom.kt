@@ -565,16 +565,18 @@ class FragCustom : Fragment(), OnColorImageChangeListener, OnClothImageChangeLis
                     binding.imgCustomCloth.setImageResource(updatedData.selectedClothButtonInfo?.selectedImageResource ?: 0)
                     binding.imgCustomItem.setImageResource(updatedData.selectedItemButtonInfo?.selectedImageResource ?: 0)
                     binding.imgCustomBackground.setImageResource(updatedData.selectedBackgroundButtonInfo?.selectedImageResource ?: 0)
-                } else {
+                } else if (serverCode == 409) {
                     // 서버 저장 실패 시 메시지 출력
-                    Toast.makeText(requireContext(), "저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                    //Toast.makeText(requireContext(), "이미 착용하고 있는 카테고리입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "이미 착용하고 있는 카테고리입니다.", Toast.LENGTH_SHORT).show()
                     //Toast.makeText(requireContext(), "소유하지 않은 아이템을 저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
 
                     // 실패한 경우 UI 업데이트를 하지 않고, 기존 상태를 유지
                     // 필요 시 기존 상태를 그대로 유지
                     // 예를 들어, 기본 값을 다시 적용할 수 있음
 
+                }
+                else{
+                    Toast.makeText(requireContext(), "저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
