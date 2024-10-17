@@ -16,9 +16,9 @@ android {
         applicationId "com.mada.myapplication"
         minSdk 28
         targetSdk 34
-        versionCode 35
+        versionCode 36
         // 버전 이름 (큰 버전, 작은 버전, 날짜)
-        versionName "mada_version:1.12:20240920"
+        versionName "mada_version:1.13:20241017"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
