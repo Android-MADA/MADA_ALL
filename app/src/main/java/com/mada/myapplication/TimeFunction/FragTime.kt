@@ -42,6 +42,8 @@ class FragTime : Fragment() {
 
     var commentIs = false
 
+    var errHanmadi = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -110,6 +112,8 @@ class FragTime : Fragment() {
                         commentIs = false
                     }
                     3-> {
+                        errHanmadi = true
+                        binding.textTimeTodayHanmadi.setHint(content)
                         Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -145,33 +149,36 @@ class FragTime : Fragment() {
         }
 
         binding.textTimeTodayHanmadi.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
-                val enteredText = binding.textTimeTodayHanmadi.text.toString()
-                Log.d("test",enteredText)
-                if(commentIs) {
-                    viewModelTime.editComment(today,CommentAdd(today,enteredText)) { result ->
-                        when (result) {
-                            1 -> {
+            if(!errHanmadi) {
+                if (!hasFocus) {
+                    // 포커스를 잃었을 때 (입력이 완료되었을 때) 수행할 작업을 여기에 추가합니다.
+                    val enteredText = binding.textTimeTodayHanmadi.text.toString()
+                    Log.d("test",enteredText)
+                    if(commentIs) {
+                        viewModelTime.editComment(today,CommentAdd(today,enteredText)) { result ->
+                            when (result) {
+                                1 -> {
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            2 -> {
-                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
+                            when (result) {
+                                1 -> {
+                                }
+                                2 -> {
+                                    Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     }
-                } else {
-                    viewModelTime.addComment(CommentAdd(today,enteredText)) { result ->
-                        when (result) {
-                            1 -> {
-                            }
-                            2 -> {
-                                Toast.makeText(context, "서버 와의 통신 불안정", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                }
 
+                }
             }
+
         }
         return binding.root
     }

@@ -505,16 +505,16 @@ class TimeViewModel : ViewModel() {
                     if (apiResponse != null) {
                         callback(1,apiResponse.data.comment.content)
                     } else {
-                        callback(2,"")
+                        callback(2,"오류 발생 1")
                     }
                 } else {
                     Log.d("comment error",response.toString())
-                    callback(3,"")
+                    callback(3,"오류 발생 2")
                 }
             }
             override fun onFailure(call: Call<CommentData>, t: Throwable) {
                 Log.d("comment error",t.toString())
-                callback(3,"")
+                callback(3,"오류 발생 3")
             }
         })
     }
