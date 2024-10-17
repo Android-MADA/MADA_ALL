@@ -503,18 +503,22 @@ class TimeViewModel : ViewModel() {
                     val apiResponse = response.body()
                     Log.d("comment",apiResponse.toString())
                     if (apiResponse != null) {
-                        callback(1,apiResponse.data.comment.content)
+                        if (apiResponse.data != null) {
+                            callback(1,apiResponse.data.comment.content)
+                        } else {
+                            callback(2,"오류 발생")
+                        }
                     } else {
-                        callback(2,"오류 발생 1")
+                        callback(2,"오류 발생")
                     }
                 } else {
                     Log.d("comment error",response.toString())
-                    callback(3,"오류 발생 2")
+                    callback(3,"오류 발생")
                 }
             }
             override fun onFailure(call: Call<CommentData>, t: Throwable) {
                 Log.d("comment error",t.toString())
-                callback(3,"오류 발생 3")
+                callback(3,"오류 발생")
             }
         })
     }
