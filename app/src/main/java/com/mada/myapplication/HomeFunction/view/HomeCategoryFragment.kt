@@ -78,7 +78,7 @@ class HomeCategoryFragment : Fragment() {
             viewModel.activeNum = cateList.size
             activeCount = cateList.size
 
-            if(!mainActivity.getPremium() && activeCount >= 5) {
+            if(false && activeCount >= 5) { //!mainActivity.getPremium() 프리미엄 여부는 무조건 프리미엄으로
                 binding.categoryAddTv.isVisible = true
                 binding.categoryAddIv.isGone = true
             } else {

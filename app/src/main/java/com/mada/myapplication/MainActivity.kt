@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         }*/
 
     fun getPremium() : Boolean {
-        return premium
+        return false
     }
     fun setPremium() {
         premium = true
