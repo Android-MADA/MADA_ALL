@@ -111,7 +111,7 @@
             android:layout_weight="10"
             android:padding="20dp">
 
-            <com.mada.myapplication.TimeFunction.util.CustomCircleBarView
+            <com.mada.reapp.TimeFunction.util.CustomCircleBarView
                 android:id="@+id/progressbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
