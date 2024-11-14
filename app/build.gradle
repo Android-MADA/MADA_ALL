@@ -15,8 +15,8 @@ android {
     defaultConfig {
         applicationId "com.mada.reapp"
         minSdk 28
-        targetSdk 35
-        versionCode 1
+        targetSdk 34
+        versionCode 2
         // 버전 이름 (큰 버전, 작은 버전, 날짜)
         versionName "mada_version:2.1:20241114"
 
