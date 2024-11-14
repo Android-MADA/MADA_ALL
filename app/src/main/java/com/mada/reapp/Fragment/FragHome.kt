@@ -1,12 +1,22 @@
 package com.mada.reapp.Fragment
 
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -316,7 +326,34 @@ class FragHome : Fragment() {
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                CalendarViewModel.setPopupTwo(requireContext(),"종료하시겠습니까?",requireView(),0)
+                val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.calendar_add_popup, null)
+                val mBuilder = AlertDialog.Builder(requireContext())
+                    .setView(mDialogView)
+                    .create()
+
+                mBuilder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mBuilder?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+                mBuilder.show()
+
+                //팝업 사이즈 조절
+                DisplayMetrics()
+                requireActivity().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val size = Point()
+                val display = (requireActivity().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                display.getSize(size)
+                val screenWidth = size.x
+                val popupWidth = (screenWidth * 0.8).toInt()
+                mBuilder?.window?.setLayout(popupWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                //팝업 타이틀 설정, 버튼 작용 시스템
+                mDialogView.findViewById<TextView>(R.id.textDescribe).visibility = View.GONE
+                mDialogView.findViewById<TextView>(R.id.textTitle).text = "정말로 정료하시겠습니가?"
+                mDialogView.findViewById<ImageButton>(R.id.nobutton).setOnClickListener( {
+                    mBuilder.dismiss()
+                })
+                mDialogView.findViewById<ImageButton>(R.id.yesbutton).setOnClickListener( {
+                    requireActivity().finish()
+                })
                 return@OnKeyListener true
             }
             false
