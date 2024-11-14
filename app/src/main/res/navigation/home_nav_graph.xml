@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragHome"
-        android:name="com.mada.myapplication.Fragment.FragHome"
+        android:name="com.mada.reapp.Fragment.FragHome"
         android:label="FragHome" >
         <action
             android:id="@+id/action_fragHome_to_homeCategoryFragment"
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/fragCalendar"
-        android:name="com.mada.myapplication.CalenderFuntion.FragCalendar"
+        android:name="com.mada.reapp.CalenderFuntion.FragCalendar"
         android:label="FragCalendar"
         tools:layout="@layout/frag_calendar">
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarAdd"
-        android:name="com.mada.myapplication.CalenderFuntion.CalendarAddFragment"
+        android:name="com.mada.reapp.CalenderFuntion.CalendarAddFragment"
         android:label="CalendarAdd"
         tools:layout="@layout/calendar_add">
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarAddS"
-        android:name="com.mada.myapplication.CalenderFuntion.CalendarAddSFragment"
+        android:name="com.mada.reapp.CalenderFuntion.CalendarAddSFragment"
         android:label="CalendarAddS "
         tools:layout="@layout/calendar_add_s">
         <action
@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarAddDday"
-        android:name="com.mada.myapplication.CalenderFuntion.CalendarAddDdayFragment"
+        android:name="com.mada.reapp.CalenderFuntion.CalendarAddDdayFragment"
         android:label="CalendarAddDday "
         tools:layout="@layout/calendar_add_dday">
         <action
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarDday"
-        android:name="com.mada.myapplication.CalenderFuntion.CalendarDdayFragment"
+        android:name="com.mada.reapp.CalenderFuntion.CalendarDdayFragment"
         android:label="CalendarDday"
         tools:layout="@layout/calendar_dday_fragment">
         <action
@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/fragCustom"
-        android:name="com.mada.myapplication.Fragment.FragCustom"
+        android:name="com.mada.reapp.Fragment.FragCustom"
         android:label="FragCustom" >
         <action
             android:id="@+id/action_fragCustom_to_fragHome"
@@ -103,7 +103,7 @@
 
     <fragment
         android:id="@+id/homeCategoryFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.HomeCategoryFragment"
+        android:name="com.mada.reapp.HomeFunction.view.HomeCategoryFragment"
         android:label="HomeCategoryFragment" >
         <action
             android:id="@+id/action_homeCategoryFragment_to_categoryAddFragment"
@@ -117,7 +117,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryAddFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.CategoryAddFragment"
+        android:name="com.mada.reapp.HomeFunction.view.CategoryAddFragment"
         android:label="CategoryAddFragment" >
         <action
             android:id="@+id/action_categoryAddFragment_to_homeCategoryFragment"
@@ -126,7 +126,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeRepeatTodoFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.HomeRepeatTodoFragment"
+        android:name="com.mada.reapp.HomeFunction.view.HomeRepeatTodoFragment"
         android:label="HomeRepeatTodoFragment" >
         <action
             android:id="@+id/action_homeRepeatTodoFragment_to_repeatTodoAddFragment"
@@ -138,7 +138,7 @@
     </fragment>
     <fragment
         android:id="@+id/repeatTodoAddFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.RepeatTodoAddFragment"
+        android:name="com.mada.reapp.HomeFunction.view.RepeatTodoAddFragment"
         android:label="RepeatTodoAddFragment" >
         <action
             android:id="@+id/action_repeatTodoAddFragment_to_homeRepeatTodoFragment"
@@ -148,7 +148,7 @@
     <!--    Time  부분   -->
     <fragment
         android:id="@+id/fragTime"
-        android:name="com.mada.myapplication.TimeFunction.FragTime"
+        android:name="com.mada.reapp.TimeFunction.FragTime"
         android:label="FragTime" >
         <action
             android:id="@+id/action_fragTime_to_fragTimeTable"
@@ -165,7 +165,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragTimeTable"
-        android:name="com.mada.myapplication.TimeFunction.TimeTableFragment"
+        android:name="com.mada.reapp.TimeFunction.TimeTableFragment"
         android:label="FragTimeTable" >
         <action
             android:id="@+id/action_fragTimeTable_to_fragTimeTableWeek"
@@ -182,7 +182,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragTimeTableWeek"
-        android:name="com.mada.myapplication.TimeFunction.TimeTableWeekFragment"
+        android:name="com.mada.reapp.TimeFunction.TimeTableWeekFragment"
         android:label="FragTimeTableWeek" >
         <action
             android:id="@+id/action_fragTimeTableWeek_to_fragTime"
@@ -199,7 +199,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragTimeAdd"
-        android:name="com.mada.myapplication.TimeFunction.TimeAddFragment"
+        android:name="com.mada.reapp.TimeFunction.TimeAddFragment"
         android:label="FragTimeAdd" >
         <action
             android:id="@+id/action_fragTimeAdd_to_fragTime"
@@ -210,7 +210,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragTimeWeekAdd"
-        android:name="com.mada.myapplication.TimeFunction.TimeAddWeekFragment"
+        android:name="com.mada.reapp.TimeFunction.TimeAddWeekFragment"
         android:label="FragTimeWeekAdd" >
         <action
             android:id="@+id/action_fragTimeWeekAdd_to_fragTimeTableWeek"
@@ -219,7 +219,7 @@
 <!--    My  부분   -->
     <fragment
         android:id="@+id/fragMy"
-        android:name="com.mada.myapplication.Fragment.FragMy"
+        android:name="com.mada.reapp.Fragment.FragMy"
         android:label="FragMy" >
         <action
             android:id="@+id/action_fragMy_to_myProfileFragment"
@@ -248,7 +248,7 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyProfileFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyProfileFragment"
         android:label="MyProfileFragment" >
         <action
             android:id="@+id/action_myProfileFragment_to_myProfileNickFragment"
@@ -259,7 +259,7 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileNickFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyProfileNickFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyProfileNickFragment"
         android:label="MyProfileNickFragment" >
         <action
             android:id="@+id/action_myProfileNickFragment_to_fragMy"
@@ -267,7 +267,7 @@
     </fragment>
     <fragment
         android:id="@+id/mySetFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MySetFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MySetFragment"
         android:label="MySetFragment" >
         <action
             android:id="@+id/action_mySetFragment_to_fragMy"
@@ -275,7 +275,7 @@
     </fragment>
     <fragment
         android:id="@+id/myNoticeFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyNoticeFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyNoticeFragment"
         android:label="MyNoticeFragment" >
         <action
             android:id="@+id/action_myNoticeFragment_to_fragMy"
@@ -283,7 +283,7 @@
     </fragment>
     <fragment
         android:id="@+id/myPremiumFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyPremiumFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyPremiumFragment"
         android:label="MyPremiumFragment" >
         <action
             android:id="@+id/action_myPremiumFragment_to_fragMy"
@@ -291,7 +291,7 @@
     </fragment>
     <fragment
         android:id="@+id/myWithdrawFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyWithdrawFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyWithdrawFragment"
         android:label="MyWithdrawFragment" >
         <action
             android:id="@+id/action_myWithdrawFragment_to_splash2Activity"
@@ -302,12 +302,12 @@
     </fragment>
     <activity
         android:id="@+id/splash2Activity"
-        android:name="com.mada.myapplication.StartFunction.Splash2Activity"
+        android:name="com.mada.reapp.StartFunction.Splash2Activity"
         android:label="splash2"
         tools:layout="@layout/splash2" />
     <fragment
         android:id="@+id/categoryInActiveFragment"
-        android:name="com.mada.myapplication.HomeFunction.view.CategoryInActiveFragment"
+        android:name="com.mada.reapp.HomeFunction.view.CategoryInActiveFragment"
         android:label="CategoryInActiveFragment" >
         <action
             android:id="@+id/action_categoryInActiveFragment_to_homeCategoryFragment"
@@ -318,7 +318,7 @@
     <!--  Chart  부분   -->
     <fragment
         android:id="@+id/fragChartDay"
-        android:name="com.mada.myapplication.ChartFunction.Fragment.FragChartDay"
+        android:name="com.mada.reapp.ChartFunction.Fragment.FragChartDay"
         android:label="chart_day"
         tools:layout="@layout/chart_day" >
         <action
@@ -333,7 +333,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragChartMonth"
-        android:name="com.mada.myapplication.ChartFunction.Fragment.FragChartMonth"
+        android:name="com.mada.reapp.ChartFunction.Fragment.FragChartMonth"
         android:label="chart_month"
         tools:layout="@layout/chart_month" >
         <action
@@ -345,7 +345,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragChartWeek"
-        android:name="com.mada.myapplication.ChartFunction.Fragment.FragChartWeek"
+        android:name="com.mada.reapp.ChartFunction.Fragment.FragChartWeek"
         android:label="chart_week"
         tools:layout="@layout/chart_week" >
         <action
@@ -357,7 +357,7 @@
     </fragment>
     <fragment
         android:id="@+id/myStampFragment"
-        android:name="com.mada.myapplication.MyFunction.Fragment.MyStampFragment"
+        android:name="com.mada.reapp.MyFunction.Fragment.MyStampFragment"
         android:label="MyStampFragment" >
         <action
             android:id="@+id/action_myStampFragment_to_fragMy"

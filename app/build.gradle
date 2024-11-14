@@ -8,17 +8,17 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    namespace 'com.mada.myapplication'
+    namespace 'com.mada.reapp'
     compileSdk 34
 
 
     defaultConfig {
-        applicationId "com.mada.myapplication"
+        applicationId "com.mada.reapp"
         minSdk 28
         targetSdk 34
-        versionCode 34
+        versionCode 1
         // 버전 이름 (큰 버전, 작은 버전, 날짜)
-        versionName "mada_version:1.11:20240907"
+        versionName "mada_version:2.0:20241101"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

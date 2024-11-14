@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.mada.myapplication.CalenderFuntion.Calendar.CalendarView
+    <com.mada.reapp.CalenderFuntion.Calendar.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <com.mada.myapplication.CalenderFuntion.Calendar.CalendarView2
+    <com.mada.reapp.CalenderFuntion.Calendar.CalendarView2
         android:id="@+id/calendarView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
